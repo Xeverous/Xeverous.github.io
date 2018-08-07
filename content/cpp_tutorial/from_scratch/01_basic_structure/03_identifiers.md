@@ -11,7 +11,7 @@ Valid names can consist of:
 - underscore symbol (_)
 - digits (0 - 9), with the exception that the name can not start with a digit
 
-Actually there are more possible characters (also from unicode) but REALLY NO ONE uses them and tools, including compilers many not support them.
+Actually there are more possible characters (also from Unicode) but REALLY NO ONE uses them and tools, including compilers many not support them.
 
 Example valid identifiers:
 
@@ -36,8 +36,8 @@ x@y // symbol @ is reserved
 
 Additionally, the C++ standard reserves following names (you should not use them):
 
-- `_X*` - anything beginning with an underscore followed by an uppercase letter
-- `__*` - anything beginning with 2 underscores
+- `_X*` — anything beginning with an underscore followed by an uppercase letter
+- `__*` — anything beginning with 2 underscores
 - anything containing 2 consecutive underscores
 - anything in the namespace `std`
 - anything in the namespace `posix`
@@ -49,7 +49,7 @@ ___
 
 There are two standard library identifiers you have already seen: `std` and `cout`.
 
-## name styles
+## Name styles
 
 There have been established few core naming styles, these conventions are broadly used in the entire IT, not just programming.
 
@@ -60,7 +60,7 @@ PascalCaseNameStyle
 camelCaseNameStyle (in camelCase first letter is lowercase)
 ```
 
-It's bad to mix these styles - any of the follwoing names are against convention:
+It's bad to mix these styles — any of the following names are against convention:
 
 ```
 Account_Manager
@@ -80,4 +80,4 @@ PrintHttpDocument
 printHttpDocument
 ```
 
-C++ (following C convention) standard library uses `UPPERCASE_NAME_STYLE` for macros and `snake_case_style` for almost everything else. All tutorial content on this website uses relevant styles - just simply follow them.
+C++ (following C convention) standard library uses `UPPERCASE_NAME_STYLE` for macros and `snake_case_style` for almost everything else. All tutorial content on this website uses relevant styles — just simply follow them.

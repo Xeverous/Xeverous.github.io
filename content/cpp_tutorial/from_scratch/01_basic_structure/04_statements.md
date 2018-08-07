@@ -21,7 +21,7 @@ arr[k] = v
 std::cout << "hello, world"
 ```
 
-Statements are analogic to human language sentences and expressions are analogic to words and punctuation.
+Statements are analogy to human language sentences and expressions are analogy to words and punctuation.
 
 ```c++
 int x = 5; // this code is a statement

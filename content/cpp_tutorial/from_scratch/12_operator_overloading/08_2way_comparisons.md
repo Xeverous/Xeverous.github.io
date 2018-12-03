@@ -104,9 +104,9 @@ int std::strcmp(const char* lhs, const char* rhs);
 
 It returns:
 
-- negative number if lhs is lexicographically less-than rhs
+- negative number if `lhs` is lexicographically less-than `rhs`
 - zero if both sequences are equal
-- positive number if lhs is lexicographically greater-than rhs
+- positive number if `lhs` is lexicographically greater-than `rhs`
 
 Given function that does such 3-way comparison, operators can be overloaded this way:
 

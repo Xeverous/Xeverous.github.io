@@ -10,13 +10,15 @@ No type in the standard library overloads these operators.
 
 ## unary `*` and `->`
 
-These operators allow to replicate pointer interface and in fact are used by smart pointers. TODO order of articles? Should operator overloading be later?
+These operators allow to replicate pointer interface and in fact are used by smart pointers and iterators. TODO order of articles? Should operator overloading be later?
 
 ## other operators
 
 Operators `&&`, `||`, unary `&` (the address of operator) and `,` are hardly ever overloaded.
 
 The first 2 doesn't signal any concrete behaviour - what would be the purpose of `a && b` when they are not boolean?
+
+Overloading `&` makes obtaining address of the object harder, assuming one knows about `std::address_of` which can bypass it.
 
 Overloading comma only asks for more problems - imagine passing arguments to function: `f(a, b)` suddenly becomes `f(operator,(a, b))` (and calls the function overload for 1 argument).
 

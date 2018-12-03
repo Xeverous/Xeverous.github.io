@@ -119,7 +119,7 @@ struct point
 };
 ```
 
-There is no point (pun intended) in sorting 2D numbers so this type should only support operators `==` and `!=`. To constrain it, we simply change the return type from `auto` to **strong ordering**.
+There is no point (pun intended) in sorting 2D numbers so this type should only support operators `==` and `!=`. To constrain it, we simply change the return type from `auto` to **strong equality**.
 
 If the point had more members (eg color) but we wanted to compare only X, Y coordinates we would need to write custom body of the operator. Because some information would be ignored, that would be **weak equality**.
 
@@ -162,14 +162,14 @@ A type that implements strong ordering/equality should compare all of it's membe
                 <th>supported operators</th>
                 <th>any pair of objects is comparable</th>
                 <th>equal objects are indistinguishable</th>
-                <th>example</th>
+                <th>examples</th>
             </tr>
             <tr>
                 <td>`std::strong_ordering`</td>
                 <td>&lt; &gt; &lt;= &gt;= == !=</td>
                 <td>&#10004;</td>
                 <td>&#10004;</td>
-                <td>player's score in a game</td>
+                <td>whole numbers</td>
             </tr>
             <tr>
                 <td>`std::weak_ordering`</td>
@@ -197,7 +197,7 @@ A type that implements strong ordering/equality should compare all of it's membe
                 <td>== !=</td>
                 <td>&#10004;</td>
                 <td></td>
-                <td>?</td>
+                <td>hashes of different inputs, check sums</td>
             </tr>
         </tbody>
     </table>

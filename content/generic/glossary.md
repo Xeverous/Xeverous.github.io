@@ -78,18 +78,20 @@ TODO - article with symbol character names.
 
 `smart pointer` - a pointer that <del>is smart</del> automatically manages underlying resource (not necessarily memory). Standard library offers classes for unique ownership model (`std::unique_ptr`) and shared ownership model (`std::shared_ptr`, `std::weak_ptr`). Additional and legacy smart pointers are offered by Boost. [SO question](https://stackoverflow.com/questions/106508/what-is-a-smart-pointer-and-when-should-i-use-one).
 
-`std` - the standard library namespace. Every identifier except macros is inside this namespace. More namespaces are possible in the future.
+`std` - the standard library namespace. Every identifier except macros is inside this namespace. More top-level namespaces are possible in the future.
 
 `STL` - standard template library. More than 90% (or even 95%) of C++ standard library. Templates are found in various headers - this term is simply covering them all.
 
-`strict aliasing` - an assumption that pointers to unrelated types (not sharing same inheritance tree) can never point to the same object. All variants of `char` and `void` pointers are excluded from this rule (because they are used for unknown type reads/writes). Strict aliasing allows multiple optimizations because compiler can assume certain data is not overriden between various instructions. Strict aliasing is very highly encouraged by the C++ standard. Enabled by default in all major compilers and requires certain flag to compile code which violates this rule.
+`strict aliasing` - an assumption that pointers to unrelated types (eg not sharing same inheritance tree) can never point to the same object. All variants of `char`, `unsigned char` and `void` pointers are excluded from this rule (because they are used for unknown type low-level reads/writes). Code which violates strict aliasing rules may result in undefined behaviour.
 
 `this` - a pointer to the object itself, available in any non-static member function. Necessary in some contexts. `this` (if available) is never null.
 
 `toolchain` - a set of tools (programs, scripts) used to build a project. The typical minimal toolchain would invole a text editor, compiler and debugger. Bigger projects additionally use documentation tools, static analyzers, continuous integration tools and more.
 
-`Qt` (cute) - The biggest C++ GUI framework and set of GUI-related libraries, also probably the only one having WYSIWYG UI editor.
+`user-defined type` - types that are defined in code (not built into the language). Includes classes (also structs) and enumeration types. Type aliases (`using`, `typedef`) are user- or built-in types depending on what they alias.
 
-`Qt Creator` - IDE from Qt company. Has integrated support for Qt libraries.
+`Qt` (cute) - The biggest C++ GUI framework and set of GUI-related and OS-related libraries. Known for covering practically any task (sometimes being said it's basically separate OS) but also one of the ugliest and least idiomatic libraries when it comes to modern C++ conventions.
+
+`Qt Creator` - IDE from Qt company. Has integrated support for Qt libraries but can be used for any C++ project.
 
 `vtable` - [virtual method table](https://en.wikipedia.org/wiki/Virtual_method_table). In typical runtime dispatch implementation, each class that has at least 1 virtual function has embedded vtable pointer as it's first member.

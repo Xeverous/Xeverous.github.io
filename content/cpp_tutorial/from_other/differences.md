@@ -272,3 +272,26 @@ C++ has available an enormous amount of both old and newer libraries. Also, almo
 Unfortunately there is no standarized process of adding libraries to a project nor any official package manager. Recently there have been big changes in this regard - modules are finally comming into the language but it's just the beginning of automatizing library integration.
 
 For this reason, multiple libraries are header-only (especially the smaller ones) - projects copy-paste them to repositories and just use includes. If not, they have a guide how to build and integrate - usually with a meta build tool such as CMake (generates project and make files).
+
+## ???
+
+Features you are likely to know, but have important differences in C++:
+
+- OOP (eg multiple inheritance, virtual inheritance, no interfaces)
+- `const`/`final`/`readonly` (`const` has much bigger power in C++)
+- `var`/`let`
+- operator overloading (C++ offers much more than C#)
+- exceptions
+
+Features that are very different in C++:
+
+- Memory management: if you previously worked only with garbage-collected languages, this will be a whole new thing. It's not that hard as you may expect. Surprise fact: `new` in C++ is not used for what you may think it is.
+- Multithreading (reason: look point above).
+- Templates. It's a very different thing from dynamically typed languages and from generics in C# and Java. Functions or classes accepting `T` are only the beginning of metaprogramming, not the feature itself.
+- Build system: header + source files (reason: C compability, but this is changing, Modules in 2020)
+
+Features that are not (yet) in C++
+
+- advanced RTTI
+- reflection
+- pattern matching

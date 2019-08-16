@@ -2,6 +2,8 @@
 layout: article
 ---
 
+TODO describe exception guuarantees terms
+
 ## implementation
 
 Like with virtual table, I wanted to write a sample, manual implementation of exceptions. The problem here is that they are far more complicated and it's (probably) impossible to get them running manually without relying on "specific undefined/unspecified behaviour" or some compiler-specific features.

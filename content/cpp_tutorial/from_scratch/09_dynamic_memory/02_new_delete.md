@@ -86,6 +86,13 @@ new (std::nothrow) T(initializer)
 new (std::nothrow) T[N]
 ```
 
+- `delete` and `delete[]` doesn't require explicit null pointer checks
+
+```c++
+if (ptr != nullptr) // redundant, delete already checks it
+    delete[] ptr;   // calls deallocation only if ptr is non-null
+```
+
 ## problems with new
 
 New expression solves these problems:

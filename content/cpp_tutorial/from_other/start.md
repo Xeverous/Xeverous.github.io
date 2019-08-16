@@ -2,57 +2,79 @@
 layout: article
 ---
 
-This is the start of accelerated tutorial. It is aimed to go faster and not bother you with boring things such as functions, scoping, basic OO which you know already from other language.
+This is the start of accelerated tutorial. It is aimed to go faster and not bother you with boring things such as functions, scoping, basic OO which you know already from other language(s).
 
-Before going further, make sure you know these terms:
+Note: this tutorial is aimed only at users of similar languages. Check FAQ right below.
 
-- compiler
-- linker
-- IDE
-- debugger
-- source code, machine code
-- compiled vs interpreted language
+## I have experience in C, should I start here?
 
-If you don't, you have ommited core stuff (which is much more important in compiled languages) or used so sophisticated tools that only the code was your problem. I advice you to go to from scratch tutorial instead as this is important knowledge which without you may pretty fast end up in frustrations of not understanding tools or configuration errors.
+No. Use the beginner (from scratch) tutorial. C++ has significantly different conventions than C. Many features have been removed or replaced by better alternatives. There is no worse thing than assuming everything is still the same and that C++ is just a superset of features. C-ish C++ is bad C++.
 
-## Some facts
+## I have experience in C# or Java, should I start here?
 
-C++ is:
+Yes. These are the languages that are most similar to C++ (actually there are more similar ones, but I do not want to talk about non-standard C++ forks which do not have any wide use). This tutorial is aimed primarly to users of these languages. They both share very similar syntax and language rules. Up to certain point, most features will be identical or have only minor syntax differences.
 
-- statically typed, NOT dynamically like in JavaScript or Python
-- compiled, NOT interpreted
-- having own (almost unique) memory management system, NO garbage collection
-- different than C (code which works in both may often be a good C but bad C++)
-- ISO standardized, NOT owned by any company
+There will be some code samples that compare equivalent C# or Java code to C++.
 
-## I have experience in .... How much will it help me?
+## I have experience in Python, should I start here?
 
-The most close language is C# (actually there are closer ones, but I do not want to talk about non-standard C++ forks which do not have any wide use) with 2nd place being Java. They both share very similar syntax and language rules. Up to certain point, most features will be identical or have only minor syntax differences.
+No. Python is just too different in too many ways (including the type system, syntax and conventions like error handling). If you don't have any experience with statically-typed languages, use the from scratch tutorial.
 
-Most basic stuff will be shortened as I assume you know these fundamental things. I will not explain them but there will be syntax examples for everything.
+## I have experience in JavaScript, should I start here?
 
-- control flow (ifs, loops, etc)
-- functions
-- basics about OOP and polymorphism
-- basics about C-based syntax (`{}, (), []` etc, scoping and similar)
+No. JS is a completely different word.
 
-Features you are likely to know, but have important differences in C++:
+## What about TypeScript?
 
-- OOP (eg multiple inheritance, virtual inheritance, no interfaces)
-- `const`/`final`/`readonly` (`const` has much bigger power in C++)
-- `var`/`let`
-- operator overloading (C++ offers much more than C#)
-- exceptions
+I have no knowledge about TS, can not guuarantee that nothing important was missed. Go with this tutorial at your own risk.
 
-Features that are very different in C++:
+## PHP?
 
-- Memory management: if you previously worked only with garbage-collected languages, this will be a whole new thing. It's not that hard as you may expect. Surprise fact: `new` in C++ is not used for what you may think it is.
-- Multithreading (reason: look point above).
-- Templates. It's a very different thing from dynamically typed languages and from generics in C# and Java. Functions or classes accepting `T` are only the beginning of metaprogramming, not the feature itself.
-- Build system: header + source files (reason: C compability, but this is changing, Modules in 2020)
+Version 7 significantly refreshed the language but I really have no idea how close PHP 7 is to C++.
 
-Features that are not (yet) in C++
+## What when I have experience in \<insert-other-language-here\>?
 
-- advanced RTTI
-- reflection
-- pattern matching
+Use your knowledge about this language and decide on your own. In case of doubt, I recommend going with the from scratch tutorial because **C++ can be really frustrating when you assume some things and they turn out to work differently**.
+
+## overview
+
+This tutorial assumes that **you know** (in general):
+
+- basic control flow rules (conditionals, loops, `continue` and `break` keywords)
+- how strongly typed languages work
+- function overloading
+- OOP concepts (abstraction, inheritance, polymorphism)
+- exceptions (how the work)
+- lambda expressions (C++ lambdas are very powerful so there will be lots of examples)
+- what is an IDE, OS command line etc
+- good practices when writing code (meaningful naming, no code duplication, no hidden side effects, no global data etc)
+
+This tutorial is written assuming that **you may not know**:
+
+- C++ grammar, syntax, conventions
+- header vs source files
+- preprocessor (macros and conditional compilation)
+- **how resources (not necessarily memory) are managed in a language without garbage collection**
+- **anything related to pointers**
+- C++ OOP: **destructors**, **copy/move constructors**, multiple inheritance
+- operator overloading
+- `const` keyword (which is extremely powerful in C++)
+
+Additionally, this tutorial presents:
+
+- snippets comparing C++ code with equivalent code in other language(s)
+- common C++ mistakes and misconceptions
+- some common build errors and how to deal with them
+- how to acomplish basic tasks and common exerices (formatted I/O, random numbers, data structures and algorithms, etc)
+
+## before you start
+
+Make sure you have installed compiler, IDE and/or any other tools necessary to work. If not, go to TODO link to tools.
+
+For the compiler, I recommend using GCC or Clang because:
+
+- **unlike Microsoft's Visual compiler, they strictly verify code's compliance by default** (Microsoft has a complex history of various C++ forks and technically-invalid-but-accepted-code)
+- these 2 are most up to date with language specification
+- their errors are much easier to search about than the ones given by Microsoft Visual compiler
+- they are free and open-source software
+- they work practically everywhere (almost any unix system, for Windows there are GCC forks under name MinGW)

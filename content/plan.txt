@@ -22,7 +22,6 @@ dynamic memory
 
 RAII
 	copy ctor vs move ctor
-	shallow vs deep copying
 	STL containers
 	std::unique_ptr
 	std::shared_ptr
@@ -34,6 +33,7 @@ operator overloading
 	unary []
 	N-ary ()
 	bit operations (SO: how to set and clear each bit)
+	https://www.youtube.com/watch?v=zh4EgO13Etg
 
 inheritance
 	public / protected / private inheritance

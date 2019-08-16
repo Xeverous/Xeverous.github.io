@@ -93,14 +93,15 @@ Look how useful destructors can become when dealing with dynamic allocation:
 class dynamic_array
 {
 public:
+    dynamic_array() : data(nullptr), size(0) {}
     dynamic_array(int size);
     ~dynamic_array();
 
     // other methods...
 
 private:
-    int* const data;
-    const int size;
+    int* data;
+    int size;
 };
 
 dynamic_array::dynamic_array(int size)
@@ -110,6 +111,8 @@ dynamic_array::dynamic_array(int size)
 
 dynamic_array::~dynamic_array()
 {
+    // remainder: delete checks for non-null pointers
+    // you don't need to write if (data != nullptr)
     delete[] data;
 }
 ```

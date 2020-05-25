@@ -22,6 +22,8 @@ Now if you try to build such project, you will get a different error - this time
 
 The correct way is to declare using `extern` in a header file and define without this keyword in any choosen source file.
 
+`extern` can also be used for function declarations, but since functions have a distiction between declaration and definition it is not necessary. The keyword is required only for things that have no syntax for pure declaration.
+
 ## example project
 
 **global.hpp**
@@ -92,11 +94,9 @@ int main()
 
 ### include redundancy
 
-**main.cpp** includes **iostream** even though it's already provided by **functions.hpp**. This is good because if at any point you realize that **iostream** is not actually needed by **functions.hpp** such removal would not break the build.
+**main.cpp** includes **iostream** even though it's already provided by **functions.hpp**. This is good because if at any point you realize that **iostream** is not actually needed for **functions.hpp** such removal would not break the build.
 
-You should always include headers if you use any stuff from them. Do not rely on other headers including headers you need because if at any point dependencies of your dependencies change, you will get build errors. In other words, think of headers as necessary and don't rely on what they include themselves.
-
-In this case, **main.cpp** should not rely on what is included by headers that **main.cpp** includes. If it did rely, any removal inside **functions.hpp** or **global.hpp** could cause **main.cpp** to miss something.
+You should always include headers if you use any stuff from them. Do not rely on other headers including headers you need because if at any point dependencies of your dependencies change, you will get build errors. In other words, think of headers as necessary and not rely on what they include themselves.
 
 ### include order
 

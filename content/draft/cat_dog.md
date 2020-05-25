@@ -84,6 +84,11 @@ public:
     }
 };
 
+void print_animal(const animal& a)
+{
+    a.sound(); // virtual call
+}
+
 int main()
 {
     std::vector<std::unique_ptr<animal>> v;
@@ -91,7 +96,7 @@ int main()
     v.push_back(std::make_unique<dog>());
 
     for (const auto& a : v)
-        a->sound();
+        print_animal(*a);
 }
 ```
 
@@ -115,17 +120,24 @@ overloaded(Ts...) -> overloaded<Ts...>;
 struct cat {};
 struct dog {};
 
+using animal = std::variant<cat, dog>;
+
+void print_animal(const animal& a)
+{
+    std::visit(overloaded {
+            [](cat c) { std::cout << "meow\n"; },
+            [](dog d) { std::cout << "whoof\n"; }
+        }, a);
+}
+
 int main()
 {
-    std::vector<std::variant<cat, dog>> v;
+    std::vector<animal> animals;
     v.push_back(cat{});
     v.push_back(dog{});
 
-    for (const auto& elem : v)
-        std::visit(overloaded {
-            [](cat c) { std::cout << "meow\n"; },
-            [](dog d) { std::cout << "whoof\n"; }
-        }, elem);
+    for (const auto& a : v)
+        print_animal(a);
 }
 ```
 
@@ -165,7 +177,7 @@ public:
 template <typename Derived>
 void print_animal(const animal<Derived>& a)
 {
-    a.sound();
+    a.sound(); // NOT a virtual call
 }
 
 int main()
@@ -176,3 +188,17 @@ int main()
     print_animal(d);
 }
 ```
+
+## "row vs column" problem
+
+All these options have different tradeoffs
+
+approach | classic OOP | functional | CRTP
+---------|-------------|------------|-----
+implementation | each object has a pointer to its table of functions which implement behaviour | each object has a discriminant value which states how it should be interpreted | compile-time evaluation
+overhead per object | 1 pointer for each non-virtual interface | 1 integer | (none)
+overhead per use | indirect function call (terrible for cache, can not be inlined) | jump table on integer (can be heavily inlined) | (none)
+pros | adding new type is easy | adding new behavior is easy | best performance
+cons | adding new behavior is hard | adding new type is hard | input must be compile-time
+memory layout | absolutely terrible unless custom allocator is used | very-cache fiendly if subvariants are value types | depends on the underlying type
+additional info | ABI stability | strong type safety for behaviour implementers | requires language with metaprogramming features

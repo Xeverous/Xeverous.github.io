@@ -98,11 +98,19 @@ missing
 	http://www.open-std.org/jtc1/sc22/wg21/
 	cout/cin/getline tutorial
 	copy and swap idiom
+	auto const vs auto* const
+	wrapping the function name in parentheses is suppressing the argument-dependent lookup.
+
 
 
 cheatsheet - operator overloading
 	- syntax example - notes (specific return, losing short-circuit)
 cheatsheet - linkage + storage duration
+https://i.stack.imgur.com/b2VBV.png
+
+optimization
+	5) cache coherency makes things faster 4) vectorized code or small hot loops make things faster 3) avoiding pointers makes things faster 2) avoiding (unpredictable) branches makes things faster 1) write both versions and compare the timings on real datasets, because 2-5 are just heuristics and aren't guaranteed to be right
+
 
 inheritance should be after smart pointers + data structures - reason - examples, need vector and string
 

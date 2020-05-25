@@ -4,19 +4,20 @@ layout: article
 
 The first C++ abstractions that make allocation easier are operators `new` and `delete`.
 
-Similarly to C functions, they work in pairs. They do not solve all problems with allocation but make it somewhat more convenient.
+Similarly to C functions, they work in pairs. They do not solve all problems with allocation but it's a step forward.
 
 ## syntax
 
 ```c++
-// allocate/deallocate an object
+// allocate an object (2 possibilities)
 T* ptr = new T;
 T* ptr = new T(initializer); // (optional initial value)
-
+// deallocate an object
 delete ptr;
 
-// allocate/deallocate an array of objects
+// allocate an array of objects
 T* arr = new T[N];
+// deallocate an array of objects
 delete[] arr;
 ```
 
@@ -32,7 +33,7 @@ Allocation/deallocation should not be mixed - all operations must be done in rel
 - `new` - `delete`
 - `new[]` - `delete[]`
 
-Passing pointer from allocation to an incompatible deallocation is undefined behaviour.
+Passing pointer from an allocation to an incompatible deallocation is undefined behaviour.
 
 ## example
 
@@ -62,10 +63,10 @@ int main()
         }
 
         std::cout << "You have entered: ";
-    
+
         for (int i = 0; i < n; ++i)
             cout << ptr[i] << ", ";
-    
+
         delete[] ptr;
     }
 }
@@ -74,17 +75,24 @@ int main()
 ## advantages over C functions
 
 - New-expression allocates memory for N objects of given type, not bytes - no need for calculating size.
-- New-expression is type-safe - no void pointers, no casting.
+- New-expression is type-safe - returned pointer is of specific type.
 - New-expression initializes data - `malloc()` is usually followed by an assignment; there is `calloc()` but it offers only zero-initialization while new-expression allows any initial value.
 - New-expression is an operator and can be overloaded - this allows custom allocation for specific custom types
 - Automatic failure propagation: if allocation fails, instead of returning a null pointer an exception is thrown. When desired, this can be disabled by no-throw argument:
 
 ```c++
 #include <new> // std::nothrow
+// throw exception on failure
+new T
+new T(initializer)
+new T[N]
+// return a null pointer on failure
 new (std::nothrow) T
 new (std::nothrow) T(initializer)
 new (std::nothrow) T[N]
 ```
+
+We are far from exceptions chapter but you don't have to care much about them now. Since we don't handle them any will just terminate the program with explanatory message.
 
 ## problems with new
 
@@ -93,7 +101,7 @@ New expression solves these problems:
 - initialization of allocated memory
 - type safety
 
-New-expression still shares some problems with C allocation functions:
+New expression still shares these problems with C allocation functions:
 
 - it's easy to forget to detele (memory leak)
 - it's easy to delete twice (undefined behaviour)

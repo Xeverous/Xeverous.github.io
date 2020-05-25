@@ -1,0 +1,2 @@
+- LOG macro that uses __FILE__ __LINE__ and __func__
+- use endl, not '\n' (crash may happen before buffer is flushed)

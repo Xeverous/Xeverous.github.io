@@ -2,13 +2,15 @@
 layout: article
 ---
 
-**A collection of common misconceptions about C++**
+## A collection of common misconceptions about C++
 
-## "C++ requires manual memory management"
+### "C++ requires manual memory management"
 
 TODO describe RAII, perhaps Thor library article
 
-## "C is faster than C++"
+### "C is faster than C++"
+
+TODO move to separate article
 
 It is not. Both languages should compile to equally fast (and often the same) machine code.
 
@@ -40,17 +42,19 @@ The C++ version takes 2 iterators (pointers are the simplest iterators) and acce
 
 It turns out that the C++ version is much better optimized. Why?
 
-- C version uses function pointer. It is unknown what will be put here so it's an optimization barrier. Compiler must insert function call.
-- Comparisons  are usually very short and C++ template takes advantage of this and inlines practically every lambda expression or other comparison object. This avoids potentially large overhead of calling very simple function
-- C version loses type information. By treating everything by `void*`, it limits any type to trivially copyable block of bytes
+- C version uses function pointer. It is unknown what will be put here so it's an optimization barrier. Compiler must insert function call. It can not be inlined.
+- Comparisons  are usually very short and C++ template takes advantage of this and inlines practically every closure coming from lambda expressions or other comparators. This avoids large overhead of calling a function for a very simple operation.
+- C version loses type information. By treating everything by `void*`, it limits any type to trivially copyable block of bytes. C++ sort implementation supports any sequence which offers random access to elements
 
 **2. C doesn't provide very advanced abstractions and so C done wrong crashes; C++ has many advanced abstractions but wrongly choosen ones usually end in lower performance instead of crahses.**
 
 This is a thing which is easily overlooked. Performance is never a necessity in every part of the program and so in the places where top performance is not required projects prefer C++ abstractions which are eg 10% slower than C but 10x easier and safer to use (values choosen arbitrarly).
 
-**3. First C++ implementations were transpilers to C which were not able to take full advantage of the language**
+### "C++ compilers are just transpilers to C which then call actual compiler for the C code"
 
-## "`const char*` is faster than `std::string`"
+This was true like ... 30 years ago. It is no doubt that all of major compilers reuse their implementation for both C and C++ but by no means C++ is translated to C and then compiled. Newer standards of C++ provide so much useful information to the compiler that translating C++ to C would be a huge waste of various optimization opportunities.
+
+### "`const char*` is faster than `std::string`"
 
 The entire comparison is flawed by the choice of and usage of these types.
 
@@ -70,7 +74,7 @@ Generally, C++ classes store more information than plain character pointers (so 
 
 Also, in C++ string class there is short string optimization which I doubt is very often used in C (what is SSO - [link 1](https://stackoverflow.com/questions/10315041/), [link 2](https://stackoverflow.com/questions/21694302/)).
 
-## "the type of `"abc"` is `const char*`"
+### "the type of `"abc"` is `const char*`"
 
 Let's test it:
 
@@ -106,6 +110,21 @@ const char str1[] = "abc"; // array initialization
 const char* str2 = "abc"; // implicit convertion from const char[4] to const char*
 ```
 
+This specific implicit convertion is known as *array decay*.
+
 If you remove universal reference (`&&`) from the example, it will compile because non-reference templates also perform implicit convertions.
 
-In C, this convertion happens every time an array is passed to a function - the array decays to pointer to the first element.
+In C, this convertion happens every time an array is passed to a function - the array decays to pointer to the first element. The following 2 functions are equivalent:
+
+```c++
+// NEVER do such things when you want more than 1 element
+void func(const int* ptr);
+
+// This is more informative to the user, but mind that for
+// both C and C++ compilers this is still const int* parameter.
+// The size for C-style arrays is never checked.
+void func(const int ptr[4]);
+
+// proper type-safe way
+void func(std::span<int, 4> s);
+```

@@ -152,3 +152,7 @@ int main()
     <summary>explanation</summary>
     <p>Main function has multiple restrictions. Address of main function can not be taken, the function can not be overloaded and called directly. In reality, compilers have no problems calling main function again although they might do unexpected "optimization" in this case.</p>
 </details>
+
+## non-function main
+
+https://stackoverflow.com/questions/7660100/what-is-happening-here-in-this-c-code

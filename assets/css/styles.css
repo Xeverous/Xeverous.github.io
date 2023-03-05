@@ -1,0 +1,557 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 18px;
+}
+
+body {
+	color: #ffffff;
+	background-color: #000000;
+	font-family: Ubuntu, Verdana, Helvetica, Arial, sans-serif;
+	text-align: left;
+	line-height: 1.5;
+	font-size: 1rem;
+}
+
+img {
+	max-width: 100%;
+	display: inline-block;
+}
+
+h1 {
+	font-size: 2.5rem;
+}
+h2 {
+	font-size: 2rem;
+}
+h3 {
+	font-size: 1.75rem;
+}
+h4 {
+	font-size: 1.5rem;
+}
+h5 {
+	font-size: 1.25rem;
+}
+h6 {
+	font-size: 1rem;
+}
+
+ol, ul {
+	display: block;
+	padding-left: 40px;
+}
+
+ol {
+	list-style-type: decimal;
+}
+
+ul {
+	list-style-type: disc;
+}
+
+p {
+	margin-bottom: 1rem;
+}
+
+hr {
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+table {
+	max-width: 100%;
+	margin-bottom: 1rem;
+	border-collapse: collapse;
+	background-color: #212529;
+	position: relative;
+	display: inline-block;
+	overflow-x: auto;
+}
+
+table p {
+	margin: 0;
+}
+
+table.codetable td:first-of-type {
+	position: sticky;
+	left: 0;
+}
+
+table td, table th {
+	padding: .25rem .5rem;
+	border: 1px solid #32383e;
+}
+
+table.codetable td, table.codetable th {
+	border: none; /* borders cause horizontally scrollable code tables to wobble  */
+}
+
+table.codetable {
+	line-height: 1.2rem;
+	width: 100%;
+}
+
+tbody tr:nth-child(odd) td, tbody tr:nth-child(odd) th {
+	background-color: #2c343b;
+}
+
+a {
+	text-decoration: none;
+}
+
+blockquote {
+	border-left: .25rem solid #afb1b4;
+	padding: 0 1rem;
+}
+
+code {
+	padding: 0.25rem 0.25rem;
+	border-radius: 0.5rem;
+}
+
+code, .code {
+	background-color: #000000;
+	font-family: 'Consolas', 'Lucida Console', monospace;
+	font-weight: bold;
+	width: 100%;
+	height: 100%;
+	overflow-x: auto;
+}
+
+tbody tr:nth-child(odd) td.code, table tr:nth-child(odd) th.code {
+	background-color: #000000;
+	padding: 0;
+	border: none;
+}
+
+tbody td.linenos {
+	text-align: right;
+}
+
+a:link, a:visited {
+	color: #ffe55d;
+}
+
+a:hover, a:active {
+	color: #ffff5d;
+}
+
+details {
+  margin: 0 auto;
+  background: rgb(56, 56, 56);
+  padding-left: 1rem;
+  margin-bottom: .5rem;
+  box-shadow: 0 .1rem 1rem -.5rem rgba(0,0,0,.4);
+  border-radius: 5px;
+}
+
+summary {
+  padding: 1rem;
+  display: block;
+  background: rgb(56, 56, 56);
+  padding-left: 2.2rem;
+  position: relative;
+  cursor: pointer;
+}
+
+summary:before {
+  content: '';
+  border-width: .4rem;
+  border-style: solid;
+  border-color: transparent transparent transparent #fff;
+  position: absolute;
+  top: 1.3rem;
+  left: 1rem;
+  transform: rotate(0);
+  transform-origin: .2rem 50%;
+  transition: .25s transform ease;
+}
+
+details[open] > summary:before {
+  transform: rotate(90deg);
+}
+
+details > ul {
+  padding-bottom: 1rem;
+  margin-bottom: 0;
+}
+
+.strikethrough {
+	text-decoration: line-through;
+}
+
+.layout {
+	justify-content: center;
+}
+
+.topbar {
+	position: fixed;
+	width: 100%;
+	top: 0;
+	left: 0;
+	z-index: 1;
+
+	display: flex;
+	justify-content: center;
+	align-items: stretch;
+
+	background-color: #000;
+	border-bottom: white solid 1px;
+}
+
+.menu {
+	display: flex;
+	justify-content: space-around;
+	align-items: stretch;
+	width: inherit;
+}
+
+ul.menu, ol.menu {
+	padding: 0;
+}
+
+.menu li {
+	list-style: none;
+	flex: 1;
+	text-align: center;
+	height: 100%;
+	border-right: white solid 1px;
+}
+
+.menu li:last-of-type {
+	border: none;
+}
+
+.menu li:hover, .menu li:active {
+	background-color: #7a6600;
+}
+
+.button {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.button a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: .5rem;
+}
+
+.menu-icon {
+	display: inline-block;
+}
+
+.bar1, .bar2, .bar3 {
+	width: 1.5rem;
+	height: 3px;
+	background-color: #ffe55d;
+	margin: 6px 0;
+	transition: 0.4s;
+}
+
+.change .bar1 {
+	transform: rotate(-45deg) translate(-6px, 6px);
+}
+
+.change .bar2 {
+	opacity: 0;
+}
+
+.change .bar3 {
+	transform: rotate(45deg) translate(-7px, -7px);
+}
+
+.sidebar {
+	position: fixed;
+	width: 80%;
+	display: none;
+	height: 100%;
+	top: 0;
+	padding: 20px 20px;
+	background: #383838;
+	transition: left 100ms ease-in-out;
+	z-index: 2;
+	overflow: auto;
+}
+
+.sidebar.show {
+	display: block;
+	left: 0px;
+}
+
+.sidebar ul {
+	list-style: none;
+	padding-left: 0;
+	margin-top: 0;
+}
+
+.sidebar-section-description {
+	font-style: italic;
+	font-size: 0.75em;
+	margin-bottom: 5px;
+}
+
+.main {
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+nav.breadcrumb {
+	background-color: #1c1c1c;
+	border: 1px solid #3c3c3c;
+	border-radius: .25rem;
+	padding: .75rem 1rem;
+	margin-bottom: 1rem;
+}
+
+.breadcrumb ol {
+	display: flex;
+	flex-wrap: wrap;
+	list-style: none;
+	font-weight: 800;
+}
+
+.breadcrumb span {
+	padding: 0 10px;
+}
+
+.content {
+	background-color: #262626;
+	padding: 20px 20px;
+	border-radius: 10px;
+	color: #fff;
+}
+
+.admonition {
+	padding: 0.5rem;
+	box-shadow: 0.25rem 0.25rem 1rem 0.25rem rgba(0, 0, 0, 0.3);
+	border-radius: 1rem;
+	box-sizing: border-box;
+	margin-bottom: 0.5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+}
+
+.admonition > p {
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+/*
+ * It's unfortunate that docutils give no way to disable generation of titles for admonitions.
+ * Every admonition has 2 paragraphs and the title simply must be present. Because this website
+ * doesn't use the title, the workaround is to simply disable it through CSS.
+ */
+p.admonition-title {
+	display: none;
+}
+
+.admonition.definition {
+	background-color: #500050;
+}
+
+.admonition.tip {
+	background-color: #9e8042;
+}
+
+.admonition.success {
+	background-color: #408000;
+}
+
+.admonition.note {
+	background-color: #2c4486;
+}
+
+.admonition.warning {
+	background-color: #de8909;
+}
+
+.admonition.error {
+	background-color: #e02300;
+}
+
+.footnote-reference {
+	vertical-align: super;
+	font-size: smaller;
+}
+
+.footer {
+	clear: both;
+	background-color: #000000;
+	font-size: 0.75rem;
+	display: flex;
+	justify-content: space-around;
+}
+
+.footer-item {
+	width: 46%;
+	margin: 20px 1.15%;
+}
+
+.footer-item-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+@media (min-width: 768px) {
+	html {
+		font-size: 20px;
+	}
+
+	.topbar {
+		display: none;
+	}
+
+	.sidebar {
+		display: block;
+		left: 0px;
+		height: 100%;
+		width: 30%;
+		min-width: 200px;
+	}
+
+	.main {
+		margin: 0;
+		left: 30%;
+		width: 70%;
+		position: fixed;
+		height: 100%;
+	}
+
+	.breadcrumb, .content {
+		margin: 20px;
+	}
+}
+
+/*
+ * custom vibrant ink theme - mostly for C++
+ *
+ * unless specified, each is for both clangd and mirror coloring
+ *
+ * "type" was and still is used within mirror files
+ * other "type-*" are for clangd which reports more detailed information about types than expected
+ * (analogically the same for "func" and "func-*")
+ *
+ * "problem" and "spec" are strictly for mirror to highlight special parts of code
+ */
+
+.code.custom-cpp              { color: #ffffff } /* default color */
+.code.custom-cpp .attr        { color: #ffffff } /* attributes - default color because clangd doesn't report them */
+.code.custom-cpp .spec        { color: #808080; font-style: italic; } /* specification */
+.code.custom-cpp .keyword     { color: #ec691e } /* keywords */
+.code.custom-cpp .namespace,                     /* namespace names */
+.code.custom-cpp .type-class,                    /* clangd: classes and their aliases */
+.code.custom-cpp .type-interface,                /* clangd: interfaces and their aliases */
+.code.custom-cpp .type-enum,                     /* clangd: enums and their aliases */
+.code.custom-cpp .type        { color: #9cf828 } /* type aliases and any form of user-defined type */
+.code.custom-cpp .enum        { color: #408000 } /* enum values */
+.code.custom-cpp .dep-name    { color: #c402c4 } /* dependent names */
+.code.custom-cpp .ext         { color: #ffffff } /* extensions, e.g. __builtin_* stuff */
+.code.custom-cpp .oo,                            /* overloaded operators */
+.code.custom-cpp .func-free,                     /* clangd: non-member functions */
+.code.custom-cpp .func-member,                   /* clangd: member functions */
+.code.custom-cpp .func        { color: #f7c527 } /* function/method calls and declarations */
+.code.custom-cpp .func-virtual{ color: #f7c527; font-style: italic; } /* clangd: virtual function calls */
+.code.custom-cpp .label       { color: #ffffff } /* labels (jump places in assembly and for goto) */
+.code.custom-cpp .lit-pre,                       /* literal prefixes */
+.code.custom-cpp .lit-suf     { color: #ffffff } /* literal suffixes */
+.code.custom-cpp .lit-num,                       /* numeric literals */
+.code.custom-cpp .lit-str,                       /* string literals */
+.code.custom-cpp .lit-chr,                       /* character literals */
+.code.custom-cpp .var-local,                     /* function-local variables */
+.code.custom-cpp .var-member  { color: #319bbe } /* member variables */
+.code.custom-cpp .var-global  { color: #ffffff } /* objects with static storage duration */
+.code.custom-cpp .lit-str-raw-delim,             /* delimeters of raw string literals */
+.code.custom-cpp .esc-seq     { color: #868613 } /* escape sequences within literals */
+.code.custom-cpp .fmt-seq     { color: #408000 } /* formatting sequences (e.g. % for printf, {} for fmt) */
+
+.code.custom-cpp .param       { color: #408000 } /* parameters (to functions) */
+.code.custom-cpp .param-out   { color: #c86496 } /* output parameters (passed by non-const reference) */
+.code.custom-cpp .param-tmpl,                    /* template parameters */
+.code.custom-cpp .concept     { color: #ffaf7b } /* concepts (constrained templates) */
+.code.custom-cpp .problem     { color: #ff0000 } /* compiler errors etc. */
+
+.code.custom-cpp .com-single     { color: #af47ff } /* single-line comments */
+.code.custom-cpp .com-multi      { color: #be68ff } /* multi-line comments */
+.code.custom-cpp .com-tag-todo   { color: #c402c4 } /* TODO and FIXME tags in comments */
+.code.custom-cpp .com-single-dox,                   /* Doxygen single-line comments */
+.code.custom-cpp .com-multi-dox  { color: #4b71e3 } /* Doxygen multi-line comments */
+.code.custom-cpp .com-tag-dox    { color: #c402c4 } /* Doxygen tag in comments */
+
+.code.custom-cpp .pp-hash,                          /* # and ## anywhere within preprocessor code */
+.code.custom-cpp .pp-directive   { color: #ec691e } /* preprocessor directives (includes, pragmas, etc.) */
+.code.custom-cpp .pp-header      { color: #319bbe } /* preprocessor header names */
+.code.custom-cpp .pp-other       { color: #ffffff } /* e.g. text after #pragma and #error */
+.code.custom-cpp .pp-macro       { color: #f7c527 } /* macro definitions in preprocessor code */
+.code.custom-cpp .pp-macro-param { color: #408000 } /* function-like macro parameters */
+.code.custom-cpp .pp-macro-body  { color: #aaaaaa } /* macro body */
+.code.custom-cpp .macro          { color: #ffffff } /* macro usages outside preprocessor code */
+.code.custom-cpp .asm-direct     { color: #ec691e } /* directives in assembly */
+.code.custom-cpp .disabled-code  { color: #777777 } /* clangd: ifdef'ed out code */
+.code.custom-cpp .unknown        { color: #ffffff } /* clangd: unknown */
+
+/*
+ * styles for ANSI-escaped text
+ * https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters
+ * https://en.wikipedia.org/wiki/ANSI_escape_code#Colors
+ * https://github.com/pycontribs/ansi2html/blob/1ca0e862dda765c55e9124bf50a06a3e2f769521/ansi2html/style.py
+ *
+ * normally ansi1 does font-weight: bold but rules have been changed to use bright colors instead
+ */
+
+.ansi { color: #bbbbbb; }
+.ansi1 { color: #ffffff; }
+.ansi2 { font-weight: lighter; }
+.ansi3 { font-style: italic; }
+.ansi4 { text-decoration: underline; }
+.ansi5 { text-decoration: blink; }
+.ansi6 { text-decoration: blink; }
+.ansi8 { visibility: hidden; }
+.ansi9 { text-decoration: line-through; }
+
+/* colors used by PuTTY */
+
+.ansi30 { color: #000000; } /* black */
+.ansi31 { color: #bb0000; } /* red */
+.ansi32 { color: #00bb00; } /* green */
+.ansi33 { color: #bbbb00; } /* yellow */
+.ansi34 { color: #0000bb; } /* blue */
+.ansi35 { color: #bb00bb; } /* magenta */
+.ansi36 { color: #00bbbb; } /* cyan */
+.ansi37 { color: #bbbbbb; } /* white */
+
+.ansi90, .ansi1.ansi30 { color: #555555; } /* black */
+.ansi91, .ansi1.ansi31 { color: #ff5555; } /* red */
+.ansi92, .ansi1.ansi32 { color: #55ff55; } /* green */
+.ansi93, .ansi1.ansi33 { color: #ffff55; } /* yellow */
+.ansi94, .ansi1.ansi34 { color: #5555ff; } /* blue */
+.ansi95, .ansi1.ansi35 { color: #ff55ff; } /* magenta */
+.ansi96, .ansi1.ansi36 { color: #55ffff; } /* cyan */
+.ansi97, .ansi1.ansi37 { color: #ffffff; } /* white */
+
+.ansi40 { background-color: #000000; } /* black */
+.ansi41 { background-color: #bb0000; } /* red */
+.ansi42 { background-color: #00bb00; } /* green */
+.ansi43 { background-color: #bbbb00; } /* yellow */
+.ansi44 { background-color: #0000bb; } /* blue */
+.ansi45 { background-color: #bb00bb; } /* magenta */
+.ansi46 { background-color: #00bbbb; } /* cyan */
+.ansi47 { background-color: #bbbbbb; } /* white */
+
+.ansi100 { background-color: #555555; } /* black */
+.ansi101 { background-color: #ff5555; } /* red */
+.ansi102 { background-color: #55ff55; } /* green */
+.ansi103 { background-color: #ffff55; } /* yellow */
+.ansi104 { background-color: #5555ff; } /* blue */
+.ansi105 { background-color: #ff55ff; } /* magenta */
+.ansi106 { background-color: #55ffff; } /* cyan */
+.ansi107 { background-color: #ffffff; } /* white */

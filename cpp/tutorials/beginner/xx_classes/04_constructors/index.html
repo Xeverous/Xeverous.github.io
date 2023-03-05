@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 04 - constructors</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xx - classes</a></li>
+							<span>/</span>
+						<li>04 - constructors</li>
+					</ol></nav><div class="content">
+				<h1>04 - constructors</h1>				<p>Remember recent problem of being unable to create objects with custom initial values? This lesson will solve it.</p>
+<p>Constructors are one of <strong>special member functions</strong>. They are automatically called whenever an object of their type is created. They have 2 main purposes:</p>
+<ul class="simple">
+<li><p>initialize all fields</p></li>
+<li><p>establish class invariants</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">make_valid_denominator</span>(<span class="keyword">int</span> <span class="param">value</span>)
+{
+	<span class="keyword">if</span> (<span class="param">value</span> == <span class="lit-num">0</span>)
+		<span class="keyword">return</span> <span class="lit-num">1</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">value</span>;
+}
+
+<span class="keyword">class</span> <span class="type">fraction</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">numerator</span> = <span class="lit-num">0</span>;
+	<span class="keyword">int</span> <span class="var-member">denominator</span> = <span class="lit-num">1</span>;
+
+<span class="keyword">public</span>:
+	<span class="com-single">// constructor</span>
+	<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span>, <span class="keyword">int</span> <span class="param">denominator</span>)
+	{
+		<span class="func">set</span>(<span class="param">numerator</span>, <span class="param">denominator</span>);
+	}
+
+	<span class="keyword">void</span> <span class="func">set</span>(<span class="keyword">int</span> <span class="param">count</span>, <span class="keyword">int</span> <span class="param">denom</span>)
+	{
+		<span class="var-member">numerator</span> = <span class="param">count</span>;
+		<span class="var-member">denominator</span> = <span class="func">make_valid_denominator</span>(<span class="param">denom</span>);
+	}
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="com-single">// this is how you use a constructor to create an object</span>
+	<span class="type">fraction</span> <span class="var-local">fr1</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>);
+
+	<span class="com-single">// some people prefer to do this because it looks like a function call</span>
+	<span class="com-single">// the ctor creates a temporary object, then another object is assigned from it</span>
+	<span class="com-single">// since C++17 this is guaranteed to be optimized to avoid temporary and assignment</span>
+	<span class="keyword">auto</span> <span class="var-local">fr2</span> = <span class="type">fraction</span>(<span class="lit-num">2</span>, <span class="lit-num">3</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>Pay attention to the syntax:</p>
+<ul class="simple">
+<li><p>Constructors always use the name of the class.</p></li>
+<li><p>Constructors do not have a return type - not even <code class="code custom-cpp"><span class="keyword">void</span></code>.</p></li>
+</ul>
+<p>Besides these, constructors behave just like member functions:</p>
+<ul class="simple">
+<li><p>Constructors are affected by access specifiers.</p></li>
+<li><p>It's possible to overload constructors (including <code class="code custom-cpp">= <span class="keyword">delete</span></code>). If no overload can be selected - compilation error.</p></li>
+<li><p>It's possible to place a <code class="code custom-cpp"><span class="keyword">return</span>;</code> statement in their body, just like in a function returning <code class="code custom-cpp"><span class="keyword">void</span></code>.</p></li>
+</ul>
+<section id="initialization-vs-assignment"><h2>Initialization vs assignment</h2>
+<p>As you already know, when creating objects, initialization should always be preferred over assignment. Creating uninitialized objects only asks for trouble (and if the initial value cannot be given it means the object has too large lifetime and is not needed that early).</p>
+<p>Constructors use special syntax for initialization - <strong>member initializer list</strong>:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">fraction</span>
+{
+<span class="keyword">public</span>:
+	<span class="com-single">// [...]</span>
+
+	<span class="com-single">// BAD: fields are assigned</span>
+	<span class="com-single">// If field definitions have no default initializers,</span>
+	<span class="com-single">// they are uninitialized until assigned!</span>
+	<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">num</span>, <span class="keyword">int</span> <span class="param">denom</span>)
+	{
+		<span class="com-single">// both statements are assignments, not initialization</span>
+		<span class="var-member">numerator</span> = <span class="param">num</span>;
+		<span class="var-member">denominator</span> = <span class="func">make_valid_denominator</span>(<span class="param">denom</span>);
+	}
+
+	<span class="com-single">// GOOD: fields are initialized</span>
+	<span class="com-single">// the syntax is : followed by comma-separated list of members</span>
+	<span class="com-single">// members can be initialized using () and {}</span>
+	<span class="com-single">// the formatting below aligns : and ,</span>
+	<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span>, <span class="keyword">int</span> <span class="param">denominator</span>)
+	: <span class="var-member">numerator</span>(<span class="param">numerator</span>)
+	, <span class="var-member">denominator</span>(<span class="func">make_valid_denominator</span>(<span class="param">denominator</span>))
+	{}
+
+	<span class="com-single">// [...]</span>
+};
+</pre></td>
+</tr></tbody></table>
+<p><em>Member intializer list</em> is placed before the body, it starts with <code class="docutils literal">:</code> and member initializers are separated by <code class="docutils literal">,</code>. The example presents a common style of formatting.</p>
+<p>You might have also noticed a surprising thing - <strong>parameter names are identical to member names.</strong> This is a special feature of <em>member intializer list</em> - names in the list (outside parentheses and constructor body) will refer to class members.</p>
+<p>The list does not have to contain all class members - if any of them already have an initializer defined in the class body, they can be skipped. If a member is present in the list, its initialization code simply overrides the default initializer.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="keyword">const</span></code> members and reference members always have to be initialized.</p>
+</aside></section><section id="initialization-order"><h2>Initialization order</h2>
+<aside class="admonition warning"><p class="admonition-title">warning</p>
+<p><em>Member initializer list</em> can have different order than definitions of class members but the order of initialization always matches order of class members. This can lead to compiler warnings about misleading order and undefined behavior.</p>
+</aside><table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">point</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">x</span>;
+	<span class="keyword">int</span> <span class="var-member">y</span>;
+	<span class="keyword">int</span> <span class="var-member">z</span>;
+
+<span class="keyword">public</span>:
+	<span class="func">point</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>, <span class="keyword">int</span> <span class="param">z</span>)
+	: <span class="var-member">x</span>(<span class="param">x</span>), <span class="var-member">y</span>(<span class="param">y</span>), <span class="var-member">z</span>(<span class="param">z</span>) {} <span class="com-single">// ok</span>
+
+	<span class="func">point</span>(<span class="keyword">int</span> <span class="param">value</span>)
+	<span class="com-single">// x is initialized first, using uninitialized z</span>
+	<span class="com-single">// y is initialized second, using uninitialized z</span>
+	<span class="com-single">// z is initialized third, using parameter value</span>
+	<span class="com-single">// reading uninitialized z =&gt; undefined behavior!</span>
+	: <span class="var-member">z</span>(<span class="param">value</span>), <span class="var-member">x</span>(<span class="var-member">z</span>), <span class="var-member">y</span>(<span class="var-member">z</span>) {}
+};
+</pre></td>
+</tr></tbody></table>
+<pre class="code ansi"><span class="ansi1">main.cpp:</span> In constructor ‘<span class="ansi1">point::point(int)</span>’:
+<span class="ansi1">main.cpp:6:6:</span> <span class="ansi1 ansi35">warning: </span>‘<span class="ansi1">point::z</span>’ will be initialized after [<span class="ansi1 ansi35">-Wreorder</span>]
+  int <span class="ansi1 ansi35">z</span>;
+      <span class="ansi1 ansi35">^</span>
+<span class="ansi1">main.cpp:4:6:</span> <span class="ansi1 ansi35">warning: </span>  ‘<span class="ansi1">int point::x</span>’ [<span class="ansi1 ansi35">-Wreorder</span>]
+  int <span class="ansi1 ansi35">x</span>;
+      <span class="ansi1 ansi35">^</span>
+<span class="ansi1">main.cpp:12:2:</span> <span class="ansi1 ansi35">warning: </span>  when initialized here [<span class="ansi1 ansi35">-Wreorder</span>]
+  <span class="ansi1 ansi35">point</span>(int value)
+  <span class="ansi1 ansi35">^~~~~</span>
+</pre>
+<p>Order of fields in member initializer list has no influence on the initialization order - <strong>it's defined by the order of fields in the class definition</strong>. This leads to a simple conclusion:</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Always write members in <em>member initializer list</em> in the same order as they are defined in the class definition. <a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-order">CG C.47.</a></p>
+</aside></section><section id="delegating-constructors"><h2>Delegating constructors</h2>
+<p>The <code class="code custom-cpp"><span class="type">fraction</span></code> class can offer 3 reasonable possibilities of initialization:</p>
+<ul class="simple">
+<li><p>0 arguments: the object should represent zero (0/1)</p></li>
+<li><p>1 argument: the object should represent a whole number (x/1)</p></li>
+<li><p>2 arguments: the object will have both values specified explicitly (x/y)</p></li>
+</ul>
+<p>The are multiple ways to achieve it. There is nothing special in overloading constructors, but there is an additional feature: <strong>constructor delegation</strong>. A constructor can replace <em>member initializer list</em> with a call to a different overload.</p>
+<p>Below I showcase various ways to achieve support for 0, 1 and 2 arguments:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// A: 3 overloads with member init list</span>
+
+<span class="func">fraction</span>()
+: <span class="var-member">numerator</span>(<span class="lit-num">0</span>)
+, <span class="var-member">denominator</span>(<span class="lit-num">1</span>)
+{}
+
+<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span>)
+: <span class="var-member">numerator</span>(<span class="param">numerator</span>)
+, <span class="var-member">denominator</span>(<span class="lit-num">1</span>)
+{}
+
+<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span>, <span class="keyword">int</span> <span class="param">denominator</span>)
+: <span class="var-member">numerator</span>(<span class="param">numerator</span>)
+, <span class="var-member">denominator</span>(<span class="func">make_valid_denominator</span>(<span class="param">denominator</span>))
+{}
+
+<span class="com-single">// B: 3 overloads, 2 overloads use delegation</span>
+
+<span class="func">fraction</span>()
+: <span class="type">fraction</span>(<span class="lit-num">0</span>, <span class="lit-num">1</span>)
+{}
+
+<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span>)
+: <span class="type">fraction</span>(<span class="param">numerator</span>, <span class="lit-num">1</span>)
+{}
+
+<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span>, <span class="keyword">int</span> <span class="param">denominator</span>)
+: <span class="var-member">numerator</span>(<span class="param">numerator</span>)
+, <span class="var-member">denominator</span>(<span class="func">make_valid_denominator</span>(<span class="param">denominator</span>))
+{}
+
+<span class="com-single">// C: 1 overload using default parameters</span>
+
+<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span> = <span class="lit-num">0</span>, <span class="keyword">int</span> <span class="param">denominator</span> = <span class="lit-num">1</span>)
+: <span class="var-member">numerator</span>(<span class="param">numerator</span>)
+, <span class="var-member">denominator</span>(<span class="func">make_valid_denominator</span>(<span class="param">denominator</span>))
+{}
+</pre></td>
+</tr></tbody></table>
+<p>All of A, B and C are valid. The goal is to write least amount of code and avoid code duplication. In the case of <code class="code custom-cpp"><span class="type">fraction</span></code> class, C wins because only 1 function has to be written.</p>
+<p>Your preference should be in this order:</p>
+<ul class="simple">
+<li><p>default arguments (each default argument acts as another overload)</p></li>
+<li><p>delegation</p></li>
+<li><p>separate overloads</p></li>
+</ul>
+<p>Constructor delegation helps avoiding writing <em>member initializer list</em> multiple times.</p>
+</section><section id="calling-constructors"><h2>Calling constructors</h2>
+<p>Calling constructors works the same way as <em>function overloading</em> but there is a small syntax trap when you want to call an overload with 0 parameters:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="type">fraction</span> <span class="var-local">fr1</span>(<span class="lit-num">0</span>, <span class="lit-num">1</span>); <span class="com-single">// 2-argument constructor</span>
+<span class="type">fraction</span> <span class="var-local">fr2</span>(<span class="lit-num">0</span>);    <span class="com-single">// 1-argument constructor</span>
+<span class="type">fraction</span> <span class="func">fr3</span>();     <span class="com-single">// function declaration!</span>
+<span class="type">fraction</span> <span class="var-local">fr4</span>;       <span class="com-single">// 0-argument constructor</span>
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>If you want to call a constructor with 0 arguments, remember to not write <code class="docutils literal">()</code>.</p>
+</aside><p>This syntax problem is not present when you do <code class="code custom-cpp"><span class="keyword">auto</span> <span class="var-local">fr</span> = <span class="type">fraction</span>();</code>.</p>
+<p>There are 2 other ways to call constructors:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="type">fraction</span> <span class="var-local">fr8</span> = <span class="lit-num">2</span>;   <span class="com-single">// 1-argument constructor</span>
+
+<span class="type">fraction</span> <span class="var-local">fr5</span>{<span class="lit-num">0</span>, <span class="lit-num">1</span>}; <span class="com-single">// 2-argument constructor</span>
+<span class="type">fraction</span> <span class="var-local">fr6</span>{<span class="lit-num">0</span>};    <span class="com-single">// 1-argument constructor</span>
+<span class="type">fraction</span> <span class="var-local">fr7</span>{};     <span class="com-single">// 0-argument constructor (no problems)</span>
+</pre></td>
+</tr></tbody></table>
+<p>Reminder: <code class="docutils literal">=</code> used during object definition acts as initialization, not assignment.</p>
+<p><code class="docutils literal">=</code> is very convenient when you want to call a constructor with exactly 1 argument (the specific constructor overload can take more arguments as long as they have default values). For the <code class="code custom-cpp"><span class="type">fraction</span></code> class this allows very intuitive statements like <code class="code custom-cpp"><span class="type">fraction</span> <span class="var-local">fr</span> = <span class="lit-num">5</span>;</code> (here creating a fraction 5/1). This form is not allowed if the constructor is <code class="code custom-cpp"><span class="keyword">explicit</span></code>.</p>
+<p><code class="docutils literal">{}</code> places additional requirement: no <em>narrowing convertions</em>. So giving a <code class="code custom-cpp"><span class="keyword">long</span></code> would not work because convertion from <code class="code custom-cpp"><span class="keyword">long</span></code> to <code class="code custom-cpp"><span class="keyword">int</span></code> is considered <em>narrowing</em>.</p>
+</section><section id="default-constructor"><h2>Default constructor</h2>
+<p>If a class does not have any constructors specified, it automatically gets a <strong>default constructor</strong>. It has the following properties:</p>
+<ul class="simple">
+<li><p>it's <code class="code custom-cpp"><span class="keyword">public</span></code></p></li>
+<li><p>it takes 0 arguments</p></li>
+<li><p>it uses initializers defined inside class body (if present)</p></li>
+<li><p>it has empty body</p></li>
+</ul>
+<p>If you have defined custom constructors and still want to have the default one, you can write <code class="code custom-cpp"><span class="func">class_name</span>() = <span class="keyword">default</span>;</code> to force its existence. You can also write <code class="code custom-cpp"><span class="func">class_name</span>() = <span class="keyword">delete</span>;</code> to explicitly disable its existence.</p>
+<p>When an object of specific class can be constructed with 0 arguments, the class is <em>default constructible</em>. Default constructible types are easier to work with and some templates within standard and external libraries require types to satisfy this requirement. Note that this can be achieved even if the constructor takes multiple parameters - just provide default arguments (see variant C in delegation example).</p>
+</section><section id="questions"><h2>Questions</h2>
+<blockquote>
+<p>Constructors are affected by access specifiers. Is there any point of other specifier than <code class="code custom-cpp"><span class="keyword">public</span></code> for a constructor? Wouldn't other access prevent from creating an object?</p>
+</blockquote>
+<p>It would, but only outside the class code. There are some situations where having non-public constructor is beneficial. For example, a class can have 1 <code class="code custom-cpp"><span class="keyword">private</span></code> constructor overload and many <code class="code custom-cpp"><span class="keyword">public</span></code> overloads, all which delegate to the <code class="code custom-cpp"><span class="keyword">private</span></code> one. Another case (from a later lesson) is a set of <code class="code custom-cpp"><span class="keyword">public</span></code> and <code class="code custom-cpp"><span class="keyword">static</span></code> functions that call <code class="code custom-cpp"><span class="keyword">private</span></code> constructor.</p>
+<blockquote>
+<p>How does <em>function overloading</em> interact with <em>access specifiers</em>?</p>
+</blockquote>
+<p>Access specifiers do not affect <em>overload resolution</em> - functions are selected without checking their access. If a function has multiple overloads and they differ by access level, it's possible to end up in compilation error because selected overload is not <code class="code custom-cpp"><span class="keyword">public</span></code>.</p>
+<blockquote>
+<p>What happens if there is a loop within constructor delegations?</p>
+</blockquote>
+<p>Same thing as with mutually recursive functions - the program will be stuck in an endless call cycle (or something worse because technically endless recursion is undefined behavior).</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - &lt;system_error&gt;</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../">HOME</a></li>
+				<li><a href="../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../tutorials/beginner/">beginner</a></li>
+						<li><a href="../../tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../utility/glossary/">glossary</a></li>
+						<li><a href="../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../about/">about</a></li>
+						<li><a href="../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../">HOME</a></li>
+				<li class="button"><a href="../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../">standard library</a></li>
+							<span>/</span>
+						<li>&lt;system_error&gt;</li>
+					</ol></nav><div class="content">
+				<h1>&lt;system_error&gt;</h1>				<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Originally started as <a class="reference external" href="https://www.boost.org/doc/libs/release/libs/system/doc/html/system.html">Boost.System project</a>, now <code class="code custom-cpp"><span class="pp-header">&lt;system_error&gt;</span></code> is a part of C++11 standard library. The library got standarized only with minor renaming changes.</p>
+</aside><p>From Boost.System documentation:</p>
+<blockquote>
+<p>Error conditions originating from the operating system or other low-level application program interfaces (APIs) are typically reported via an integer representing an error code. When these low-level API calls are wrapped in portable code, such as in a portable library, some users want to deal with the error codes in portable ways. Other users need to get at the system specific error codes, so they can deal with system specific needs.</p>
+</blockquote>
+<section id="goals"><h2>Goals</h2>
+<p>The library serves an implementation of specific error handling design. Its core goals are:</p>
+<ul class="simple">
+<li><p>lightweight non-allocating error representation type, able to be passed by value but still offering some polymorphic behavior</p></li>
+<li><p>ability to define custom error numbers and categories</p></li>
+<li><p>ability to map custom error numbers to a generic category</p></li>
+<li><p>support for converting error values to string messages</p></li>
+<li><p>exception class supporting error representation type if there is a need to report via exception</p></li>
+</ul></section><section id="design"><h2>Design</h2>
+<ul class="simple">
+<li><p>Each error category is (preferably immutable) global object that implements error category interface, which primary function is returning string representation for the given error condition.</p></li>
+<li>
+<p>The error representation type holds only 2 data members: error number (as integer) and a pointer to an instance of error category. There are 2 such types:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">error_code</span></code> represents platform-dependent error code</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">error_condition</span></code> represents platform-independent error code (rarely used)</p></li>
+</ul>
+</li>
+<li><p>Error numbers must only be unique within the same category.</p></li>
+<li><p>Error number <code class="code custom-cpp"><span class="lit-num">0</span></code> is a special value and must mean no error in every category.</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">system_error</span></code> is a dedicated exception type to hold error information when an exception object is desired</p></li>
+</ul>
+<p>Synopsis:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">namespace</span> <span class="namespace">std</span> {
+
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">errc</span> { <span class="com-multi">/* constants defined as aliases of POSIX error numbers */</span> };
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">struct</span> <span class="type">is_error_code_enum</span> : <span class="type">false_type</span> {};
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">struct</span> <span class="type">is_error_condition_enum</span> : <span class="type">false_type</span> {};
+<span class="com-single">// other specializations (for std::io_errc and std::future_errc) defined in other headers</span>
+<span class="keyword">template</span> &lt;&gt;
+<span class="keyword">struct</span> <span class="type">is_error_condition_enum</span>&lt;<span class="type">errc</span>&gt; : <span class="type">true_type</span> {};
+
+<span class="keyword">class</span> <span class="type">error_category</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> ~<span class="func">error_category</span>();
+	<span class="type">error_category</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="keyword">const</span> <span class="type">error_category</span>&amp;) = <span class="keyword">delete</span>;
+
+	<span class="keyword">virtual</span> <span class="keyword">const</span> <span class="keyword">char</span>* <span class="func">name</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> = <span class="lit-num">0</span>;
+
+	<span class="keyword">virtual</span> <span class="type">error_condition</span> <span class="func">default_error_condition</span>(<span class="keyword">int</span> <span class="param">code</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>
+	{ <span class="keyword">return</span> <span class="type">error_condition</span>(<span class="param">code</span>, *<span class="keyword">this</span>); }
+
+	<span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="func">equivalent</span>(<span class="keyword">int</span> <span class="param">code</span>, <span class="keyword">const</span> <span class="type">error_condition</span>&amp; <span class="param">condition</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>
+	{ <span class="keyword">return</span> <span class="func">default_error_condition</span>(<span class="param">code</span>) <span class="oo">==</span> <span class="param">condition</span>; }
+
+	<span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="func">equivalent</span>(<span class="keyword">const</span> <span class="type">error_code</span>&amp; <span class="param">code</span>, <span class="keyword">int</span> <span class="param">condition</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>
+	{ <span class="keyword">return</span> *<span class="keyword">this</span> <span class="oo">==</span> <span class="param">code</span>.<span class="func">category</span>() &amp;&amp; <span class="param">code</span>.<span class="func">value</span>() == <span class="param">condition</span>; }
+
+	<span class="keyword">virtual</span> <span class="type">string</span> <span class="func">message</span>(<span class="keyword">int</span> <span class="param">condition</span>) <span class="keyword">const</span> = <span class="lit-num">0</span>;
+
+	<span class="com-single">// in C++11 operators: ==, !=, &lt;</span>
+	<span class="com-single">// in C++20 operators: ==, &lt;=&gt;, rest synthesised</span>
+	<span class="type">strong_ordering</span> <span class="keyword">operator</span><span class="func">&lt;=&gt;</span>(<span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+};
+
+<span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="func">generic_category</span>() <span class="keyword">noexcept</span>; <span class="com-single">// POSIX error codes</span>
+<span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="func">system_category</span>() <span class="keyword">noexcept</span>; <span class="com-single">// platform-specific error codes</span>
+
+<span class="keyword">class</span> <span class="type">error_code</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">error_code</span>() <span class="keyword">noexcept</span> : <span class="type">error_code</span>(<span class="lit-num">0</span>, <span class="func">system_category</span>()) {}
+	<span class="func">error_code</span>(<span class="keyword">int</span> <span class="param">ec</span>, <span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="param">ecat</span>) <span class="keyword">noexcept</span> : <span class="var-member">ec</span>(<span class="param">ec</span>), <span class="var-member">ecat</span>(&amp;<span class="param">ecat</span>) {}
+	<span class="keyword">template</span> &lt;
+		<span class="keyword">typename</span> <span class="param-tmpl">ErrorCodeEnum</span>,
+		<span class="keyword">typename</span> <span class="type">enable_if</span>&lt;<span class="type">is_error_code_enum</span>&lt;<span class="param-tmpl">ErrorCodeEnum</span>&gt;::<span class="var-global">value</span>&gt;::<span class="type">type</span>* = <span class="keyword">nullptr</span>
+	&gt;
+	<span class="func">error_code</span>(<span class="param-tmpl">ErrorCodeEnum</span> <span class="param">e</span>) <span class="keyword">noexcept</span>;
+
+	<span class="keyword">template</span> &lt;
+		<span class="keyword">typename</span> <span class="param-tmpl">ErrorCodeEnum</span>,
+		<span class="keyword">typename</span> <span class="type">enable_if</span>&lt;<span class="type">is_error_code_enum</span>&lt;<span class="param-tmpl">ErrorCodeEnum</span>&gt;::<span class="var-global">value</span>&gt;::<span class="type">type</span>* = <span class="keyword">nullptr</span>
+	&gt;
+	<span class="type">error_code</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="param-tmpl">ErrorCodeEnum</span> <span class="param">e</span>) <span class="keyword">noexcept</span>;
+
+	<span class="keyword">void</span> <span class="func">assign</span>(<span class="keyword">int</span> <span class="param">ec</span>, <span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="param">ecat</span>) <span class="keyword">noexcept</span>
+	{
+		<span class="keyword">this</span>-&gt;<span class="var-member">ec</span> = <span class="param">ec</span>;
+		<span class="keyword">this</span>-&gt;<span class="var-member">ecat</span> = &amp;<span class="param">ecat</span>;
+	}
+
+	<span class="keyword">void</span> <span class="func">clear</span>() <span class="keyword">noexcept</span> { *<span class="keyword">this</span> <span class="oo">=</span> <span class="type">error_code</span>(); }
+
+	<span class="keyword">int</span> <span class="func">value</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keyword">return</span> <span class="var-member">ec</span>; }
+	<span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="func">category</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keyword">return</span> *<span class="var-member">ecat</span>; }
+
+	<span class="type">error_condition</span> <span class="func">default_error_condition</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span>
+	{ <span class="keyword">return</span> <span class="func">category</span>().<span class="func">default_error_condition</span>(<span class="func">value</span>()); }
+
+	<span class="type">string</span> <span class="func">message</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="func">category</span>().<span class="func">message</span>(<span class="func">value</span>()); }
+
+	<span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="keyword">bool</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keyword">return</span> <span class="func">value</span>() != <span class="lit-num">0</span>; }
+
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">ec</span>;
+	<span class="keyword">const</span> <span class="type">error_category</span>* <span class="var-member">ecat</span>;
+};
+
+<span class="com-single">// in C++11 operators: ==, !=, &lt;</span>
+<span class="com-single">// in C++20 operators: ==, &lt;=&gt;, rest synthesised</span>
+<span class="type">strong_ordering</span> <span class="keyword">operator</span><span class="func">&lt;=&gt;</span>(<span class="keyword">const</span> <span class="type">error_code</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">error_code</span>&amp; <span class="param">rhs</span>) <span class="keyword">noexcept</span>;
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">CharT</span>, <span class="keyword">typename</span> <span class="param-tmpl">Traits</span>&gt;
+<span class="type">basic_ostream</span>&lt;<span class="param-tmpl">CharT</span>, <span class="param-tmpl">Traits</span>&gt;&amp; <span class="keyword">operator</span><span class="func">&lt;&lt;</span>(<span class="type">basic_ostream</span>&lt;<span class="param-tmpl">CharT</span>, <span class="param-tmpl">Traits</span>&gt;&amp; <span class="param">os</span>, <span class="keyword">const</span> <span class="type">error_code</span>&amp; <span class="param">ec</span>)
+{
+	<span class="keyword">return</span> <span class="param">os</span> &lt;&lt; <span class="param">ec</span>.<span class="func">category</span>().<span class="func">name</span>() &lt;&lt; <span class="lit-chr">':'</span> &lt;&lt; <span class="param">ec</span>.<span class="func">value</span>();
+}
+
+<span class="keyword">class</span> <span class="type">error_condition</span>
+{
+	<span class="com-single">// [...] analogically same as error_code but:</span>
+	<span class="com-single">// - has no default_error_condition</span>
+	<span class="com-single">// - has no operator&lt;&lt;</span>
+};
+
+<span class="type">error_code</span> <span class="func">make_error_code</span>(<span class="type">errc</span> <span class="param">e</span>) <span class="keyword">noexcept</span>
+{ <span class="keyword">return</span> <span class="type">error_code</span>(<span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(<span class="param">e</span>), <span class="func">generic_category</span>()); }
+<span class="type">error_condition</span> <span class="func">make_error_condition</span>(<span class="type">errc</span> <span class="param">e</span>) <span class="keyword">noexcept</span>
+{ <span class="keyword">return</span> <span class="type">error_condition</span>(<span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(<span class="param">e</span>), <span class="func">generic_category</span>()); }
+
+<span class="keyword">template</span> &lt;&gt;
+<span class="keyword">struct</span> <span class="type">hash</span>&lt;<span class="type">error_code</span>&gt;
+{
+	<span class="type">size_t</span> <span class="keyword">operator</span><span class="func">()</span>(<span class="type">error_code</span> <span class="param">ec</span>) <span class="keyword">noexcept</span>;
+}
+
+<span class="keyword">class</span> <span class="type">system_error</span> : <span class="keyword">public</span> <span class="type">runtime_error</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">system_error</span>(<span class="type">error_code</span> <span class="param">ec</span>, <span class="keyword">const</span> <span class="type">string</span>&amp; <span class="param">what_arg</span>);
+	<span class="func">system_error</span>(<span class="type">error_code</span> <span class="param">ec</span>, <span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">what_arg</span>);
+	<span class="func">system_error</span>(<span class="type">error_code</span> <span class="param">ec</span>);
+	<span class="func">system_error</span>(<span class="keyword">int</span> <span class="param">ev</span>, <span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="param">ecat</span>, <span class="keyword">const</span> <span class="type">string</span>&amp; <span class="param">what_arg</span>);
+	<span class="func">system_error</span>(<span class="keyword">int</span> <span class="param">ev</span>, <span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="param">ecat</span>, <span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">what_arg</span>);
+	<span class="func">system_error</span>(<span class="keyword">int</span> <span class="param">ev</span>, <span class="keyword">const</span> <span class="type">error_category</span>&amp; <span class="param">ecat</span>);
+
+	<span class="keyword">const</span> <span class="type">error_code</span>&amp; <span class="func">code</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+	<span class="keyword">const</span> <span class="keyword">char</span>* <span class="func">what</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> <span class="keyword">override</span>;
+};
+
+} <span class="com-single">// namespace std</span>
+</pre></td>
+</tr></tbody></table></section><section id="usage"><h2>Usage</h2>
+<p>This design works best when:</p>
+<ul class="simple">
+<li><p>an application needs to work with multiple subcomponents where each has its own error numbering system</p></li>
+<li><p>the error passing mechanism must be lightweight</p></li>
+<li><p>there are no dynamically generated error descriptions - each category has fixed numbers of errors with predetermined descriptions</p></li>
+</ul></section><section id="implementation"><h2>Implementation</h2>
+<ul class="simple">
+<li><p>define your error numbers (enumeration or an integer type)</p></li>
+<li>
+<p>implement the category class</p>
+<ul>
+<li><p>the class definition and its instance can be hidden from other code - you only need to expose a function that returns <code class="code custom-cpp"><span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">error_category</span>&amp;</code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">override</span></code> the <code class="code custom-cpp"><span class="func">name</span></code> function</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">override</span></code> the <code class="code custom-cpp"><span class="func">message</span></code> function</p></li>
+<li><p>(optional) <code class="code custom-cpp"><span class="keyword">override</span></code> the <code class="code custom-cpp"><span class="func">default_error_condition</span></code> function if you wish to translate errors to a more generic category (such as <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">generic_category</span>()</code>), by default the function does not change the category</p></li>
+</ul>
+</li>
+<li><p>(if error numbers are enumeration) specialize <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">is_error_code_enum</span></code></p></li>
+<li><p>(optional) add <code class="code custom-cpp"><span class="func">make_error_code</span></code> in the same namespace as the definition of error numbers</p></li>
+<li><p>when reporting errors use <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">error_code</span></code> constructor or call <code class="code custom-cpp"><span class="func">make_error_code</span></code></p></li>
+</ul>
+<p>The last 3 steps can be repeated analogically for <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">error_condition</span></code>.</p>
+</section><section id="example"><h2>Example</h2>
+<p>The program implements HTTP error numbers taking advantage of standard library features.</p>
+<p>header:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;system_error&gt;</span>
+
+<span class="keyword">namespace</span> <span class="namespace">lib</span> {
+
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">http_error</span>
+{
+	<span class="enum">no_error</span> = <span class="lit-num">0</span>,
+
+	<span class="enum">ok</span> = <span class="lit-num">200</span>,
+	<span class="com-single">// ...</span>
+	<span class="enum">bad_request</span> = <span class="lit-num">400</span>,
+	<span class="enum">forbidden</span> = <span class="lit-num">403</span>,
+	<span class="enum">not_found</span> = <span class="lit-num">404</span>,
+	<span class="enum">method_not_allowed</span> = <span class="lit-num">405</span>,
+	<span class="com-single">// https://en.wikipedia.org/wiki/Hyper_Text_Coffee_Pot_Control_Protocol</span>
+	<span class="enum">im_a_teapot</span> = <span class="lit-num">418</span>,
+	<span class="com-single">// ...</span>
+};
+
+<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">error_category</span>&amp; <span class="func">http_category</span>() <span class="keyword">noexcept</span>;
+
+<span class="com-single">// this function can be picked by ADL</span>
+<span class="namespace">std</span>::<span class="type">error_code</span> <span class="func">make_error_code</span>(<span class="type">http_error</span> <span class="param">e</span>) <span class="keyword">noexcept</span>
+{ <span class="keyword">return</span> <span class="namespace">std</span>::<span class="type">error_code</span>(<span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(<span class="param">e</span>), <span class="func">http_category</span>()); }
+
+} <span class="com-single">// namespace lib</span>
+
+<span class="keyword">namespace</span> <span class="namespace">std</span> {
+
+<span class="com-single">// this enables std::error_code constructor overload for enums</span>
+<span class="keyword">template</span> &lt;&gt;
+<span class="keyword">struct</span> <span class="type">is_error_code_enum</span>&lt;<span class="namespace">lib</span>::<span class="type">http_error</span>&gt; : <span class="namespace">std</span>::<span class="type">true_type</span> {};
+
+}
+</pre></td>
+</tr></tbody></table>
+<p>source:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;lib.hpp&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cerrno&gt;</span>
+
+<span class="keyword">namespace</span> <span class="namespace">lib</span> {
+
+<span class="keyword">namespace</span> {
+
+<span class="keyword">int</span> <span class="func">map_error_code</span>(<span class="keyword">int</span> <span class="type">http_code</span>) <span class="keyword">noexcept</span>
+{
+	<span class="keyword">switch</span> (<span class="param">http_code</span>)
+	{
+		<span class="keyword">case</span> <span class="lit-num">0</span>: <span class="keyword">return</span> <span class="lit-num">0</span>;
+		<span class="keyword">case</span> <span class="lit-num">200</span>: <span class="keyword">return</span> <span class="lit-num">0</span>;
+		<span class="com-single">// ...</span>
+		<span class="keyword">case</span> <span class="lit-num">403</span>: <span class="keyword">return</span> <span class="macro">EACCES</span>;
+		<span class="keyword">case</span> <span class="lit-num">404</span>: <span class="keyword">return</span> <span class="macro">ENOENT</span>;
+		<span class="keyword">case</span> <span class="lit-num">405</span>: <span class="keyword">return</span> <span class="macro">ENOTSUP</span>;
+		<span class="com-single">// ...</span>
+		<span class="keyword">default</span>: <span class="keyword">return</span> <span class="macro">EINVAL</span>; <span class="com-single">// there is no better generic POSIX error</span>
+	}
+}
+
+<span class="keyword">class</span> <span class="type">http_category_impl</span> : <span class="keyword">public</span> <span class="namespace">std</span>::<span class="type">error_category</span>
+{
+	<span class="keyword">const</span> <span class="keyword">char</span>* <span class="func">name</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"HTTP"</span>; }
+
+	<span class="com-single">// the goal of this function is to translate errors for specific category to a generic one</span>
+	<span class="namespace">std</span>::<span class="type">error_condition</span> <span class="func">default_error_condition</span>(<span class="keyword">int</span> <span class="param">code</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span> <span class="keyword">override</span>
+	{
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="type">error_condition</span>(<span class="func">map_error_code</span>(<span class="param">code</span>), <span class="namespace">std</span>::<span class="func">generic_category</span>());
+	}
+
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">message</span>(<span class="keyword">int</span> <span class="param">condition</span>) <span class="keyword">const</span> <span class="keyword">override</span>
+	{
+		<span class="keyword">switch</span> (<span class="param">condition</span>)
+		{
+			<span class="keyword">case</span> <span class="lit-num">0</span>: <span class="keyword">return</span> <span class="lit-str">"no error"</span>;
+			<span class="keyword">case</span> <span class="lit-num">200</span>: <span class="keyword">return</span> <span class="lit-str">"ok"</span>;
+			<span class="com-single">// ...</span>
+			<span class="keyword">case</span> <span class="lit-num">403</span>: <span class="keyword">return</span> <span class="lit-str">"forbidden"</span>;
+			<span class="keyword">case</span> <span class="lit-num">404</span>: <span class="keyword">return</span> <span class="lit-str">"not found"</span>;
+			<span class="keyword">case</span> <span class="lit-num">405</span>: <span class="keyword">return</span> <span class="lit-str">"method not allowed"</span>;
+			<span class="keyword">case</span> <span class="lit-num">418</span>: <span class="keyword">return</span> <span class="lit-str">"I'm a teapot"</span>;
+			<span class="com-single">// ...</span>
+			<span class="keyword">default</span>: <span class="keyword">return</span> <span class="lit-str">"unknown error"</span>;
+		}
+	}
+};
+<span class="keyword">const</span> <span class="type">http_category_impl</span> <span class="var-global">http_category_instance</span>;
+
+}
+
+<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">error_category</span>&amp; <span class="func">http_category</span>() <span class="keyword">noexcept</span> { <span class="keyword">return</span> <span class="var-global">http_category_instance</span>; }
+
+}
+</pre></td>
+</tr></tbody></table></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

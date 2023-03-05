@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - xx - variadic arguments</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">04 - functions</a></li>
+							<span>/</span>
+						<li>xx - variadic arguments</li>
+					</ol></nav><div class="content">
+				<h1>xx - variadic arguments</h1>				<!-- TOINCLUDE -->
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This lesson is optional. It showcases a C++ feature imported from C, mainly for backwards compatibility. Variadic arguments shouldn't be used in C++ (<a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-ellipses">CG ES.34</a>) - there are far better alternatives.</p>
+</aside><p>Sometimes there is a desire to provide varying amount of arguments to a function. Arrays (objects composed of multiple subobjects of the same type) could be used for this purpose but they are limited to one type.</p>
+<p>Variadic arguments (often referred to as <em>va-args</em>) allow to pass an arbitrary amount of objects of a limited set of types to a function through a magic <code class="code custom-cpp">...</code> argument. By far, the most well-known and the most utilized functions with variadic arguments is the printf family of functions from the C standard library (also available in C++):</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// print to standard output</span>
+<span class="keyword">int</span> <span class="func">printf</span>(<span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">format</span>, ...);
+<span class="com-single">// print to specified stream - printf(args...) is equivalent to fprintf(stdout, args...)</span>
+<span class="keyword">int</span> <span class="func">fprintf</span>(<span class="namespace">std</span>::<span class="type">FILE</span>* <span class="param">stream</span>, <span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">format</span>, ...);
+<span class="com-single">// print to a buffer</span>
+<span class="keyword">int</span> <span class="func">sprintf</span>(<span class="keyword">char</span>* <span class="param">buffer</span>, <span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">format</span>, ...);
+<span class="com-single">// print to a buffer with specified maximum size</span>
+<span class="keyword">int</span> <span class="func">snprintf</span>(<span class="keyword">char</span>* <span class="param">buffer</span>, <span class="namespace">std</span>::<span class="type">size_t</span> <span class="param">buf_size</span>, <span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">format</span>, ...);
+</pre></td>
+</tr></tbody></table>
+<p>All functions take a string which specifies formatting and a variadic set of arguments. All functions return the number of printed characters.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cstdio&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">int</span> <span class="var-local">x</span> = <span class="fmt-seq">0x</span><span class="num">deadbeef</span>;
+	<span class="keyword">long</span> <span class="var-local">l</span> = <span class="lit-num">6</span> * <span class="lit-num">142857</span>;
+	<span class="keyword">float</span> <span class="var-local">f</span> = <span class="num">1.</span><span class="suf">f</span> / <span class="lit-num">7</span>;
+	<span class="namespace">std</span>::<span class="func">printf</span>(<span class="str">"x = </span><span class="fmt-seq">%x</span><span class="esc-seq">\n</span><span class="str">l = </span><span class="fmt-seq">%ld</span><span class="esc-seq">\n</span><span class="str">f = </span><span class="fmt-seq">%f</span><span class="esc-seq">\n</span><span class="str">"</span>, <span class="var-local">x</span>, <span class="var-local">l</span>, <span class="var-local">f</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<section id="how-it-works"><h2>How it works</h2>
+<p>A function which accepts va-args is not aware how many arguments have been passed. Additionally, for implementation reasons (different size and alignment of different types):</p>
+<ul class="simple">
+<li>
+<p>various built-in types undergo through a specific set of convertions:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="keyword">float</span></code> to <code class="code custom-cpp"><span class="keyword">double</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">bool</span></code>, <code class="code custom-cpp"><span class="keyword">char</span></code>, <code class="code custom-cpp"><span class="keyword">short</span></code> and <em>unscoped enumerations</em> to <code class="code custom-cpp"><span class="keyword">int</span></code></p></li>
+<li><p>few others for arrays, pointers and other kinds of types</p></li>
+</ul>
+</li>
+<li><p>user-defined types are not supported or supported with <em>implementation-defined</em> semantics</p></li>
+<li><p>the behavior is undefined if the last parameter before <code class="code custom-cpp">...</code> has reference type or is not supported in the set of convertions</p></li>
+</ul>
+<p>In other words, arguments passed through magic <code class="code custom-cpp">...</code> undergo various transformations so that the implementation can assume certain things about them. This greatly limits the set of allowed types, practically to only simple built-in types.</p>
+<p>The function from the inside has to use a set of magic macros which can be roughly represented as such functions:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// magic type representing a set of variadic arguments</span>
+<span class="keyword">typedef</span> <span class="com-multi">/* unspecified */</span> <span class="type">va_list</span>;
+
+<span class="com-single">// read variadic arguments into ap, parm_n must be the name of the parameter before ...</span>
+<span class="keyword">void</span> <span class="func">va_start</span>(<span class="type">va_list</span> <span class="param">ap</span>, <span class="ext">parm_n</span>);
+
+<span class="com-single">// obtain the next parameter from ap, assuming it has type T</span>
+<span class="param-tmpl">T</span> <span class="func">va_arg</span>(<span class="type">va_list</span> <span class="param">ap</span>, <span class="param-tmpl">T</span>);
+
+<span class="com-single">// end traversal of the variadic argument list</span>
+<span class="keyword">void</span> <span class="func">va_end</span>(<span class="type">va_list</span> <span class="param">ap</span>);
+
+<span class="com-single">// copy variadic arguments from src to dest</span>
+<span class="keyword">void</span> <span class="func">va_copy</span>(<span class="type">va_list</span> <span class="param">dest</span>, <span class="type">va_list</span> <span class="param">src</span>);
+</pre></td>
+</tr></tbody></table>
+<p>Again, for implementation reasons the macros have weird forms and expect the caller to know certain things about the parameters. This is why printf-family of functions requires to provide format strings like <code class="code custom-cpp"><span class="fmt-seq">%ld</span></code> so that it knows how to extract actual data.</p>
+<p>Even a simple function which adds numbers (assuming all are of type <code class="code custom-cpp"><span class="keyword">int</span></code>) is fairly complicated:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cstdarg&gt;</span>
+
+<span class="keyword">int</span> <span class="func">add_nums</span>(<span class="keyword">int</span> <span class="param">count</span>, ...)
+{
+	<span class="keyword">int</span> <span class="var-local">result</span> = <span class="lit-num">0</span>;
+	<span class="namespace">std</span>::<span class="type">va_list</span> <span class="var-local">args</span>;
+	<span class="macro">va_start</span>(<span class="var-local">args</span>, <span class="param">count</span>);
+
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">i</span> = <span class="lit-num">0</span>; <span class="var-local">i</span> &lt; <span class="param">count</span>; ++<span class="var-local">i</span>)
+		<span class="var-local">result</span> += <span class="macro">va_arg</span>(<span class="var-local">args</span>, <span class="keyword">int</span>);
+
+	<span class="macro">va_end</span>(<span class="var-local">args</span>);
+	<span class="keyword">return</span> <span class="var-local">result</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="func">add_nums</span>(<span class="lit-num">4</span>, <span class="lit-num">25</span>, <span class="lit-num">25</span>, <span class="lit-num">50</span>, <span class="lit-num">50</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table></section><section id="why-it-s-bad"><h2>Why it's bad</h2>
+<p>Variadic arguments, due to their design, cause numerous problems:</p>
+<ul class="simple">
+<li><p>They require to use macros, and in C++ macros should be used only as a last resort.</p></li>
+<li><p>These macros are "magic", they require compiler support to work and have unusual syntax.</p></li>
+<li><p>These macros are not even UPPERCASE, thus they violate a very strong convention.</p></li>
+<li><p>Everything related to their usage is extremely bug-prone: basically any mistake ends in undefined behavior.</p></li>
+<li><p>Even if a function with variadic arguments is perfectly written, it's still possible to call it with invalid parameters to invoke undefined behavior.</p></li>
+<li><p>Using functions with variadic arguments is not trivial, just see <a class="reference external" href="https://en.cppreference.com/w/cpp/io/c/fprintf">printf documentation</a>.</p></li>
+<li><p>The set of supported types is limited.</p></li>
+<li><p>Supported types undergo through specific convertions.</p></li>
+<li><p>Even passing variadic arguments from one to another function is not trivial.</p></li>
+<li><p>There are no performance benefits.</p></li>
+</ul>
+<p>In short, it's a very type unsafe feature with lots of opportunities to write dysfunctional code. The only benefit is the ability to pass an arbitrary amount of objects of different types, though many "terms and conditions" apply.</p>
+<p>Variadic arguments are so bug-prone that <strong>compilers implemented special warnings, just for the printf-family of functions</strong>. They scan format strings and compare them with available compile time information about other arguments to detect potential mistakes. <strong>It's a huge failure that statically typed languages such as C and C++ require the programmer to manually provide type information.</strong></p>
+<p>Variadic arguments are simply against core C and C++ goals.</p>
+</section><section id="alternatives"><h2>Alternatives</h2>
+<p>Due to complexity, risk and uintuitiveness of variadic arguments, everything else is better:</p>
+<ul class="simple">
+<li><p>function overloading - supports different types</p></li>
+<li><p>arrays - supports arbitrary amount of arguments</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">initializer_list</span></code> - an alternative to arrays</p></li>
+<li><p>(variadic) templates - they also use <code class="code custom-cpp">...</code> but work totally differently</p></li>
+</ul>
+<p>Libraries with formatting:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.boost.org/doc/libs/release/libs/format/doc/format.html">Boost.Format</a> (header-only): has printf-like interface but is implemented through templates and has full type safety</p></li>
+<li><p><a class="reference external" href="https://github.com/fmtlib/fmt">fmtlib</a> (header-only): the proper design and implementation of a printf-like function according to C++ goals, since C++20 part of fmt is in the standard library header <code class="code custom-cpp"><span class="pp-header">&lt;format&gt;</span></code></p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

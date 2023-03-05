@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - introduction</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xx - classes</a></li>
+							<span>/</span>
+						<li>01 - introduction</li>
+					</ol></nav><div class="content">
+				<h1>01 - introduction</h1>				<p>So far you have used built-in types and some of the user-defined types provided in the C++ standard library. You have also learned how to create simple user-defined types - structures and enumerations. This chapter is dedicated towards a much more powerful type mechanism - classes, which are a very significant building block in OOP (object-oriented programming). OOP is all about representing real-world things as <em>objects</em> that can have certain states and (potentially shared) behaviors.</p>
+<p>C++ is a multi-paradigm language. OOP is one of its bigger features, but it's not required - in contrast, some languages force OO style of programming and their "hello world"s can not be written without creating a class. This conflicts with C++ philosophy and the goal that you don't pay for what you don't use. Most of the C++ standard library uses generic programming rather than OOP. Some of the most powerful design techniques combine aspects of traditional object-oriented programming, generic programming, functional programming, and some traditional imperative techniques<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>This lesson is a more philosophical than others but further ones in this chapter showcase a lot of new code. It's important to not only understand <em>how</em>, but also <em>why</em>. You can perfectly memorize all OOP rules - most of them are very intuitive; write any program that satisfies given requirements but whether the code will be a good code is a very different topic. This is the place where you will realize you have almost limitless ways to complete a task and the true art of programming is in making choices what features to use and how. Common combinations of specific features to solve popular problems are known as <strong>design patterns</strong>.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Vast majority of abstraction knowledge presented in this chapter applies to any programming language that supports OOP. Languages differ mostly in syntax and implementations of specific details. The concept of OOP as a whole is very reusable and understanding it will help you learning other languages significantly.</p>
+</aside><aside class="admonition note"><p class="admonition-title">note</p>
+<p>Many examples in this chapter incrementally build and/or improve the <code class="code custom-cpp"><span class="type">fraction</span></code> class, explaining various things on the way. It's full implementation can be found in the <a class="reference external" href="../../appendix">appendix</a>.</p>
+</aside><section id="related-terms"><h2>Related terms</h2>
+<p>OOP is related to few important terms:</p>
+<ul class="simple">
+<li><p><strong>abstraction</strong> - <em>selective ignorance</em>. We can hide (abstract away) uninteresting things and focus on what is important.</p></li>
+<li><p><strong>encapsulation</strong> - classes group related variables and functions and can constrain their usage through <em>access specifiers</em>. This leverages type safety and helps with modular design.</p></li>
+<li><p><strong>inheritance</strong> - classes can be build as extentions to other classes. Massive code reuse.</p></li>
+<li><p><strong>polymorphism</strong> - classes can provide interfaces - uniform way of treating objects on the outside with custom behavior on the inside. Ability of related classes to behave differently while sharing a common interface.</p></li>
+</ul>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Classes do not exist in C.</p>
+</aside></section><section id="classes"><h2>Classes</h2>
+<p>So what exactly is a class? In simple terms, it's a container for closely related variables (called <strong>fields</strong>) which are intended to be used together. There can be class-specific functions (called <strong>methods</strong>) which are specifically designed to work on objects of the class type. These together with other class-specific features tie data with operations to create very reusable building blocks for bigger programs.</p>
+<p>Classes can improve code readability and offer modular design. They also feature a slightly different syntax:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="func">set_text</span>(<span class="var-local">button</span>, <span class="lit-str">"hello"</span>); <span class="com-single">// structural</span>
+<span class="var-local">button</span>.<span class="func">set_text</span>(<span class="lit-str">"hello"</span>);  <span class="com-single">// object-oriented</span>
+</pre></td>
+</tr></tbody></table>
+<p>Isn't the second line more intuitive?</p>
+<ul class="simple">
+<li><p>The structural approach uses a global function which takes (a reference to) a button and the text to set.</p></li>
+<li><p>The OO approach uses a class-specific function which takes only the text to set. Method is invoked on the button object - note how <code class="docutils literal">.</code> has to be used to access it. This is because methods are tied to classes and therefore have to be invoked on objects of certain types.</p></li>
+</ul></section><section id="code-class-code-custom-cpp-span-class-keyword-class-span-code-vs-code-class-code-custom-cpp-span-class-keyword-struct-span-code"><h2>
+<code class="code custom-cpp"><span class="keyword">class</span></code> vs <code class="code custom-cpp"><span class="keyword">struct</span></code>
+</h2>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>For historical reasons, classes in C++ were originally defined using <code class="code custom-cpp"><span class="keyword">struct</span></code>. Later <code class="code custom-cpp"><span class="keyword">class</span></code> was introduced. <strong>The only difference between keywords</strong> <code class="code custom-cpp"><span class="keyword">struct</span></code> <strong>and</strong> <code class="code custom-cpp"><span class="keyword">class</span></code> <strong>are default access specifiers for member access and inheritance.</strong></p>
+</aside><!--  --><blockquote>
+<p>Does it mean that structures defined in previous lessons were technically classes?</p>
+</blockquote>
+<p>Yes - C++ does not differentiate classes and structures. It's one thing that can be defined using 2 keywords - only default access is different. More on access in later lessons.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>By convention, use <code class="code custom-cpp"><span class="keyword">class</span></code> whenever you want something more than just a box of variables. <code class="code custom-cpp"><span class="keyword">struct</span></code> should only be used when fields can vary independently. If in doubt, use <code class="code custom-cpp"><span class="keyword">class</span></code>.</p>
+</aside><p>The main reason for this convention is clear expression of intent . In C, there is no <code class="code custom-cpp"><span class="keyword">class</span></code> and <code class="code custom-cpp"><span class="keyword">struct</span></code> has very limited functionality compared to C++. Thus if <code class="code custom-cpp"><span class="keyword">struct</span></code> is used within C++, it's usually only for functionality that is available in C.</p>
+</section><section id="access-specifiers"><h2>Access specifiers</h2>
+<p>Classes can limit access to their <em>members</em> (entities defined inside). For <code class="code custom-cpp"><span class="keyword">struct</span></code> everything by default is <code class="code custom-cpp"><span class="keyword">public</span></code> which means there are no constraints. Because of different default in classes, in order to have the same behavior as with <code class="code custom-cpp"><span class="keyword">struct</span></code>, <code class="code custom-cpp"><span class="keyword">public</span></code> has to be written explicitly. <strong>In the code below all definitions are equivalent.</strong></p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">point</span>
+{
+<span class="com-single">// (implicitly public)</span>
+	<span class="type">int</span> <span class="var-member">x</span>;
+	<span class="type">int</span> <span class="var-member">y</span>;
+};
+
+<span class="keyword">struct</span> <span class="type">point</span>
+{
+<span class="keyword">public</span>:
+	<span class="type">int</span> <span class="var-member">x</span>;
+	<span class="type">int</span> <span class="var-member">y</span>;
+};
+
+<span class="keyword">class</span> <span class="type">point</span>
+{
+<span class="keyword">public</span>:
+	<span class="type">int</span> <span class="var-member">x</span>;
+	<span class="type">int</span> <span class="var-member">y</span>;
+};
+</pre></td>
+</tr></tbody></table>
+<hr class="docutils">
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Direction for ISO C++, Long-term aims, <a class="reference external" href="http://wg21.link/p2000">http://wg21.link/p2000</a></p>
+</aside></aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

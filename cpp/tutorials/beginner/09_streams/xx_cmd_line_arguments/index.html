@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - xx - command line arguments</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">09 - streams</a></li>
+							<span>/</span>
+						<li>xx - command line arguments</li>
+					</ol></nav><div class="content">
+				<h1>xx - command line arguments</h1>				<p>You might have already seen a somewhat different main function:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// both are equivalent</span>
+<span class="com-single">// parameter names may be different but these are a very strong convention</span>
+<span class="keyword">int</span> <span class="func">main</span>(<span class="keyword">int</span> <span class="param">argc</span>, <span class="keyword">char</span>** <span class="param">argv</span>)
+<span class="keyword">int</span> <span class="func">main</span>(<span class="keyword">int</span> <span class="param">argc</span>, <span class="keyword">char</span>* <span class="param">argv</span>[])
+</pre></td>
+</tr></tbody></table>
+<p>This is the way you can define a main function to accept a variable number of null-terminated C-strings, typically called "program's command line arguments".</p>
+<p>Command line arguments are one of primary ways to provide input data to the program - you have already seen it with many shell built-in programs (e.g. <code class="docutils literal">cd</code>), OS-provided programs (e.g. <code class="docutils literal">echo</code>, <code class="docutils literal">grep</code>) and others (e.g. compiler, linker).</p>
+<section id="details"><h2>Details</h2>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="param">argc</span></code> is <strong>arg</strong>ument <strong>c</strong>ount</p></li>
+<li><p><code class="code custom-cpp"><span class="param">argv</span></code> is <strong>arg</strong>ument <strong>v</strong>ector: an array of C-strings (C-strings are <code class="code custom-cpp"><span class="keyword">char</span>*</code> so an array of them is <code class="code custom-cpp"><span class="keyword">char</span>**</code> or <code class="code custom-cpp"><span class="keyword">char</span>*[]</code>)</p></li>
+<li><p><code class="code custom-cpp"><span class="param">argv</span>[<span class="param">argc</span>]</code> (which normally would be undefined behavior) points to an empty C-string, though I don't see practical value in it (it's the same bad convention as with null-terminated strings, now just for an array)</p></li>
+<li><p><code class="code custom-cpp"><span class="param">argc</span> &gt;= <span class="lit-num">0</span></code></p></li>
+</ul>
+<p>How exactly the textual arguments are passed to the program is system and implementation dependent (typically spaces separate arguments and quotes must be used to contain them). By the nature of the <code class="code custom-cpp"><span class="keyword">char</span></code> type, it's most suitable for ASCII or Unicode UTF-8 and is such in most configurations.</p>
+</section><section id="example"><h2>Example</h2>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>(<span class="keyword">int</span> <span class="param">argc</span>, <span class="keyword">char</span>** <span class="param">argv</span>)
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"argument count: "</span> <span class="oo">&lt;&lt;</span> <span class="param">argc</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"argument vector:<span class="esc-seq">\n</span>"</span>;
+
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">i</span> = <span class="lit-num">0</span>; <span class="var-local">i</span> &lt; <span class="param">argc</span>; ++<span class="var-local">i</span>)
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">i</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">": "</span> <span class="oo">&lt;&lt;</span> <span class="param">argv</span>[<span class="var-local">i</span>] <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-1" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-1" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-1"></a>$ ./program --arg1 --arg2 "a r g 3" -x 10 -y=20
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-2" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-2" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-2"></a>argument count: 5
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-3" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-3" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-3"></a>argument values:
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-4" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-4" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-4"></a>0: ./program
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-5" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-5" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-5"></a>1: --arg1
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-6" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-6" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-6"></a>2: --arg2
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-7" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-7" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-7"></a>3: a r g 3
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-8" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-8" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-8"></a>4: -x
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-9" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-9" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-9"></a>5: 10
+<a id="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-10" name="rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-10" href="#rest_code_a44db4967ce64ab7b496e98c0a7ca1c0-10"></a>6: -y=20
+</pre></div>
+<p>The value behind <code class="code custom-cpp"><span class="param">argv</span>[<span class="lit-num">0</span>]</code> depends on the system. In a typical implementation it will be the same string that has been used to call the program.</p>
+</section><section id="parsing-arguments"><h2>Parsing arguments</h2>
+<p>C++ standard library does not cover argument parsing. I suggest to use any external library instead - many have an API that is easy to understand and allow automatic generation of <code class="docutils literal"><span class="pre">--help</span></code> and other commands. <a class="reference external" href="http://boost.org/libs/program_options">Boost has one too</a> but it requires building so unless you already use boost I suggest to find a header-only library (it will be much easier to set up).</p>
+<p>In many C projects you may find <a class="reference external" href="https://en.wikipedia.org/wiki/Getopt">getopt</a> being used. From C++ point of view its interface is very C-ish but nonetheless it's quite popular in projects for Unix systems.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="func">getopt</span></code> and its GNU extension (<code class="code custom-cpp"><span class="func">getopt_long</span></code>) are provided as an addition to the C standard library on Unix systems. The first one is a part of <a class="reference external" href="https://en.wikipedia.org/wiki/POSIX">POSIX</a> but none are a part of C or C++ standard library. Thus, their availability is tied to the system and the compiler, not language standard. Thus you will find them <a class="reference external" href="https://linux.die.net/man/3/getopt">documented with the system such as Linux</a> (GNU/Linux distributions are mostly POSIX-compliant) instead of on cppreference.</p>
+</aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

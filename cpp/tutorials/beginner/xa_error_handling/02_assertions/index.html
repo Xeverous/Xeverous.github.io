@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - assertions</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xa - error handling</a></li>
+							<span>/</span>
+						<li>02 - assertions</li>
+					</ol></nav><div class="content">
+				<h1>02 - assertions</h1>				<p>From Wikipedia:</p>
+<blockquote>
+<p>In computer programming, specifically when using the imperative programming paradigm, an assertion is a predicate (a Boolean-valued function over the state space, usually expressed as a logical proposition using the variables of a program) connected to a point in the program, that always should evaluate to true at that point in code execution. Assertions can help a programmer read the code, help a compiler compile it, or help the program detect its own defects.</p>
+<p>For the latter, some programs check assertions by actually evaluating the predicate as they run. Then, if it is not in fact true – an assertion failure – the program considers itself to be broken and typically deliberately crashes or throws an assertion failure exception.</p>
+</blockquote>
+<p>In simpler words, an assertion will be a construct within code (usually something resembling a function call) that should always evaluate to true when invoked as control flow encounters it. Assertions are a form of self-checks made by the program itself, to ensure it's running correctly.</p>
+<section id="in-c"><h2>In C++</h2>
+<p>C++ offers 2 kinds of assertions:</p>
+<ul class="simple">
+<li><p>the <code class="code custom-cpp"><span class="macro">assert</span></code> macro which comes from the C standard library (a configurable runtime assertion)</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">static_assert</span></code> (a compile-time assertion)</p></li>
+</ul></section><section id="code-class-code-custom-cpp-span-class-macro-assert-span-code"><h2><code class="code custom-cpp"><span class="macro">assert</span></code></h2>
+<p>The program below contains an assertion which prevents it from invoking undefined behavior. The macro has ugly name (not UPPERCASE as macros are suposed to have) because it's very old, from early C times.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cassert&gt;</span>
+
+<span class="keyword">int</span> <span class="func">divide</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+{
+	<span class="macro">assert</span>(<span class="param">y</span> != <span class="lit-num">0</span>); <span class="com-single">// integer division by 0 is UB</span>
+	<span class="keyword">return</span> <span class="param">x</span> / <span class="param">y</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">0</span>;
+	<span class="keyword">int</span> <span class="var-local">y</span> = <span class="lit-num">0</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"enter x: "</span>;
+	<span class="namespace">std</span>::<span class="var-global">cin</span> <span class="oo">&gt;&gt;</span> <span class="var-local">x</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"enter y: "</span>;
+	<span class="namespace">std</span>::<span class="var-global">cin</span> <span class="oo">&gt;&gt;</span> <span class="var-local">y</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"result: "</span> <span class="oo">&lt;&lt;</span> <span class="func">divide</span>(<span class="var-local">x</span>, <span class="var-local">y</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>How the macro works:</p>
+<ul>
+<li><p>if <code class="code custom-cpp"><span class="macro">NDEBUG</span></code> is defined: the macro expands to an empty statement, as if nothing was written (as if the statement was completely commented out).</p></li>
+<li>
+<p>if <code class="code custom-cpp"><span class="macro">NDEBUG</span></code> is not defined: expands to a statement that evaluates given expression:</p>
+<blockquote>
+<ul class="simple">
+<li><p>if <code class="code custom-cpp"><span class="keyword">true</span></code> then nothing happens.</p></li>
+<li><p>if <code class="code custom-cpp"><span class="keyword">false</span></code> outputs implementation-defined diagnostic information on the standard error stream and calls <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">abort</span></code>, which terminates the program. The diagnostic message is guaranteed to contain the source code from the expression (turned into text by preprocessor stringization - <code class="code custom-cpp"><span class="pp-hash">#</span></code>), <code class="code custom-cpp"><span class="macro">__FILE__</span></code>, <code class="code custom-cpp"><span class="macro">__LINE__</span></code> and <code class="code custom-cpp"><span class="ext">__func__</span></code>.</p></li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>Why weird NDEBUG ("not debug") name? Just history. NDEBUG is never defined within standard library but high-level build tools (e.g. CMake, Meson) and IDEs have the concept of relase and debug build configurations. Pretty much all such tools will add <code class="docutils literal"><span class="pre">-DNDEBUG</span></code> (or equivalent) to compiler flags in release configuration to disable the macro in release builds (C++ does not define this macro by default). Many libraries offer similar macro, sometimes implemented as a wrapper around the standard one.</p>
+<p>A quick test with the program above can result in something like this:</p>
+<div class="code"><pre class="code text"><a id="rest_code_867bd00742c94864a0a358395812a9f5-1" name="rest_code_867bd00742c94864a0a358395812a9f5-1" href="#rest_code_867bd00742c94864a0a358395812a9f5-1"></a>main.cpp:6: int divide(int, int): Assertion 'y != 0' failed.
+</pre></div>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>As of writing this, MSVC implementation does not conform to C++11 requirements - the diagnostic message does not contain <code class="code custom-cpp"><span class="ext">__func__</span></code>.</p>
+<p>libstdc++ implementation (used by GCC and optionally by Clang) uses <code class="code custom-cpp"><span class="ext">__PRETTY_FUNCTION__</span></code> extension instead of <code class="code custom-cpp"><span class="ext">__func__</span></code>, which outputs a lot of details about the function (return type, argument types, template parameters), not just its name.</p>
+</aside><section id="custom-diagnostic-message"><h3>Custom diagnostic message</h3>
+<p>The macro takes only 1 argument which is the condition and while it outputs a message there is no dedicated place for additional text. However, a custom message can be added thanks to some evaluation tricks. Common ways of improving <code class="code custom-cpp"><span class="macro">assert</span></code> macro:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="pp-macro">ASSERT_MSG</span>(<span class="pp-macro-param">condition</span>, <span class="pp-macro-param">message</span>) <span class="pp-macro-body">assert</span>(((<span class="keyword">void</span>)(<span class="pp-macro-param">message</span>), <span class="pp-macro-param">condition</span>))
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="pp-macro">ASSERT_MSG</span>(<span class="pp-macro-param">condition</span>, <span class="pp-macro-param">message</span>) <span class="pp-macro-body">assert</span>((<span class="pp-macro-param">condition</span>) &amp;&amp; <span class="pp-macro-param">message</span>)
+</pre></td>
+</tr></tbody></table>
+<p>The first trick uses the fact that <code class="docutils literal">,</code> is an operator that evalues both operands but returns the value of the second (of the last operand if chained). For example, <code class="code custom-cpp">(<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>)</code> returns <code class="code custom-cpp"><span class="lit-num">3</span></code>.</p>
+<ul class="simple">
+<li><p>An extra set of parentheses is added to force evaluation through this operator. Otherwise the <code class="code custom-cpp"><span class="macro">assert</span></code> macro would error it got 2 arguments but expected 1.</p></li>
+<li><p>The order of condition and message is flipped so that the condition is evaluated for the assertion.</p></li>
+<li><p>Message is cast to <code class="code custom-cpp"><span class="keyword">void</span></code> to shut "operand of comma operator has no effect" warning.</p></li>
+</ul>
+<p>The second trick relies on implicit convertions.</p>
+<ul class="simple">
+<li><p>The macro uses the fact that <code class="docutils literal">x AND true</code> is equivalent to <code class="docutils literal">x</code>.</p></li>
+<li><p>The string literal is an array which will <em>decay</em> to a non-null pointer (every string has a non-zero address) which when converted to <code class="code custom-cpp"><span class="keyword">bool</span></code> will always be <code class="code custom-cpp"><span class="keyword">true</span></code>.</p></li>
+<li><p>The condition is placed in parenthesis to guard against possible changes of meaning due to operator precedence.</p></li>
+</ul>
+<!--  --><blockquote>
+<p>Can I use a variable to hold the message and put the variable in the macro?</p>
+</blockquote>
+<p>You can, but ... the macro will print variable's name, not its value. For this to really work you would need a very different implementation of the macro, one that passes the variable to some output function.</p>
+<p><a class="reference external" href="http://boost.org/libs/assert">Boost.Assert</a> library offers an upgraded version of the macro similar to the one presented above. Additionally, it has more compile-time enable/disable switches as well as ability to implement custom assertion failure handler.</p>
+</section></section><section id="side-effects"><h2>Side effects</h2>
+<p>An assertion should never have any side effects. They are not present in release builds so the program must work the same with and without them.</p>
+<p>A hypothetical program loads its configuration and puts entries of the same type into an array. Then, just before they are used, an assert is placed to ensure there are no duplicate entries:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// at the end of configuration loading</span>
+<span class="macro">assert</span>(!<span class="func">has_duplicates</span>(<span class="var-local">entries</span>));
+
+<span class="com-single">// elsewhere - function definition</span>
+<span class="keyword">bool</span> <span class="func">has_duplicates</span>(<span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="type">config_entry</span>&gt;&amp; <span class="param">v</span>)
+{
+	<span class="namespace">std</span>::<span class="func">sort</span>(<span class="param">v</span>.<span class="func">begin</span>(), <span class="param">v</span>.<span class="func">end</span>());
+	<span class="com-single">// after sorting, duplicate elements would be next to each other</span>
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">adjacent_find</span>(<span class="param">v</span>.<span class="func">begin</span>(), <span class="param">v</span>.<span class="func">end</span>()) <span class="oo">!=</span> <span class="param">v</span>.<span class="func">end</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<p>This isn't a good assertion because it has a side effect. If the assert is present (even if it does not fire) executing it will sort the vector. This doesn't seem to affect program state immediately, but it could impact program performance differently in release and debug builds aswell as change the order of processing configuration (which could have non-trivial consequences, depending on how it works).</p>
+<p>What could be done to improve this code? If the program's configuration should always be sorted (e.g. because processing it requires certain order), the code could be modified as such:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="namespace">std</span>::<span class="func">sort</span>(<span class="var-local">entries</span>.<span class="func">begin</span>(), <span class="var-local">entries</span>.<span class="func">end</span>());
+<span class="macro">assert</span>(!<span class="func">has_duplicates</span>(<span class="var-local">entries</span>));
+
+<span class="keyword">bool</span> <span class="func">has_duplicates</span>(<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="type">config_entry</span>&gt;&amp; <span class="param">v</span>)
+{
+	<span class="macro">assert</span>(<span class="namespace">std</span>::<span class="func">is_sorted</span>(<span class="param">v</span>.<span class="func">begin</span>(), <span class="param">v</span>.<span class="func">end</span>()));
+	<span class="com-single">// after sorting, duplicate elements would be next to each other</span>
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">adjacent_find</span>(<span class="param">v</span>.<span class="func">begin</span>(), <span class="param">v</span>.<span class="func">end</span>()) <span class="oo">!=</span> <span class="param">v</span>.<span class="func">end</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<p>If sorting is not necessary, then the assertion could be written as in original example but with 1 difference - the function should take vector by value (copy) and then sort this vector. Sorting a copy would not affect original vector.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="macro">assert</span>(!<span class="func">has_duplicates</span>(<span class="var-local">entries</span>));
+
+<span class="keyword">bool</span> <span class="func">has_duplicates</span>(<span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="type">config_entry</span>&gt; <span class="param">v</span>)
+{
+	<span class="namespace">std</span>::<span class="func">sort</span>(<span class="param">v</span>.<span class="func">begin</span>(), <span class="param">v</span>.<span class="func">end</span>());
+	<span class="com-single">// after sorting, duplicate elements would be next to each other</span>
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">adjacent_find</span>(<span class="param">v</span>.<span class="func">begin</span>(), <span class="param">v</span>.<span class="func">end</span>()) <span class="oo">!=</span> <span class="param">v</span>.<span class="func">end</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<!--  --><blockquote>
+<p>What if copying configuration entries had a side effect?</p>
+</blockquote>
+<p>Then the program has even bigger problem - violation of one of OOP idioms. Object-oriented programming is much later in the tutorial but it should be relatively straightforward to understand that a copy is a copy - an independent second object, where operations on one should not affect the other.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Since all assertions should only read program state, you should be suspicious if a function used inside an assertion takes anything by non-const reference. Such code heavily suggests the object is being modified.</p>
+</aside></section><section id="static-assertions"><h2>Static assertions</h2>
+<p><code class="code custom-cpp"><span class="keyword">static_assert</span></code> does very similar job but at compile time. The keyword works similarly to a function and could be roughly represented as the following pseudocode:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// C++11</span>
+<span class="keyword">void</span> <span class="keyword">static_assert</span>(<span class="keyword">constexpr</span> <span class="keyword">bool</span> <span class="param">condition</span>, <span class="spec">__string_literal</span> <span class="param">message</span>);
+<span class="com-single">// C++17 (additional "overload" where a message is not required)</span>
+<span class="keyword">void</span> <span class="keyword">static_assert</span>(<span class="keyword">constexpr</span> <span class="keyword">bool</span> <span class="param">condition</span>);
+</pre></td>
+</tr></tbody></table>
+<p>The condition must be a constant expression, otherwise the program is ill-formed. The message can only be a string literal, that is, you must write quoted string where the assertion is present. You can not even use <code class="code custom-cpp"><span class="keyword">constexpr</span></code> variables to hold the message. If you do not have C++17 and have no need for the message you can simply write <code class="code custom-cpp"><span class="lit-str">""</span></code>.</p>
+<p>If the condition evaluates to <code class="code custom-cpp"><span class="keyword">true</span></code> the statement has no effect. If <code class="code custom-cpp"><span class="keyword">false</span></code>, a compile-time error is issued, and the text of message, if any, is included in the diagnostic message.</p>
+<p><code class="code custom-cpp"><span class="keyword">static_assert</span></code> is commonly used within templates as it allows to ensure that various compile-time requirements are satisfied. When given invalid types or values, it's much better to get a compiler error with the message from failed assertion than a complex template error describing many details.</p>
+<p>TOEXAMPLE good simple static assert example</p>
+</section><section id="recommendations"><h2>Recommendations</h2>
+<p>Assertions are intended to catch internal bugs within the program, during testing on debug builds. You should not use assertions to handle external problems such as input errors because they are not suited for handling them - assertions only catch invalid states and report them usually by very interrupting means (immediately stopping the program or throwing an exception).</p>
+<p>Example good places to put an assertion:</p>
+<ul class="simple">
+<li><p>just before array access to check index validity</p></li>
+<li><p>inside an algorithm to ensure it's behaving correctly</p></li>
+<li><p>just before returing from the function to verify that the result meets intended criteria</p></li>
+<li><p>basically any operation that if not guarded against could cause UB</p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

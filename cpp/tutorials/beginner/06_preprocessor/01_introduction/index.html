@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - intro</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">06 - preprocessor</a></li>
+							<span>/</span>
+						<li>01 - intro</li>
+					</ol></nav><div class="content">
+				<h1>01 - intro</h1>				<p>The preprocessor is a build process mechanism that is invoked before compilation takes place.</p>
+<p>Preprocessor code consists of <em>directives</em>. A directive is a single command for the preprocessor. All directives start with <code class="docutils literal">#</code> and span until end of line (not until <code class="docutils literal">;</code> - it's not regular C or C++ code). <code class="docutils literal">\</code> Can be used at the end of line to extend the directive 1 more line.</p>
+<p>All preprocessor directives (more details in subsequent lessons):</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span></code> - does nothing</p></li>
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span></code> - pastes the content of mentioned file in place of the directive</p></li>
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">define</span></code> and <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">undef</span></code> - define and undefine identifiers for further preprocessing or text replacement (often called <em>macros</em>)</p></li>
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">if</span></code>, <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifdef</span></code>, <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifndef</span></code>, <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">elif</span></code>, (since C++23 <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">elifdef</span></code>, <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">elifndef</span></code>) - conditionally parse enclosed code (may contain nested preprocessor directives)</p></li>
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">error</span></code> - force an error during preprocessing</p></li>
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">pragma</span></code> - implementation defined preprocessor extensions</p></li>
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">line</span></code> - changes values of the <code class="code custom-cpp"><span class="macro">__LINE__</span></code> and <code class="code custom-cpp"><span class="macro">__FILE__</span></code> macros</p></li>
+</ul>
+<p>A very common example of preprocessor usage is conditional compilation - providing different code depending on defined identifiers. Many are either implicitly defined by the compiler or passed as compiler options (<code class="docutils literal"><span class="pre">-D</span></code> for GCC and Clang). In the example below you can observe macro definition detection used to conditionally include platform-specific headers and platform-specific text replacement macros that represent a constant of maximum file name length.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifdef</span> <span class="macro">__linux__</span>
+	<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;unistd.h&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">elif</span> <span class="macro">defined</span>(<span class="macro">_WIN32</span>)
+	<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;windows.h&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">else</span>
+	<span class="pp-hash">#</span><span class="pp-directive">error</span> <span class="pp-other">unrecognized or unsupported platform</span>
+<span class="pp-hash">#</span><span class="pp-directive">endif</span>
+
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+
+<span class="pp-hash">#</span><span class="pp-directive">ifdef</span> <span class="macro">_WIN32</span>
+<span class="namespace">std</span>::<span class="type">string</span> <span class="func">utf16_to_utf8</span>(<span class="keyword">const</span> <span class="keyword">wchar_t</span>* <span class="param">wstr</span>, <span class="keyword">int</span> <span class="param">len</span>)
+{
+	<span class="keyword">if</span> (<span class="param">len</span> == <span class="lit-num">0</span>)
+		<span class="keyword">return</span> {};
+
+	<span class="keyword">const</span> <span class="keyword">int</span> <span class="var-local">size</span> = <span class="func">WideCharToMultiByte</span>(<span class="macro">CP_UTF8</span>, <span class="lit-num">0</span>, <span class="param">wstr</span>, <span class="param">len</span>, <span class="keyword">nullptr</span>, <span class="lit-num">0</span>, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="var-local">result</span>(<span class="var-local">size</span>, <span class="lit-chr">'<span class="esc-seq">\0</span>'</span>);
+	<span class="func">WideCharToMultiByte</span>(<span class="macro">CP_UTF8</span>, <span class="lit-num">0</span>, <span class="param">wstr</span>, <span class="param">len</span>, &amp;<span class="var-local">result</span>.<span class="func">front</span>(), <span class="var-local">size</span>, <span class="keyword">nullptr</span>, <span class="keyword">nullptr</span>);
+	<span class="keyword">return</span> <span class="var-local">result</span>;
+}
+<span class="pp-hash">#</span><span class="pp-directive">endif</span>
+
+<span class="namespace">std</span>::<span class="type">string</span> <span class="func">get_path_to_executable</span>()
+{
+<span class="pp-hash">#</span><span class="pp-directive">ifdef</span> <span class="macro">_WIN32</span>
+	<span class="keyword">wchar_t</span> <span class="var-local">buf</span>[<span class="macro">MAX_PATH</span>];
+	<span class="keyword">return</span> <span class="func">utf16_to_utf8</span>(<span class="var-local">buf</span>, <span class="func">GetModuleFileNameW</span>(<span class="keyword">nullptr</span>, <span class="var-local">buf</span>, <span class="macro">MAX_PATH</span>));
+<span class="pp-hash">#</span><span class="pp-directive">else</span>
+	<span class="keyword">char</span> <span class="var-local">result</span>[<span class="macro">PATH_MAX</span>];
+	<span class="keyword">const</span> <span class="type">ssize_t</span> <span class="var-local">count</span> = <span class="func">readlink</span>(<span class="lit-str">"/proc/self/exe"</span>, <span class="var-local">result</span>, <span class="macro">PATH_MAX</span>);
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="type">string</span>(<span class="var-local">result</span>, (<span class="var-local">count</span> &gt; <span class="lit-num">0</span>) ? <span class="var-local">count</span> : <span class="lit-num">0</span>);
+<span class="pp-hash">#</span><span class="pp-directive">endif</span>
+}
+</pre></td>
+</tr></tbody></table>
+<p>This way the program can implement the same behavior on different platforms where different code is needed. Note that <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifdef</span></code> does not behave as <code class="code custom-cpp"><span class="keyword">if</span></code> - the preprocessor is run before compilation so it's not a runtime decision, it's a build-time decision which code to even start compiling.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>The preprocessor operates on text, not on C++ level - it doesn't understand C++ grammar and will not attempt to verify that generated code, even whether it's syntaxically valid. It's more or less just a text paste/find/replace mechanism, not very far away from whole-word-find-replace functionality in text editors.</p>
+</aside><aside class="admonition note"><p class="admonition-title">note</p>
+<p>You can place <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">define</span></code>/<code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">undef</span></code> inside <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifdef</span></code>/<code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifndef</span></code> ... <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">endif</span></code> to conditionally (un)define macros based on other macros.</p>
+</aside><p>After the preprocessing is done, compiler sees generated code without any preprocessor directives. Thus, the preprocessor can effectively be used to compile different code based on build settings and target platform information.</p>
+<section id="applications"><h2>Applications</h2>
+<p>Apart from conditional compilation, complex replacement macros can be used to automate code generation. Abuse of this mechanism is generally considered bad style but still today some things have no better alternative - this is especially true for any kind of boilerplate that is not supported by templates or other language features. Typical applications of such macros are:</p>
+<ul class="simple">
+<li><p>logging</p></li>
+<li><p><em>assertions</em></p></li>
+<li><p>unit tests</p></li>
+<li><p>serialization</p></li>
+</ul>
+<!-- TODO an example? --></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

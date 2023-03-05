@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - licensing 101</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../">HOME</a></li>
+				<li><a href="../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../cpp/tutorials/beginner/">beginner</a></li>
+						<li><a href="../../cpp/tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../cpp/tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../cpp/stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../cpp/utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../cpp/utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../cpp/utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../cpp/utility/glossary/">glossary</a></li>
+						<li><a href="../../cpp/utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../about/">about</a></li>
+						<li><a href="../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../">HOME</a></li>
+				<li class="button"><a href="../../index">INDEX</a></li>
+				<li class="button"><a href="../../faq">FAQ</a></li>
+				<li class="button"><a href="../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../">other</a></li>
+							<span>/</span>
+						<li>licensing 101</li>
+					</ol></nav><div class="content">
+				<h1>licensing 101</h1>				<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This is not a legal advice. The article aims to explain licensing and related concepts for software and other works but should not be used as a definitive way of making decisions. If you have a question concerning specific situation consult a law professional.</p>
+</aside><aside class="admonition note"><p class="admonition-title">note</p>
+<p>A lot of links in this article refer the GNU project and FSF (Free Software Foundation) websites. This is not by accident - FSF played a major role in initiating the free (read <em>freedom</em>, not <em>zero price</em>) software movement.</p>
+</aside><p>You very likely have seen different projects with different licenses. So what is it all about?</p>
+<section id="why-license"><h2>Why license</h2>
+<p>There are numerous reaons why you should license your work:</p>
+<ul>
+<li><p>it allows others to do specific things with your work that you want</p></li>
+<li><p>it prevents others from doing specific things with your work that you do not want</p></li>
+<li><p>it makes the situation much clearer for everyone (especially for potential contributors)</p></li>
+<li>
+<p>it's much better than writing a list of rules by your own as already existing licenses are very detailed and are legally recognized by various institutions</p>
+<blockquote>
+<p>What happens if I don't license my work?</p>
+</blockquote>
+</li>
+</ul>
+<p>All works (not just software) automatically get "All rights reversed" unless stated otherwise. This isn't inherently bad, but generally makes any sort of reuse and redistribution illegal so if you want even slightest incentive for others to make use of your work other than just looking at it, you should decide on a specific license. Note that if you publish your work somewhere (especially online), you implicitly agree to this place's rules which might immediately grant some rights for users (e.g. ability to see and copy it). More info on <a class="reference external" href="https://choosealicense.com/no-permission/">https://choosealicense.com/no-permission/</a>.</p>
+<p>If you want the opposite - maximum freedom for users with no desire to preserve specific rights as the author, you can state that you dedicate your work to the <em>public domain</em> and voluntarily resign from all rights.</p>
+</section><section id="public-domain"><h2>Public domain</h2>
+<p><em>The public domain consists of all the creative work to which no exclusive intellectual property rights apply. Those rights may have expired, been forfeited, expressly waived, or may be inapplicable.</em><a class="citation-reference" href="#wiki-pd" id="citation-reference-1" role="doc-biblioref">[wiki_PD]</a></p>
+<p>Almost any work sooner or later will become public domain. Various jurisdictions place different periods for different works (from 10 years to the point of author's death and many different conditions) so the situation is a bit complicated. Fortunately for vast majority of works by the time they go to the public domain all potential benefits were already gained by the author.</p>
+<p>There is only 1 thing which you can not do with public domain work: claiming you did it. The fact who did the work is irrevocable.</p>
+</section><section id="proprietary-licenses"><h2>Proprietary licenses</h2>
+<p>This isn't main focus of the article but it's worth to mention proprietary licenses as a contrast to all open licenses.</p>
+<p>Such licenses are typically very restrictive:</p>
+<ul class="simple">
+<li><p>usually allow to obtain the work only in the final form (e.g. compiled code, raster image without layers) without access to the source (e.g. source code, vector graphics with layers and metadata)</p></li>
+<li><p>they limit or disallow copying</p></li>
+<li><p>they disallow modifications and reverse engineering</p></li>
+</ul>
+<p>The main point of such licenses is to prevent users from using the work in ways other than the very narrow set intended by the author. The main motivation is to prevent copying, reverse engineering and other uses which can significantly harm profits of the author.</p>
+<p>Majority of commercial products use proprietary licenses. Usually each product has it's own specific license. I'm not aware of any reusable proprietary license.</p>
+</section><section id="open-licenses"><h2>Open licenses</h2>
+<p>The main goal of open licenses is allowing users to do much more than a typical proprietary license and at the same time preventing absolute exploitation of the author's work. Various open licenses aim to create a win-win situation where users can enjoy larger freedom and the author can keep benefits of the work (not necesserarily money).</p>
+<p>When choosing an open license, the primary difference between them is the level of openness:</p>
+<ul class="simple">
+<li><p>High: allowing basically any type of redistribution and derivative work which can greatly increase work popularity and reusability but also significantly limit potential benefits of the author.</p></li>
+<li><p>Low: allowing a smaller set of priviledges for the users but keeping a lot of author's rights.</p></li>
+</ul>
+<p>We can say that public domain is the ultimate "maximum open" variant and typical proprietary license is the ultimate "minimum open" variant. Obviously there are lots of licenses in between.</p>
+<p>No matter the type of the work, vast majority of open licenses share these elements:</p>
+<ul class="simple">
+<li>
+<p>distribution and modification: the work can be freely distributed and modified</p>
+<ul>
+<li><p>some licenses require an attribution of the original work</p></li>
+<li><p>some licenses require to state changes</p></li>
+<li><p>some licenses require source discloure and/or same license for derivative work</p></li>
+</ul>
+</li>
+<li><p>private use: derivative works can violate license requirements as long as the use remains private</p></li>
+<li><p>limited liability / no warranty / no trademark - even though not required, most licenses will state explicitly that they grant no warranty and trademark rights</p></li>
+<li><p>commerciality: explicit permission or prohibition of commercial use of the work</p></li>
+</ul>
+<p>There are 2 main kinds of open licenses:</p>
+<ul class="simple">
+<li><p>permissive</p></li>
+<li><p>copyleft[wiki_copyleft]_<a class="citation-reference" href="#gnu-copyleft" id="citation-reference-2" role="doc-biblioref">[GNU_copyleft]</a></p></li>
+</ul>
+<p>Both grant a large array of rights but copyleft licenses have 2 additional requirements:</p>
+<ul class="simple">
+<li><p>all derivative work must be under the same license</p></li>
+<li><p>all derivative work to be available in the preferred working form (that is source code with no obfuscation)</p></li>
+</ul>
+<p>Advantages of copyleft:</p>
+<ul class="simple">
+<li><p>The work is protected from some forms of reuse which could be generally thought as theft and abuse. Basically same fair play game as with SA variants of CC licenses, which force derivative works to "give back" to the original author.</p></li>
+<li><p>If someone creates a copyleft-derivative work and commercializes it, everyone can do it aswell as the license requires source disclosure. In practice this incentivizes people to cooperate instead of agressively copying and selling each other's versions.</p></li>
+</ul>
+<p>Disadvantages of copyleft:</p>
+<ul class="simple">
+<li><p>A lot of potential users (especially programmers and businesses who would like to use the project as a 3rd party library) will be turned off by the license as it effectively forces them to license their entire project under exact same terms.</p></li>
+<li><p>It significantly limits <em>license compatibility</em> of such work.</p></li>
+<li><p>It's very hard to get large amount of uses of a copyleft project in a place where there are alternatives with permissive licenses.</p></li>
+</ul></section><section id="license-domains"><h2>License domains</h2>
+<p>Not every license is applicappble to every type of work. We can distinguish 2 primary domains in which majority of open licenses operate:</p>
+<ul class="simple">
+<li><p>software</p></li>
+<li><p>creative works (sounds, images, modelling etc.) (not necesserarily in digital or analog form) referred later as <em>art</em></p></li>
+</ul>
+<p>Some works require more specific licenses:</p>
+<ul class="simple">
+<li><p>Databases - there are various concerns regarding privacy.</p></li>
+<li><p>Fonts - modern font formats often combine art with some software. Designing a typeface is definitely an artistic work but because of various technical peculiarities modern fonts also embed a sort of virtual machine code that instructs rendering software how to handle specific details. This makes fonts a combination of both, a situation which some deemed significant enough to design licenses specifically for fonts.</p></li>
+<li><p>Hardware - I see more and more projects with the goal of open hardware specification. Hardware is definitely different from software but I don't know exact reasons why they need separate license. Probably <a class="reference external" href="https://en.wikipedia.org/wiki/Dual-use_technology">dual-use</a> concerns.</p></li>
+</ul>
+<p>Obviously you should choose an appropriate license, made for your type of work. Otherwise, the exact terms and conditions become unclear and you risk various problems caused by dubious interpretation.</p>
+<blockquote>
+<p>What if my work mixes multiple types?</p>
+</blockquote>
+<p>Generally, you can apply multiple licenses and/or divide your work into smaller parts. More further down the article.</p>
+</section><section id="art-licenses"><h2>Art licenses</h2>
+<p>We start with licenses for art as their situation is simpler than software and many of readers may be familair with Creative Commons or at least have reused some of the work under one of their licenses (usually work available on Wikipedia or its sister websites).</p>
+<p><em>Creative Commons is a global nonprofit organization that enables sharing and reuse of creativity and knowledge through the provision of free legal tools.</em><a class="citation-reference" href="#cc" id="citation-reference-3" role="doc-biblioref">[CC]</a></p>
+<p>The organization has created a set of licenses with varying rights and conditions for users. All of the variants are different compositions of their core elements. We will start with the simplest one and move towards more rich variants.</p>
+<section id="cc0"><h3>CC0</h3>
+<p>CC0 is the equivalent of public domain. It's primary purpose is to satisfy authorities where a dedication to the public domain meets any problems. The license text effectively grants users all rights to the work just like public domain but the fact that the license is an explicit legal text make it beneficial in some jurisdictions.</p>
+<p>A lot of work licensed under CC0 also lists public domain as a choice so that the user can choose one from both according to their needs (more on applying multiple licenses later).</p>
+</section><section id="cc-by"><h3>CC-BY</h3>
+<p>This license is like CC0 but adds one condition - <strong>attribution of the author</strong>. Every copy and derivative project must contain information who did the original work.</p>
+<p>To avoid interpretation problems, many authors explicitly state in their project how their work should be referenced (usually author's name and a link to original source).</p>
+<p>This license gives almost unlimited freedom for users of the work (as long as attribution condition is satisfied, everything is allowed including commerciality and any modifications) but at the same time ensures that the author will not be forgotten. For some projects alone (if they become popular enough) it's enough to guarantee significant recognition for the author.</p>
+</section><section id="cc-by-sa"><h3>CC-BY-SA</h3>
+<p>Like CC-BY but with added condition, known as <strong>share-alike</strong>. It requires any derivative work to be licensed exactly the same.</p>
+<p>The primary benefit of SA is that if any derivative work appears, author of the original work can automatically reuse it because all modifications are under same license. This creates a situation where all editors play a fair game of reusing other's work.</p>
+</section><section id="cc-by-nd"><h3>CC-BY-ND</h3>
+<p>Like CC-BY but with added condition: <strong>no derivative work</strong>.</p>
+<p>CC generally discourages ND variants as disallowing derivative work significantly reduces project reusability and popularity. The whole point of openness is to allow other people to modify the work.</p>
+</section><section id="cc-by-nc"><h3>CC-BY-NC</h3>
+<p>Like CC-BY but with added condition: <strong>non-commercial</strong>.</p>
+<p>CC generally discourages NC variants as disallowing commerciality significantly reduces incentive to reuse the work. In many cases the lack of NC is what makes the project so popular which ultimately leads to monetary benefit of the author.</p>
+</section></section><section id="other-cc-variants"><h2>Other CC variants</h2>
+<p>Based on previous explanations you should easily understand remaining variants:</p>
+<ul class="simple">
+<li><p>CC-BY-NC-SA</p></li>
+<li><p>CC-BY-NC-ND</p></li>
+</ul></section><section id="cc-summary"><h2>CC summary</h2>
+<p>An image for easier remembering:</p>
+<img alt="CC license spectrum" src="https://creativecommons.org/wp-content/uploads/2019/11/cc_license_spectrum-633x1024.png"><p>If you are working on some project and are undecided on its license, Creative Commons recommends CC-BY-SA. ND and NC greatly disincentivize users (read: potential investors) while BY and SA are standard elements of <a class="reference external" href="https://en.wikipedia.org/wiki/Free_content">free cultural works</a>.</p>
+<p>CC Licenses briefly explained: <a class="reference external" href="https://creativecommons.org/about/cclicenses/">https://creativecommons.org/about/cclicenses/</a></p>
+<p>CC FAQ: <a class="reference external" href="https://creativecommons.org/faq">https://creativecommons.org/faq</a></p>
+</section><section id="software-licenses"><h2>Software licenses</h2>
+<p>The situation here a bit more complex than with art as software faces many technical peculiarities. The primary organization in play here was <a class="reference external" href="https://en.wikipedia.org/wiki/Free_Software_Foundation">FSF</a> but numerous other organizations have created their licenses too, many of which also are in wide use today. A lot of software licenses have analogical elements to CC licenses, they just are better suited towards licensing code.</p>
+<p>As previously, we start with most permissive ones but in this case I list only popular ones. The spectrum is much wider here, some licenses aren't a straight increase/decrease in conditions and permissions. There are many more software licenses than mentioned in this article.</p>
+<section id="the-unlicense-bsd-0-clause"><h3>The Unlicense, BSD 0-clause</h3>
+<p>Both analogically equivalent to CC0 - public domain but as an explicit legal text. No conditions whatsoever.</p>
+</section><section id="bsl"><h3>BSL</h3>
+<p>Boost software license is one of the most permissive software licenses, only requiring license and copyright notice in the source form.</p>
+<p>It's not strictly analogous to CC-BY because in case of BSL the attribution is only required for distribution in the source form. Compiled code and other binary forms are not required. This detail makes BSL more appealing for some projects, e.g. embedded where providing a license notice with the final form can be troublesome.</p>
+</section><section id="zlib-license"><h3>zlib license</h3>
+<p>Like BSL, but has an additional condition that modified source must be marked as such.</p>
+</section><section id="mit"><h3>MIT</h3>
+<p>MIT and Apache 2.0 are the most popular of the permissive type of licenses, analogic to CC-BY. MIT, unlike zlib, doesn't require to state changes but all works have to reproduce license text, not just source form.</p>
+<p>GNU recommends to call MIT license as Expat due to (probably past) ambiguities. See <a class="reference external" href="https://www.gnu.org/licenses/license-list.html#Expat">https://www.gnu.org/licenses/license-list.html#Expat</a> for more information.</p>
+</section><section id="apache-2-0"><h3>Apache 2.0</h3>
+<p>Apache 2.0 license is very similar to MIT, with following differences:</p>
+<ul class="simple">
+<li><p>it explicitly states it does not grant any trademark rights, even though licenses without such a statement probably do not grant any implicit trademark rights under any jurisdiction</p></li>
+<li><p>it explicitly provides an express grant of patent rights from contributors</p></li>
+</ul>
+<p>Patenting software is a controversial topic. Critics argue that you can't patent code or algorithms, just like you can not patent other abstract ideas like mathematical formulas or stock characters. In jurisdictions where patenting software is not a thing, Apache 2.0 license is basically same as MIT.</p>
+</section><section id="bsd"><h3>BSD</h3>
+<p>Berkley Software Distribution refers to multiple permissive licenses. They have no explicit numbering but their short names refer to the amount of clauses it had, newer versions having less.</p>
+<ul class="simple">
+<li><p>BSD 4-clause - has an "advertising clause" that requires an acknowledgment of the original source in all advertising material (GNU considers this clause non-free, incompatible with GPL)</p></li>
+<li><p>BSD 3-clause "new" - has no advertising clause</p></li>
+<li><p>BSD 3-clause "clear" - has no advertising clause and explicitly does not grant any patent rights</p></li>
+<li><p>BSD 2-clause "simplified" - like 3-clause "new" but without forbidding of using names of copyright holder and contributors to promote and endorse derivative works</p></li>
+<li><p>BSD 0-clause - no conditions, no mention of patents but at the same time no explicit dedication to the public domain</p></li>
+</ul>
+<p><a class="reference external" href="https://www.gnu.org/licenses/bsd.html">This article on GNU's website</a> explains why the advertising clause in the 4-clause version was problematic.</p>
+</section><section id="mpl"><h3>MPL</h3>
+<p>Mozilla Public License is on the border between typical permissive licenses like MIT and copyleft licenses like GPL.</p>
+<p>This license text is pretty long (compared to others) but offers specific compromise between permissive and copyleft approach:</p>
+<ul class="simple">
+<li>
+<p>Modifications of the <em>Covered Software</em> must be released under same license. If <em>Covered Software</em> is not <em>Incompatible with Secondary Licenses</em> it may also be released under <em>Secondary Licenses</em>.</p>
+<ul>
+<li><p>Incompatibility is present when the license has its <em>Exhibit B</em> attached.</p></li>
+<li><p><em>Secondary Licenses</em> are GNU GPL 2.0, GNU LGPL 2.1, GNU AGPL 3.0 or any later version of these.</p></li>
+</ul>
+</li>
+<li>
+<p><em>Larger Work</em> can be distributed under other licenses as long as the <em>Covered Software</em> is made compliant with MPL.</p>
+<ul>
+<li><p><em>Covered Software</em> must have attached full license or <em>Exhibit A</em> (short license notice) and disclosed source code.</p></li>
+</ul>
+</li>
+</ul>
+<p><em>Covered Software</em> means <em>Source Code Form</em> to which the initial <em>Contributor</em> has attached the notice in <em>Exhibit A</em>, the <em>Executable Form</em> of such <em>Source Code Form</em>, and <em>Modifications</em> of such <em>Source Code Form</em>, in each case including portions thereof. For definitions of other terms, see exact license text. I only wrote enough to make it understandable (it's pretty long compared to other licenses).</p>
+<p>In short, MPL works as GPL for the <em>Covered Software</em> (being interchangable with GNU licenses if without <em>Exhibit B</em>) but <em>Larger Work</em> can be distributed on different terms. This makes MPL projects protected like GPL ones but only to to point of modification. If someone creates something on top of MPL code, only modified portions of MPL code are under copyleft requirements.</p>
+</section><section id="gnu-licenses"><h3>GNU licenses</h3>
+<p>FSF released 3 licenses, each with different level of copyleft:</p>
+<ul class="simple">
+<li><p>LGPL: Lesser General Public License</p></li>
+<li><p>GPL: General Public License</p></li>
+<li><p>AGPL: Affero General Public License</p></li>
+</ul>
+<p>GPL is the standard copyleft license - all derivative works have to be licensed under same license and have source code disclosed. Analogical to CC-BY-SA.</p>
+<p>LGPL is like GPL but permits dynamically linked code to be distributed under different license. This is slightly less restrictive than GPL and slightly more restrictive than MPL because MPL permits any larger work while LGPL specifically states that for this "border" to work the larger work must be linked dynamically. If compiled LGPL source code is linked statically to other compiled source code, the entire object must be licensed under LGPL.</p>
+<p>AGPL is the stricter version of GPL, stating that use over network is also considered distribution. When a modified version is used to provide a service over a network, the complete source code of the modified version must be made available. This is to prevent abuses of network-related projects where someone could use network connection to create a barrier that would allow to bypass requirements of modified GPL software.</p>
+<p>GPL 2.0 is incompatible with GPL 3.0. The latter explicitly states it allows 3.0 or any newer version, the former does not. GPL 3.0 was made to address abuses like <a class="reference external" href="https://en.wikipedia.org/wiki/Tivoization">Tivoization</a> which effectively blocked one of GNU's intended <a class="reference external" href="https://www.gnu.org/philosophy/po/free-sw.ml-en.html#four-freedoms">4 essential freedoms</a>. Additionally, GPL 3.0 disallows <a class="reference external" href="https://en.wikipedia.org/wiki/Digital_rights_management">DRM</a> which Richard Stallman likes to call "Digital Restrictions Management". A full explanation is available at <a class="reference external" href="https://www.gnu.org/licenses/rms-why-gplv3.html">https://www.gnu.org/licenses/rms-why-gplv3.html</a>.</p>
+<p>GNU generally recommends:</p>
+<ul class="simple">
+<li><p>GPL 3.0 for new projects</p></li>
+<li><p><a class="reference external" href="https://www.gnu.org/licenses/why-not-lgpl.html">LGPL 3.0 for some projects due to pragmatic reasons</a></p></li>
+<li><p><a class="reference external" href="https://www.gnu.org/licenses/licenses.html#OtherWorks">CC-BY-ND for essays of opinion and scientific papers</a></p></li>
+<li><p>GFDL for documentation</p></li>
+</ul>
+<p>Full article on <a class="reference external" href="https://www.gnu.org/licenses/license-recommendations.html">https://www.gnu.org/licenses/license-recommendations.html</a>.</p>
+<p>GPL FAQ: <a class="reference external" href="https://www.gnu.org/licenses/gpl-faq.html">https://www.gnu.org/licenses/gpl-faq.html</a>.</p>
+</section></section><section id="extra-licenses"><h2>Extra licenses</h2>
+<p>Licenses aimed at specific works that aren't strictly art or software.</p>
+<section id="gpl-for-fonts"><h3>GPL for Fonts</h3>
+<p>GPL can be used for fonts, with and without its exception. Without the exception, a document embedding the font also has to be licensed under GPL.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.gnu.org/licenses/gpl-faq.html#FontException">https://www.gnu.org/licenses/gpl-faq.html#FontException</a></p></li>
+<li><p><a class="reference external" href="https://www.fsf.org/blogs/licensing/20050425novalis">https://www.fsf.org/blogs/licensing/20050425novalis</a></p></li>
+</ul></section><section id="sil-ofl-1-1"><h3>SIL OFL 1.1</h3>
+<p>Copyleft license for fonts but incompatible with GPL.</p>
+<p>(sic. from <a class="reference external" href="https://www.gnu.org/licenses/license-list.html#SILOFL">https://www.gnu.org/licenses/license-list.html#SILOFL</a>) <em>Its only unusual requirement is that when selling the font, you must redistribute it bundled with some software, rather than alone. Since a simple Hello World program will satisfy the requirement, it is harmless. Neither we</em> [GNU] <em>nor SIL recommend the use of this license for anything other than fonts.</em></p>
+</section><section id="gfdl"><h3>GFDL</h3>
+<p><em>The GNU Free Documentation License is a form of copyleft intended for use on a manual, textbook or other document to assure everyone the effective freedom to copy and redistribute it, with or without modifications, either commercially or non-commercially.</em></p>
+<p>GFDL main purpose is to be GPL equivalent for documentation. More on <a class="reference external" href="https://www.gnu.org/licenses/licenses.html#FDL">https://www.gnu.org/licenses/licenses.html#FDL</a>.</p>
+</section><section id="freebsddl"><h3>FreeBSDDL</h3>
+<p>Permissive non-copyleft free documentation license, compatible with GFDL.</p>
+</section><section id="odbl"><h3>ODbl</h3>
+<p><cite>Open Data Commons Open Database License &lt;https://choosealicense.com/licenses/odbl-1.0/&gt;</cite> is meant to be GPL equivalent for databases. It is not compatible with GPL and GFDL due to (sic.) <em>inconvenient requirements about signing contracts which try to create an effect like copyleft for data that is not copyrightable</em><a class="citation-reference" href="#gnu-odbl" id="citation-reference-4" role="doc-biblioref">[GNU_ODbl]</a>but GNU states (sic.) <em>there is no reason to avoid using data released this way</em>.</p>
+</section></section><section id="linux-kernel"><h2>Linux kernel</h2>
+<p>The Linux kernel is very often given as an example of a great open project. Some noteworthy facts:</p>
+<ul class="simple">
+<li>
+<p>The project is licensed under GPL 2.0, without "or any later version" clause and with an explicit syscall exception (Linux-syscall-note) so that programs that rely only on kernel's interface are not considered derivative works. This allows non-GPL code to run on Linux without license violations (GCC has similar explicit exception for the runtime of its toolchain).</p>
+<ul>
+<li><p>Linus Torvalds has described licensing Linux under the GPL 2.0 as the "best thing I ever did".[Torvalds_GPLv2]_</p></li>
+<li><p>Linus Torvalds decided not to adopt GPL 3.0 for the project and continues to be against it.[Torvalds_GPLv3]_</p></li>
+<li><p>Linux kernel for a long time has been including binary blobs, which are proprietary, in its source tree and main distribution.</p></li>
+</ul>
+</li>
+<li><p>Even though the primary goal of GPL is FOSS, <strong>`not all GNU/Linux distributions are considered free by GNU &lt;https://www.gnu.org/distros/free-distros.html&gt;`_</strong>. The views of Richard Stallman (FSF) and Linux Torvalds (Linux) regarding free/open/proprietary software are significantly different.</p></li>
+</ul></section><section id="applying-a-license"><h2>Applying a license</h2>
+<p>For software there is a very strong convention: a file named <code class="docutils literal">LICENSE</code> or <code class="docutils literal">COPYING</code> (extension may vary, usually none or <code class="docutils literal">txt</code>) in the root directory of the repository. Additionally, very often all source code files will contain a comment at the top with short license notice. If distributed in the compiled form, it should be bundled with documentation.</p>
+<p>For other works, if they use a medium capable of transmitting text or image (especially books and movies), the license (either a note/link or its full form) is provided at the beginning/cover or at the end of the work. Almost any type of creative work has at least a place to put the title and/or author's name so if there is no better place for a license notice this can be used too.</p>
+<section id="spdx"><h3>SPDX</h3>
+<p><em>The Software Package Data Exchange® is an open standard for communicating software bill of material information, including components, licenses, copyrights, and security references. SPDX reduces redundant work by providing a common format for companies and communities to share important data, thereby streamlining and improving compliance.</em></p>
+<p><em>The SPDX specification is an international open standard (ISO/IEC 5962:2021).</em></p>
+<p>SPDX is probably best known for <a class="reference external" href="https://spdx.org/licenses/">it's list of license IDs</a> which are commonly found within comments at the top of files belonging to open projects.</p>
+<img alt="SPDX infographic" src="https://spdx.dev/wp-content/uploads/sites/41/2017/12/spdxbookmark_small.png"></section></section><section id="multiple-licenses"><h2>Multiple licenses</h2>
+<p>There is nothing stopping you from offering the same work under multiple licenses (as long as the work is yours or all contributors agreed to it). Some projects have multiple (usually similar) licenses in order to achieve higher license compatibility with potential derivative works. Some projects are offerred under both open source and proprietary licenses - the goal is to allow users to obtain proprietary license (for a price) if they do not want to satisfy requirements stated in the open one.</p>
+<p>Typical combinations are:</p>
+<ul class="simple">
+<li><p>CC0/The Unlicense + dedication to the public domain</p></li>
+<li><p>MIT (Expat) + Apache 2.0</p></li>
+<li><p>MPL/LGPL/GPL + any later version of these + proprietary</p></li>
+</ul></section><section id="changing-a-license"><h2>Changing a license</h2>
+<p>It's possible to change a license. You just need to have an agreement from contributors as they have provided their work under specific terms.</p>
+<p>In some projects, there is a contributor agreement required prior to any contributions, some may state that contributors grant patent rights and allow the owner to change the license. If not, the owner must ask contributors for the permission to change the license. See <a class="reference external" href="https://en.wikipedia.org/wiki/Software_relicensing">https://en.wikipedia.org/wiki/Software_relicensing</a> for many historical examples.</p>
+<p>Be aware that users of the work might react negatively to license change, especially if the new license has more requirements and/or is incompatible with already existing derivative works.</p>
+<p>Lastly, law does not apply to the past: all previous versions of the work retain the license they were released with. Even if you change the license, everyone has the right to continue using old versions of the work under terms these versions were released.</p>
+</section><section id="license-compatibility"><h2>License compatibility</h2>
+<p>It's possible to create a project where multiple subprojects are licensed differently, the final work just has to:</p>
+<ul class="simple">
+<li><p>satisfy all requirements of licensed subprojects</p></li>
+<li><p>offer no more rights than licensed subprojects</p></li>
+</ul>
+<p>This means that <strong>generally</strong>:</p>
+<ul class="simple">
+<li><p>...the most restrictive license has to be applied to the whole work.</p></li>
+<li><p>...permissive licenses are compatible with each other as all of them allow relicesing derived works, usually with no or simple requirements like attribution.</p></li>
+<li><p>...copyleft licenses are not compatible with each other as almost every one requires the project under exactly the same license.</p></li>
+</ul>
+<section id="examples"><h3>Examples</h3>
+<p>Suppose a project where:</p>
+<ul class="simple">
+<li><p>one part is under MIT</p></li>
+<li><p>one part is under GPL</p></li>
+<li><p>one part is your own work</p></li>
+</ul>
+<p>Then, no matter how you want your work to be licensed, the entire project must be licensed under GPL.</p>
+<p>Another example:</p>
+<ul class="simple">
+<li><p>one part is Apache 2.0</p></li>
+<li><p>one part is modified MPL</p></li>
+<li><p>one part is LGPL</p></li>
+<li><p>one part is your own work</p></li>
+</ul>
+<p>Then, as long as you link LGPL part dynamically, you only need to release changes to the MPL part. The entire work can have a different license.</p>
+<p>When it comes to CC licenses for creative works the situation is trivial - each variant has clear list of conditions. If there is no SA (share-alike) (copyleft) condition, you can create derivative works with different license.</p>
+<p>Resources about license compatibility:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/License_compatibility">https://en.wikipedia.org/wiki/License_compatibility</a> (contains some diagrams)</p></li>
+<li><p><a class="reference external" href="https://www.gnu.org/licenses/license-compatibility.html">https://www.gnu.org/licenses/license-compatibility.html</a></p></li>
+<li><p>list of licenses (in)compatible with GPL and GFDL: <a class="reference external" href="https://www.gnu.org/licenses/license-list.html">https://www.gnu.org/licenses/license-list.html</a></p></li>
+<li><p>permission/condition/limitation matrix of various licenses: <a class="reference external" href="https://choosealicense.com/appendix">https://choosealicense.com/appendix</a></p></li>
+<li><p><a class="reference external" href="https://creativecommons.org/share-your-work/licensing-considerations/compatible-licenses">https://creativecommons.org/share-your-work/licensing-considerations/compatible-licenses</a></p></li>
+</ul>
+<!-- Unfinished graph of license compatibility --><!-- GNU AGPL 3.0+ -> GNU GPL 3.0+ -> GNU LGPL 3.0+ -> MPL 2.0 (without Exhibit B) -> Apache 2.0 -> Expat | X11 | ISC -> BSL 1.0 -> BSD 0-clause -> Unlicense | CC0 --><!-- GNU GPL 2.0+ -> GNU LGPL 2.1 --><!-- GNU GPL 2.0+ -> Artistic License 2.0 --><!-- BSD 4-clause -> BSD 3-clause new -> BSD 2-clause -> Expat | X11 | ISC --><!-- GNU GPL 2.0+ -> BSD 3-clause clear -> BSD 2-clause --><!-- GNU GPL 2.0+ -> EPL 2.0 with designation --><!-- GNU GPL 2.0+ -> Zlib --><!-- GNU GPL 3.0 -> Freetype --><!-- GNU GPL 3.0 -> CC BY-SA 4.0 --><!-- GNU AGPL 3.0+ -> CeCILL 2.1 --><!-- GNU GPL 2.0+ -> CeCILL 2.1 --><!-- GFDL -> FreeBSDDL --><!-- Projects under EUPL can be made compatible with CeCILL 2.1 and GPL 2.0+ but `there is some effort requried <https://www.gnu.org/licenses/license-list.html#EUPL-1.1>`_ --></section></section><section id="faq"><h2>FAQ</h2>
+<blockquote>
+<p>Are there software license equivalents of CC's ND and NC variants?</p>
+</blockquote>
+<p>No. I presume the reasons are:</p>
+<ul class="simple">
+<li><p>NC is just pointless. Sooner or later any worthy software finds commercial application and forbidding this would basically block the development. If you are scared someone could reuse your work for their financial benefit just use one of the strongest copyleft licenses (GPL or AGPL) - if they do you will be able to do the same.</p></li>
+<li><p>ND is even more pointless. Code is constantly changed.</p></li>
+</ul>
+<!--  --><blockquote>
+<p>If I choose a license that has no NC condition or equivalent (that is, it allows derivative works to be sold) isn't it removing primary benefit of my work? I could create something and someone else could gain all the money for selling my altered work.</p>
+</blockquote>
+<p>Not always. The lack of NC may greatly increase popularity of your work which in turn can led you to obtain numerous benefits including sponsorship or a specific job offer. So it's possible that without non-commercial condition you can actually end up with more money. Whether a given work would be better with or without NC is a question really hard to answer. IMO Jimmy Wales (founder or co-founder of Wikipedia) gives very good answers when asked why the website is free (just search for any interview).</p>
+<blockquote>
+<p>GCC and related libraries (especially libgcc and libstdc++) are licensed under GPL. Does it mean if I use these in my projects all my work has to be licensed under GPL?</p>
+</blockquote>
+<p>GCC and related libraries are licensed under GPL, but the contain <em>Runtime Library Exception</em>. This exception allows to ignore GPL requirements as long as (sic.) <em>all Target Code was generated by Eligible Compilation Processes</em>. Exact details are explained on <a class="reference external" href="https://www.gnu.org/licenses/gcc-exception-3.1-faq.html">https://www.gnu.org/licenses/gcc-exception-3.1-faq.html</a>. In the simplest case, if you are using GNU libraries as your runtime (e.g. libstdc++ as the implementation of the C++ standard library) (statically or dynamically) code depending on it is not considered derivative work and GPL does not apply to it.</p>
+<blockquote>
+<p>If my C or C++ code includes Linux system headers, isn't my work derivative given Linux is licensed under GPL 2.0?</p>
+</blockquote>
+<p>Similarly to GCC's <em>Runtime Library Exception</em> Linux has <em>Linux syscall exception</em> which does not consider works derivative if they only use the headers to compile the program.</p>
+<blockquote>
+<p>Can I compile non-GPL code with GCC without license requirements?</p>
+</blockquote>
+<p>Yes. In such case GCC is only a tool used to create the work. It's not a part of the work.</p>
+<blockquote>
+<p>Are FOSS, CC, FSF or other movements/organizations against copyright or capitalism?</p>
+</blockquote>
+<p>Absolutely not. Open licenses are just a different form of copyright, often aimed at making best use of capitalism based on the idea of voluntary trade between parties. Open licenses specify how this "trade" is supposed to happen and given the fact that any "trade" (here: use of the work under specific conditions stated in the license) is voluntary it's a win-win situation for both parties. It's not so rare to see a company which will sponsor a FOSS project and/or ask the maintainers to do some modifications for a price. Other companies develop projects with copyleft licenses and offer private proprietary licenses (Qt is a good example of such project).</p>
+<blockquote>
+<p>Did someone really asked the previous question?</p>
+</blockquote>
+<p>No, but some people greatly misinterpret the meaning of FOSS movement and some people involved in free software movement have even been accused of communism [citation needed]. All such accusations had no solid reasoning and were usually (if not only) from proprietary software companies made in order to stop them from sharing FOSS that was seen as a competition.</p>
+</section><section id="foss-vs-open-source"><h2>FOSS vs open-source</h2>
+<p>FOSS stands for <em>free and open source software</em>. <strong>The word free here does not mean "zero price" but "freedom".</strong><a class="citation-reference" href="#gnu-free" id="citation-reference-5" role="doc-biblioref">[GNU_free]</a> FOSS does not have to be non-commercial.</p>
+<p>Open-source is a subset of FOSS. A prime example of a project that is open-source but not <em>free</em> (in FSF terminology) is Visual Studio Code:</p>
+<ul class="simple">
+<li><p>The repository is open and licensed under MIT</p></li>
+<li><p>Official Microsoft's releases have <a class="reference external" href="https://code.visualstudio.com/license">specific, different non-open license</a> and contain closed-source telemetry</p></li>
+<li><p>The extension marketplace is proprietary to Microsoft and only Microsoft products are allowed to use it</p></li>
+<li><p>Several extensions are proprietary to Microsoft, this includes some of Microsoft's official C++, C# and remote development tools</p></li>
+</ul>
+<p>The FOSS version of VS Code is VS Codium - <a class="reference external" href="https://vscodium.com/">https://vscodium.com/</a></p>
+<p>More information:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.gitpod.io/blog/open-vsx/">https://www.gitpod.io/blog/open-vsx/</a></p></li>
+<li><p><a class="reference external" href="https://github.com/VSCodium/vscodium/blob/master/DOCS.md">https://github.com/VSCodium/vscodium/blob/master/DOCS.md</a></p></li>
+</ul></section><section id="intellectual-property"><h2>Intellectual property</h2>
+<p><a class="reference external" href="https://www.gnu.org/philosophy/not-ipr.html">GNU criticizes this term</a> as it tries to bundle copyright, patenting, trademark and other laws under one term which only causes more confusion and uncertainty.</p>
+</section><section id="cryptography"><h2>Cryptography</h2>
+<p>Various jurisdictions place requirements on cryptographic software. Today's assymetric algorithms are practically unbreakable. Some jurisdictions place hard requirements like intentional backdoors for the government and other jurisdictions consider such actions a violation of their consitutional law (privacy and free speech).</p>
+<p>More information: <a class="reference external" href="http://www.cryptolaw.org/">http://www.cryptolaw.org/</a></p>
+</section><section id="license-violations"><h2>License violations</h2>
+<p>Majority of license violations are for projects under GPL and other copyleft licenses.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.gnu.org/licenses/gpl-violation.html">https://www.gnu.org/licenses/gpl-violation.html</a></p></li>
+<li><p><a class="reference external" href="https://gpl-violations.org">https://gpl-violations.org</a> lists more than 100 cases</p></li>
+</ul>
+<p>Generally, if any lawsuit appears, it can be separated into 2 parts:</p>
+<ul class="simple">
+<li><p>requirement to cease the violation</p></li>
+<li><p>recompensation for damages</p></li>
+</ul>
+<p>If a GPL-like license is violated, requiring to release all source code is only the first part - ensuring compliance. The second part is more complex and its finale will generally depend where the lawsuit was filed and what organizations were involved. In some cases the parties finish on a monetary agreement.[wiki_litigation]_</p>
+</section><section id="limitations-and-exceptions-to-copyright"><h2>Limitations and exceptions to copyright</h2>
+<p>Various jurisdictions define different terms that limit copyright or provide some exceptions. These aim to prevent abusive licensing and help general public interest. There is no large international consensus on copyright limitations and exceptions so I list only core elements:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Idea%E2%80%93expression_distinction">Idea-expression distinction</a> - ideas can not be copyrighted, only their expression. For example, a book or a movie can be copyrighted but the idea of specific character/story (e.g. femme fatale) can not. This exception also applies to abstract science - it's not possible to copyright mathematical formulas or discovered laws of physics.</p></li>
+<li><p>Threshold of originality - the work must be original enough, must contain sufficient effort in order to be copyrightable. How exactly the threshold is defined and whether given work achieves it is very subjective.</p></li>
+<li><p>Fair use/dealing - ability to ignore copyright under specific circumstances for the benefit of general public (usually very extreme circumstances like saving lifes in a natural disaster). The simplest case is the right to quote - you don't need to ask the author for permission when your work quotes parts of other's work.</p></li>
+</ul></section><section id="more"><h2>More</h2>
+<p>Additional resources you might be interested in:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://tldrlegal.com/">https://tldrlegal.com/</a> - software licenses in plain english</p></li>
+<li><p><a class="reference external" href="https://www.gnu.org/philosophy/philosophy.html">https://www.gnu.org/philosophy/philosophy.html</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Limitations_and_exceptions_to_copyright">https://en.wikipedia.org/wiki/Limitations_and_exceptions_to_copyright</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Fair_dealing">https://en.wikipedia.org/wiki/Fair_dealing</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Fair_use">https://en.wikipedia.org/wiki/Fair_use</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Right_to_quote">https://en.wikipedia.org/wiki/Right_to_quote</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Threshold_of_originality">https://en.wikipedia.org/wiki/Threshold_of_originality</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Freedom_of_panorama">https://en.wikipedia.org/wiki/Freedom_of_panorama</a></p></li>
+</ul>
+<hr class="docutils">
+<div role="list" class="citation-list">
+<div class="citation" id="cc" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-3">CC</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://creativecommons.org/faq/#what-is-creative-commons-and-what-do-you-do">https://creativecommons.org/faq/#what-is-creative-commons-and-what-do-you-do</a></p>
+</div>
+<div class="citation" id="gnu-free" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-5">GNU_free</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.gnu.org/philosophy/free-sw.html">https://www.gnu.org/philosophy/free-sw.html</a></p>
+</div>
+<div class="citation" id="gnu-copyleft" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-2">GNU_copyleft</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.gnu.org/licenses/copyleft.html">https://www.gnu.org/licenses/copyleft.html</a></p>
+</div>
+<div class="citation" id="gnu-odbl" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-4">GNU_ODbl</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.gnu.org/licenses/license-list.html#ODbl">https://www.gnu.org/licenses/license-list.html#ODbl</a></p>
+</div>
+<div class="citation" id="wiki-copyleft" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>wiki_copyleft<span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Copyleft">https://en.wikipedia.org/wiki/Copyleft</a></p>
+</div>
+<div class="citation" id="wiki-pd" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">wiki_PD</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Public_domain">https://en.wikipedia.org/wiki/Public_domain</a></p>
+</div>
+<div class="citation" id="wiki-litigation" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>wiki_litigation<span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Open_source_license_litigation">https://en.wikipedia.org/wiki/Open_source_license_litigation</a></p>
+</div>
+<div class="citation" id="torvalds-gplv2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Torvalds_GPLv2<span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://web.archive.org/web/20070210224351/http://hotwired.goo.ne.jp/matrix/9709/5_linus.html">https://web.archive.org/web/20070210224351/http://hotwired.goo.ne.jp/matrix/9709/5_linus.html</a></p>
+</div>
+<div class="citation" id="torvalds-gplv3" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>Torvalds_GPLv3<span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://www.youtube.com/watch?v=PaKIZ7gJlRU">https://www.youtube.com/watch?v=PaKIZ7gJlRU</a></p>
+</div>
+</div>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

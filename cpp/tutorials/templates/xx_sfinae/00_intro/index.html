@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 00 - intro</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../../beginner/">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">templates</a></li>
+							<span>/</span>
+							<li><a href="../">xx - SFINAE</a></li>
+							<span>/</span>
+						<li>00 - intro</li>
+					</ol></nav><div class="content">
+				<h1>00 - intro</h1>				<p>Suppose you have mixed function overloading with templates. One implementation is a template, one is not.</p>
+<div class="code"><pre class="code literal-block"><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">animal</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="o">~</span><span class="n">animal</span><span class="p">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">default</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">virtual</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="nf">sound</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">cat</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">animal</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="k">public</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">sound</span><span class="p">()</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="k">override</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="s">"meow"</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+
+<span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="n">print_info</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">t</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Object is not an animal and has value "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">".</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">print_info</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">animal</span><span class="o">&amp;</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"Object is an animal and does "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">sound</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">".</span><span class="se">\n</span><span class="s">"</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">cat</span><span class="w"> </span><span class="n">c</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">print_info</span><span class="p">(</span><span class="n">x</span><span class="p">);</span><span class="w"> </span><span class="c1">// expecting template function with [T = int]</span>
+<span class="w">    </span><span class="n">print_info</span><span class="p">(</span><span class="n">c</span><span class="p">);</span><span class="w"> </span><span class="c1">// expecting non-template function</span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+
+<p>It seems reasonable that the expected output would be:</p>
+<div class="code"><pre class="code literal-block">Object is not an animal and has value 7.
+Object is an animal and does meow.
+</pre></div>
+
+<p>Instead, we get a compiler error spam starting with something like this (everything further down is about all failed attempts to match operators with various stream &lt;&lt; overloads):</p>
+<div class="code"><pre class="code literal-block"><span class="n">main</span><span class="p">.</span><span class="n">cpp</span><span class="o">:</span><span class="w"> </span><span class="n">In</span><span class="w"> </span><span class="n">instantiation</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="err">'</span><span class="kt">void</span><span class="w"> </span><span class="n">print_info</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="p">[</span><span class="n">with</span><span class="w"> </span><span class="n">T</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cat</span><span class="p">]</span><span class="err">'</span><span class="o">:</span><span class="w"></span>
+<span class="n">main</span><span class="p">.</span><span class="n">cpp</span><span class="o">:</span><span class="mi">34</span><span class="o">:</span><span class="mi">17</span><span class="o">:</span><span class="w">   </span><span class="n">required</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">here</span><span class="w"></span>
+<span class="n">main</span><span class="p">.</span><span class="n">cpp</span><span class="o">:</span><span class="mi">21</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="w"> </span><span class="n">error</span><span class="o">:</span><span class="w"> </span><span class="n">no</span><span class="w"> </span><span class="n">match</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="err">'</span><span class="k">operator</span><span class="o">&lt;&lt;</span><span class="err">'</span><span class="w"> </span><span class="p">(</span><span class="n">operand</span><span class="w"> </span><span class="n">types</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="err">'</span><span class="n">std</span><span class="o">::</span><span class="n">basic_ostream</span><span class="o">&lt;</span><span class="kt">char</span><span class="o">&gt;</span><span class="err">'</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="err">'</span><span class="k">const</span><span class="w"> </span><span class="n">cat</span><span class="err">'</span><span class="p">)</span><span class="w"></span>
+<span class="w">     </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">"object is not an animal and has value "</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="sc">'\n'</span><span class="p">;</span><span class="w"></span>
+<span class="w">     </span><span class="o">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~</span><span class="w"></span>
+</pre></div>
+
+<p>So what has gone wrong? The key is "in instantation of <code>void print_info(const T&amp;) [with T = cat]</code>" and the text fragment from function template. <strong>Why template overload was choosen when a cat is an animal?</strong></p>
+<p>The short answer is very simple: <strong>templates do not like convertions</strong>. There were 2 choices:</p>
+<ul>
+<li>use <code>print_info(const animal&amp;)</code> - requires to perform implicit upcast</li>
+<li>use <code>print_info(const T&amp;)</code> with <code>T = cat</code> - a perfect match</li>
+</ul>
+<p>The second option was choosen. Why call a function needing implicit convertion when we can use <code>T = cat</code> and perfectly match the type? This is "how templates think".</p>
+<p>The cause of this problem is the fact that <strong>overload resolution happens after template argument deduction</strong>.</p>
+<p>Entire process, done by the compiler:</p>
+<ul>
+<li>The expression <code>print_info(c)</code> must be evaluated.</li>
+<li>The name <code>print_info</code> is looked up in relevant scopes (I will skip name lookup internals, they don't matter in this case)</li>
+<li>The name is resolved to a function. Begin search of all possible overloads.</li>
+<li>2 potential matches are found:</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span><span class="w"></span>
+<span class="kt">void</span><span class="w"> </span><span class="n">print_info</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="p">);</span><span class="w">      </span><span class="c1">// (1)</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">print_info</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">animal</span><span class="o">&amp;</span><span class="p">);</span><span class="w"> </span><span class="c1">// (2)</span>
+</pre></div>
+
+<ul>
+<li>Template type deduction is performed. For (1), based on provided argument, <code>T</code> is deduced to <code>cat</code>. All deductions succeed.</li>
+<li>Overload resolution has 2 candidates to consider:</li>
+</ul>
+<div class="code"><pre class="code literal-block"><span class="kt">void</span><span class="w"> </span><span class="nf">print_info</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">cat</span><span class="o">&amp;</span><span class="p">);</span><span class="w">    </span><span class="c1">// (1)</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">print_info</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">animal</span><span class="o">&amp;</span><span class="p">);</span><span class="w"> </span><span class="c1">// (2)</span>
+</pre></div>
+
+<ul>
+<li>(1) is choosen because it's a perfect match. (2) would require implicit convertion.</li>
+</ul>
+<p>The fact that the deduction occurs before different overloads are considered has a big consequence. It's an impactful C++ language design decision. If the reverse was true, there would be many problems regarding template specializations and overloads. Instead of good matches with (potentially specialized) templates, various types would pretend very weird convertions to fit into non-template overloads potentially losing data or accuracy while being converted.</p>
+<p>However, there is another consequence. <strong>Because deduction occurs first, it has been allowed to fail.</strong> Overloads in which deduction failed are not considered. As long as at least 1 overload matches and has no competing overload with the same overload resolution scoring, function call will succeed. This enables SFINAE (substitution failure is not an error) which is a very powerful feature capable to throw away certain overloads before they can be considered.</p>
+<p>SFINAE means that instead of compilation errors, overloads with failed deduction are simply not considered to be available. The error would only arise if all overloads have been discarded (there would not be anything left to choose from). As long as at least 1 candidate is valid, everything is ok, we just ignore these that do not make sense.</p>
+			</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - intro</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">09 - streams</a></li>
+							<span>/</span>
+						<li>01 - intro</li>
+					</ol></nav><div class="content">
+				<h1>01 - intro</h1>				<section id="theory"><h2>Theory</h2>
+<p>A stream is an abstraction over I/O (input/output) operations. The core goal is to hide implementation-specific details and offer a common interface for the same operations, regardless what the stream is actually connected to. The stream can represent a file, network traffic, in-memory operations such as compression and more - basically any abstract task that involves reading or writing data. Streams can work with any data (they almost always work on byte level) but in majority of cases it is text.</p>
+<p>A good example is Linux kernel interface, where for userspace streams are represented with file descriptors (unique integer numbers). File descriptors do not necessarily represent files on disk (they represent anything that supports I/O operations) - in unix philosophy everything is either a file or a process.</p>
+<p>Opening a stream looks differently depending on what it is:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;fcntl.h&gt;</span>
+
+<span class="com-single">// open a file - returns positive integer (fd) or -1 in case of error</span>
+<span class="keyword">int</span> <span class="func">open</span>(<span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">path</span>, <span class="keyword">int</span> <span class="param">flags</span>, <span class="type">mode_t</span> <span class="param">mode</span>);
+
+<span class="com-single">// create a file - returns positive integer (fd) or -1 in case of error</span>
+<span class="com-single">// (yes, this function is named "creat", not "create")</span>
+<span class="keyword">int</span> <span class="func">creat</span>(<span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">path</span>, <span class="type">mode_t</span> <span class="param">mode</span>);
+
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;sys/socket.h&gt;</span>
+
+<span class="com-single">// open a socket - returns positive integer (fd) or -1 in case of error</span>
+<span class="keyword">int</span> <span class="func">socket</span>(<span class="keyword">int</span> <span class="param">domain</span>, <span class="keyword">int</span> <span class="param">type</span>, <span class="keyword">int</span> <span class="param">protocol</span>);
+</pre></td>
+</tr></tbody></table>
+<p>but subsequent operations use the same interface:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;unistd.h&gt;</span>
+
+<span class="com-single">// copy up to count bytes from the stream identified by fd to the buffer</span>
+<span class="type">ssize_t</span> <span class="func">read</span>(<span class="keyword">int</span> <span class="param">fd</span>, <span class="keyword">void</span>* <span class="param">buf</span>, <span class="type">size_t</span> <span class="param">count</span>);
+
+<span class="com-single">// copy up to count bytes from buffer to the stream identified by fd</span>
+<span class="type">ssize_t</span> <span class="func">write</span>(<span class="keyword">int</span> <span class="param">fd</span>, <span class="keyword">const</span> <span class="keyword">void</span>* <span class="param">buf</span>, <span class="type">size_t</span> <span class="param">count</span>);
+</pre></td>
+</tr></tbody></table>
+<p>Closing streams is also done through the same function:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;unistd.h&gt;</span>
+
+<span class="com-single">// close the stream and release associated resources</span>
+<span class="keyword">int</span> <span class="func">close</span>(<span class="keyword">int</span> <span class="param">fd</span>);
+</pre></td>
+</tr></tbody></table>
+<div class="docutils container">
+<details><summary>Linux online manual pages</summary><div class="docutils container">
+<ul class="simple">
+<li><p><a class="reference external" href="https://man7.org/linux/man-pages/man2/open.2.html">https://man7.org/linux/man-pages/man2/open.2.html</a></p></li>
+<li><p><a class="reference external" href="https://man7.org/linux/man-pages/man2/socket.2.html">https://man7.org/linux/man-pages/man2/socket.2.html</a></p></li>
+<li><p><a class="reference external" href="https://man7.org/linux/man-pages/man2/read.2.html">https://man7.org/linux/man-pages/man2/read.2.html</a></p></li>
+<li><p><a class="reference external" href="https://man7.org/linux/man-pages/man2/write.2.html">https://man7.org/linux/man-pages/man2/write.2.html</a></p></li>
+<li><p><a class="reference external" href="https://man7.org/linux/man-pages/man2/close.2.html">https://man7.org/linux/man-pages/man2/close.2.html</a></p></li>
+</ul>
+</div>
+</details>
+</div>
+<p>The beauty of this approach is that once a thing has been set up (socket opened, file created, etc.) the same code can be used to operate on it, regardless of what exactly it represents. This is known as <em>polymorphism</em> and is one of key aspects of OOP (object-oriented programming, explained in later chapters). The respective OOP terms for opening, using and closing objects are <em>construction</em>, <em>methods</em> and <em>destruction</em>.</p>
+<p>Even though majority of Linux kernel code is C (which has no explicit features for object-oriented programming), specific patterns from OOP can be seen in its interfaces. Later in the tutorial you will learn dedicated C++ features for OOP.</p>
+</section><section id="standard-library-streams"><h2>Standard library streams</h2>
+<p>C++ streams are a higher level of abstraction - you don't want to directly call OS-level functions when performing I/O - doing so is bug-prone and limits code portability. On platforms where Linux is the kernel, C++ standard library streams are just wrapper code around it that add buffering, error handling, formatting and other features. On other platforms (e.g. Windows) the logic is more complex as the interface mandated by the C++ standard differs from the interface provided by the OS.</p>
+<p>Streams in the standard library form a hierarchy of types:</p>
+<!-- TOCSS fix background (image is transparent) -->
+<img alt="http://upload.cppreference.com/mwiki/images/0/06/std-io-complete-inheritance.svg" src="http://upload.cppreference.com/mwiki/images/0/06/std-io-complete-inheritance.svg"><p>They are implemented using <em>inheritance</em>. Inheritance is explained in detail in polymorphism chapter, for now you just need to know it's a feature which allows to define types as extensions to other types.</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios_base</span></code> is the base type for all stream types, it holds core stream state (errors, formatting, locale and other stuff).</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_ios</span></code> extends <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios_base</span></code> by adding a stream buffer - a handle to an abstract (hypothetical) I/O device. It's a template to support different character types (<code class="code custom-cpp"><span class="param-tmpl">CharT</span></code>) and their behavior (<code class="code custom-cpp"><span class="param-tmpl">Traits</span></code>).</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_istream</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_ostream</span></code> are primary types for input and output operations, respectively. Out of these types string-streams and file-streams are made.</p></li>
+</ul>
+<p><code class="docutils literal">basic_</code> is the name prefix C++ standard library uses when a type is a template for generalized implementation. Concrete types are aliases of the basic type with specific template parameters. Examples:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> is an alias of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_string</span>&lt;<span class="keyword">char</span>&gt;</code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">wstring</span></code> is an alias of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_string</span>&lt;<span class="keyword">wchar_t</span>&gt;</code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ostream</span></code> is an alias of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_ostream</span>&lt;<span class="keyword">char</span>&gt;</code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">wostream</span></code> is an alias of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_ostream</span>&lt;<span class="keyword">wchar_t</span>&gt;</code></p></li>
+</ul>
+<p>You don't need to understand templates for now. I'm mentioning this because cppreference only documents templates from which these types come from. Don't get surprised when searching for <em>something</em> you land on <em>basic_something</em> with an information what template parameters are - just mentally replace every occurrence of <code class="code custom-cpp"><span class="param-tmpl">CharT</span></code> with the type specified in the alias.</p>
+<p>Since <code class="code custom-cpp"><span class="keyword">wchar_t</span></code> has significant use only with Windows-related APIs, pretty much all code you will write and see will use <code class="code custom-cpp"><span class="param-tmpl">CharT</span></code> as <code class="code custom-cpp"><span class="keyword">char</span></code>. Unicode, UTF-8 encoding in particular, uses single byte <code class="code custom-cpp"><span class="keyword">char</span></code> for storing textual data and is by far the most popular text encoding.</p>
+</section><section id="predefined-streams"><h2>Predefined streams</h2>
+<p>Unix-like operating systems offer 3 predefined streams for every program:</p>
+<ul class="simple">
+<li><p><em>stdin</em> (standard input)</p></li>
+<li><p><em>stdout</em> (standard output)</p></li>
+<li><p><em>stderr</em> (standard error)</p></li>
+</ul>
+<p>Each program gets them upon startup. By default, they will be connected to the console terminal in which the program is run. Programs which do not have console opened (they usually either have no human interface or only GUI) still have these streams, the data just can not be observed (but could be if they were launched from a terminal or another program opened them through a <em>pipe</em> to collect their output).</p>
+<p>C and C++ standard libraries offer global objects which are connected to the operating system's predefined streams:</p>
+<table>
+<thead><tr>
+<th class="head"><p>fd</p></th>
+<th class="head"><p>stream name</p></th>
+<th class="head"><p>direction</p></th>
+<th class="head"><p>C stream object</p></th>
+<th class="head"><p>C stream type</p></th>
+<th class="head"><p>C++ stream object</p></th>
+<th class="head"><p>C++ stream type</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>0</p></td>
+<td><p>standard input</p></td>
+<td><p>read</p></td>
+<td><p><code class="code custom-cpp"><span class="macro">stdin</span></code></p></td>
+<td><p><code class="code custom-cpp"><span class="type">FILE</span>*</code></p></td>
+<td><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cin</span></code></p></td>
+<td><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">istream</span></code></p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>standard output</p></td>
+<td><p>write</p></td>
+<td><p><code class="code custom-cpp"><span class="macro">stdout</span></code></p></td>
+<td><p><code class="code custom-cpp"><span class="type">FILE</span>*</code></p></td>
+<td><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code></p></td>
+<td><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ostream</span></code></p></td>
+</tr>
+<tr>
+<td><p>2</p></td>
+<td><p>standard error</p></td>
+<td><p>write</p></td>
+<td><p><code class="code custom-cpp"><span class="macro">stderr</span></code></p></td>
+<td><p><code class="code custom-cpp"><span class="type">FILE</span>*</code></p></td>
+<td><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cerr</span></code></p></td>
+<td><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ostream</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<!--  --><blockquote>
+<p>How relevant is this for Windows?</p>
+</blockquote>
+<p>From C and C++ point of view (as a user of the standard library) there is no difference - they just work. Obviously underlying implementation is different - even file descriptors (called <em>file handles</em> on Windows) are designed differently.</p>
+</section><section id="stream-redirection"><h2>Stream redirection</h2>
+<p>Typical console terminal application combines program's standard output and standard error streams. Still, it doesn't make them the same - their data can be separated using stream redirection.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"info message<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cerr</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"error message<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Below examples for the Bash shell, though they are compatible with many other shells too:</p>
+<div class="code"><pre class="code text"><a id="rest_code_3634f34cbaae42a8994d3950f89a837f-1" name="rest_code_3634f34cbaae42a8994d3950f89a837f-1" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-1"></a># redirect stdout to null device
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-2" name="rest_code_3634f34cbaae42a8994d3950f89a837f-2" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-2"></a>$ ./program 1&gt;/dev/null
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-3" name="rest_code_3634f34cbaae42a8994d3950f89a837f-3" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-3"></a>error message
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-4" name="rest_code_3634f34cbaae42a8994d3950f89a837f-4" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-4"></a># redirect stderr to null device (will display only output)
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-5" name="rest_code_3634f34cbaae42a8994d3950f89a837f-5" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-5"></a>$ ./program 2&gt;/dev/null
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-6" name="rest_code_3634f34cbaae42a8994d3950f89a837f-6" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-6"></a>info message
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-7" name="rest_code_3634f34cbaae42a8994d3950f89a837f-7" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-7"></a># redirect stderr to a file (output on screen, errors in file)
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-8" name="rest_code_3634f34cbaae42a8994d3950f89a837f-8" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-8"></a>$ ./program 2&gt;errors.txt
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-9" name="rest_code_3634f34cbaae42a8994d3950f89a837f-9" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-9"></a>info message
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-10" name="rest_code_3634f34cbaae42a8994d3950f89a837f-10" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-10"></a>$ cat errors.txt
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-11" name="rest_code_3634f34cbaae42a8994d3950f89a837f-11" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-11"></a>error message
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-12" name="rest_code_3634f34cbaae42a8994d3950f89a837f-12" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-12"></a># redirect stdin to stdout and then both to a file
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-13" name="rest_code_3634f34cbaae42a8994d3950f89a837f-13" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-13"></a>$ ./program &gt; file.txt 2&gt;&amp;1
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-14" name="rest_code_3634f34cbaae42a8994d3950f89a837f-14" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-14"></a>$ cat file.txt
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-15" name="rest_code_3634f34cbaae42a8994d3950f89a837f-15" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-15"></a>info message
+<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-16" name="rest_code_3634f34cbaae42a8994d3950f89a837f-16" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-16"></a>error message
+</pre></div>
+<p>See <a class="reference external" href="https://stackoverflow.com/questions/818255/in-the-shell-what-does-21-mean">https://stackoverflow.com/questions/818255/in-the-shell-what-does-21-mean</a> for more examples and explanation.</p>
+<p>It's also possible to redirect input:</p>
+<div class="code"><pre class="code text"><a id="rest_code_7aca2a34b9154d8490855be4912149ef-1" name="rest_code_7aca2a34b9154d8490855be4912149ef-1" href="#rest_code_7aca2a34b9154d8490855be4912149ef-1"></a>$ ./program &lt; input.txt
+</pre></div>
+<p>in such case the program will not wait for keyboard input - <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cin</span></code> will eat data from the file and go into failure state upon reaching end of file. This is very useful for testing programs for school/university assignments as it allows to you fully automate program's input.</p>
+</section><section id="buffering"><h2>Buffering</h2>
+<p>For performance reasons, streams are buffered. The cost of system calls is high (regardless how much data is transferred to/from the system) so streams accumulate data and flush it (pass it to the system) once the buffer is full or a specific thing happened (e.g. text buffer got a newline character).</p>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">endl</span></code> works like <code class="code custom-cpp"><span class="lit-chr">'n'</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">flush</span></code>. In majority of situations the flush is redundant and only degrades performance by forcing unnecessary system calls. C++ standard library has a guarantee that standard output is flushed before read operations on standard input. This means you can mix <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code> with <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cin</span></code> without worrying that some data would not be output prior to read operations. For more information, see <a class="reference external" href="https://www.youtube.com/watch?v=6WeEMlmrfOI">CppCon 2017: Dietmar Kühl "The End of std::endl"</a> (3min).</p>
+<p>Standard error stream is not buffered because errors are generally rare so the buffer would rarely be flushed, delaying output of important information. In the worst case a program could place error information in the buffer, then crash and the error would not be output at all. For this reason error streams output data immediately.</p>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">clog</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">wclog</span></code> are a buffered standard error stream alternative to <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cerr</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">wcerr</span></code>. As the names suggest, they are intended for logging, which typically are read some time after program execution, thus the lack of need for immediate output allows buffered implementation for increased performance.</p>
+</section><section id="stream-limitations"><h2>Stream limitations</h2>
+<p>Because streams provide unified way of performing I/O, many device-specific operations are not supported on the stream level of abstraction.</p>
+<p>Supported operations:</p>
+<ul class="simple">
+<li><p>reading</p></li>
+<li><p>writing</p></li>
+<li><p>querying stream state (checking for errors)</p></li>
+</ul>
+<p>Unsupported operations:</p>
+<ul class="simple">
+<li><p>size information (different meaning for different things: file - file size, network streams - amount of data transferred)</p></li>
+<li><p>manipulating device-specific state (e.g. for terminal: moving cursor, clearning output, changing text color, changes in protocol logic for network sockets)</p></li>
+</ul>
+<p>Many C++ beginners ask how to manipulate the terminal (moving cursor, coloring text etc.) but the standard library streams operate on a higher abstraction level and thus do not offer such operations. There are some workarounds (e.g. passing <code class="code custom-cpp"><span class="lit-chr">'<span class="esc-seq">\r</span>'</span></code> to <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code> will move cursor to the beginning of the line in the terminal, overwriting last line) but they rely on implementation-defined behavior and can easily break (e.g. if executable output is redirected to a file it can become corrupted). So if you really want device-specific behavior you need to use device-specific interface - usually a set of specific functions given by the driver or operating system. This is outside the scope of the C++ standard library and this tutorial.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

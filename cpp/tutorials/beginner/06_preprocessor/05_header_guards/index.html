@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 05 - header guards</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">06 - preprocessor</a></li>
+							<span>/</span>
+						<li>05 - header guards</li>
+					</ol></nav><div class="content">
+				<h1>05 - header guards</h1>				<p>Let's recall the example multi-file program from the previous lesson. This time we will introduce multiple problems into the project in order to observe build errors and explain certain aspects of the C/C++ build process.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Multiple examples in this lesson intentionally violate ODR (One Definition Rule). Some of such violations are technically <em>undefined behavior</em> or <em>ill-formed no diagnostic required</em> so a conforming implementation may not detect all such problems or produce very different errors.</p>
+</aside><section id="build-process"><h2>Build process</h2>
+<p>Before we begin, you need to understand most important steps in the process of building a C/C++ project.</p>
+<p>Simplified list (very detailed list on <a class="reference external" href="https://en.cppreference.com/w/cpp/language/translation_phases">cppreference page</a>):</p>
+<ul class="simple">
+<li><p>comments are removed</p></li>
+<li><p>preprocessor: code (treated as text) is altered and loses all preprocessor directives</p></li>
+<li><p>compilation: translation units are transformed to intermediate build object files (usually named <code class="docutils literal">*.o</code> or <code class="docutils literal">*.obj</code>)</p></li>
+<li><p>linking: separate object files are merged by the linker to form an executable or a static/dynamic library file</p></li>
+</ul>
+<p>If you define something non-<code class="code custom-cpp"><span class="keyword">inline</span></code> multiple times in the same file, you will get a compilation error. But if such problem is across files, in most implementations such ODR violation will be caught on the linking step - in such case the problem happens between different translation units.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Many linking stage errors mention the term <em>reference</em>. This is different from C++ reference qualifiers (<code class="code custom-cpp">&amp;</code> and <code class="code custom-cpp">&amp;&amp;</code>). By <em>reference</em>, the linker means "usage of specific <em>symbol</em>".</p>
+</aside><!--  --><blockquote>
+<p>What is a symbol?</p>
+</blockquote>
+<p>A symbol is a single entity for the linker, usually some intermediate code attached to a <em>mangled name</em> of a specific C/C++ entity that needs compilation. So if the linker outputs an error "undefined reference to ..." it means that a definition of specific entity was not found.</p>
+<blockquote>
+<p>What is name mangling?</p>
+</blockquote>
+<p>Name mangling is transformation of ordinary entity names into ones that can be understood and differentiated by the linker. Generally, linkers work on lower level than the programming language and since they don't understand various high-level features that can result in same or complex names, they need a mechanism to differentiate them. Simply put, name mangling is the process of encoding language-specific entity names into a form that is simple enough to avoid having to understand given programming language syntax and semantics. For more information and examples, see <a class="reference external" href="https://en.wikipedia.org/wiki/Name_mangling">Wikipedia article about name mangling</a>.</p>
+</section><section id="undefined-reference"><h2>Undefined reference</h2>
+<p>To trigger this linker error a single file is enough but to illustrate a more realistic problem, we will comment out function definition to simulate typical build misconfiguration (missing source files, not everything compiled).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// main.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"hello.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="func">write_hello</span>();
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" world<span class="esc-seq">\n</span>"</span>;
+}
+
+<span class="com-single">// hello.hpp</span>
+<span class="keyword">void</span> <span class="func">write_hello</span>();
+
+<span class="com-single">// hello.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"hello.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="com-multi">/*</span>
+<span class="com-multi">void write_hello()</span>
+<span class="com-multi">{</span>
+	<span class="com-multi">std::cout &lt;&lt; "hello";</span>
+<span class="com-multi">}</span>
+<span class="com-multi">*/</span>
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-1" name="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-1" href="#rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-1"></a>/tmp/ccQJjzeS.o: In function `main':
+<a id="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-2" name="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-2" href="#rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-2"></a>main.cpp:(.text+0x5): undefined reference to `write_hello()'
+<a id="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-3" name="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-3" href="#rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-3"></a>collect2: error: ld returned 1 exit status
+</pre></div>
+<p>The error appears because some entity (a function in this case) was ODR-used (used in a way which requires definition) but the definition was not provided. The same error can appear if you try to use an external library and do not link to library's compiled code in the build process.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Compilers and linkers typically automatically link C++ standard library and require a specific option to disable it. For any other library, the situation is reverse (opt-in instead of opt-out).</p>
+</aside></section><section id="multiple-reference"><h2>Multiple reference</h2>
+<p>This error usually appears when:</p>
+<ul class="simple">
+<li><p>Some code refactoring has been done and 2 copies of the same entity were left present in different files.</p></li>
+<li><p>2 different functions accidentally have been given the same name.</p></li>
+<li><p>The project contains multiple subprojects and at least 2 of them link to the same external library with incompatible settings.</p></li>
+</ul>
+<p>To trigger the error, we will simulate a mistake in refactoring and attempt to compile 2 files with definition of the same function:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// main.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"hello.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">void</span> <span class="func">write_hello</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"hello"</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="func">write_hello</span>();
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" world<span class="esc-seq">\n</span>"</span>;
+}
+
+<span class="com-single">// hello.hpp</span>
+<span class="keyword">void</span> <span class="func">write_hello</span>();
+
+<span class="com-single">// hello.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"hello.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">void</span> <span class="func">write_hello</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"hello"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-1" name="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-1" href="#rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-1"></a>/tmp/ccb9JA6l.o: In function `write_hello()':
+<a id="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-2" name="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-2" href="#rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-2"></a>hello.cpp:(.text+0x0): multiple definition of `write_hello()'
+<a id="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-3" name="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-3" href="#rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-3"></a>/tmp/ccfsecFJ.o:main.cpp:(.text+0x0): first defined here
+<a id="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-4" name="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-4" href="#rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-4"></a>collect2: error: ld returned 1 exit status
+</pre></div>
+<p>Even in the case where both definitions are identical, it's not a good thing just to discard one definition and go further. While there is everything needed to form an executable, such situation indicates there is a configuration or code problem. For safety, build tools consider such situation as an error.</p>
+<p>In such situation the programmer must figure out what's causing multiple definitions as it will affect the solution:</p>
+<ul class="simple">
+<li><p>refactoring - remove redundant code</p></li>
+<li><p>accidental same name - rename something</p></li>
+<li><p>duplicated dependencies - make changes in project build recipe (this is outside C++ code)</p></li>
+</ul>
+<p>The most helpful information in such problem is usually contained within linker error: places (files) from which each definition is coming from.</p>
+</section><section id="multiple-inclusion"><h2>Multiple inclusion</h2>
+<p>As you should know now, some headers can be included transitively. But what happens when because of this a specific header gets included multiple times? Remember, headers are not just for declarations (which by ODR can be repeated) but also for anything that is not immediately compiled, which includes some definitions.</p>
+<p>One particulary good example are type definitions. Defining a type does not immediately produce any compilable code. It is rather a specification how exactly code which manipulates objects of this type should behave. But defining a type multiple times is an ODR violation.</p>
+<p>To illustrate, here is an example that defines a type and accidentally includes its definition multiple times:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// power_state.hpp</span>
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">power_state</span> { <span class="enum">off</span>, <span class="enum">sleep</span>, <span class="enum">on</span> };
+
+<span class="com-single">// to_string.hpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"power_state.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+
+<span class="namespace">std</span>::<span class="type">string</span> <span class="func">to_string</span>(<span class="type">power_state</span> <span class="param">ps</span>);
+
+<span class="com-single">// to_string.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"to_string.hpp"</span>
+<span class="com-single">// (#include &lt;string&gt; can be safely ommited here because function declaration</span>
+<span class="com-single">// needs to include it anyway so including the header is enough)</span>
+
+<span class="namespace">std</span>::<span class="type">string</span> <span class="func">to_string</span>(<span class="type">power_state</span> <span class="param">ps</span>)
+{
+	<span class="keyword">switch</span> (<span class="param">ps</span>)
+	{
+		<span class="keyword">case</span> <span class="type">power_state</span>::<span class="enum">off</span>:
+			<span class="keyword">return</span> <span class="lit-str">"off"</span>;
+		<span class="keyword">case</span> <span class="type">power_state</span>::<span class="enum">sleep</span>:
+			<span class="keyword">return</span> <span class="lit-str">"sleep"</span>;
+		<span class="keyword">case</span> <span class="type">power_state</span>::<span class="enum">on</span>:
+			<span class="keyword">return</span> <span class="lit-str">"on"</span>;
+		<span class="com-single">// no default case because this switch handles all possible values</span>
+		<span class="com-single">// if there is no default and a new enumerator is added, compilers will issue a warning</span>
+	}
+}
+
+<span class="com-single">// main.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"power_state.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"to_string.hpp"</span>
+
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">auto</span> <span class="var-local">state</span> = <span class="type">power_state</span>::<span class="enum">on</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"device power state: "</span> <span class="oo">&lt;&lt;</span> <span class="func">to_string</span>(<span class="var-local">state</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<pre class="code ansi">In file included from <span class="ansi1">to_string.hpp:1</span>,
+                 from <span class="ansi1">main.cpp:2</span>:
+<span class="ansi1">power_state.hpp:1:12:</span> <span class="ansi1 ansi31">error: </span>multiple definition of ‘<span class="ansi1">enum class power_state</span>’
+ enum class <span class="ansi1 ansi31">power_state</span> { off, sleep, on };
+            <span class="ansi1 ansi31">^~~~~~~~~~~</span>
+In file included from <span class="ansi1">main.cpp:1</span>:
+<span class="ansi1">power_state.hpp:1:12:</span> <span class="ansi1 ansi36">note: </span>previous definition here
+ enum class <span class="ansi1 ansi36">power_state</span> { off, sleep, on };
+            <span class="ansi1 ansi36">^~~~~~~~~~~</span>
+</pre>
+<p>The main file included <code class="docutils literal">power_state.hpp</code> and <code class="docutils literal">to_string.hpp</code> which indirectly included <code class="docutils literal">power_state.hpp</code> too. This resulted in having duplicate contents of <code class="docutils literal">power_state.hpp</code> in <code class="docutils literal">main.cpp</code> file.</p>
+<p>You could probably think of a convention how to split/separate code so that such situations don't arise but it would be very annoying in practice to track code dependencies of each file.</p>
+</section><section id="header-guards"><h2>Header guards</h2>
+<p>We can create a mechanism that automatically prevents accidental duplicate inclusion through preprocessor identifiers. The solution is simple: wrap entire contents of each header file between <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifndef</span></code>, <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">define</span></code> and <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">endif</span></code> directives:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// power_state.hpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">ifndef</span> <span class="pp-macro">EXAMPLE_PROJECT_POWER_STATE</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="macro">EXAMPLE_PROJECT_POWER_STATE</span>
+
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">power_state</span> { <span class="enum">off</span>, <span class="enum">sleep</span>, <span class="enum">on</span> };
+
+<span class="pp-hash">#</span><span class="pp-directive">endif</span>
+
+<span class="com-single">// to_string.hpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">ifndef</span> <span class="pp-macro">EXAMPLE_PROJECT_TO_STRING</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="macro">EXAMPLE_PROJECT_TO_STRING</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"power_state.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+
+<span class="namespace">std</span>::<span class="type">string</span> <span class="func">to_string</span>(<span class="type">power_state</span> <span class="param">ps</span>);
+
+<span class="pp-hash">#</span><span class="pp-directive">endif</span>
+
+<span class="com-single">// to_string.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"to_string.hpp"</span>
+<span class="com-single">// (#include &lt;string&gt; can be safely ommited here because function declaration</span>
+<span class="com-single">// needs to include it anyway so including the header is enough)</span>
+
+<span class="namespace">std</span>::<span class="type">string</span> <span class="func">to_string</span>(<span class="type">power_state</span> <span class="param">ps</span>)
+{
+	<span class="keyword">switch</span> (<span class="param">ps</span>)
+	{
+		<span class="keyword">case</span> <span class="type">power_state</span>::<span class="enum">off</span>:
+			<span class="keyword">return</span> <span class="lit-str">"off"</span>;
+		<span class="keyword">case</span> <span class="type">power_state</span>::<span class="enum">sleep</span>:
+			<span class="keyword">return</span> <span class="lit-str">"sleep"</span>;
+		<span class="keyword">case</span> <span class="type">power_state</span>::<span class="enum">on</span>:
+			<span class="keyword">return</span> <span class="lit-str">"on"</span>;
+		<span class="com-single">// no default case because this switch handles all possible values</span>
+		<span class="com-single">// if there is no default and a new enumerator is added, compilers will issue a warning</span>
+	}
+}
+
+<span class="com-single">// main.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"power_state.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"to_string.hpp"</span>
+
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">auto</span> <span class="var-local">state</span> = <span class="type">power_state</span>::<span class="enum">on</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"device power state: "</span> <span class="oo">&lt;&lt;</span> <span class="func">to_string</span>(<span class="var-local">state</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>How it works? Each time a file is included, the preprocessor is required to check if a specific identifier has been defined. At first inclusion, it's not. At any later inclusion, it has been defined so entire content of the file is skipped. Because each header was given a unique identifier and separate translation units have separate preprocessing, any header content is parsed exactly once.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This specific form of preprocessor directives is known as <strong>header guards</strong> and <strong>include guards</strong>.</p>
+</aside><p>The identifier must be unique for each header, so to guarantee uniqueness it usually consists of the company name and/or project name, root-relative file path and sometimes a date/time when it was created.</p>
+<blockquote>
+<p>Why source files did not get these directives?</p>
+</blockquote>
+<p>Because only header files are supposed to be included. Only header files are shared between <em>translation units</em>.</p>
+</section><section id="alternative-guards"><h2>Alternative guards</h2>
+<p>Since header guards are a such often used mechanism, many compilers implemented <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">pragma</span> <span class="pp-other">once</span></code> to make it easier. Pragmas are special subset of preprocessor directives intended for implementation-defined extensions (see <a class="reference external" href="https://en.cppreference.com/w/cpp/preprocessor/impl">cppreference page about pragmas</a>). An example header then looks like this:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// power_state.hpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">pragma</span> <span class="pp-other">once</span>
+
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">power_state</span> { <span class="enum">off</span>, <span class="enum">sleep</span>, <span class="enum">on</span> };
+</pre></td>
+</tr></tbody></table>
+<p>The usage is much simpler - less code, no unique identifier required and no <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">endif</span></code> at the end of the file. The only disadvantage is that pragmas are not strictly standard. On the other hand, personally I had never any problems with <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">pragma</span> <span class="pp-other">once</span></code> while I have observed many people (including myself) get into errors after broken traditional header guards (usually due to missing <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">endif</span></code> or non-unique identifier).</p>
+<p>There were some attempts to standarize <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">pragma</span> <span class="pp-other">once</span></code> as it's probably the most common preprocessor extension but ultimately they failed. Reasons were many but mostly because each implementation uses different way of verifying that a file is unique and no universal solution could be agreed upon. Standarizing it as "implementation-defined solution" makes very little sense because pragmas are already under this term. Even though the feature remains an extension, many projects use this type of guard for it's simplicity and very widespread support.</p>
+</section><section id="recommendation"><h2>Recommendation</h2>
+<p>All headers should be guarded, even if they are included only once in the entire project.</p>
+<p>As for which type of guard to use - the choice is yours depending on whether you prefer absolute standard conformance or simpler code and convenience. Use one and be consistent.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - on teaching C++</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../">HOME</a></li>
+				<li><a href="../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../tutorials/beginner/">beginner</a></li>
+						<li><a href="../../tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../cpp_myths/">C++ myths</a></li>
+						<li><a href="../glossary/">glossary</a></li>
+						<li><a href="../">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../about/">about</a></li>
+						<li><a href="../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../">HOME</a></li>
+				<li class="button"><a href="../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../">utility</a></li>
+							<span>/</span>
+						<li>on teaching C++</li>
+					</ol></nav><div class="content">
+				<h1>on teaching C++</h1>				<p>C++ is a hard language. As a C++ programmer, I really get it. But many teachers make it much harder than it actually is. This article aims to list very common mistakes in teaching C++.</p>
+<ul class="simple">
+<li><p>If you are a student, this article should help you with argumentation towards (potentially incompetent) teachers. You should have much easier time explaining why your teacher is bad or where does the feeling of low quality learning material comes from.</p></li>
+<li><p>If you are a teacher, well, I have bad news for you... On the other hand, if you do get criticized, the good news is that you can improve a lot.</p></li>
+</ul>
+<section id="teaching-c-first"><h2>teaching C first</h2>
+<p>We start at the absolutely biggest offender. It usually starts in a situation where:</p>
+<ul class="simple">
+<li><p>Some or all students already know C.</p></li>
+<li><p>The teacher already knows C and is just learning C++ while also teaching it.</p></li>
+<li><p>Some or all students and/or the teacher fall into the misconception that C++ is a superset of C (it is not) and think C needs to be taught first.</p></li>
+<li><p>The learning material has already been prepared over time as things were added and no one ever questioned why chronological order is used.</p></li>
+</ul>
+<p>All of these incentivize the very bad thing: the feeling that C needs to be taught first. Why is it bad:</p>
+<ul class="simple">
+<li><p>Hipocrisy. Inconsistency. Teachers do not require students to learn data structures and C before learning Python, which is based upon them. Teachers do not require students to learn garbage collection algorithms before they learn any GC-based language. Why do such approach towards C++?</p></li>
+<li><p>The whole idea of "you must first understand how it was built to use it" is a huge error. The whole human world is made so that you do not need to know all the details in order to use something - just see how few year old kids learn to use every possible household device, without understanding even basic physics. I can easily bet that a huge number of adults don't understand how a fridge works, yet they have no problems using one every day. If you respond to this like "but these things are designed to be used without care for details" - you are right. The exactly same principle is present in C++ - stuff like <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> is designed to be used without complete knowledge of how it is implemented.</p></li>
+<li>
+<p>The whole idea of "you should learn it in the order it was made" is another huge error.</p>
+<ul>
+<li><p>When you start to learn a game, do you read its instruction for the first edition and then all the changes that have been made? No. You read the introductory chapter and slowly move towards more complex game mechanics. If something was changed during game history (balancing, design, optimizations, extensions, etc.) it should never directly affect teaching order. New things shouldn't be appended to the learning material - they should be integrated where their difficulty and related mechanics are appropriate.</p></li>
+<li><p>Fortran came before C. Do C teachers teach Fortran first? How about assembly?</p></li>
+<li><p>C++ actually builds on 2 languages: C and Smalltalk. Do teachers teach Smalltalk before C++? Do teachers even know what C++ picked up from Smalltalk? Apparently the C parts (especially grammar) were much easier to notice.</p></li>
+<li><p>JavaScript was created as an alternative to (now defunct) Java Applets. Should we learn Java (including Applets technology) before learning JavaScript?</p></li>
+</ul>
+</li>
+</ul>
+<p>As a result of teaching C first:</p>
+<ul class="simple">
+<li><p>The material is longer.</p></li>
+<li><p>The material starts with very steep learning curve by introducing all the complex stuff at the same time (syntax, pointers, build process, math concepts, backwards compatibility problems).</p></li>
+<li><p><strong>The material starts with C-related content that will be needed to be later "untaught" when students meet modern C++</strong>, which has replaced and/or redefined a lot of C habits.</p></li>
+<li><p>Students stick to C conventions in C++, which results in a ton of frustration once compiler does what C++ allows it to do.</p></li>
+<li><p>Students do not see the true benefits of C++.</p></li>
+<li><p>Students are taught finely-grained C stuff, which is performant but trust me - performance is irrelevant for beginners. They want simplicity and slowly increasing difficulty. They won't feel bad if you showcase them the easy way and tell "this is not performant in all cases, for more complex situations you will need to use more complex features" - they actually expect such stuff at the beginning.</p></li>
+</ul>
+<section id="problems-caused-by-teaching-c-first"><h3>problems caused by teaching C first</h3>
+<ul class="simple">
+<li><p>Students stick to C habits and it's a hard time for them when C++ redefines them.</p></li>
+<li><p>Students experience all of the C backwards compatibility cruft (grammar anomalies, unsafe type system, language history (which at this point is very boring)).</p></li>
+<li><p>Students constantly think and fear of pointers, compiler errors and any kind of bug caused by undefined behavior.</p></li>
+<li><p>Once noticed C++ power mechanisms (such as <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> and templates), they immediately abandon previously showcased material (such as <code class="code custom-cpp"><span class="keyword">char</span>*</code> and macros) because they find C++-specific stuff to be easier to use and learn. Students wonder why they could not use these at the start.</p></li>
+<li><p>Students miss a ton of simple and powerful stuff that makes ++ in C++. Stuff that is easily showcased and easily remembered. Stuff with which you can start making simple programs instead of dying in depression caused by reading <code class="code custom-cpp"><span class="func">printf</span></code> documentation after a compiler error.</p></li>
+</ul></section><section id="stuff-to-avoid-at-the-beginning"><h3>stuff to avoid at the beginning</h3>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="func">printf</span></code> and <code class="code custom-cpp"><span class="func">scanf</span></code></p></li>
+<li><p>any kind of pointer usage (including C-style arrays and <code class="code custom-cpp"><span class="keyword">char</span>*</code> strings)</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">new</span></code> and <code class="code custom-cpp"><span class="keyword">delete</span></code></p></li>
+</ul>
+<aside class="admonition note"><p class="admonition-title">Note</p>
+<p>I'm not advocating that these things are bad. I'm not trying to state that all C++ equivalents have better performance or that they are always better. I'm not stating that these should never be taught. I'm stating that these things should not be at the beginning of the learning material. You (as a teacher) should not need to draw tons of diagrams and explain how pointers work just to explain hello world code.</p>
+</aside><section id="printf-scanf"><h4>printf / scanf</h4>
+<p>Why is it bad for very first lessons?</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="func">scanf</span></code> requires to explain pointer arguments.</p></li>
+<li><p>Both functions are not type-safe.</p></li>
+<li><p>Both functions require to explain buffers and C-style arrays.</p></li>
+<li><p>Both functions require to explain null-terminated strings.</p></li>
+<li><p>Both functions require to explain ellipsis (<code class="docutils literal">...</code>).</p></li>
+<li><p>Use of both functions produce code that is hard to read for beginners (a lot of punctuation) and requires a lot to memorize (format specifiers).</p></li>
+</ul>
+<p>Just think of a sample program that asks the user for a name and prints it back. <strong>How many mistakes can you make if you write it the C way?</strong> How many mistakes can the student make, once you understand they occasionally forget <code class="docutils literal">;</code> and are still a bit unsure about function call with pass-by-pointer syntax? What will happen if you show the students a big table of format specifiers and tell them that if they don't memorize it correctly, their programs will likely crash?</p>
+<p>Now - what if it is written the C++ way? Do you really need to explain how <code class="docutils literal">+</code> and <code class="docutils literal">=</code> work with strings? No. Students will just get it. This showcases C++ strengths in action (type system, operator overloading) without needing to explain them.</p>
+</section><section id="c-style-arrays-pointers"><h4>C-style arrays / pointers</h4>
+<p>Why is it bad for beginners?</p>
+<ul class="simple">
+<li><p>It requires to explain pointers, <strong>which are the hardest of all non-template C++ topics</strong>.</p></li>
+<li><p>It requires to explain decay.</p></li>
+<li>
+<p>It allows a huge array (pun intended) of mistakes:</p>
+<ul>
+<li><p>incorrect bounds checking</p></li>
+<li><p>manually written loops</p></li>
+<li><p>off-by-one errors</p></li>
+<li><p>buffer overflow</p></li>
+<li><p>syntax confusion and compiler error horrors (<code class="docutils literal">[]</code>, <code class="docutils literal">*</code>, <code class="docutils literal">&amp;</code>, <code class="docutils literal">.</code>, <code class="docutils literal"><span class="pre">-&gt;</span></code>)</p></li>
+</ul>
+</li>
+<li><p>It will usually end up also having to explain <code class="docutils literal">str-</code> and <code class="docutils literal">mem-</code> functions. That's another pile of things to memorize.</p></li>
+</ul>
+<p>Now, what if you start with <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span></code>? Everything is again simple. <code class="docutils literal">+</code>, <code class="docutils literal">=</code> and <code class="docutils literal">==</code> all just work. You don't need to explain <code class="docutils literal">= { 1, 2, 3 }</code>. You don't need to explain the difference between a vector of one type and another - students will immediately get that what is put inside <code class="docutils literal">&lt;&gt;</code> is the type of thing that vector holds. From this point, you can also easily move to usage other parts of C++ - the standard library and high-level features such as range-based loops.</p>
+<p>Just don't introduce iterators yet. If you showcase stuff from <code class="code custom-cpp"><span class="pp-header">&lt;algorithm&gt;</span></code>, just explain that for start we will only use begin and end to use the algorithm on the entire vector. Nothing more is needed. Students will get that standard library algorithms have higher potential than presented that will be possible to use once they learn more.</p>
+</section></section><section id="advantages"><h3>Advantages</h3>
+<p>If you start teaching C++ using recommendations mentioned earlier:</p>
+<ul class="simple">
+<li><p>You will avoid a lot of confusion caused by pointers and related topics.</p></li>
+<li><p>Students will be able to write simple programs, with motivation to learn further.</p></li>
+<li><p>Students will think in terms of objects and values (not pointers), which is essential in a value semantics language such as C++.</p></li>
+</ul>
+<p>You probably aren't aware how far it is possible to go without using pointers:</p>
+<ul class="simple">
+<li><p>The book "The C programming language" written by Kernighan &amp; Ritchie introduces pointers at around half of the book. And remember - this is just C. For half of the learning material, students need not to fiddle with asterisks and ampersands.</p></li>
+<li><p>You can even showcase polymorphism without using pointers. How? See <a class="reference external" href="https://www.youtube.com/watch?v=YnWhqhNdYyk">CppCon 2015: Kate Gregory “Stop Teaching C"</a> (at 27min) which was also a major source for this article.</p></li>
+</ul></section><section id="other-recommendations"><h3>Other recommendations</h3>
+<ul class="simple">
+<li><p>When to introduce <code class="code custom-cpp"><span class="keyword">const</span></code>? The sooner the better, but certainly it must be taught when references are.</p></li>
+<li><p>Use tools (such as debugger) from the beginning. Enable compiler warnings.</p></li>
+<li><p>When you introduce scopes and the stack theory, do not focus on memory. Focus on other resources that have cleanup much easier to explain (such as closing a file). Focus on deterministic destruction, not on memory release.</p></li>
+<li>
+<p>When explaining heap, you can mention <code class="code custom-cpp"><span class="keyword">new</span></code> and <code class="code custom-cpp"><span class="keyword">delete</span></code> but:</p>
+<ul>
+<li><p>Don't spend much time on it. Just explain they are used to explicitly create and destroy stuff (in contrast  to stack lifetime) and tell that classes such as strings and vectors use this mechanism inside their implementation.</p></li>
+<li><p>You may make a comparison to GC-based languages (e.g. Java, C#) where <code class="code custom-cpp"><span class="keyword">new</span></code> is required for every object creation.</p></li>
+<li><p>Introduce smart pointers to showcase how easy it is now to make a heap-allocated RAII object.</p></li>
+</ul>
+</li>
+<li><p>Raw pointers can be introduced after references and smart pointers as a more complex mechanism to manipulate objects. But do not present raw owning pointers! Use pointers as a non-owning mechanism only - e.g. to showcase <code class="code custom-cpp"><span class="keyword">nullptr</span></code> and ability to rebind them.</p></li>
+<li><p>Use C++ standard library as soon as possible. Whenever you showcase some code that has equivalent implemented in the standard library, show students the 1-line way of doing the same task.</p></li>
+<li><p>Do not showcase complex stuff by explaining each case (example: different lambda captures, polymorphism). Instead, showcase some code, tell there is a feature to simplify it and then showcase simplified code. This approach causes students to understand that features are not arbitrary - they have reasons why they were introduced.</p></li>
+</ul></section></section><section id="common-c-mistakes-in-teaching"><h2>common C++ mistakes in teaching</h2>
+<p>Below sections are meant to list common mistakes in explaining specific stuff. This not about order how things are taught but about how they are explained - we all like mental shortcuts but C++ mental shortcuts are often wrong or incorrectly formed.</p>
+<section id="c-as-a-superset-of-c"><h3>C++ as a superset of C</h3>
+<p>C++ was forked from ANSI C, the C language before any standarization. Today we can at most say that ISO C and ISO C++ have a common ancestor.</p>
+<p>For a list of features that C has but C++ does not (or their alternatives) see TOWRITE.</p>
+</section><section id="c-standard-library-as-a-superset-of-c-standard-library"><h3>C++ standard library as a superset of C standard library</h3>
+<p>Also false. Some parts are only available in C (usually because C++ has equivalent but different features).</p>
+</section><section id="function-type-prototype-signature"><h3>function type / prototype / signature</h3>
+<p>These are all distinct terms.</p>
+<section id="function-type"><h4>function type</h4>
+<p>Primary uses:</p>
+<ul class="simple">
+<li><p>function pointers and function references</p></li>
+</ul>
+<p>Consists of:</p>
+<ul class="simple">
+<li><p>return type</p></li>
+<li><p>paramater types (after <em>decay</em> applied)</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">noexcept</span></code> (since C++17)</p></li>
+<li><p>(if member function) member function qualifiers</p></li>
+<li><p>linkage type</p></li>
+</ul></section><section id="function-prototype"><h4>function prototype</h4>
+<p>Function prototype are the types of the parameters (after <em>decay</em> applied).</p>
+<p>This is a C-only term, because only C allows to declare a function without specifying paramater types. In C++ it is impossible to declare a function without defining its prototype.</p>
+<p>Primary uses:</p>
+<ul class="simple">
+<li><p>compiler warnings about missing prototype</p></li>
+</ul></section><section id="function-signature"><h4>function signature</h4>
+<p>The primary uses:</p>
+<ul class="simple">
+<li><p>function overloading</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Name_mangling">name mangling</a></p></li>
+</ul>
+<p>Consists of:</p>
+<ul class="simple">
+<li><p>enclosing namespaces</p></li>
+<li><p>enclosing classes</p></li>
+<li><p>(if member function) member function qualifiers</p></li>
+<li><p>function name</p></li>
+<li><p>parameter types</p></li>
+<li><p><em>requires-clause</em> (if any)</p></li>
+</ul>
+<p>The most notable thing is that function signature does not include return type, which disallows overloading functions only by their return type.</p>
+</section></section><section id="function-parameter-vs-function-argument"><h3>function parameter vs function argument</h3>
+<p>Function parameters are what function definition expects to be passed in. Function arguments are expressions that are given for specific function call. If there is a mismatch we can say that a function F has been passed incompatible argument X for parameter Y.</p>
+</section><section id="user-defined-type-is-a-very-formal-name-for-a-class"><h3>"User-defined type is a very formal name for a class"</h3>
+<p>User-defined type is any new type (not an alias of an existing type) that has been defined in code. Standard library classes are also user-defined types. Apart from classes, C++ has other mechanisms for creating new types - enumerations and unions.</p>
+</section><section id="header-files-are-for-declarations-source-file-are-for-definitions"><h3>"Header files are for declarations. Source file are for definitions."</h3>
+<p>This very short mental shortcut is just wrong:</p>
+<ul class="simple">
+<li><p>Definitions of user-defined types are put in headers.</p></li>
+<li><p>Both declaration and definition can be source-only if there is no need to use the entity in a different source file.</p></li>
+</ul>
+<p>The header/source split is not about declaration/definition mechanism but about what can be compiled and what not. Type definitions are only an abstraction - they do not form any code by themselves. What matters for compilation is executable code - mostly function definitions and global objects.</p>
+</section><section id="the-type-of-code-class-code-custom-cpp-span-class-lit-str-abc-span-code-is-code-class-code-custom-cpp-span-class-keyword-const-span-span-class-keyword-char-span-code-or-an-array-is-a-pointer-to-its-first-element"><h3>"the type of <code class="code custom-cpp"><span class="lit-str">"abc"</span></code> is <code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">char</span>*</code>" OR "an array is a pointer to its first element"</h3>
+<p>Both of these are wrong:</p>
+<ul class="simple">
+<li><p>String literals are arrays, not pointers.</p></li>
+<li><p>Arrays are not pointers, they can at most <em>decay</em> to pointers.</p></li>
+</ul>
+<p>The myth comes from very often forgotten implicit convertion caused by <em>decay</em>:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">char</span> <span class="var-local">str1</span>[] = <span class="lit-str">"abc"</span>; <span class="com-single">// array initialization (size is 4 due to null-terminating byte)</span>
+<span class="keyword">const</span> <span class="keyword">char</span> <span class="var-local">str2</span>[] = { <span class="lit-chr">'a'</span>, <span class="lit-chr">'b'</span>, <span class="lit-chr">'c'</span>, <span class="lit-chr">'<span class="esc-seq">\0</span>'</span> }; <span class="com-single">// equivalent to line above</span>
+<span class="keyword">const</span> <span class="keyword">char</span>* <span class="var-local">str3</span> = <span class="lit-str">"abc"</span>; <span class="com-single">// implicit convertion from const char[4] to const char*</span>
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition note"><p class="admonition-title">Note</p>
+<p>Decay happens whenever arguments are passed by value to a function (only <em>perfect forwarding</em> will prevent decay). This means that functions having array types as paramaters, such as <code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">int</span>[<span class="param-tmpl">N</span>]</code> and <code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">int</span>[]</code> are equivalent to <code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">int</span>*</code>. If you want type-safe array function parameters (that do not lose type information), you will need to use abstractions like <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">span</span></code>.</p>
+</aside></section><section id="code-class-code-custom-cpp-span-class-keyword-typedef-span-code-declaration-syntax-is-code-class-code-custom-cpp-span-class-keyword-typedef-span-span-class-spec-type-span-span-class-spec-identifier-span-code"><h3>"<code class="code custom-cpp"><span class="keyword">typedef</span></code> declaration syntax is <code class="code custom-cpp"><span class="keyword">typedef</span> <span class="spec">type</span> <span class="spec">identifier</span></code>"</h3>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">typedef</span> <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="type">uint</span>; <span class="com-single">// fine</span>
+<span class="keyword">typedef</span> <span class="keyword">int</span> (*<span class="type">fp</span>)(<span class="keyword">int</span>, <span class="keyword">int</span>); <span class="com-single">// ???</span>
+</pre></td>
+</tr></tbody></table>
+<p>Such mental shortcut <strong>exhibits the fact that the teacher does not understand language grammar</strong>. This isn't even true for "simple cases", whatever you might think of such term. The whole idea that <code class="code custom-cpp"><span class="keyword">typedef</span></code> declaration grammar expects 1 type expression and 1 identifer expression is just wrong.</p>
+<p>So ... how is it done then? The answer lies in C++ standard, 9.2 (dcl.spec) (bolded are syntactic elements significant for <code class="code custom-cpp"><span class="keyword">typedef</span></code> declarations):</p>
+<pre class="literal-block"><em>decl-specifier</em>:
+    <em>storage-class-specifier</em>
+    <strong>defining-type-specifier</strong>
+    <em>function-specifier</em>
+    friend
+    <strong>typedef</strong>
+    constexpr
+    consteval
+    constinit
+    inline
+
+<em>decl-specifier-seq</em>:
+    <em>decl-specifier</em> <em>attribute-specifier-seq</em>(optional)
+    <em>decl-specifier</em> <em>decl-specifier-seq</em>
+
+<em>typedef-name</em>:
+    <strong>identifier</strong>
+    <em>simple-template-id</em>
+
+<em>type-specifier</em>:
+    <strong>simple-type-specifier</strong>
+    <em>elaborated-type-specifier</em>
+    <em>typename-specifier</em>
+    <em>cv-qualifier</em>
+
+<em>type-specifier-seq</em>:
+    <em>type-specifier</em> <em>attribute-specifier-seq</em>(optional)
+    <strong>type-specifier</strong> <strong>type-specifier-seq</strong>
+
+<em>defining-type-specifier</em>:
+    <strong>type-specifier</strong>
+    <em>class-specifier</em>
+    <em>enum-specifier</em>
+
+<em>defining-type-specifier-seq</em>:
+    <em>defining-type-specifier</em> <em>attribute-specifier-seq</em>(optional)
+    <strong>defining-type-specifier</strong> <strong>defining-type-specifier-seq</strong>
+
+<em>simple-type-specifier</em>:
+    <em>nested-name-specifier</em>(optional) <strong>type-name</strong>
+    <em>nested-name-specifier</em> template <em>simple-template-id</em>
+    <em>decltype-specifier</em>
+    <em>placeholder-type-specifier</em>
+    <em>nested-name-specifier</em>(optional) <em>template-name</em>
+    char
+    char8_t
+    char16_t
+    char32_t
+    wchar_t
+    bool
+    short
+    int
+    long
+    signed
+    unsigned
+    float
+    double
+    void
+
+<em>type-name</em>:
+    <em>class-name</em>
+    <em>enum-name</em>
+    <strong>typedef-name</strong></pre>
+<p>In simpler words:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">typedef</span></code> declaration expects only 1 subexpression which is also a part of a larger grammar used for declarations.</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">typedef</span></code> declaration recursively reuses other grammars and treats a specific subpart as the newly declared type.</p></li>
+<li><p>It is not <code class="code custom-cpp"><span class="keyword">typedef</span> <span class="spec">A</span> <span class="spec">B</span></code> (where <code class="code custom-cpp"><span class="spec">A</span></code> and <code class="code custom-cpp"><span class="spec">B</span></code> are disjoint grammars) but <code class="code custom-cpp"><span class="keyword">typedef</span> <span class="spec">X</span></code> where <code class="code custom-cpp"><span class="spec">X</span></code> is a recursive grammar, part of which will be treated as the newly introduced type alias identifier.</p></li>
+</ul>
+<p>I know it would be really hard (and pretty much pointless) to explain grammar for beginners (especially this heavily-recursive case) but <strong>do not explain</strong> <code class="code custom-cpp"><span class="keyword">typedef</span></code> <strong>syntax using mental shortcut mentioned above</strong>. It leads people to a very false thinking. It's much better explained as "<code class="code custom-cpp"><span class="keyword">typedef</span></code> reuses declaration grammar but the identifier instead of being a new object is treated as a newly introduced type alias".</p>
+</section></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

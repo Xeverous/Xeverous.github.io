@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 08 - operators</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">02 - basics</a></li>
+							<span>/</span>
+						<li>08 - operators</li>
+					</ol></nav><div class="content">
+				<h1>08 - operators</h1>				<p>Basic arithmetic operators in C++ are written using symbols like <code class="docutils literal">+</code>, <code class="docutils literal">-</code>, <code class="docutils literal">*</code> etc. An <strong>operator</strong> can be thought as a <em>function</em> (in mathematical sense) - it has certain input and produces certain output. An <em>operator</em> does not mean a <em>symbol</em> - some operators consist of multiple characters and some are even keywords. <em>Operator</em> is an abstract term.</p>
+<p>In majority of programming languages (including languages of C family), there is no juxtaposition or any implicit use of operators. This means that mathematical expressions like <code class="docutils literal">2(x + y)</code> will create syntax errors - you need to write <code class="docutils literal">2 * (x + y)</code>.</p>
+<p>The number of inputs (<em>operands</em>) an operator takes is <strong>arity</strong>. C++ features operators with many arities:</p>
+<ul class="simple">
+<li><p>nullary - 0</p></li>
+<li><p>unary - 1</p></li>
+<li><p>binary - 2</p></li>
+<li><p>ternary - 3</p></li>
+<li><p>n-ary - n</p></li>
+</ul>
+<!--  --><blockquote>
+<p>What's the point of a nullary operator? How can it produce something meaningful with no input?</p>
+</blockquote>
+<p>Well, don't really be concerned with it for now. As you learn more about functions (operators are a specific subset of functions) you will realize how vastly different they can be and that functions taking 0 arguments are still useful. A short example for now can be a function returning current date/time - it doesn't require any input but always provides meaningful output.</p>
+<p>Some operators exist with multiple arities. For example:</p>
+<ul class="simple">
+<li><p>unary minus: <code class="code custom-cpp"><span class="var-local">x</span> = -<span class="var-local">x</span></code> (negates number)</p></li>
+<li><p>binary minus <code class="code custom-cpp"><span class="var-local">z</span> = <span class="var-local">x</span> - <span class="var-local">y</span></code> (performs subtraction)</p></li>
+</ul>
+<p>Many operators can be chained to form nested expressions, but they may have different <strong>associativity</strong>:</p>
+<ul class="simple">
+<li><p>left-to-right: <code class="code custom-cpp"><span class="var-local">x</span> / <span class="var-local">y</span> / <span class="var-local">z</span></code> is equivalent to <code class="code custom-cpp">(<span class="var-local">x</span> / <span class="var-local">y</span>) / <span class="var-local">z</span></code></p></li>
+<li><p>right-to-left: <code class="code custom-cpp"><span class="var-local">x</span> = <span class="var-local">y</span> = <span class="var-local">z</span></code> is equivalent to <code class="code custom-cpp"><span class="var-local">x</span> = (<span class="var-local">y</span> = <span class="var-local">z</span>)</code></p></li>
+</ul>
+<p>For binary operators, there is a syntax sugar available when you want to perform assignment to the first of the operands:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="var-local">x</span> += <span class="var-local">y</span></code> is the same as <code class="code custom-cpp"><span class="var-local">x</span> = <span class="var-local">x</span> + <span class="var-local">y</span></code>.</p></li>
+<li><p><code class="code custom-cpp"><span class="var-local">x</span> *= <span class="var-local">y</span></code> is the same as <code class="code custom-cpp"><span class="var-local">x</span> = <span class="var-local">x</span> * <span class="var-local">y</span></code>.</p></li>
+<li><p><code class="code custom-cpp"><span class="var-local">x</span> %= <span class="var-local">y</span></code> is the same as <code class="code custom-cpp"><span class="var-local">x</span> = <span class="var-local">x</span> % <span class="var-local">y</span></code>.</p></li>
+<li><p>and so on...</p></li>
+</ul>
+<!--  --><blockquote>
+<p>What if I write <code class="code custom-cpp"><span class="var-local">z</span> *= <span class="var-local">y</span> + <span class="var-local">x</span></code>? How it is processed?</p>
+</blockquote>
+<p>It works as <code class="code custom-cpp"><span class="var-local">z</span> = <span class="var-local">z</span> * (<span class="var-local">x</span> + <span class="var-local">y</span>)</code>. The entire right side is always evaluated first.</p>
+<p>Much later, you will also learn about <strong>operator overloading</strong>. Because C++ allows to define new types (using specific keywords) and most built-in operators work only with built-in types, C++ allows to define meaning for operators when user-defined types are involved. You have already used overloaded <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&lt;&lt;</span></code> with <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code>. Many IDEs will color overloaded operators to signal that their meaning has been specified in code, not in the language.</p>
+<section id="comparison"><h2>Comparison</h2>
+<ul class="simple">
+<li><p>less than: <code class="code custom-cpp"><span class="var-local">x</span> &lt; <span class="var-local">y</span></code></p></li>
+<li><p>less than or equal: <code class="code custom-cpp"><span class="var-local">x</span> &lt;= <span class="var-local">y</span></code></p></li>
+<li><p>greater than: <code class="code custom-cpp"><span class="var-local">x</span> &gt; <span class="var-local">y</span></code></p></li>
+<li><p>greater than or equal: <code class="code custom-cpp"><span class="var-local">x</span> &gt;= <span class="var-local">y</span></code></p></li>
+<li><p>equal: <code class="code custom-cpp"><span class="var-local">x</span> == <span class="var-local">y</span></code></p></li>
+<li><p>not equal: <code class="code custom-cpp"><span class="var-local">x</span> != <span class="var-local">y</span></code></p></li>
+</ul>
+<p>All them produce a value of type <code class="code custom-cpp"><span class="keyword">bool</span></code>.</p>
+<aside class="admonition warning"><p class="admonition-title">warning</p>
+<p>Do not mistake <code class="docutils literal">==</code> wih <code class="docutils literal">=</code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">=</code> is the assignment operator. <code class="code custom-cpp"><span class="var-local">x</span> = <span class="var-local">y</span></code> assigns value of <code class="code custom-cpp"><span class="var-local">y</span></code> to <code class="code custom-cpp"><span class="var-local">x</span></code>.</p></li>
+<li><p><code class="docutils literal">==</code> is the equality operator, <code class="code custom-cpp"><span class="var-local">x</span> == <span class="var-local">y</span></code> produces a value of type <code class="code custom-cpp"><span class="keyword">bool</span></code> informing whether operands are equal.</p></li>
+</ul></aside></section><section id="arithmetic"><h2>Arithmetic</h2>
+<p>There are 5 basic arithmetic operators: <code class="docutils literal">+</code>, <code class="docutils literal">-</code>, <code class="docutils literal">*</code>, <code class="docutils literal">/</code>, <code class="docutils literal">%</code>. All can be used on integer types and all except <code class="docutils literal">%</code> can be used on floating-point types.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>There is no operator for powers. <code class="code custom-cpp"><span class="var-local">x</span> ^ <span class="var-local">y</span></code> does not raise <code class="code custom-cpp"><span class="var-local">x</span></code> to the power of <code class="code custom-cpp"><span class="var-local">y</span></code> but performs <em>bitwise XOR</em> instead. Powers and other mathematical operations can be done using functions from the standard library.</p>
+</aside><p>Arithmetic expressions can generate different machine code depening on types of used variables. Math is done very differently on integer and floating-point types.</p>
+<p>Since you are learning programming I'm pretty sure you are already familiar with math, but there are some special situations which you should understand - while math is flawless reality has its limitations.</p>
+</section><section id="integer-operations"><h2>Integer operations</h2>
+<p>Integer division is done ... on integers. The result is also an integer so any fractional part is lost. If you want the remainer, use modulo (<code class="docutils literal">%</code>).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">22</span>;
+	<span class="keyword">int</span> <span class="var-local">y</span> = <span class="lit-num">5</span>;
+
+	<span class="keyword">int</span> <span class="var-local">quotient</span> = <span class="var-local">x</span> / <span class="var-local">y</span>;
+	<span class="keyword">int</span> <span class="var-local">remainder</span> = <span class="var-local">x</span> % <span class="var-local">y</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"quotient: "</span> &lt;&lt; <span class="var-local">quotient</span> &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>remainder: "</span> &lt;&lt; <span class="var-local">remainder</span> &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// this should always print x
+</span>	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"reversed operation: "</span> &lt;&lt; <span class="var-local">quotient</span> * <span class="var-local">y</span> + <span class="var-local">remainder</span> &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition warning"><p class="admonition-title">warning</p>
+<p>Integer division and modulo where second operand is zero is <em>undefined behavior</em>.</p>
+</aside><p>The above warning should be self-explanatory. Such operations have no definition in mathematical world, and the same happens in C++. If you perform these operations and can not guarantee what the second operand is (e.g. it's provided by the user of the program) you should definitely check it to prevent any potential bugs.</p>
+<section id="overflow"><h3>Overflow</h3>
+<p>If the result of the operation can not be represented (e.g. multiplication of 2 large integers produced value that does not fit in range)</p>
+<ul class="simple">
+<li><p>for signed integers: the behavior is undefined</p></li>
+<li><p>for unsigned integers: the value wraps around</p></li>
+</ul>
+<p>Previously it was said that operations on signed and unsigned integers can be done using the same circuit - and this is still true for most hardware. C++ defines them differently though.</p>
+<p>When overflow happens, the value wraps around. A good analogy is an odometer or a clock. The set of possible values is finite and there is a continuity between lowest and highest value.</p>
+<img alt="odometer rollover" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Odometer_rollover.jpg"><p>During overflow, the most significant digit is lost. In binary system, the wrapping happens at powers of 2 - for an 8-bit integer adding 1 to <code class="docutils literal">1111 1111</code> (255) would make it <code class="docutils literal">1 0000 0000</code> so after discarding excess digit, it becomes <code class="docutils literal">0000 0000</code> (0).</p>
+<ul class="simple">
+<li><p>For unsigned integers, this behavior is very desirable. Various formulas intentionally use wrapping behavior to form cycles or some pattern of repetition in output. Cryptography, hashing, control checksums and compression are very prominent users of overflow wrapping.</p></li>
+<li><p>For signed integers, the behavior has no good use because the lowest representatable value is not zero, but some negative number. So instead of starting over from zero, it starts over from some huge negative value. Such behavior has no practical use. Even worse, it's a very good source of bugs, most commonly found in games. If players find an overflow bug within a tycoon-style game, they can try to form a construction so expensive that its total cost overflows, which then causes the cost to be negative which then causes the game to subtract negative amount of in-game currency from their inventory, effectively giving them money instead of spending it.</p></li>
+</ul>
+<p>Undefined behavior gives the compiler infinite freedom for optimization. Since anything can happen, any machine code will be fine as long as other requirements are fulfilled. This lets compilers optimize away code like <code class="code custom-cpp"><span class="keyword">if</span> (<span class="var-local">x</span> + <span class="lit-num">1</span> &lt; <span class="var-local">x</span>)</code> as the only situation in which the statement could be triggered is overflow. If <code class="code custom-cpp"><span class="var-local">x</span></code> is a signed number, compiler can assume overflow never happens (programs should be free of undefined behavior) and remove dead code.</p>
+<blockquote>
+<p>But who would write such nonsensical code?</p>
+</blockquote>
+<p>It happens more often than you think. This example is very trivial, but once you start using more complex abstractions you will realize how easy it is to accidentally create such situations. The other thing is that you are still at the beginning of the tutorial so I can't really provide more complex examples.</p>
+<p>You can see the difference on <a class="reference external" href="https://godbolt.org/#z:OYLghAFBqd5QCxAYwPYBMCmBRdBLAF1QCcAaPECAM1QDsCBlZAQwBtMQBGAFlJvoCqAZ0wAFAB4gA5AAYppAFZdSrZrVDIApACYAQjt2kR7ZATx1KmWugDCqVgFcAtrS6dSV9ABk8tTADlnACNMYhAADlIAB1QhQnNaO0cXN2jY%2BLofP0CnELDI40xTBIYCZmICJOdXTndC4rpS8oIsgODQiKMyiqqU2q7m1py8iIBKI1QHYmQOKSDUewBqKk4IOOA/dEXxUc0ZAEFNAHZ9A8XzxeJMAinabcWDRc4HgGYbbc0X08OjgBE9w4HeZLKjaCAOWjrTbbXYHY7fC6Xa63e6PZ6fd7iT7fY6/KTjVjSACs8lcsnkqGkNgMjyEk2mmAe2henHkBGkclG4wA1iBuNoAHQyF4ANiJRJeRO03HCMm4nEihKk3FJHIp0nkQhAMlI7PJ4zgsBgiBQqCcUTw7DIFAgaHNlo6wCEtGYUSECFQBD4loIoS1ECCatIQV85QAntJWaQ7U4rAQAPK0VgR8mkLBONTAdhB/BXYoAN0wWtTmHERQcvsj8l8vqVchUeCCxHDdiwQYIxDwTir434jBY2Z4fDoBGEYkkqaU7lU6hQNL0DaCWsg41QUTMdGLAFohAR0J9flo9AZtDJFlv4y9NZgTBvXBBPL0ah5rEN2mF3DE4nen8ovxlaDfXIOjqG8ijvJoensaplHqCDuhaXw2mAj8Big5Jn13QYkOGEDxjpKYZi4AliVVVNKSkcRwhFLcRW4RZgGQZBFggDsIW5UYWNwQgSCZFlSEWOx7StPjOE46ljz0Nk1S5UheSJHUlRVUhuyJTgBXlBUAE4jiOLSRW0QyXhkEVSDJesKM1bVdRk0hDRNO0LStchKEch0wmQGdgAAfTY2huW9VhfWIf1A1TEMXWIFMoxjONE2THNMAzdRs1TXNwLwQti3rUty0rKQoxrG8g1YRtmyi1tZnrDsux7Yd6CYNgOCHPsxwkIMlG0FRMznSTDFKpd4FXdcEm3Xd9xeQ9510U9z0va9bwSSxrF/dxPCAkZP3SH9oL6NJvwSDaQKMMCGloSDKl2zDTvg7DsnfWCENWtDEPulDiImQjmpIqQSTMoMKKomi6MWTzMxYvyOK4/AiGIUSBKEpzQj47RxOm6T9R%2B5TuxlAUiXCcJOBkQzhV0o4RS0/7yI1IxrL1TkeRAIkjgFfSXm4bg6KONStPxrqlSvKmLJp%2Bn8R%2B7QyOFqQMYZ0hCxCpbuCAA%3D">compiler explorer</a> - functions are almost identical; the one operating on signed integer doesn't do any comparison in its machine code.</p>
+<p>Overflow is reversible:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cstdint&gt;</span> <span class="com-single">// for fixed-width type aliases</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="type">uint16_t</span> <span class="var-local">x</span> = <span class="lit-num">65535</span><span class="suf">u</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"before overflow: "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="var-local">x</span> += <span class="lit-num">3</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"after overflow: "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="var-local">x</span> -= <span class="lit-num">3</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"after another overflow: "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<!-- the example above does not use uint8_t because it usually is an alias for unsigned char and prints value as text instead --><p>Summing it up:</p>
+<ul class="simple">
+<li><p>Overflow on unsigned numbers is well-defined in C++ because underlying hardware behavior is useful.</p></li>
+<li><p>Overflow on signed numbers is undefined in C++ because it's not useful and making it undefined gives more freedom for optimizations.</p></li>
+</ul>
+<p>...and for this reason:</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Unless you need wrapping behavior or perform specific bit-level operations, you should always use signed integers, even if input data is never negative.</p>
+</aside></section></section><section id="floating-point-operations"><h2>Floating-point operations</h2>
+<p>Unlike with integers, there is no way for undefined behavior to occur during floating-point arithmetic. In bad situations, you will end up with special values instead:</p>
+<ul class="simple">
+<li><p>Division by zero will result in positive or negative infinity, depending on signs of operands.</p></li>
+<li><p>Overflow-wrapping can not happen. Intead, results will get stuck on positive or negative infinity.</p></li>
+<li><p>Nonsensical operations (zero divided by zero, square root of negative number, logarithm of negative number, etc.) will result in NaN (not-a-number).</p></li>
+<li><p>Any operation where one of operands is NaN will always result in NaN.</p></li>
+<li><p>Some of these operations can raise <em>floating-point exceptions</em>. These are not <em>C++ exceptions</em> (it's a very different thing) and shouldn't concern you now.</p></li>
+</ul>
+<p>Many operations with floating-point types are affected by <a class="reference external" href="https://en.cppreference.com/w/cpp/numeric/fenv">floating-point environment</a>. This is usually a set of CPU settings that affect current thread. Compiler options can also change the environment. This information shouldn't bother you now though, knowledge what happens in typical bad situations (listed above) is much more important.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>In any comparison, if at least one of operands is NaN, the result is always <code class="code custom-cpp"><span class="keyword">false</span></code>.</p>
+</aside><section id="underflow"><h3>Underflow</h3>
+<p>First, some clarity as this term often gets misunderstood. There is a common mistake where going below minimum representatable value is referred to as underflow.</p>
+<aside class="admonition error"><p class="admonition-title">error</p>
+<p>During integer arithmetic, if the result is larger than maximum representatable value, <strong>overflow</strong> happens. If the result is smaller than minimum representatable value, this is also <strong>overflow</strong>.</p>
+<ul class="simple">
+<li><p><strong>Overflow</strong> happens with integers when value does not fit in range.</p></li>
+<li><p><strong>Underflow</strong> happens with floating-point when value is truncated to zero.</p></li>
+</ul></aside><p>Underflow occurs when the value is so small that the closest representatable value is zero. The following program continuously divides the same variable untill its value underflows:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">auto</span> <span class="var-local">x</span> = <span class="num">1.0</span><span class="suf">f</span>;
+
+	<span class="keyword">while</span> (<span class="var-local">x</span> != <span class="lit-num">0</span>)
+	{
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+		<span class="var-local">x</span> /= <span class="num">2.0</span><span class="suf">f</span>;
+	}
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table></section><section id="more-floating-point-shenanigans"><h3>More floating point shenanigans</h3>
+<p>If you are really interested about floating-point, I recommend you to watch <a class="reference external" href="https://www.youtube.com/watch?v=k12BJGSc2Nc">CppCon 2015: John Farrier - Demystifying Floating Point</a>. The presentation goes over many peculiarities and gives insight into various solutions. Knowing these is what separates good programmers from the best programmers.</p>
+<p>Short summary of key points in the presentation:</p>
+<ul class="simple">
+<li><p>Normalize values to range -1 - 1. Calculations in this range have highest precision.</p></li>
+<li><p>Use formulas which don't mix big numbers with small numbers. Separate big with big and small with small operations will achieve more accurate results.</p></li>
+<li><p>Don't ever compare floating-point directly as their equality (except with zero) is basically unachieveable. Instead, make comparisons within +/- epsilon tolerance from expected result.</p></li>
+<li>
+<p>There are multiple ways to round floating-point numbers:</p>
+<ul>
+<li><p>towards zero</p></li>
+<li><p>towards nearest integer</p></li>
+<li><p>towards positive infinity</p></li>
+<li><p>towards negative infinity</p></li>
+</ul>
+</li>
+<li><p>If you aren't sure, prefer multiplication over division (<code class="docutils literal">x / y</code> can be refactored to <code class="docutils literal">x * (1 / y)</code>). It's usually more precise and faster.</p></li>
+<li><p>Avoid accumulation of bias: instead of adding a floating-point constant after every iteration, count number of iterations (as integer) and multiply it with the constant.</p></li>
+<li><p>Check how your hardware treats <a class="reference external" href="https://en.wikipedia.org/wiki/Denormal_number">denormal numbers</a>. Some may feature 100x slowdown in which case you might prefer to change settings to perform underflow.</p></li>
+</ul></section></section><section id="logical-operators"><h2>Logical operators</h2>
+<p>3 logical functions are available:</p>
+<ul class="simple">
+<li><p>negation (NOT): <code class="code custom-cpp">!<span class="var-local">x</span></code></p></li>
+<li><p>conjunction (AND): <code class="code custom-cpp"><span class="var-local">x</span> &amp;&amp; <span class="var-local">y</span></code></p></li>
+<li><p>disjunction (OR): <code class="code custom-cpp"><span class="var-local">x</span> || <span class="var-local">y</span></code></p></li>
+</ul>
+<p>All of them operate on and produce values of type <code class="code custom-cpp"><span class="keyword">bool</span></code>.</p>
+<p>Equality operators (<code class="docutils literal">==</code> and <code class="docutils literal">!=</code>) work on various types but if they are used on values of type <code class="code custom-cpp"><span class="keyword">bool</span></code> then <code class="docutils literal">==</code> is also equivalent to NXOR function and <code class="docutils literal">!=</code> is also equivalent to XOR function.</p>
+</section><section id="bit-negation"><h2>Bit negation</h2>
+<p><code class="docutils literal">~</code> flips all bits. This operator is unary.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;bitset&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">unsigned</span> <span class="var-local">x</span> = <span class="fmt-seq">0b</span><span class="num">01001100</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" x: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span>)  <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"~x: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(~<span class="var-local">x</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Binary literals require C++14.</p>
+</aside><aside class="admonition note"><p class="admonition-title">note</p>
+<p>The bitset type is used to change output from printing integers to printing bit representations. More on how to manipulate output - in later lessons.</p>
+</aside><aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Remember to use unsigned types for any kind of bit operations.</p>
+</aside></section><section id="bitwise-operators"><h2>Bitwise operators</h2>
+<p>These operators apply specific logical function bitwise. That is, for 2 inputs, each having the same amount of bits, each of the output bits is a result of separate logical function applied to consecutive pairs of input bits.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;bitset&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">unsigned</span> <span class="var-local">x</span> = <span class="fmt-seq">0b</span><span class="num">11101001</span>;
+	<span class="keyword">unsigned</span> <span class="var-local">y</span> = <span class="fmt-seq">0b</span><span class="num">01010101</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"x      : "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"y      : "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">y</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"x AND y: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> &amp; <span class="var-local">y</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"x  OR y: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> | <span class="var-local">y</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"x XOR y: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> ^ <span class="var-local">y</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table></section><section id="bit-shift-operators"><h2>Bit shift operators</h2>
+<p>Move bits left or right. Bits going out are discarded and new bits are 0s.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;bitset&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">unsigned</span> <span class="var-local">x</span> = <span class="fmt-seq">0b</span><span class="num">00001100</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"value           : "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"shift left  by 4: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> &lt;&lt; <span class="lit-num">4</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"shift left  by 5: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> &lt;&lt; <span class="lit-num">5</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"shift left  by 6: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> &lt;&lt; <span class="lit-num">6</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"shift right by 2: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> &gt;&gt; <span class="lit-num">2</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"shift right by 3: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> &gt;&gt; <span class="lit-num">3</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"shift right by 4: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="lit-num">8</span>&gt;(<span class="var-local">x</span> &gt;&gt; <span class="lit-num">4</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>This is also a good example how the same operator (<code class="docutils literal">&lt;&lt;</code> and <code class="docutils literal">&gt;&gt;</code> in this case) can perform different task depending on what it's being used with (here: bit shifts and stream insertion).</p>
+<aside class="admonition warning"><p class="admonition-title">warning</p>
+<p>Bit shifts are undefined behaviour:</p>
+<ul class="simple">
+<li><p>when right operand is negative</p></li>
+<li><p>when right operand is larger than the amount of bits in the left operand</p></li>
+<li><p>in some combinations when the left operand is a signed integer - too complex to list but you shouldn't use signed integers for bit operations anyway</p></li>
+</ul></aside><!--  --><blockquote>
+<p>Why such simple operation can result in undefined behavior?</p>
+</blockquote>
+<p>Short answer: optimization. Long answer: some 1 hour long CppCon video that I can't find.</p>
+</section><section id="other-operators"><h2>Other operators</h2>
+<p>Not all operators are written using symbols. Many C++ operators are keywords. There are 2 very simple unary operators which return memory-related properties:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">sizeof</span></code> - returns the size in bytes of specific type</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">alignof</span></code> - returns the alignment in bytes of specific type</p></li>
+</ul>
+<p>Both always return a non-zero integer of type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">size_t</span></code>.</p>
+<p>Alignment affects placement of objects in memory. For simplest types, its value will usually be the same as size. Explaining it in detail would take some time and would require more knowledge about memory so I'm only mentioning it as an operator example.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="keyword">sizeof</span></code> and <code class="code custom-cpp"><span class="keyword">alignof</span></code> can not be applied to <em>incomplete types</em> (this includes <code class="code custom-cpp"><span class="keyword">void</span></code>), <em>bit-fields</em> and <em>functions</em>.</p>
+</aside><table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of bool       : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">bool</span>)        <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of int        : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">int</span>)         <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of long       : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">long</span>)        <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of long long  : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">long</span> <span class="keyword">long</span>)   <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of char       : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">char</span>)        <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of char16_t   : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">char16_t</span>)    <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of char32_t   : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">char32_t</span>)    <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of wchar_t    : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">wchar_t</span>)     <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of float      : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">float</span>)       <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of double     : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">double</span>)      <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of long double: "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="keyword">long</span> <span class="keyword">double</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of bool       : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">bool</span>)        <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of int        : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">int</span>)         <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of long       : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">long</span>)        <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of long long  : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">long</span> <span class="keyword">long</span>)   <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of char       : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">char</span>)        <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of char16_t   : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">char16_t</span>)    <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of char32_t   : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">char32_t</span>)    <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of wchar_t    : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">wchar_t</span>)     <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of float      : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">float</span>)       <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of double     : "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">double</span>)      <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of long double: "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="keyword">long</span> <span class="keyword">double</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// This syntax is also valid, but because many type names consist of</span>
+	<span class="com-single">// multiple keywords and functions always use (), it's heavily</span>
+	<span class="com-single">// recommended to always use (), just like with functions.</span>
+	<span class="com-single">// std::cout &lt;&lt; "size of int: " &lt;&lt; sizeof int &lt;&lt; "\n";</span>
+
+	<span class="com-single">// These operators can also be used with objects, in which case</span>
+	<span class="com-single">// they will output the size/alignment of the type of the object.</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"size of character output object: "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">sizeof</span>(<span class="namespace">std</span>::<span class="var-global">cout</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"alignment of character output object: "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">alignof</span>(<span class="namespace">std</span>::<span class="var-global">cout</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<!--  --><blockquote>
+<p>Why is size of <code class="code custom-cpp"><span class="keyword">bool</span></code> equal to 1? Shouldn't it be a single bit? Is it because the operator returns size in bytes?</p>
+</blockquote>
+<p>When stored in memory, <code class="code custom-cpp"><span class="keyword">bool</span></code> will occupy a full byte<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. This is for multiple reaons:</p>
+<ul class="simple">
+<li><p>Memory is addressed by bytes, not bits. It's not possible to fetch a single bit.</p></li>
+<li><p>Multiple <code class="code custom-cpp"><span class="keyword">bool</span></code>s could be packed in a byte but then saving and retrieving single bit information would unnecessarily complicate machine code, slowing down the program.</p></li>
+<li><p>Higher memory usage does not necessarily mean worse performance. Vast majority of today's software prefers to sacrifice memory for faster execution. Most of the time, there is a lot of free memory but the processor is highly utilized.</p></li>
+</ul>
+<p>In some cases, the compiler can optimize <code class="code custom-cpp"><span class="keyword">bool</span></code> to a single bit (more precisely, a single CPU flag register). These cases are usually comparisons where the value of type <code class="code custom-cpp"><span class="keyword">bool</span></code> is never stored, only immediately used for an <code class="code custom-cpp"><span class="keyword">if</span></code> (or similar) statement.</p>
+<blockquote>
+<p>Do these operators have actual use or are they just a way to obtain implementation-defined details?</p>
+</blockquote>
+<p>They have use in raw memory operations. Such operations work on a lower abstraction layer than most of C++ type system and information they provide is crucial in these operations.</p>
+</section><section id="recommendations"><h2>Recommendations</h2>
+<section id="precedence"><h3>Precedence</h3>
+<p>Some operators have higher priority than others. Because C++ has over 40 different operators, no one remembers their precedence perfectly - only some of them are strictly related to math. Things can get complicated once multiple very different operators are used in one expression.</p>
+<p>Therefore, it's highly recommended to wrap complex subexpressions in parentheses:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"> <span class="var-local">a</span> +   <span class="var-local">b</span> * <span class="var-local">c</span>  % <span class="var-local">d</span>   ^  <span class="var-local">e</span> &amp; <span class="var-local">f</span>  <span class="com-single">// unclear order unless reader remembers rules perfectly</span>
+(<span class="var-local">a</span> + ((<span class="var-local">b</span> * <span class="var-local">c</span>) % <span class="var-local">d</span>)) ^ (<span class="var-local">e</span> &amp; <span class="var-local">f</span>) <span class="com-single">// much cleaner</span>
+</pre></td>
+</tr></tbody></table>
+<p>This will make reading code easier while also saving you some time from dealing with unexpected bugs.</p>
+</section><section id="spacing"><h3>Spacing</h3>
+<p>It's intuitive for unary operators to have higher priority than binary operators: <code class="docutils literal">x + !y</code> is processed as <code class="docutils literal">x + (!y)</code>. While whitespace characters doesn't matter in this case, it's highly recommended to write spaces around binary operators and stick unary operators to their arguments.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// bad</span>
+<span class="var-local">a</span>+!<span class="var-local">b</span> +<span class="var-local">c</span> [<span class="var-local">d</span>] &lt;&lt;<span class="var-local">e</span>
+<span class="var-local">a</span> + ! <span class="var-local">b</span> + <span class="var-local">c</span>[ <span class="var-local">d</span>]&lt;&lt; <span class="var-local">e</span>
+<span class="var-local">a</span> +! <span class="var-local">b</span>+<span class="var-local">c</span> [ <span class="var-local">d</span> ] &lt;&lt; <span class="var-local">e</span>
+<span class="com-single">// good</span>
+<span class="var-local">a</span> + !<span class="var-local">b</span> + <span class="var-local">c</span>[<span class="var-local">d</span>] &lt;&lt; <span class="var-local">e</span>
+</pre></td>
+</tr></tbody></table>
+<p>In other words, operators which are applied first should be closer to the object.</p>
+<hr class="docutils">
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>Unlike character type, size of boolean type is actually implementation-defined but I haven't heard of any implementation which would differ from 1 byte. There are no reasons to do otherwise.</p>
+</aside></aside></section></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

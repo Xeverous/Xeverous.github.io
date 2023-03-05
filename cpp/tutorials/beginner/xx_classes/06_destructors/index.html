@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 06 - destructors</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xx - classes</a></li>
+							<span>/</span>
+						<li>06 - destructors</li>
+					</ol></nav><div class="content">
+				<h1>06 - destructors</h1>				<p>Destructors are very analogic to constructors. The difference is that they are run when objects are being destroyed.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">class</span> <span class="type-class">bar</span>
+{
+<span class="keyword">public</span>:
+	<span class="type-class">bar</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"bar constructor<span class="esc-seq">\n</span>"</span>; }
+	~<span class="type-class">bar</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"bar destructor<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type-class">baz</span>
+{
+<span class="keyword">public</span>:
+	<span class="type-class">baz</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"baz constructor<span class="esc-seq">\n</span>"</span>; }
+	~<span class="type-class">baz</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"baz destructor<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type-class">foo</span>
+{
+<span class="keyword">public</span>:
+	<span class="type-class">foo</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"foo constructor<span class="esc-seq">\n</span>"</span>; }
+	~<span class="type-class">foo</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"foo destructor<span class="esc-seq">\n</span>"</span>; }
+
+<span class="keyword">private</span>:
+	<span class="type-class">bar</span> <span class="var-member">br</span>;
+	<span class="type-class">baz</span> <span class="var-member">bz</span>;
+};
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="type-class">foo</span> <span class="var-local">f</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-1" name="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-1" href="#rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-1"></a>bar constructor
+<a id="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-2" name="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-2" href="#rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-2"></a>baz constructor
+<a id="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-3" name="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-3" href="#rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-3"></a>foo constructor
+<a id="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-4" name="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-4" href="#rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-4"></a>foo destructor
+<a id="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-5" name="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-5" href="#rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-5"></a>baz destructor
+<a id="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-6" name="rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-6" href="#rest_code_ad93dee640384c7e92b0cb4c3ad3ed00-6"></a>bar destructor
+</pre></div>
+<p>Destructors are written like constructors, but the class name is prepended with <code class="docutils literal">~</code>. Destructors are called automatically - they are run when objects ends their lifetime.</p>
+<p>Objects that are not managed dynamically (a topic which is far from this lesson) have their lifetime tied to the enclosing scope (formally they are called objects with <em>automatic storage duration</em>). For such objects:</p>
+<ul class="simple">
+<li><p>destruction happens at the enclosing <code class="docutils literal">}</code></p></li>
+<li><p><strong>destruction always happens in exactly opposite order of construction</strong></p></li>
+</ul>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>The word "constructor" is sometimes abbreviated as "ctor" and similarly, "destructor" - "dtor".</p>
+</aside><p>Sometimes you might encounter the name "deconstructor" but no such name is formally recognized.</p>
+<section id="in-detail"><h2>In detail</h2>
+<p>Most rules for destructors are the same as for constructors:</p>
+<ul class="simple">
+<li><p>Like constructors, destructors use the name of the class (just with <code class="docutils literal">~</code>).</p></li>
+<li><p>Like constructors, destructors do not have a return type - not even <code class="code custom-cpp"><span class="keyword">void</span></code>.</p></li>
+<li><p>Like constructors, destructors can have an early <code class="code custom-cpp"><span class="keyword">return</span>;</code> statement like in a function returning <code class="code custom-cpp"><span class="keyword">void</span></code>.</p></li>
+<li><p>Like constructors, if you don't write any destructor a default one is implicitly added to the class (it's <code class="code custom-cpp"><span class="keyword">public</span></code>, has 0 parameters and has an empty body).</p></li>
+<li><p>Like constructors, destructors are affected by access specifiers.</p></li>
+<li><p>Like constructors, destructors can be made <code class="code custom-cpp">= <span class="keyword">default</span></code> and <code class="code custom-cpp">= <span class="keyword">delete</span></code>.</p></li>
+</ul>
+<p>But there are few differences:</p>
+<ul class="simple">
+<li><p>Unlike constructors, destructors can not be overloaded and always take 0 arguments.</p></li>
+</ul>
+<p>The reason for this is simple - they are called automatically when objects die. There is no way to pass any arguments or specify which overload to choose. Thus, each class always has exactly 1 destructor - explicitly written or default one.</p>
+<ul class="simple">
+<li><p>Unlike constructors, destructors can be <code class="code custom-cpp"><span class="keyword">virtual</span></code>.</p></li>
+</ul>
+<p>This will be covered later, in polymorphism chapter.</p>
+<ul class="simple">
+<li><p>Unlike constructors, destructors are <code class="code custom-cpp"><span class="keyword">noexcept</span></code> by default.</p></li>
+</ul>
+<p>This will be covered later, in exceptions chapter.</p>
+</section><section id="purpose"><h2>Purpose</h2>
+<p>The core purpose of destructors is performing necessary cleanup when objects die. A lot of classes acquire resources in their constructors (e.g. opening a file, opening a network socket, allocating memory) that need to be freed when they are no longer in use. Otherwise the resources would be never given back to the underlying system which would create a situation known as a <em>leak</em> - reduction in available resouces even though they aren't actively used.</p>
+<p>Destructors are one of key C++ design elements that differentiate it from most of other programming languages. Most languages rely on <em>garbage collection</em> mechanism - a side "process" that is running simultaneously with the application. Roughly speaking, it scans the memory of the application and frees resources (most predominantly memory) which are no longer in use (not referened in any object) or are unreachable (referenced in some object(s) but these objects are no longer referenced).</p>
+<p>Garbage collection simplifies resource management but comes with its costs:</p>
+<ul class="simple">
+<li><p>The code is significantly simpler but underlying implementation has to be much more complex. The program has to run together with the garbage collector.</p></li>
+<li><p>Garbage collection has negative performance impact. The impact has been reduced during decades of GC algorithms evolution but it will never be zero.</p></li>
+<li><p>Garbage collection may not immediately free all unused resources. Some GC implementations do periodic scanning for performance resons, trading latency for throughput.</p></li>
+<li><p>Garbage collection is hard to predict which may negatively impact performance profiling and bug reproduction.</p></li>
+<li><p>Some resources are too complex to be garbage collected (e.g. file handles). This results in situation where resources have to be manually freed but there is no or limited support in the given programming language for resource management.</p></li>
+</ul>
+<p>One of key C++ design principles is "you don't pay for what you don't use". Thus the language doesn't provide more-or-less satisfactory garbage collector (the standard formally allows GC implementations though) but instead offers a set of features that help in abstracting resource management.</p>
+<p>Because dynamic memory allocation is far from the current lesson, you won't write any "real" destructors for now. Only the sample ones like in this lesson to print and notice when they are actually run. But destructors will be of huge importance one you start writing resource-managing classes and delve into RAII - a backbone idiom of resource management in C++.</p>
+<p>Note that many examples have already relied on destructors. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> is a class that dynamically allocates memory for its character buffer. It doesn't know how large the string will be so it allocates and frees up memory as needed. Same for <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span></code>. If you create a class that has <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> member(s), even without explicitly writing a destructor, the string destructor will be called whenever an enclosing object is being destroyed (unlike constructors, there is no delegation or member "deinit" list - all destructors of members on each composition level are always run).</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

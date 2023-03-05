@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 05 - smart pointers</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xz - polymorphism</a></li>
+							<span>/</span>
+						<li>05 - smart pointers</li>
+					</ol></nav><div class="content">
+				<h1>05 - smart pointers</h1>				<section id="storing-polymorphic-objects"><h2>Storing polymorphic objects</h2>
+<p>At this point you know all core features that allow polymorphism. A "cherry on top" would be something that allows storing multiple objects of different types so that you can call virtual functions on them without caring about the dynamic type.</p>
+<p>The problem is, something like <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="type">animal</span>&gt;</code> will not work for multiple reasons:</p>
+<ul class="simple">
+<li><p>The type is abstract, so the vector class with this type will not compile.</p></li>
+<li><p>Even if it did compile, it would only allocate enough storage for objects of type <code class="code custom-cpp"><span class="type">animal</span></code>.</p></li>
+<li><p>Even if there was enough additional storage for larger, derived types the vector class would need to keep some metadata about (varying) object sizes so that <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">[]</span></code> implementation can access memory at correct offsets in the storage.</p></li>
+</ul>
+<p>If you try to do this (by making the <code class="code custom-cpp"><span class="type">animal</span></code> non-abstract), the code will compile but the vector class will slice every object to this type.</p>
+<p>Since dynamic types only make sense with pointers and references we should create a vector of pointers or references. Vector can not be used with reference types (their limited binding/assignment functionality disallows memory-managing code inside vector implementation) so the only left thing are pointers. But this also means that the vector can not store objects themselves, only pointers to them (and consequently, it will allocate storage only for pointers).</p>
+<p>We could use such vector of pointers, but having to create objects elsewhere and pass pointers to them to the vector would be very annoying and limiting: at best we would need 1 vector for objects of each type and the final vector that accumulated pointers to all objects. And then all the problems with pointer/iterator invalidation...</p>
+<p>There is a solution to all these problems though: <em>smart pointers</em>.</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>A smart pointer is a pointer that automatically manages memory. Different smart pointers implement different managing strategies. They can also be used to manage non-memory resources.</p>
+</aside></section><section id="memory-management"><h2>Memory management</h2>
+<p>Memory allocation and resource management are topics for a separate tutorial (it's a topic as big as object-oriented programming) but because idiomatic polymorphism sort of requires this knowledge, this lesson will explain what is needed.</p>
+<p>We won't delve into actual allocation and management (even <code class="code custom-cpp"><span class="keyword">new</span></code> and <code class="code custom-cpp"><span class="keyword">delete</span></code> are a high-level way of managing allocations), the whole point of smart pointers is that they do it instead. What is important is their semantics and generally how they can and should be used.</p>
+</section><section id="smart-pointers"><h2>Smart pointers</h2>
+<p>The C++ standard library contains 3 smart pointer class templates:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">unique_ptr</span></code>, which implements <em>single ownership</em> model</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span></code>, which implements <em>shared ownership</em> model</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">weak_ptr</span></code>, which is an <em>observer pointer</em> for shared pointers</p></li>
+<li><p>(you can use raw pointers as observers for unique pointers)</p></li>
+</ul>
+<p>The first 2, once constructed, will automatically manage memory of an object of specified type.</p>
+<p>Both can be created in multiple ways:</p>
+<ul class="simple">
+<li>
+<p>By calling default constructor (it will be empty won't manage any object):</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">unique_ptr</span>&lt;<span class="param-tmpl">T</span>&gt; <span class="var-local">uptr</span>;</code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span>&lt;<span class="param-tmpl">T</span>&gt; <span class="var-local">sptr</span>;</code></p></li>
+</ul>
+</li>
+<li>
+<p>By providing a pointer to dynamically allocated object to the constructor:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">unique_ptr</span>&lt;<span class="param-tmpl">T</span>&gt; <span class="var-local">uptr</span>(<span class="keyword">new</span> <span class="param-tmpl">T</span>(<span class="com-multi">/* ctor args... */</span>));</code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span>&lt;<span class="param-tmpl">T</span>&gt; <span class="var-local">sptr</span>(<span class="keyword">new</span> <span class="param-tmpl">T</span>(<span class="com-multi">/* ctor args... */</span>));</code></p></li>
+</ul>
+</li>
+<li>
+<p>By using a factory function:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="keyword">auto</span> <span class="var-local">uptr</span> = <span class="namespace">std</span>::<span class="func">make_unique</span>&lt;<span class="param-tmpl">T</span>&gt;(<span class="com-multi">/* ctor args... */</span>);</code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">auto</span> <span class="var-local">sptr</span> = <span class="namespace">std</span>::<span class="func">make_shared</span>&lt;<span class="param-tmpl">T</span>&gt;(<span class="com-multi">/* ctor args... */</span>);</code></p></li>
+</ul>
+</li>
+</ul>
+<p>You should prefer factory functions because:</p>
+<ul class="simple">
+<li><p>In case of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span></code> it's more optimal - the class also needs to allocate a control block and the factory function merges 2 allocations into 1 larger.</p></li>
+<li><p>They allow <em>no naked new</em> idiom - everything related to allocation is encapsulated within smart pointers and containers.</p></li>
+<li><p>There are some corner cases where the first approach can leak memory when a subexpression throws an exception.</p></li>
+</ul>
+<p>The factory functions implement <em>perfect forwarding</em> idiom. Arguments passed to them are <em>perfectly</em> forwarded to the constructors of specified types.</p>
+<p>Unlike other stuff that came with C++11, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">make_unique</span></code> was added in C++14. If you don't have C++14 you can use equivalent implementation of the function:</p>
+<div class="docutils container">
+<details><summary>C++11-compatible implementation</summary><div class="docutils container">
+<blockquote>
+<p>TOINCLUDE make_unique stdex impl</p>
+</blockquote>
+</div>
+</details>
+</div>
+<p>Thanks to overloaded operators, once you have a smart pointer, you can:</p>
+<ul class="simple">
+<li><p>test whether it's not empty (AKA not null): <code class="code custom-cpp"><span class="keyword">if</span> (<span class="var-local">ptr</span>)</code></p></li>
+<li><p>get a reference to the managed object: <code class="code custom-cpp"><span class="param-tmpl">T</span>&amp; <span class="var-local">ref</span> = <span class="oo">*</span><span class="var-local">ptr</span>;</code> (pointer must not be empty)</p></li>
+<li><p>access smart pointer members: <code class="code custom-cpp"><span class="var-local">ptr</span>.</code></p></li>
+<li><p>access managed object members: <code class="code custom-cpp"><span class="var-local">ptr</span><span class="oo">-&gt;</span></code> (pointer must not be empty)</p></li>
+</ul></section><section id="how-it-works"><h2>How it works</h2>
+<p>Smart pointers implement all <em>special member functions</em>, most importantly their <em>destructors</em> release (<code class="code custom-cpp"><span class="keyword">delete</span></code>) managed memory. There are 2 <em>ownership models</em>, each with different semantics. <em>Ownership</em> specifies responsibility for managing memory.</p>
+<section id="single-ownership"><h3>Single ownership</h3>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">unique_ptr</span></code> models single ownership. The managed object always has 1 owner.</p>
+<ul class="simple">
+<li><p>The pointer can not be copied (formally, its <em>copy constructor</em> is <code class="code custom-cpp">= <span class="keyword">delete</span></code>d) (this also disallows copy constructors of containers of this smart pointer).</p></li>
+<li><p>The pointer can be <em>moved</em>: <code class="code custom-cpp"><span class="var-local">uptr2</span> <span class="oo">=</span> <span class="namespace">std</span>::<span class="func">move</span>(<span class="var-local">uptr1</span>);</code>.</p></li>
+</ul>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">move</span></code> is a simple 1-line function that returns <code class="code custom-cpp"><span class="param-tmpl">T</span>&amp;&amp;</code> (<em>rvalue reference</em>) - the function is just a cast. When such reference is passed to constructors or assignment operators, it triggers <em>move operations</em>.</p>
+<p>After the <em>move</em>, <code class="code custom-cpp"><span class="var-local">uptr2</span></code> is the owner and <code class="code custom-cpp"><span class="var-local">uptr1</span></code> is empty. If <code class="code custom-cpp"><span class="var-local">uptr2</span></code> was already managing an object (not empty) that object is destroyed and its memory released.</p>
+<p>In other words, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">unique_ptr</span></code> acts as a mechanism that encapsulates calls to <code class="code custom-cpp"><span class="keyword">new</span></code> and <code class="code custom-cpp"><span class="keyword">delete</span></code>. You can obtain a non-managing raw pointer (<em>observer</em>) through <code class="code custom-cpp">.<span class="func">get</span>()</code> though you must ensure that such raw pointer is used only when the unique pointer exists and is non-empty. Otherwise it will be dangling, pointing to memory that has been released.</p>
+</section><section id="shared-ownership"><h3>Shared ownership</h3>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span></code> models shared ownership, that is, there can be multiple owners of the memory. It additionally allocates a control block which stores small amount of metadata about managed object.</p>
+<p>This poiner can be both moved and copied.</p>
+<ul class="simple">
+<li><p>First shared pointer initializes the control block and sets <em>use count</em> to 1.</p></li>
+<li><p>Every time a copy is made, the pointer increments <em>use count</em> within the control block.</p></li>
+<li><p>Every time a shared pointer is destroyed, it decrements <em>use count</em> within the control block.</p></li>
+<li><p>When the last shared pointer is destroyed, the <em>use count</em> becomes 0 and both control block and managed object are destoyed and their memory released.</p></li>
+</ul>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span></code> is very useful for sitations when it's unclear for how long the object will be needed and/or what's the lifetime of all pointers. A sample situation is a multi-threaded program - it's unknown which thread will finish last but because the control block uses <em>atomic objects</em> threads can independently modify use count without data races and the last thread (whichever it is) will correctly release allocated memory.</p>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">weak_ptr</span></code> can be constructed from <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span></code>. It will be able to access the control block but will not affect the use count (they use separate <em>weak count</em>). Weak pointers do not grant access to the managed object - <code class="code custom-cpp">.<span class="func">lock</span>()</code> has to be used on weak pointers to get a shared pointer - if the object has already been released the returned shared pointer will be empty. Thus, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">weak_ptr</span></code> acts as an observer - it can be used to access managed object through <code class="code custom-cpp">.<span class="func">lock</span>()</code> but otherwise it does not take part in the ownership. Existence of weak pointers does not prevent the last shared pointer from releasing the object - they only prevent release of the control block.</p>
+</section></section><section id="using-smart-pointers"><h2>Using smart pointers</h2>
+<p>By default, you should use unique pointers. In most situations you can clearly identify what the lifetime of managed object should be - just put unique pointer in this scope. Then inside this scope you can create as many references and raw pointers as needed - they all will be destroyed before the managed object is destroyed so nothing will be dangling.</p>
+<p>Generally, you shouldn't pass smart pointers to functions for the following reasons:</p>
+<ul class="simple">
+<li><p>For <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">unique_ptr</span></code>, it won't work in majority of cases as the pointer can not be copied.</p></li>
+<li><p>It's just limiting compared to plain references - a function should not care how an object's lifetime is managed.</p></li>
+<li><p>There is nothing unsafe with it: unless the function saves the address of the object for later, the smart pointer can not be destroyed while the function is executing.</p></li>
+</ul>
+<p>Smart pointers to derived types are implicitly convertible to smart pointers to base types (they overload convertion, without <code class="code custom-cpp"><span class="keyword">explicit</span></code>).</p>
+</section><section id="destruction"><h2>Destruction</h2>
+<p>Each class on the inheritance hierarchy can store some members. Some of these members may manage memory (e.g. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code>). If we use smart pointers to manage object lifetime, they need to know how to properly destroy the object - if they only call destructors of the base class, resource-managing members in derived classes will leak.</p>
+<p>The solution to this problem is very simple: <em>virtual destructors</em>. Destructors can be virtual just like any other function, but unlike other functions (but like constructors) virtual destructors execute <strong>all</strong> implementations, not just the one from most derived overrider.</p>
+<p>You can also force a type to be abstract by making the destructor pure virtual, though in such case you must define it's body anyway. The body can still use default implementation, like this: <code class="code custom-cpp"><span class="type">class_name</span>::<span class="func">~class_name</span>() = <span class="keyword">default</span>;</code>.</p>
+<p>Summing up all that was said in this lesson, we get the following very idiomatic implementation of the animal-cat-dog example:</p>
+<!-- TOINCLUDE in design patterns: runtime polymorphism -->
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;vector&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;memory&gt;</span>
+
+<span class="keyword">class</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="func">~animal</span>() = <span class="keyword">default</span>;
+	<span class="keyword">virtual</span> <span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> = <span class="lit-num">0</span>;
+};
+
+<span class="keyword">class</span> <span class="type">cat</span>: <span class="keyword">public</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"meow"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">dog</span>: <span class="keyword">public</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"whoof"</span>; }
+};
+
+<span class="keyword">void</span> <span class="func">print_sound</span>(<span class="keyword">const</span> <span class="type">animal</span>&amp; <span class="param">a</span>)
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="param">a</span>.<span class="func">sound</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="namespace">std</span>::<span class="type">unique_ptr</span>&lt;<span class="type">animal</span>&gt;&gt; <span class="var-local">v</span>;
+	<span class="var-local">v</span>.<span class="func">push_back</span>(<span class="namespace">std</span>::<span class="func">make_unique</span>&lt;<span class="type">cat</span>&gt;());
+	<span class="var-local">v</span>.<span class="func">push_back</span>(<span class="namespace">std</span>::<span class="func">make_unique</span>&lt;<span class="type">dog</span>&gt;());
+
+	<span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; <span class="var-local">ptr</span> : <span class="var-local">v</span>)
+		<span class="func">print_sound</span>(<span class="oo">*</span><span class="var-local">ptr</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>Once a destructor is declared <code class="code custom-cpp"><span class="keyword">virtual</span></code>, destructors in derived classes are implicitly <code class="code custom-cpp"><span class="keyword">virtual</span></code> too (unless explicitly defined without the keyword). Because you can't expect when a specific class is used and how in other code, you should stick to the following guideline:</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p><a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-dtor-virtual">CG C.35:</a> classes intended for inheritance should have their destructors either:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">public</span></code> and <code class="code custom-cpp"><span class="keyword">virtual</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">protected</span></code> and non-virtual</p></li>
+</ul></aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

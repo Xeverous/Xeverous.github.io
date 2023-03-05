@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 08 - bit</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xy - operator overloading</a></li>
+							<span>/</span>
+						<li>08 - bit</li>
+					</ol></nav><div class="content">
+				<h1>08 - bit</h1>				<p>I can imagine only 2 kinds of types for which overloading bit operators makes sense:</p>
+<ul class="simple">
+<li><p>bit mask types</p></li>
+<li><p>types from an EDSL library</p></li>
+</ul>
+<p>For bit mask types, overloads follow arithmetic overloads conventions, with the difference that compound versions are non-member (enumerations can not have member functions).</p>
+<p>Below canonical implementation for a filesystem permissions bit mask enumeration (from <a class="reference external" href="../../05_user_defined_types/03_enum_flags">user-defined types / enum flags</a>):</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="type">perms</span>&amp; <span class="keyword">operator</span><span class="func">&amp;=</span>(<span class="type">perms</span>&amp; <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>)
+{
+	<span class="keyword">return</span> <span class="param">lhs</span> = <span class="keyword">static_cast</span>&lt;<span class="type">perms</span>&gt;(<span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span>&gt;(<span class="param">lhs</span>) &amp; <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span>&gt;(<span class="param">rhs</span>));
+}
+
+<span class="type">perms</span>&amp; <span class="keyword">operator</span><span class="func">|=</span>(<span class="type">perms</span>&amp; <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>)
+{
+	<span class="keyword">return</span> <span class="param">lhs</span> = <span class="keyword">static_cast</span>&lt;<span class="type">perms</span>&gt;(<span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span>&gt;(<span class="param">lhs</span>) | <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span>&gt;(<span class="param">rhs</span>));
+}
+
+<span class="type">perms</span>&amp; <span class="keyword">operator</span><span class="func">^=</span>(<span class="type">perms</span>&amp; <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>)
+{
+	<span class="keyword">return</span> <span class="param">lhs</span> = <span class="keyword">static_cast</span>&lt;<span class="type">perms</span>&gt;(<span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span>&gt;(<span class="param">lhs</span>) ^ <span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span>&gt;(<span class="param">rhs</span>));
+}
+
+<span class="type">perms</span> <span class="keyword">operator</span><span class="func">&amp;</span>(<span class="type">perms</span> <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="param">lhs</span> <span class="oo">&amp;=</span> <span class="param">rhs</span>; }
+<span class="type">perms</span> <span class="keyword">operator</span><span class="func">|</span>(<span class="type">perms</span> <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="param">lhs</span> <span class="oo">|=</span> <span class="param">rhs</span>; }
+<span class="type">perms</span> <span class="keyword">operator</span><span class="func">^</span>(<span class="type">perms</span> <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="param">lhs</span> <span class="oo">^=</span> <span class="param">rhs</span>; }
+
+<span class="type">perms</span> <span class="keyword">operator</span><span class="func">~</span>(<span class="type">perms</span> <span class="param">rhs</span>)
+{
+	<span class="com-single">// note that this will also flip bits which do not represent any option</span>
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="type">perms</span>&gt;(~<span class="keyword">static_cast</span>&lt;<span class="keyword">unsigned</span>&gt;(<span class="param">rhs</span>));
+}
+</pre></td>
+</tr></tbody></table>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

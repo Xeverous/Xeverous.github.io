@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - overwiev</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../../beginner/">beginner</a></li>
+						<li><a href="../../">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">accelerated</a></li>
+							<span>/</span>
+							<li><a href="../">00 - start</a></li>
+							<span>/</span>
+						<li>01 - overwiev</li>
+					</ol></nav><div class="content">
+				<h1>01 - overwiev</h1>				<p>First, let's see what are the core specifics of C++ as a programming language. Basically, what makes C++ C++. These should be fairly obvious.</p>
+<section id="type-system"><h2>type system</h2>
+<p>Unlike dynamically typed languages such as Python or Java Script, C++ is statically typed. Absolutely every object has a type determined at compile time. It may not be exactly the same type as the type of the object at runtime (which is the case of inheritance and derived classes) but it always clearly defines all possible actions with the object at compile time.</p>
+</section><section id="build-system-and-runtime"><h2>build system and runtime</h2>
+<p>C++ requires compilation, in other words, it needs to be translated from source code to machine code. This is the process at which compiler errors appear and optimizations happen. Later you will learn about all implications of this process.</p>
+<p>Few important bits:</p>
+<ul class="simple">
+<li><p>C++ compiles to pure native code for the given platform. Unlike Java or C#, it does not require any virtual machine. It can run on the sole kernel layer that the target operating system supplies and directly invoke its functions.</p></li>
+<li><p>The target platform does not need to be any specific operating system - C++ can be compiled to run on the hardware itself. This is known as a <em>freestanding implementation</em> and is most often used in embedded software projects where the entire code that runs on the device is a single, statically-linked executable. In such case C++ has no differences in its behavior but the standard library is severly limited as many required things are simply not present on the bare metal.</p></li>
+<li><p>C++ has many dedicated features to write portable code that works on many or all supported platforms. Very few things actually require separate implementation and are easily abstracted.</p></li>
+<li>
+<p>C++ can run practically anywhere. You may have heard the same statement about many other languages, but sorry, it was probably a lie. Taking many virtually-hosted languages as an example - they do not run on any platform, they run only on a single platform - their virtual machine. By "C++ can run practically anywhere" I mean:</p>
+<ul>
+<li><p>hardware which does not have floating-point support</p></li>
+<li><p>hardware which does not have dynamic memory, that is, everything must be stack allocated and anything that depends on dynamic allocation (<code class="code custom-cpp"><span class="func">malloc</span>()</code> and related stuff) is not possible</p></li>
+<li><p>IBM-specific hardware that uses <a class="reference external" href="https://en.wikipedia.org/wiki/EBCDIC">EBCDIC</a></p></li>
+</ul>
+</li>
+</ul></section><section id="low-level-access"><h2>low-level access</h2>
+<p>Strictly formally, even C is a high-level language because it allows to write multiplatform code and many of its constructs do not map 1:1 to the machine code and may be arbitrarily transformed by the compiler as a part of program optimization. But because so many programmers are working on a much higher level today, the common meaning of "low-level programming" is often changed from "1:1 assembly abstraction" to "explicit use of pointers".</p>
+<p>Of course just because C++ allows such things it does not mean they should be used all the time. The lower level code, the more it is prone to errors. C++ standard library already takes care of many such tasks. The tutorial will first explain how to use such functionality from the standard library and only then it will move to explaining how to implement it. It is very important that you do not dive deeply into hard topics at the start as they are the main cause of bad teaching and overall frustration with C++.</p>
+<blockquote>
+<p>Wait, are you saying that we will not learn pointers before using strings, arrays, etc.?</p>
+</blockquote>
+<p>Yes. There is a common misconception that you need to learn C before C++. <strong>Doing so is not only unnecessary, but also may be a disadvantage</strong> if a person sticks too hard to idioms learned in C. 99% of C code is valid C++, but in 99% of times it is bad C++ (possibly resulting in compiler warnings). People are learning Python without learning CPython implementation, people are learning Java Script without understanding how browser works, people are using refrigerators without understanding how compressor works, people are driving cars... I think you get the point. The only needed thing is <em>abstraction</em> and in your case you should be already familiar with the term.</p>
+<p>Also, be aware that C++ is not a strict superset of C. While most of the code is indeed compatible, sometimes it has slightly different meaning and resulting behavior. In C++ the primary use of C-like code is to implement higher-level abstractions for error-prone tasks that can be later reused without even understanding what is inside. You have already done such reuse with the string class in a different language, so you should have no problems with using <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> in C++ without detailed knowledge about underlying implementation.</p>
+</section><section id="resource-management"><h2>resource management</h2>
+<p>Read the section title again. It is resource management, not memory management. It is a broader topic.</p>
+<p>Virtually hosted languages deal with memory management by garbage collection and/or reference counting. The topic gets interesting when the resource is not memory (e.g. file handle): some languages do not have any dedicated feature for such case and simply require to manually manage the resource (just like in C!); some languages offer a scope-based handling mechanism (e.g. <code class="code custom-cpp"><span class="keyword">using</span></code> in C# or <code class="code custom-cpp"><span class="keyword">with</span></code> in Python).</p>
+<p>If you are already familar with scope-based resource management - good, because <strong>C++ does it everywhere by default</strong>. Constructing an object in C++ is inseparable from its destruction unless you go to a lower level by using explicit object creation/destruction and/or resource management features.</p>
+</section><section id="language-philosophy"><h2>language philosophy</h2>
+<p>Several languages have a certain philosophy behind them in order to encourage specific usage patterns.</p>
+<p>For example, Python has the aim to provide exactly one way to do any certain task and it should be fairly obvious.</p>
+<p>C++ philosophy and goals have been described in <a class="reference external" href="https://wg21.link/p2000">Direction ISO C++</a> and they mostly are:</p>
+<ul class="simple">
+<li><p>support for low-level hardware and platform features</p></li>
+<li><p>support for multiple programming paradigms</p></li>
+<li><p>zero-overhead abstractions</p></li>
+<li><p>static type safety and resource safety</p></li>
+<li><p>long-term stability</p></li>
+<li><p>fairness between the standard library and the programmer</p></li>
+</ul>
+<p>The last point might be a bit unclear so let's have a look at a very offending example: <code class="docutils literal">+</code> in Java. Java does not have operator overloading, yet string objects can be concatenated using this operator. This is exactly what C++ always tries to avoid - making the standard library superior in power just because it is made by those who make the language. When C++11 added range-based loops (AKA for-each loops) it did not add them just for the standard library. It added an implicit interface than can be satisfied by any code and the standard library also makes use of this interface. Thanks to such design, you can implement 99% of C++ standard library from scratch and need only few intrinsic features (which usually are compiler extensions) to implement the remaining 1%. Very few programming languages can have their standard libraries implementated in them, most are simply implemented in C or C++ for this reason.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

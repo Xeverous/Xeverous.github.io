@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 04 - include</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">06 - preprocessor</a></li>
+							<span>/</span>
+						<li>04 - include</li>
+					</ol></nav><div class="content">
+				<h1>04 - include</h1>				<p>So far all presented programs were written in a single file. Most examples will still be (for practical reasons) but it's pretty obvious that any larger, actual program (again, for practical reasons) can not be written in a single file.</p>
+<p>So how is it done exactly?</p>
+<p>Surprisingly, both C and C++ specifications do not define how code can/should/must be split and/or how it cooperates between different files. The only real thing that governs compilation process is <strong>ODR</strong> (One Definition Rule). As long as ODR is satisfied, any form of separation of code into different files is valid.</p>
+<section id="history"><h2>History</h2>
+<p>At first, at times of C being developed (before any standard was made) computers were not sufficiently powerful to compile large (at that time) programs. The solution was to not write too many function definitions in a single file. Each file was compiled separately and then compiled files (containing some intermediate representation) were merged to an executable program with actual machine code.</p>
+<p>The compiler was performing many operations blindly - if a function call was encountered and the function was not defined in the current file, it was simply assumed that such function existed somewhere else. If there was any kind of mismatch that wasn't detected during compilation and machine code generation (e.g. different number of arguments given to the function than it expects) it was simply undefined behavior.</p>
+<p>Such situation could not last long. It was simply too error-prone. Later function declarations became popular, but just the name and return type, e.g. <code class="code custom-cpp"><span class="keyword">int</span> <span class="func">func</span>();</code> (in C empty parentheses mean <em>unspecified</em> parameters). Then <em>function prototypes</em> - function declarations that specify parameters, e.g. <code class="code custom-cpp"><span class="keyword">int</span> <span class="func">func</span>(<span class="keyword">int</span>, <span class="keyword">int</span>);</code>). Compilers started to verify that function calls match their expectations. I have no knowledge where (on the timeline of C's development) C++ started exactly (early as an extension to C) but in C++ fully-informational function declarations existed and were mandatory since the beginning.</p>
+<p>To simplify the work and avoid code duplication, people started writing files which contained just function declarations and used the preprocessor <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span></code> directive to paste their contents into other files (intended for compilation) that needed these declarations. That's how <strong>header files</strong> were born.</p>
+<p><em>Whole paragraph:</em> citation needed.</p>
+</section><section id="the-c-c-build-process"><h2>The C/C++ build process</h2>
+<p>You already know that you need to include certain files in order to use certain parts of the C++ standard library. The same thing applies for your code.</p>
+<p>There are 2 types of files for C and C++ code:</p>
+<ul class="simple">
+<li><p>header files, which main purpose is to provide necessary information for other files (source files or other headers)</p></li>
+<li><p>source files, which main purpose is to implement various compilable entities (mostly functions) that have been declared in header files</p></li>
+</ul>
+<p>The build process instructs the compiler only to compile source files. Each source file <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span></code>s headers to satisfy ODR (basically provide necessary information) and implements entities which are transformed to machine code.</p>
+<p>In other words, headers are files for code shared between source files.</p>
+<!--  -->
+<blockquote>
+<p>Does it mean that headers are for declarations and sources for definitions?</p>
+</blockquote>
+<p>No. This is an incorrect mental shortcut.</p>
+<ul class="simple">
+<li><p>Some things should be defined in headers. The best example are user-defined types. Almost all code which uses new types defined in code needs to see their definition, otherwise the compiler will not be able to generate machine code to handle them. Types themselves do not form compilable code, but their use in functions does.</p></li>
+<li><p>Some things can be declared in sources (or not declared at all), mostly because they are used only within a single file.</p></li>
+</ul>
+<p>Instead, I propose to think of headers and sources in more generic terms such as specification and implementation. The mechanism is quite flexible - <strong>C++ does not impose any strict rules what needs to be in which file. The language doesn't even define what a header or a source file is</strong> - this is just a very strong convention that was formed through practice to make the best use of the preprocessor. <strong>All that really matters is that when code is compiled, ODR is satisfied.</strong></p>
+<blockquote>
+<p>So which entities are put where? Is there any convention for it?</p>
+</blockquote>
+<p>There is some convention but nothing is strict. Generally:</p>
+<ul class="simple">
+<li>
+<p>header files:</p>
+<ul>
+<li><p>type <em>definitions</em></p></li>
+<li><p>global object <em>declarations</em></p></li>
+<li><p>function <em>declarations</em></p></li>
+<li><p>templates - both <em>declarations</em> and <em>definitions</em></p></li>
+</ul>
+</li>
+<li>
+<p>source files:</p>
+<ul>
+<li><p>function <em>definitions</em></p></li>
+<li><p>global object <em>definitions</em></p></li>
+</ul>
+</li>
+</ul>
+<p>This is only a rough guideline, details for specific entities are explained in respective lessons. There is also a detailed cheatsheet. TOWRITE</p>
+</section><section id="file-naming"><h2>File naming</h2>
+<p>The C language uses <code class="docutils literal">h</code> extension for header files and <code class="docutils literal">c</code> for source files.</p>
+<p>In C++:</p>
+<ul class="simple">
+<li><p>Source files typically use <code class="docutils literal">cpp</code> extension. Rarely <code class="docutils literal">cc</code>, <code class="docutils literal">cxx</code> or others.</p></li>
+<li><p>Header files typically use <code class="docutils literal">h</code> or <code class="docutils literal">hpp</code> extension. My recommendation is <code class="docutils literal">hpp</code> because <code class="docutils literal">h</code> is confused by some tools as a C header file, not C++. <code class="docutils literal">hpp</code> is the most common extension that clearly states it's a C++ file. In this specific case my recommendation is in conflict with <a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rs-file-suffix">CG SF.1</a> but <a class="reference external" href="https://github.com/isocpp/CppCoreGuidelines/issues/686">there is an issue where it was discussed</a> which (at least to me) clearly states there is no consensus in the community.</p></li>
+<li><p>C++ standard library headers are an exception, they intentionally have no extension so you can easily differentiate standard library from any other.</p></li>
+</ul>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Some standard library headers exist in 2 forms: one with <code class="docutils literal">h</code> extension and one with <code class="docutils literal">c</code> prepended - e.g. <code class="docutils literal">&lt;stdio.h&gt;</code> vs <code class="docutils literal">&lt;cstdio&gt;</code>, <code class="docutils literal">&lt;stdlib.h&gt;</code> vs <code class="docutils literal">&lt;cstdlib&gt;</code> (<a class="reference external" href="https://en.cppreference.com/w/cpp/header">full list on cppreference</a>). The former are for compatibility only and additionally have everything placed in global scope (not in <code class="code custom-cpp"><span class="keyword">namespace</span> <span class="namespace">std</span></code>). The latter are a "C++-ified" version of the headers that were already present in C. Newer C++ additions happen only in the latter.</p>
+<p>The status of these headers is discussed in <a class="reference external" href="https://wg21.link/P2340">P2340</a>.</p>
+</aside><p>The main purpose of <code class="docutils literal">.h</code> standard library headers in C++ is the ability to import C code into C++ projects with minimal edits. When writing new projects that are not starting from C code, you should use C++-exclusive headers (the ones without <code class="docutils literal">.h</code>). They are cleaner (entities are inside standard namespace) and only these are being updated.</p>
+<blockquote>
+<p>How about using <code class="docutils literal">.h</code> headers to write polyglot code that compiles in both languages?</p>
+</blockquote>
+<p>This practice has much better alternatives. The main problem with polyglot code is that it is neither full C nor C++. Apart from having reduced set of features, there are syntax constructs that have different meaning in both languages (most notably character literals: they have type <code class="code custom-cpp"><span class="keyword">int</span></code> in C but <cite>char</cite> in C++).</p>
+<p>If one intends to write a project that is compatible for both C and C++, the predominant approach is to write it in C and only make headers polyglot. This uses the <code class="code custom-cpp"><span class="keyword">extern</span> <span class="lit-str">"C"</span></code> feature in C++ that was designed to import code compiled in other languages.</p>
+</section><section id="include-directive"><h2>Include directive</h2>
+<p>The directive behaves as if the contents of specified file were copy-pasted in place of the directive. It's not strictly working as such (compilers can implement preprocessor to be entirely in-memory, without any file operations) but it's a very good mental shortcut of how it works because it's specified to work as if that happened.</p>
+<p>The main purpose of the directive is to avoid manual work of copying and pasting code that provides required information. Instead, a header file is written (such as <code class="code custom-cpp"><span class="pp-header">&lt;iostream&gt;</span></code>) and you can have as many source files as you want, each able to access entire information about I/O stream library with just a single preprocessor statement.</p>
+<blockquote>
+<p>What if the I/O stream library needs some information too?</p>
+</blockquote>
+<p>Then it includes other headers for itself. Includes work transitively, so if file A includes B which includes C, C content will be visible in any <em>translation unit</em> that included A.</p>
+<p>You should not rely on transitive includes though. Example: some code uses <code class="code custom-cpp"><span class="pp-header">&lt;iostream&gt;</span></code> and it also needs to access some mathematical functions from <code class="code custom-cpp"><span class="pp-header">&lt;cmath&gt;</span></code> but does not <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span></code> it. On at least one compiler, I have observed that including <code class="code custom-cpp"><span class="pp-header">&lt;iostream&gt;</span></code> also provides something (or everything) from <code class="code custom-cpp"><span class="pp-header">&lt;cmath&gt;</span></code>. But it's only because on this particular compiler implementers of the I/O stream library also needed mathematical functions. If you try to build such project using a different compiler, it may fail due to missing <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span></code>.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Do not rely on transitive includes. Include headers for everything that the current file explicitly uses.</p>
+</aside></section><section id="translation-unit"><h2>Translation Unit</h2>
+<p>A translation unit is basically what the compiler sees after preprocessing. That is, the contents of the specified file + any file it has included (potentially transitively). We could say that only source files need compilation although strictly technically what is being compiled are entire <em>translation units</em>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// main.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"hello.hpp"</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="func">write_hello</span>();
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" world<span class="esc-seq">\n</span>"</span>;
+}
+
+<span class="com-single">// hello.hpp</span>
+<span class="keyword">void</span> <span class="func">write_hello</span>();
+
+<span class="com-single">// hello.cpp</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">void</span> <span class="func">write_hello</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"hello"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>The example above has 2 translation units:</p>
+<ul class="simple">
+<li><p>one which contains contents of <code class="docutils literal">hello.hpp</code>, <code class="docutils literal">iostream</code> and <code class="docutils literal">main.cpp</code> (in this order)</p></li>
+<li><p>one which contains contents of <code class="docutils literal">iostream</code> and <code class="docutils literal">hello.cpp</code> (in this order)</p></li>
+</ul>
+<!--  --><blockquote>
+<p>Does order of includes matter?</p>
+</blockquote>
+<p>It should not. Some projects may accidentally make themselves suspectible to it if they rely on transitive includes or other misused preprocessor directives. You will learn about such problems later in this chapter.</p>
+<p>This mini project should compile and build fine, but it can be improved - <code class="docutils literal">hello.cpp</code> should include <code class="docutils literal">hello.hpp</code>. Why? There are few reasons:</p>
+<ul class="simple">
+<li><p>For some code, this is simply required. This will be very prominent once you learn about classes.</p></li>
+<li><p>Even if not required, included files can be used to check validity of the source file. Change return type of the function in <code class="docutils literal">hello.hpp</code> to <code class="code custom-cpp"><span class="keyword">int</span></code> and try to build the project. The compiler should output an error that function's definition does not match declaration.</p></li>
+</ul>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>If a source file has respective header for its contents, the header should always be included in this source file even if it's not strictly necessary. This allows the compiler to detect many problems.</p>
+</aside><p>There are no requirements for specific order of header inclusion (we just list dependencies and if they have their own dependencies <em>header guards</em> make redundant includes empty) but there are some benefits for inside-out order - mostly hitting any build errors sooner than later and preventing code from accidentally relying on dependencies of dependencies.</p>
+<p>Therefore, I recommend the following order:</p>
+<ul class="simple">
+<li><p>(if the current file is a source file) associated header file</p></li>
+<li><p>any header closely related to the code (usually headers from your own project)</p></li>
+<li><p>any external library headers if needed in this file</p></li>
+<li><p>any standard library headers if needed in this file</p></li>
+</ul>
+<p>This way your project headers will be always parsed first, making sure they are self-contained. If they need some library that you did not include in themselves, build will appropriately fail.</p>
+<blockquote>
+<p>What if there is a loop within includes (e.g. A includes B which includes A)?</p>
+</blockquote>
+<p>Technically this is possible but in practice, it's as useful as a program which is stuck on an infinite loop. Whatever happens (out of memory error or actual detection of this problem by the compiler) the build surely has no way to succeed. If there is a situation of dependencies within code leading to this, the code must either be reordered or employ <em>forward declarations</em> to break some dependencies.</p>
+</section><section id="vs"><h2>
+<code class="docutils literal">&lt;&gt;</code> vs <code class="docutils literal">""</code>
+</h2>
+<p>There are subtle differences between how preprocessor treats paths given in <code class="docutils literal">&lt;&gt;</code> versus <code class="docutils literal">""</code>. Strictly by the standard, both are <em>implementation-defined</em> so it's up to the compiler vendor to decide how exactly they work.</p>
+<p>By convention:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">&lt;&gt;</code> should be used for C++ standard library and any other library that has been specified in compiler options</p></li>
+<li><p><code class="docutils literal">""</code> should be used for files local to the project. The search usually starts from the same directory trying a relative path first</p></li>
+</ul>
+<p>Some library projects use <code class="docutils literal">&lt;&gt;</code> for all of their files.</p>
+</section><section id="source-layout"><h2>Source layout</h2>
+<p>There are 2 conventions how a C++ project files should be laid out:</p>
+<section id="separate"><h3>Separate</h3>
+<p>2 same directory trees, one containing headers and one sources.</p>
+<div class="code"><pre class="code text"><a id="rest_code_7a87d12768b64d71a782780011254c9c-1" name="rest_code_7a87d12768b64d71a782780011254c9c-1" href="#rest_code_7a87d12768b64d71a782780011254c9c-1"></a>&lt;root&gt;/
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-2" name="rest_code_7a87d12768b64d71a782780011254c9c-2" href="#rest_code_7a87d12768b64d71a782780011254c9c-2"></a>    include/
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-3" name="rest_code_7a87d12768b64d71a782780011254c9c-3" href="#rest_code_7a87d12768b64d71a782780011254c9c-3"></a>        cat/
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-4" name="rest_code_7a87d12768b64d71a782780011254c9c-4" href="#rest_code_7a87d12768b64d71a782780011254c9c-4"></a>            sounds/
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-5" name="rest_code_7a87d12768b64d71a782780011254c9c-5" href="#rest_code_7a87d12768b64d71a782780011254c9c-5"></a>                meow.hpp
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-6" name="rest_code_7a87d12768b64d71a782780011254c9c-6" href="#rest_code_7a87d12768b64d71a782780011254c9c-6"></a>                purr.hpp
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-7" name="rest_code_7a87d12768b64d71a782780011254c9c-7" href="#rest_code_7a87d12768b64d71a782780011254c9c-7"></a>    src/
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-8" name="rest_code_7a87d12768b64d71a782780011254c9c-8" href="#rest_code_7a87d12768b64d71a782780011254c9c-8"></a>        cat/
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-9" name="rest_code_7a87d12768b64d71a782780011254c9c-9" href="#rest_code_7a87d12768b64d71a782780011254c9c-9"></a>            sounds/
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-10" name="rest_code_7a87d12768b64d71a782780011254c9c-10" href="#rest_code_7a87d12768b64d71a782780011254c9c-10"></a>                meow.cpp
+<a id="rest_code_7a87d12768b64d71a782780011254c9c-11" name="rest_code_7a87d12768b64d71a782780011254c9c-11" href="#rest_code_7a87d12768b64d71a782780011254c9c-11"></a>                purr.cpp
+</pre></div>
+</section><section id="merged"><h3>Merged</h3>
+<p>1 directory tree, containing headers and sources next to each other.</p>
+<div class="code"><pre class="code text"><a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-1" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-1" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-1"></a>&lt;root&gt;/
+<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-2" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-2" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-2"></a>    src/
+<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-3" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-3" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-3"></a>        cat/
+<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-4" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-4" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-4"></a>            sounds/
+<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-5" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-5" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-5"></a>                meow.cpp
+<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-6" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-6" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-6"></a>                meow.hpp
+<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-7" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-7" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-7"></a>                purr.cpp
+<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-8" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-8" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-8"></a>                purr.hpp
+</pre></div>
+<p>There are no particulary strong advantages/disadvantages in any of these but it's worth to mention that:</p>
+<ul class="simple">
+<li><p>In separate layout, usually only <code class="docutils literal">include</code> path needs to be given to compiler include search option.</p></li>
+<li><p>In separate layout, some headers might be put into <code class="docutils literal">src</code> tree to signify they are not a part of project's public interface (AKA private headers). That is, users (not developers) of the project should only use headers from <code class="docutils literal">include</code> directory.</p></li>
+<li><p>In merged layout, the pair of header+source can be extended to contain even more similarly named files, such as <code class="docutils literal">meow.test.cpp</code>.</p></li>
+<li><p>IDEs and other tools work well with both.</p></li>
+<li><p>For many years, there was no significant convention how a C or C++ project should be laid out. You can find many projects which do not stick to any convention. <a class="reference external" href="https://api.csswg.org/bikeshed/?force=1&amp;url=https://raw.githubusercontent.com/vector-of-bool/pitchfork/develop/data/spec.bs">The Pitchfork proposal</a> aims to establish/standarize typical C/C++ project structure.</p></li>
+</ul>
+<!--  --><blockquote>
+<p>Do header and source files always come in pairs?</p>
+</blockquote>
+<p>No. This is what usually happens but:</p>
+<ul class="simple">
+<li><p>Some source files do not need headers as nothing uses their code elsewhere. This happens most commonly for <code class="docutils literal">main.cpp</code> and files with tests.</p></li>
+<li><p>Some headers do not need sources because they don't contain code requiring compilation. Such headers usually contain only constants, <code class="code custom-cpp"><span class="keyword">inline</span></code> definitions or templates (which are implicitly <code class="code custom-cpp"><span class="keyword">inline</span></code>).</p></li>
+<li><p>Some headers may have multiple source files associated but only one specific source file is compiled depending on the selected platform (one of possible approaches for multiplatform code).</p></li>
+<li><p>In most extreme case, some library projects are designed to be header-only. Such libraries don't require compilation and to use them it's enough to just provide path to the include directory in compiler's options. Boost (and many other template-heavy library projects) use this approach as templates by practical reasons have to be in headers and the lack of source files simplifies build management.</p></li>
+</ul></section></section><section id="code-class-code-custom-cpp-span-class-pp-hash-span-span-class-pp-directive-include-span-code-guidelines"><h2>
+<code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span></code> guidelines</h2>
+<p>Suppose that a project presented above has one more file: <code class="docutils literal">cat/actions/pat.cpp</code> and this file needs to access information in <code class="docutils literal">cat/sounds/purr.hpp</code>. There are many ways this could be done:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// A: file name only + more complex compiler options</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"purr.hpp"</span>
+<span class="com-single">// B: relative path</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"../sounds/purr.hpp"</span>
+<span class="com-single">// C: root-relative path</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">"cat/sounds/purr.hpp"</span>
+</pre></td>
+</tr></tbody></table>
+<ul class="simple">
+<li><p>A: very impractical. All of major compilers accept mostly directory paths and ideally there should be only 1 path required per project for its include directory tree. Such approach would also complicate build recipes.</p></li>
+<li><p>B: generally it will work, but is annoying and fragile in practice. Paths with <code class="docutils literal">..</code> break when one of the files is moved. Strictly technically, there is nothing about support of <code class="docutils literal">..</code> in paths in the standard.</p></li>
+<li><p>C: the preferred and recommended approach. Requires 1 simple compiler option and is very clear where the file is. Many projects which use this approach only use <code class="docutils literal">&lt;&gt;</code> includes.</p></li>
+</ul>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>When writing include directives, prefer root-relative paths to avoid using <code class="docutils literal">..</code>. The only widely accepted alternative is sole file name if it's present in the same directory.</p>
+</aside></section><section id="exercise"><h2>Exercise</h2>
+<p>Which files should be included?</p>
+<div class="docutils container">
+<details><summary>answer</summary><div class="docutils container">
+<p>Only header files.</p>
+</div>
+</details>
+</div>
+<p>Which files should be compiled?</p>
+<div class="docutils container">
+<details><summary>answer</summary><div class="docutils container">
+<p>Only source files (with their includes, forming translation units).</p>
+</div>
+</details>
+</div>
+<p>Which files can include other files?</p>
+<div class="docutils container">
+<details><summary>answer</summary><div class="docutils container">
+<p>Both header and source files.</p>
+</div>
+</details>
+</div>
+<p>What is a translation unit?</p>
+<div class="docutils container">
+<details><summary>answer</summary><div class="docutils container">
+<p>A virtual file that is actually compiled by the compiler. It consists of one source file and all (potentially transitively) included header files.</p>
+</div>
+</details>
+</div>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

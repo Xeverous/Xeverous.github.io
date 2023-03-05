@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 05 - overloading</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">04 - functions</a></li>
+							<span>/</span>
+						<li>05 - overloading</li>
+					</ol></nav><div class="content">
+				<h1>05 - overloading</h1>				<p>Sometimes you may encounter a problem where you need multiple functions doing similar task or the same task but on different types. You probably would name them similarly - in fact, names can be the same thanks to overloading.</p>
+<p>Function overloading is a feature that allows to have multiple functions with the same name as long as their <em>signatures</em> are different.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">void</span> <span class="func">divide</span>(<span class="keyword">int</span> <span class="param">a</span>, <span class="keyword">int</span> <span class="param">b</span>)
+{
+	<span class="keyword">if</span> (<span class="param">b</span> == <span class="lit-num">0</span>)
+	{
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"can not divide by 0<span class="esc-seq">\n\n</span>"</span>;
+		<span class="keyword">return</span>;
+	}
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"quotient: "</span> <span class="oo">&lt;&lt;</span> <span class="param">a</span> / <span class="param">b</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"remainder: "</span> <span class="oo">&lt;&lt;</span> <span class="param">a</span> % <span class="param">b</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n\n</span>"</span>;
+}
+
+<span class="keyword">void</span> <span class="func">divide</span>(<span class="keyword">double</span> <span class="param">a</span>, <span class="keyword">double</span> <span class="param">b</span>)
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"quotient: "</span> <span class="oo">&lt;&lt;</span> <span class="param">a</span> / <span class="param">b</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n\n</span>"</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="func">divide</span>(<span class="lit-num">16</span>, <span class="lit-num">7</span>);
+	<span class="func">divide</span>(<span class="lit-num">13</span>, <span class="lit-num">0</span>);
+	<span class="func">divide</span>(<span class="num">16.0</span>, <span class="num">7.0</span>);
+	<span class="func">divide</span>(<span class="num">13.0</span>, <span class="num">0.0</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_7215af5129994ab39700f6b0c9629c7c-1" name="rest_code_7215af5129994ab39700f6b0c9629c7c-1" href="#rest_code_7215af5129994ab39700f6b0c9629c7c-1"></a>quotient: 2
+<a id="rest_code_7215af5129994ab39700f6b0c9629c7c-2" name="rest_code_7215af5129994ab39700f6b0c9629c7c-2" href="#rest_code_7215af5129994ab39700f6b0c9629c7c-2"></a>remainder: 2
+<a id="rest_code_7215af5129994ab39700f6b0c9629c7c-3" name="rest_code_7215af5129994ab39700f6b0c9629c7c-3" href="#rest_code_7215af5129994ab39700f6b0c9629c7c-3"></a>
+<a id="rest_code_7215af5129994ab39700f6b0c9629c7c-4" name="rest_code_7215af5129994ab39700f6b0c9629c7c-4" href="#rest_code_7215af5129994ab39700f6b0c9629c7c-4"></a>can not divide by 0
+<a id="rest_code_7215af5129994ab39700f6b0c9629c7c-5" name="rest_code_7215af5129994ab39700f6b0c9629c7c-5" href="#rest_code_7215af5129994ab39700f6b0c9629c7c-5"></a>
+<a id="rest_code_7215af5129994ab39700f6b0c9629c7c-6" name="rest_code_7215af5129994ab39700f6b0c9629c7c-6" href="#rest_code_7215af5129994ab39700f6b0c9629c7c-6"></a>quotient: 2.28571
+<a id="rest_code_7215af5129994ab39700f6b0c9629c7c-7" name="rest_code_7215af5129994ab39700f6b0c9629c7c-7" href="#rest_code_7215af5129994ab39700f6b0c9629c7c-7"></a>
+<a id="rest_code_7215af5129994ab39700f6b0c9629c7c-8" name="rest_code_7215af5129994ab39700f6b0c9629c7c-8" href="#rest_code_7215af5129994ab39700f6b0c9629c7c-8"></a>quotient: inf
+</pre></div>
+<p>The first 2 calls are using the first <em>overload</em> and the second 2 calls are using the second one.</p>
+<section id="how-it-works"><h2>How it works</h2>
+<p>Which overload to call is decided upon provided arguments. In order to overload, functions must have different <em>signature</em>.</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>Function signature consists of:</p>
+<ul class="simple">
+<li><p>amount of parameters</p></li>
+<li><p>types of parameters, except that top-level <em>cv-qualifiers</em> are ignored</p></li>
+<li><p>function qualifiers (<code class="code custom-cpp"><span class="keyword">const</span></code>, <code class="code custom-cpp"><span class="keyword">volatile</span></code>, <code class="code custom-cpp">&amp;</code>, <code class="code custom-cpp">&amp;&amp;</code>) - these are only applicable to <em>member functions</em></p></li>
+</ul>
+<p>Function signature does not consist of:</p>
+<ul class="simple">
+<li><p>return type</p></li>
+<li><p><em>exception specification</em></p></li>
+</ul></aside><p>Examples:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// ok: all overloads have different amount of arguments</span>
+<span class="keyword">int</span> <span class="func">func1</span>(<span class="keyword">int</span>);
+<span class="keyword">int</span> <span class="func">func1</span>(<span class="keyword">int</span>, <span class="keyword">int</span>);
+<span class="keyword">int</span> <span class="func">func1</span>(<span class="keyword">int</span>, <span class="keyword">int</span>, <span class="keyword">int</span>);
+
+<span class="com-single">// ok: all overloads have different argument types</span>
+<span class="keyword">int</span> <span class="func">func2</span>(<span class="keyword">int</span>);
+<span class="keyword">int</span> <span class="func">func2</span>(<span class="keyword">float</span>);
+<span class="keyword">int</span> <span class="func">func2</span>(<span class="keyword">double</span>);
+
+<span class="com-single">// also ok</span>
+<span class="keyword">int</span> <span class="func">func3</span>(<span class="keyword">int</span>, <span class="keyword">float</span>);
+<span class="keyword">int</span> <span class="func">func3</span>(<span class="keyword">int</span>);
+<span class="keyword">int</span> <span class="func">func3</span>(<span class="keyword">double</span>);
+<span class="keyword">int</span> <span class="func">func3</span>(<span class="keyword">char</span>);
+
+<span class="com-single">// error: can not overload only by different return type</span>
+<span class="keyword">int</span> <span class="func">func4</span>();
+<span class="keyword">void</span> <span class="func">func4</span>();
+
+<span class="com-single">// ok: different amount of arguments</span>
+<span class="keyword">int</span> <span class="func">func5</span>();
+<span class="keyword">void</span> <span class="func">func5</span>(<span class="keyword">int</span>);
+
+<span class="com-single">// top-level const/volatile are ignored</span>
+<span class="com-single">// ok but these all declare the same overload 3 times</span>
+<span class="keyword">void</span> <span class="func">func6</span>(<span class="keyword">int</span>);
+<span class="keyword">void</span> <span class="func">func6</span>(<span class="keyword">const</span> <span class="keyword">int</span>);
+<span class="keyword">void</span> <span class="func">func6</span>(<span class="keyword">volatile</span> <span class="keyword">int</span>);
+
+<span class="com-single">// ok: different argument types</span>
+<span class="com-single">// (references do not have top-level cv-qualifiers)</span>
+<span class="keyword">void</span> <span class="func">func7</span>(<span class="keyword">int</span>*);
+<span class="keyword">void</span> <span class="func">func7</span>(<span class="keyword">int</span>&amp;);
+<span class="keyword">void</span> <span class="func">func7</span>(<span class="keyword">int</span>&amp;&amp;);
+<span class="keyword">void</span> <span class="func">func7</span>(<span class="keyword">const</span> <span class="keyword">int</span>&amp;);
+<span class="keyword">void</span> <span class="func">func7</span>(<span class="keyword">const</span> <span class="keyword">int</span>&amp;&amp;);
+
+<span class="com-single">// error: can not overload only by different exception specification</span>
+<span class="com-single">// (exceptions explained later)</span>
+<span class="keyword">void</span> <span class="func">func8</span>();
+<span class="keyword">void</span> <span class="func">func8</span>() <span class="keyword">noexcept</span>;
+</pre></td>
+</tr></tbody></table>
+<p>When a call to overloaded function is encountered, a mechanism called <em>overload resolution</em> takes place:</p>
+<ul class="simple">
+<li><p>If no function can be matched to provided arguments and their types, the program is <em>ill-formed</em> (compiler error)</p></li>
+<li>
+<p>If multiple overloads match, they are selected in this order:</p>
+<ul>
+<li><p>an overload which does not require any convertions (perfect match)</p></li>
+<li><p>an overload which requires <em>promotion</em> (lossless convertion) or <em>user-defined convertion</em></p></li>
+<li><p>an overload which requires <em>narrowing convertion</em> (potentially losing convertion)</p></li>
+</ul>
+</li>
+<li><p>If multiple overloads require same-rank convertion then the one that requires least convertions is selected.</p></li>
+<li><p>If there are still multiple overloads to choose from the program is <em>ill-formed</em> due to ambiguity.</p></li>
+</ul>
+<p>The <a class="reference external" href="https://en.cppreference.com/w/cpp/language/overload_resolution">detailed rules</a> are much more complicated but the points above should serve well as a general explanation.</p>
+<p>Examples:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">void</span> <span class="func">f1</span>(<span class="keyword">int</span>, <span class="keyword">float</span>);  <span class="com-single">// A</span>
+<span class="keyword">void</span> <span class="func">f1</span>(<span class="keyword">int</span>, <span class="keyword">double</span>); <span class="com-single">// B</span>
+<span class="keyword">void</span> <span class="func">f1</span>(<span class="keyword">long</span>, <span class="keyword">float</span>); <span class="com-single">// C</span>
+
+<span class="com-single">// error: ambiguous call</span>
+<span class="com-single">// A: requires 2x narrowing convertion (long =&gt; int, double =&gt; float)</span>
+<span class="com-single">// B: requires 1x narrowing convertion (long =&gt; int)</span>
+<span class="com-single">// C: requires 1x narrowing convertion (double =&gt; float)</span>
+<span class="func">f1</span>(<span class="lit-num">42</span><span class="suf">l</span>, <span class="num">3.14</span>);
+
+<span class="keyword">void</span> <span class="func">f2</span>(<span class="keyword">unsigned</span>); <span class="com-single">// X</span>
+<span class="keyword">void</span> <span class="func">f2</span>(<span class="keyword">double</span>);   <span class="com-single">// Y</span>
+
+<span class="com-single">// error: ambiguous call</span>
+<span class="com-single">// X: requires 1x narrowing (int =&gt; unsigned)</span>
+<span class="com-single">// Y: requires 1x narrowing (int =&gt; double)</span>
+<span class="func">f2</span>(<span class="lit-num">0</span>);
+
+<span class="com-single">// ok: perfect match with X</span>
+<span class="func">f2</span>(<span class="lit-num">0</span><span class="suf">u</span>);
+
+<span class="com-single">// ok: selects Y</span>
+<span class="com-single">// X: requires 1x narrowing (float =&gt; unsigned)</span>
+<span class="com-single">// Y: requires 1x promotion (float =&gt; double)</span>
+<span class="func">f2</span>(<span class="num">3.14</span><span class="suf">f</span>);
+
+<span class="com-single">// error: ambiguous call</span>
+<span class="com-single">// X: requires 1x narrowing (char =&gt; unsigned)</span>
+<span class="com-single">// Y: requires 1x narrowing (char =&gt; double)</span>
+<span class="func">f2</span>(<span class="lit-chr">'a'</span>);
+</pre></td>
+</tr></tbody></table></section><section id="deleted-overloads"><h2>Deleted overloads</h2>
+<p>The keyword <code class="code custom-cpp"><span class="keyword">delete</span></code> is primarily for memory deallocation, but since C++11 it gained an additional functionality. It can be used to explicitly <code class="code custom-cpp"><span class="keyword">delete</span></code> function overloads. Deleted overloads take part in overload resolution as any other overload, but if a deleted overload is choosen then compilation fails.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">void</span> <span class="func">f1</span>(<span class="keyword">long</span>);
+<span class="func">f1</span>(<span class="lit-num">1</span>); <span class="com-single">// ok, int promoted to long</span>
+
+<span class="keyword">void</span> <span class="func">f2</span>(<span class="keyword">int</span>) = <span class="keyword">delete</span>;
+<span class="keyword">void</span> <span class="func">f2</span>(<span class="keyword">long</span>);
+<span class="func">f2</span>(<span class="lit-num">2</span>); <span class="com-single">// chooses first overload, triggers compilation error</span>
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Overloads written with <code class="code custom-cpp">= <span class="keyword">delete</span></code> are treated as function definitions, not just declarations.</p>
+</aside></section><section id="in-practice"><h2>In practice</h2>
+<p>Don't worry if you can not memorize everything - intuitively the most fitting overload is choosen.</p>
+<p>Operators, like functions can be overloaded too (operators actually <em>are</em> functions, just with special syntax). The best example is <code class="docutils literal">&lt;&lt;</code> which is extensively overloaded for standard library stream types (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code> is one of such streams). As of C++17, there are 29 overloads, 14 of which are templates.</p>
+<blockquote>
+<p>How do templates play with overload resolution?</p>
+</blockquote>
+<p>Function templates, before entering overload resolution are subject to <em>template type deduction</em>, that is, their template parameters are sort of guessed based on provided <em>arguments</em> and <em>template arguments</em>. It's a pretty complex mechanism but after finishing it (or failing it, in the case of <em>SFINAE</em>, which is even more complicated) a signature is formed (or not, if SFINAE happened) that takes part in overload resolution like any other overload. If there is a match of the same priority from a template and non-template overload, the non-template one is selected.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Function overloading and default arguments are features that are not present in C.</p>
+</aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

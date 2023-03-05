@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - typeof</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../../beginner/">beginner</a></li>
+						<li><a href="../../">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">accelerated</a></li>
+							<span>/</span>
+							<li><a href="../">xx - OOP</a></li>
+							<span>/</span>
+						<li>typeof</li>
+					</ol></nav><div class="content">
+				<h1>typeof</h1>				<p>This article is intentionally named "typeof" even though formally there is no such keyword in C++. There is simply no better title given the existence of such keyword and its usage in other languages. After all, you want to know what C++ offers in place of it and why.</p>
+<section id="why"><h2>Why</h2>
+<p>The reason why C++ has no <code class="code custom-cpp"><span class="keyword">typeof</span></code> keyword is mostly historical.</p>
+<p>Many compilers did/do have such non-standard extension. Standarizing it would be very troublesome given the differences in existing implementations. The idea is pretty old, before <code class="docutils literal">__name</code> was commonly used for extensions so many implementations added a formally-looking keyword, something that today would be very discouraged. The standard would like to avoid breaking existing code or changing the meaning of something that already exists, even if it was already violating the standard.</p>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-typeid-span-code"><h2><code class="code custom-cpp"><span class="keyword">typeid</span></code></h2>
+<p>This is what you usually want. The keyword works like a function and similarly to <code class="code custom-cpp"><span class="keyword">sizeof</span></code> and <code class="code custom-cpp"><span class="keyword">alignof</span></code> it accepts both type expressions (<code class="code custom-cpp"><span class="keyword">typeid</span>(<span class="param-tmpl">T</span>)</code>) and value expressions (<code class="code custom-cpp"><span class="keyword">typeid</span>(<span class="var-local">obj</span>)</code>).</p>
+<p>The behavior of the keyword is dependent on exact usage.</p>
+<ul class="simple">
+<li>
+<p>For <code class="code custom-cpp"><span class="keyword">typeid</span>(<span class="param-tmpl">T</span>)</code>, if the type <code class="code custom-cpp"><span class="param-tmpl">T</span></code> is a reference type, the behavior is identical as if it had no reference. Thus, references are considered to have the same type ID as types they refer to, but pointers have different type IDs. Top-level cv-qualifiers are ignored, thus:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="keyword">typeid</span>(<span class="param-tmpl">T</span>&amp;) == <span class="keyword">typeid</span>(<span class="param-tmpl">T</span>)</code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">typeid</span>(<span class="keyword">const</span> <span class="param-tmpl">T</span>) == <span class="keyword">typeid</span>(<span class="param-tmpl">T</span>)</code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">typeid</span>(<span class="keyword">volatile</span> <span class="param-tmpl">T</span>) == <span class="keyword">typeid</span>(<span class="param-tmpl">T</span>)</code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">typeid</span>(<span class="param-tmpl">T</span>*) != <span class="keyword">typeid</span>(<span class="param-tmpl">T</span>)</code></p></li>
+</ul>
+</li>
+<li>
+<p>For <code class="code custom-cpp"><span class="keyword">typeid</span>(<span class="var-local">obj</span>)</code>:</p>
+<ul>
+<li>
+<p>If the object is polymorphic (a class that declares or inherits at least 1 virtual function):</p>
+<ul>
+<li><p>A runtime cost is incurred to evaluate the exact type of the object (typical implementation will use object's vtable pointer to access global metadata).</p></li>
+<li><p>If the expression is <code class="code custom-cpp"><span class="keyword">typeid</span>(*<span class="var-local">ptr</span>)</code> and the pointer is null, additional guarantee exists: instead of undefined behavior an exception is thrown of type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">bad_typeid</span></code> or a type derived from it.</p></li>
+</ul>
+</li>
+<li><p>If the object is not polymorphic, the expression is not evaluated and is resolved at compile time (though it's not considered <code class="code custom-cpp"><span class="keyword">constexpr</span></code>). <em>Decay</em> does not happen. In this case the resulting type ID may not represent actual (most derived) type of the object.</p></li>
+</ul>
+</li>
+</ul>
+<p>Similarly to virtual functions in constructors and destructors, using <code class="code custom-cpp"><span class="keyword">typeid</span></code> during them will yield IDs about the class currently being constructed/destroyed, not the most-derived one.</p>
+<p>In all cases, the resulting expression returns <code class="code custom-cpp"><span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">type_info</span>&amp;</code>. The type info object has infinite lifetime (<em>static storage duration</em> strictly technically) and because it's a reference, the actual referenced object can be derived from <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">type_info</span></code> if the implementation needs it.</p>
+<p>In all cases, you have to <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;typeinfo&gt;</span></code> in order to use the keyword. Otherwise the program is <em>ill-formed</em>.</p>
+<p>The interface looks as follows:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">namespace</span> <span class="namespace">std</span> {
+
+<span class="keyword">class</span> <span class="type">type_info</span>
+{
+<span class="keyword">public</span>:
+	<span class="com-single">// you can not create objects of this (and derived) types</span>
+	<span class="com-single">// the only way is to use the typeid keyword</span>
+	<span class="type">type_info</span>() = <span class="keyword">delete</span>;
+
+	<span class="com-single">// it is unspecified if this is actually called at the end of the program</span>
+	<span class="keyword">virtual</span> ~<span class="type">type_info</span>();
+
+	<span class="type">type_info</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="keyword">const</span> <span class="type">type_info</span>&amp;) = <span class="keyword">delete</span>;
+	<span class="type">type_info</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="type">type_info</span>&amp;&amp;) = <span class="keyword">delete</span>;
+
+	<span class="com-single">// C++11: additionally noexcept</span>
+	<span class="com-single">// C++23: additionally constexpr</span>
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="keyword">const</span> <span class="type">type_info</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span>;
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="keyword">const</span> <span class="type">type_info</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span>;
+
+	<span class="com-single">// C++11: all of these are also noexcept</span>
+	<span class="type">size_t</span> <span class="func">hash_code</span>() <span class="keyword">const</span>;
+	<span class="keyword">const</span> <span class="keyword">char</span>* <span class="func">name</span>() <span class="keyword">const</span>;
+	<span class="keyword">bool</span> <span class="func">before</span>(<span class="keyword">const</span> <span class="type">type_info</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span>;
+};
+
+<span class="com-single">// helper class to use it as a key in containers</span>
+<span class="com-single">// available since C++11</span>
+<span class="keyword">class</span> <span class="type">type_index</span>
+{
+<span class="keyword">public</span>:
+	<span class="type">type_index</span>(<span class="keyword">const</span> <span class="type">type_info</span>&amp; <span class="param">info</span>) <span class="keyword">noexcept</span>
+	: <span class="var-member">info</span>(&amp;<span class="param">info</span>) {}
+
+	<span class="type">size_t</span> <span class="func">hash_code</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keyword">return</span> <span class="var-member">info</span>-&gt;<span class="func">hash_code</span>(); }
+	<span class="keyword">const</span> <span class="keyword">char</span>* <span class="func">name</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keyword">return</span> <span class="var-member">info</span>-&gt;<span class="func">name</span>(); }
+
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="keyword">const</span> <span class="type">type_index</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="keyword">const</span> <span class="type">type_index</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&lt;</span> (<span class="keyword">const</span> <span class="type">type_index</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&lt;=</span>(<span class="keyword">const</span> <span class="type">type_index</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&gt;</span> (<span class="keyword">const</span> <span class="type">type_index</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&gt;=</span>(<span class="keyword">const</span> <span class="type">type_index</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+	<span class="com-single">// C++20</span>
+	<span class="type">strong_ordering</span> <span class="keyword">operator</span><span class="func">&lt;=&gt;</span>(<span class="keyword">const</span> <span class="type">type_index</span>&amp; <span class="param">rhs</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+
+<span class="keyword">private</span>:
+	<span class="type">type_info</span>* <span class="var-member">info</span>;
+};
+
+<span class="keyword">template</span> &lt;&gt;
+<span class="keyword">struct</span> <span class="type">hash</span>&lt;<span class="type">type_index</span>&gt;
+{
+	<span class="type">size_t</span> <span class="keyword">operator</span><span class="func">()</span>(<span class="type">type_index</span> <span class="param">index</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>
+	{
+		<span class="keyword">return</span> <span class="param">index</span>.<span class="func">hash_code</span>();
+	}
+};
+
+}
+</pre></td>
+</tr></tbody></table>
+<section id="hash-code"><h3>Hash code</h3>
+<p>The hash code is the same for all <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">type_info</span></code> referring to the same type. No other guarantees are given, this means that:</p>
+<ul class="simple">
+<li><p>multiple types may have the same hash (although discouraged by the standard)</p></li>
+<li><p>hash code for the same type can change between invocations of the program</p></li>
+</ul></section><section id="before"><h3>Before</h3>
+<p>cppreference: <em>returns true if the type of this :cch:`std::type_info` precedes the type of :cch:`rhs` in the implementation's collation order. No guarantees are given; in particular, the collation order can change between the invocations of the same program.</em></p>
+<p>Personally I have never seen this used in practice. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">type_index</span></code> sounds much better.</p>
+</section><section id="name"><h3>Name</h3>
+<p>You would probably expect the real name of the type, as written in code, with all qualifiers. But this is not the case. The standard places no requirements on it, not even the lifetime of the returned string.</p>
+<p>This is an example place where the specification is very tolerant. It's much better to not guarantee something than to label practically-valuable implementations non-conforming.</p>
+<p>So what's the reality then? <a class="reference external" href="cppreference">https://en.cppreference.com/w/cpp/types/type_info/name</a> says:</p>
+<ul class="simple">
+<li><p>Some implementations (such as MSVC, IBM, Oracle) produce a human-readable type name.</p></li>
+<li><p>GCC and Clang, return the <a class="reference external" href="https://en.wikipedia.org/wiki/Name_mangling">mangled name</a>, which is specified by the <a class="reference external" href="https://itanium-cxx-abi.github.io/cxx-abi/abi.html#typeid">Itanium C++ ABI</a></p></li>
+<li><p>The lifetime of the string is tied to the lifetime of RTTI data, which typically lives as long as its originating file (for executables - as long as the program is running, for shared library objects - to the point of unload).</p></li>
+</ul>
+<p>The mangled name can be demangled by:</p>
+<ul class="simple">
+<li><p>GCC's <code class="code custom-cpp"><span class="namespace">abi</span>::<span class="func">__cxa_demangle</span></code> - see <a class="reference external" href="https://gcc.gnu.org/onlinedocs/libstdc++/manual/ext_demangling.html">https://gcc.gnu.org/onlinedocs/libstdc++/manual/ext_demangling.html</a></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">boost</span>::<span class="namespace">core</span>::<span class="func">demangle</span></code> - see <a class="reference external" href="http://www.boost.org/doc/libs/release/libs/core/doc/html/core/demangle.html">http://www.boost.org/doc/libs/release/libs/core/doc/html/core/demangle.html</a></p></li>
+<li><p>command-line utility: <code class="docutils literal"><span class="pre">c++filt</span> <span class="pre">-t</span> mangled_name</code>, available as a part of GCC and Clang toolchains</p></li>
+</ul></section><section id="rtti"><h3>RTTI</h3>
+<p>C++ is a language where you don't pay for what you don't use and the existence of the keyword already puts some requirements on implementation - it must provide some metadata in the executable. This metadata is known as RTTI (runtime type information) and compilers offer a <code class="docutils literal"><span class="pre">-fno-rtti</span></code> option. For GCC, the option disallows <code class="code custom-cpp"><span class="keyword">typeid</span></code> and RTTI-requiring uses of <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> (typically downcasts). Exceptions are unaffected (any data to support them is generated as needed). Additionally, GCC documents that <em>mixing code compiled with ``-frtti`` with that compiled with ``-fno-rtti`` may not work. For example, programs may fail to link if a class compiled with ``-fno-rtti`` is used as a base for a class compiled with ``-frtti``</em>.</p>
+<p>Note that <code class="docutils literal"><span class="pre">-fno-rtti</span></code> apart from reducing binary file size, like many options which limit amount of produced metadata will also reduce the possibility of reverse engineering.</p>
+</section><section id="alternatives"><h3>Alternatives</h3>
+<p>RTTI is a costly OOP feature (as far as typical C++ philosophy is concerned). Some frameworks (most notably Qt) generate their own metadata using their own ways.</p>
+<p>If you want to use standard-like <code class="code custom-cpp"><span class="keyword">typeid</span></code> with a richer API and guarantees, check <a class="reference external" href="https://www.boost.org/doc/libs/release/doc/html/boost_typeindex.html">Boost.TypeIndex library</a></p>
+</section></section><section id="code-class-code-custom-cpp-span-class-keyword-decltype-span-code"><h2><code class="code custom-cpp"><span class="keyword">decltype</span></code></h2>
+<p>This is the second keyword, it bevahes much differently. Instead of returning an object, it behaves like a type name:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">a</span> = <span class="lit-num">1</span>;
+<span class="keyword">decltype</span>(<span class="var-local">a</span>) <span class="var-local">b</span> = <span class="lit-num">2</span>;
+</pre></td>
+</tr></tbody></table>
+<p>The keyword has 2 usages:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">decltype</span>(<span class="spec">entity</span>)</code>, that is: <code class="code custom-cpp"><span class="keyword">decltype</span>(<span class="var-local">ref</span>.<span class="var-member">member</span>)</code>, <code class="code custom-cpp"><span class="keyword">decltype</span>(<span class="var-local">ptr</span>-&gt;<span class="var-member">member</span>)</code> and <code class="code custom-cpp"><span class="keyword">decltype</span>(<span class="param-tmpl">T</span>::<span class="var-member">member</span>)</code> - yields the type of the (member) <em>entity</em>, with top-level cv-qualifiers removed</p></li>
+<li>
+<p><code class="code custom-cpp"><span class="keyword">decltype</span>(<span class="spec">expression</span>)</code> - yields a type depending on value category of the expression:</p>
+<ul>
+<li><p>for prvalue, yields <code class="code custom-cpp"><span class="param-tmpl">T</span></code></p></li>
+<li><p>for lvalue, yields <code class="code custom-cpp"><span class="param-tmpl">T</span>&amp;</code></p></li>
+<li><p>for xvalue, yields <code class="code custom-cpp"><span class="param-tmpl">T</span>&amp;&amp;</code></p></li>
+</ul>
+</li>
+</ul>
+<p>Because the first point applies only to limited set of expressions, <code class="code custom-cpp"><span class="keyword">decltype</span>(<span class="spec">expression</span>)</code> and <code class="code custom-cpp"><span class="keyword">decltype</span>((<span class="spec">expression</span>))</code> can yield distinct types (first the type of the entity, second the type of the expression).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">S</span> { <span class="keyword">double</span> <span class="var-member">x</span>; };
+<span class="keyword">const</span> <span class="type">S</span>* <span class="var-local">ptr</span>;
+
+<span class="keyword">decltype</span>(<span class="var-local">ptr</span>-&gt;<span class="var-member">x</span>) <span class="var-local">y</span>;       <span class="com-single">// type of y is double (declared type)</span>
+<span class="keyword">decltype</span>((<span class="var-local">ptr</span>-&gt;<span class="var-member">x</span>)) <span class="var-local">z</span> = <span class="var-local">y</span>; <span class="com-single">// type of z is const double&amp; (lvalue expression)</span>
+</pre></td>
+</tr></tbody></table>
+<p>Like other operator keywords, it has <em>unevaluated context</em> (the code is not run) and doesn't impose requirements beyond necessary to process the expression (some types in the expression may be incomplete, abstract or have no destructor).</p>
+<p><code class="code custom-cpp"><span class="keyword">decltype</span></code> is used almost exclusively in templates, usually to denote function return type or an alias that would otherwise be impossible or complex to express. In non-template code, the need is usually accompanied by an initialization, thus such code typically uses <code class="code custom-cpp"><span class="keyword">auto</span></code>.</p>
+<p>Since C++14 both keywords can be combined as a single constituent for type declaration: <code class="code custom-cpp"><span class="keyword">decltype</span>(<span class="keyword">auto</span>)</code> for initialization or function return type. In such case instead of template type deduction, the resulting type is <code class="code custom-cpp"><span class="keyword">decltype</span>(<span class="spec">expression</span>)</code> where <em>expression</em> is the initializer.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">auto</span> <span class="var-local">x</span> = <span class="lit-num">1</span>;              <span class="com-single">// type of x is int - template type deduction</span>
+<span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="var-local">d1</span> = <span class="var-local">x</span>;   <span class="com-single">// type of d1 is int - decltype(x)</span>
+<span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="var-local">d2</span> = (<span class="var-local">x</span>); <span class="com-single">// type of d2 is int&amp; - decltype((x))</span>
+
+<span class="com-single">// auto - perfect_forward will always return by value</span>
+<span class="com-single">// decltype(auto) - perfect_forward return type will be decltype(return_expr)</span>
+<span class="com-single">// (it will return T&amp; if fun returns T&amp; and T&amp;&amp; if fun returns T&amp;&amp;)</span>
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">F</span>, <span class="keyword">typename</span>... <span class="param-tmpl">Args</span>&gt;
+<span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="func">perfect_forward</span>(<span class="param-tmpl">F</span> <span class="param">fun</span>, <span class="param-tmpl">Args</span>&amp;&amp;... <span class="param">args</span>)
+{
+	<span class="keyword">return</span> <span class="param">fun</span>(<span class="namespace">std</span>::<span class="func">forward</span>&lt;<span class="param-tmpl">Args</span>&gt;(<span class="param">args</span>)...);
+}
+</pre></td>
+</tr></tbody></table></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

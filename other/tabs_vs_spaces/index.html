@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - tabs vs spaces</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../">HOME</a></li>
+				<li><a href="../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../cpp/tutorials/beginner/">beginner</a></li>
+						<li><a href="../../cpp/tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../cpp/tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../cpp/stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../cpp/utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../cpp/utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../cpp/utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../cpp/utility/glossary/">glossary</a></li>
+						<li><a href="../../cpp/utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../about/">about</a></li>
+						<li><a href="../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../">HOME</a></li>
+				<li class="button"><a href="../../index">INDEX</a></li>
+				<li class="button"><a href="../../faq">FAQ</a></li>
+				<li class="button"><a href="../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../">other</a></li>
+							<span>/</span>
+						<li>tabs vs spaces</li>
+					</ol></nav><div class="content">
+				<h1>tabs vs spaces</h1>				<section id="preface"><h2>preface</h2>
+<p>This article is not aimed to convince you to any of the sides. You very likely already have a very strong own opinion what is better. This article goals are:</p>
+<ul class="simple">
+<li><p>to list advantages/disadvantages of both</p></li>
+<li><p>to present common mistakes</p></li>
+</ul>
+<p>Nothing can be worse than someone using one of the styles incorrectly and/or having no arguments for choosing such style.</p>
+</section><section id="spaces"><h2>spaces</h2>
+<p>Pros:</p>
+<ul class="simple">
+<li><p>Simpler to understand and from what I have seen, people make less mistakes with it.</p></li>
+<li><p>Well-suited for fixed showcases like prints and presentations - basically where code is treated as an image instead of text. Sufficient amount of spaces will guarantee that indents are clearly visible.</p></li>
+</ul>
+<p>Cons:</p>
+<ul class="simple">
+<li><p>Many editors do not offer convenient behavior when code is indented using spaces. They still require multiple key presses for various editing tasks.</p></li>
+<li><p>It is easy to make off-by-one typos. Especially if you indent by 4 or more spaces and/or lack good editor support.</p></li>
+<li><p>People will argue how many spaces it should be. Most popular are 2, 4 and 8. There is no such problem with tabs.</p></li>
+</ul></section><section id="tabs"><h2>tabs</h2>
+<p>Pros:</p>
+<ul class="simple">
+<li><p>The rendering is flexible. Everyone can set displayed tab length to their preference. If you think this is a problem and not an advantage, you are making one of common mistakes - read further.</p></li>
+<li><p>Less characters to type, much harder to misalign code off-by-one.</p></li>
+</ul>
+<p>Cons:</p>
+<ul class="simple">
+<li><p>If you have a line limit, you will need to assume certain tab length in calculations.</p></li>
+<li><p>May cause interoperatibility issues with other (non-editing) tools that consume code to display it (usually partially) in a different form. Problematic if code is embedded inside other code.</p></li>
+</ul></section><section id="how-tabs-work"><h2>how tabs work</h2>
+<p>For the purpose of this article:</p>
+<ul class="simple">
+<li><p><strong>L</strong> will represent configured tab length.</p></li>
+<li><p>spaces will be represented with <code class="docutils literal">.</code>.</p></li>
+<li><p>tabs will be represented with <code class="docutils literal"><span class="pre">---&gt;</span></code> (where the amount of <code class="docutils literal">-</code> may change depending on L and <em>tab stops</em>).</p></li>
+</ul></section><section id="mistakes"><h2>mistakes</h2>
+<section id="misunderstanding-tab-stops"><h3>misunderstanding tab stops</h3>
+<p>A common misconception is that tabs have fixed width, equal to L. This is false. Tabs have width <em>up to L</em> - tabs stop at multiplies of L, called <em>tab stops</em>. Example with L set to 8:</p>
+<div class="code"><pre class="code text"><a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-1" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-1" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-1"></a>-------&gt;-------&gt;Y
+<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-2" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-2" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-2"></a>-------&gt;XXXX---&gt;Y
+<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-3" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-3" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-3"></a>abc----&gt;X------&gt;Y
+<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-4" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-4" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-4"></a>abcd---&gt;X------&gt;Y
+<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-5" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-5" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-5"></a>abcde--&gt;X------&gt;Y
+<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-6" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-6" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-6"></a>abcdef-&gt;X------&gt;Y
+<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-7" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-7" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-7"></a>abcdefg&gt;X------&gt;Y
+<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-8" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-8" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-8"></a>abcdefgh-------&gt;X-------&gt;Y
+</pre></div>
+<p>In the first line, tabs do have length equal to L. But in other lines, they are truncated by the presence of other characters. Once the length of them reaches L (which is the case of <code class="docutils literal">abcdefgh</code>), they "push" next tab character to the next tab stop.</p>
+</section><section id="using-tabs-elsewhere-than-line-start"><h3>using tabs elsewhere than line start</h3>
+<p>Tabs, if used, should be present only at the beginning of the line. Once any other character has been used, tabs should never appear. The following example showcases that you can not consistently use tabs for alignment:</p>
+<div class="code"><pre class="code text"><a id="rest_code_56ac8dda1d0342aba7a461a48621e333-1" name="rest_code_56ac8dda1d0342aba7a461a48621e333-1" href="#rest_code_56ac8dda1d0342aba7a461a48621e333-1"></a>---&gt;fn(x+1,&gt;y,-&gt;z);
+<a id="rest_code_56ac8dda1d0342aba7a461a48621e333-2" name="rest_code_56ac8dda1d0342aba7a461a48621e333-2" href="#rest_code_56ac8dda1d0342aba7a461a48621e333-2"></a>---&gt;fn(x,--&gt;y+1,z);
+<a id="rest_code_56ac8dda1d0342aba7a461a48621e333-3" name="rest_code_56ac8dda1d0342aba7a461a48621e333-3" href="#rest_code_56ac8dda1d0342aba7a461a48621e333-3"></a>---&gt;fn(x,--&gt;y,-&gt;z+1);
+</pre></div>
+<p>It looks even worse if L is changed to 8:</p>
+<div class="code"><pre class="code text"><a id="rest_code_d442a47db9cf4bc18aca5fcddbb22738-1" name="rest_code_d442a47db9cf4bc18aca5fcddbb22738-1" href="#rest_code_d442a47db9cf4bc18aca5fcddbb22738-1"></a>-------&gt;fn(x+1,&gt;y,-----&gt;z);
+<a id="rest_code_d442a47db9cf4bc18aca5fcddbb22738-2" name="rest_code_d442a47db9cf4bc18aca5fcddbb22738-2" href="#rest_code_d442a47db9cf4bc18aca5fcddbb22738-2"></a>-------&gt;fn(x,--&gt;y+1,z);
+<a id="rest_code_d442a47db9cf4bc18aca5fcddbb22738-3" name="rest_code_d442a47db9cf4bc18aca5fcddbb22738-3" href="#rest_code_d442a47db9cf4bc18aca5fcddbb22738-3"></a>-------&gt;fn(x,--&gt;y,-----&gt;z+1);
+</pre></div>
+</section><section id="assuming-tab-length"><h3>assuming tab length</h3>
+<p>This is another mistake. <strong>Tabs do not have predefined length and you should not write code assuming any.</strong> Example:</p>
+<div class="code"><pre class="code text"><a id="rest_code_1428e04f64304eb1a1d867f81cfdfcda-1" name="rest_code_1428e04f64304eb1a1d867f81cfdfcda-1" href="#rest_code_1428e04f64304eb1a1d867f81cfdfcda-1"></a>-------&gt;long_function_call(arg1, arg2,
+<a id="rest_code_1428e04f64304eb1a1d867f81cfdfcda-2" name="rest_code_1428e04f64304eb1a1d867f81cfdfcda-2" href="#rest_code_1428e04f64304eb1a1d867f81cfdfcda-2"></a>-------&gt;-------&gt;-------&gt;...arg3, arg4,
+<a id="rest_code_1428e04f64304eb1a1d867f81cfdfcda-3" name="rest_code_1428e04f64304eb1a1d867f81cfdfcda-3" href="#rest_code_1428e04f64304eb1a1d867f81cfdfcda-3"></a>-------&gt;-------&gt;-------&gt;...arg5, arg6);
+</pre></div>
+<p>The code above assumes L is 8, which makes the same code badly formatted if someone has L set to 4:</p>
+<div class="code"><pre class="code text"><a id="rest_code_d79b20010bcb4f9099f959a0732d9230-1" name="rest_code_d79b20010bcb4f9099f959a0732d9230-1" href="#rest_code_d79b20010bcb4f9099f959a0732d9230-1"></a>---&gt;long_function_call(arg1, arg2,
+<a id="rest_code_d79b20010bcb4f9099f959a0732d9230-2" name="rest_code_d79b20010bcb4f9099f959a0732d9230-2" href="#rest_code_d79b20010bcb4f9099f959a0732d9230-2"></a>---&gt;---&gt;---&gt;...arg3, arg4,
+<a id="rest_code_d79b20010bcb4f9099f959a0732d9230-3" name="rest_code_d79b20010bcb4f9099f959a0732d9230-3" href="#rest_code_d79b20010bcb4f9099f959a0732d9230-3"></a>---&gt;---&gt;---&gt;...arg5, arg6);
+</pre></div>
+<p>Some people use this as an argument towards using spaces - wrong. This is not valid argument, because this is simply incorrect usage of tabs. The correct use is as follows (you can see it works regardless of L):</p>
+<div class="code"><pre class="code text"><a id="rest_code_311b1a127d874f39ae5662d1b50df410-1" name="rest_code_311b1a127d874f39ae5662d1b50df410-1" href="#rest_code_311b1a127d874f39ae5662d1b50df410-1"></a>---&gt;long_function_call(arg1, arg2,
+<a id="rest_code_311b1a127d874f39ae5662d1b50df410-2" name="rest_code_311b1a127d874f39ae5662d1b50df410-2" href="#rest_code_311b1a127d874f39ae5662d1b50df410-2"></a>---&gt;...................arg3, arg4,
+<a id="rest_code_311b1a127d874f39ae5662d1b50df410-3" name="rest_code_311b1a127d874f39ae5662d1b50df410-3" href="#rest_code_311b1a127d874f39ae5662d1b50df410-3"></a>---&gt;...................arg5, arg6);
+<a id="rest_code_311b1a127d874f39ae5662d1b50df410-4" name="rest_code_311b1a127d874f39ae5662d1b50df410-4" href="#rest_code_311b1a127d874f39ae5662d1b50df410-4"></a>
+<a id="rest_code_311b1a127d874f39ae5662d1b50df410-5" name="rest_code_311b1a127d874f39ae5662d1b50df410-5" href="#rest_code_311b1a127d874f39ae5662d1b50df410-5"></a>-------&gt;long_function_call(arg1, arg2,
+<a id="rest_code_311b1a127d874f39ae5662d1b50df410-6" name="rest_code_311b1a127d874f39ae5662d1b50df410-6" href="#rest_code_311b1a127d874f39ae5662d1b50df410-6"></a>-------&gt;...................arg3, arg4,
+<a id="rest_code_311b1a127d874f39ae5662d1b50df410-7" name="rest_code_311b1a127d874f39ae5662d1b50df410-7" href="#rest_code_311b1a127d874f39ae5662d1b50df410-7"></a>-------&gt;...................arg5, arg6);
+</pre></div>
+<p><strong>Tabs are used for indent, spaces for alignment:</strong></p>
+<ul class="simple">
+<li><p>Tabs prepend the code, because it is a part of some outer scope. The indent size may change (depending on L), but all lines in the same scope will have the same indentation.</p></li>
+<li><p>Spaces align function arguments, because we want further arguments to be shifted specific number of characters. There is no indent due to scope, we simply align characters using fixed-length whitespace character (space).</p></li>
+</ul></section><section id="mixing-styles"><h3>mixing styles</h3>
+<p>Any mixed style will fall into assumption of L. Example:</p>
+<div class="code"><pre class="code text"><a id="rest_code_dc1a77ff826a41c7837a500a8f46e077-1" name="rest_code_dc1a77ff826a41c7837a500a8f46e077-1" href="#rest_code_dc1a77ff826a41c7837a500a8f46e077-1"></a>---&gt;func();
+<a id="rest_code_dc1a77ff826a41c7837a500a8f46e077-2" name="rest_code_dc1a77ff826a41c7837a500a8f46e077-2" href="#rest_code_dc1a77ff826a41c7837a500a8f46e077-2"></a>....func();
+</pre></div>
+<p>After changing L to 8:</p>
+<div class="code"><pre class="code text"><a id="rest_code_45371aaee5e44f41947b91fef80f0656-1" name="rest_code_45371aaee5e44f41947b91fef80f0656-1" href="#rest_code_45371aaee5e44f41947b91fef80f0656-1"></a>-------&gt;func();
+<a id="rest_code_45371aaee5e44f41947b91fef80f0656-2" name="rest_code_45371aaee5e44f41947b91fef80f0656-2" href="#rest_code_45371aaee5e44f41947b91fef80f0656-2"></a>....func();
+</pre></div>
+<p>This is bad - code on the same scope has different visible indentiation.</p>
+</section></section><section id="summary"><h2>summary</h2>
+<ul class="simple">
+<li><p>Use tabs only at the start of the line. Never after any other character (such lines are colored red in <code class="docutils literal">git diff</code> output).</p></li>
+<li><p>Never assume any length. Use tabs to indent and spaces to align.</p></li>
+<li><p>If you are writing literal strings, prefer to write tabs using escaped form (e.g. <code class="docutils literal">\t</code>) instead of directly in source - directly written tabs may uncontrollably shift tab stops depending on changes in other parts of the string.</p></li>
+<li><p>Configure editor to correctly stick to your choosen style.</p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

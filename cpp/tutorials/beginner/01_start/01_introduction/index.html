@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - introduction</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">01 - start</a></li>
+							<span>/</span>
+						<li>01 - introduction</li>
+					</ol></nav><div class="content">
+				<h1>01 - introduction</h1>				<!-- TODO I have a feeling this whole article could be significantly improved. It lacks C, C++ history and needs better separation from universal programming knowledge and C/C++ specific knowledge. -->
+<p>Programming is the act of making computer programs. A computer program is just a sequence of instructions that can executed on a <a class="reference external" href="https://en.wikipedia.org/wiki/Turing_machine">Turing machine</a>. The term is pretty complex but explained briefly it represents an abstract machine that can perform 3 tasks:</p>
+<ul class="simple">
+<li><p>read instruction/data</p></li>
+<li><p>write data</p></li>
+<li><p>move to the next instruction (where move is not necessarily one-by-one in the same direction)</p></li>
+</ul>
+<p>Further developments in engineering led to creation of faster and smaller machines that realize this mathematical concept using electric energy. As you may already know, computers use binary system (base 2, as opposed to humans which primarily<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> use base 10) but said shortly, it's only a matter of representation and doesn't affect results at all. Math is the same, it's just a different form of writing. Computers use base 2 due to practical reasons - there were attempts at other systems but ultimately constructing a device that works with only 2 different current states is the simplest of all.</p>
+<p>You might wonder why there are multiple programming languages. Like human languages, programming languages evolved separately over time but the cause of evolution is much different - the primary reason being how to best abstract underlying mathematical concepts. If you have seen the same mathematical problems written differently (usually different symbols) - the same thing happens in programming.</p>
+<p>All widely used programming languages are based on English. The reason is simple: IT started and grew mostly in english-speaking part of the world.</p>
+<p>Paragraphs below present simplified view of various key aspects of programming.</p>
+<section id="first-computer-programs"><h2>First computer programs</h2>
+<p>At first, there was nothing more than the <em>machine code</em>. A form of representation that the machine directly understands. Depending on the device architecture, it could be perforated paper tape, punched card or any other way of storing information on physical object. Each row (or column) of holes represented a single portion of an instruction or input data. Writing programs was a quite tedious and unforgiving task - a mistaken hole in the tape could not be repaired.</p>
+</section><section id="assembly"><h2>Assembly</h2>
+<p>As the time went, one of first major steps towards better abstaction was <em>assembly</em>. Once machines were capable of operating on text, the new way of programming was writing instructions using their shortcut names known as <em>opcodes</em> or <em>mnemonics</em>.</p>
+<div class="code"><pre class="code text"><a id="rest_code_570a0eaf08a340a3ad69fae45799e26b-1" name="rest_code_570a0eaf08a340a3ad69fae45799e26b-1" href="#rest_code_570a0eaf08a340a3ad69fae45799e26b-1"></a>mov     eax, edi ; move value in EDI register to EAX register
+<a id="rest_code_570a0eaf08a340a3ad69fae45799e26b-2" name="rest_code_570a0eaf08a340a3ad69fae45799e26b-2" href="#rest_code_570a0eaf08a340a3ad69fae45799e26b-2"></a>imul    eax, esi ; save into EAX result of integer multiplication EAX * ESI
+</pre></div>
+<p>One particular advantage of this approach was that programmers were no longer required to memorize binary representation of instructions. They could write instructions using their mnemonics and the <em>assembler</em> would later transform this text into binary code which machines can execute. Assembly languages also allowed to insert comments - arbitrary text which is ignored.</p>
+</section><section id="high-level-programming"><h2>High-level programming</h2>
+<p>As computers got more powerful, people started to think of better abstractions of writing code. A significant step was the emergence of high-level programming - a situation where the code wrote by a human (<em>source code</em>) is not undergoing simple 1:1 mapping to machine code but specific transformations defined by the programming language. A program which transforms source code into machine code is named <em>compiler</em>.</p>
+<p>High-level programming offers multiple advantages:</p>
+<ul class="simple">
+<li><p>Abstraction - through programming language grammar (e.g. <code class="docutils literal">x * y</code> instead of <code class="docutils literal">imul eax, esi</code>) - values can now be named, making them <em>variables</em>. The programmer no longer needs to remember what is put where in memory - they need only to remember variable names. Instructions can be represented using symbols and named functions. The code is significantly easier to read and write.</p></li>
+<li><p>Portability: a single compiler can generate machine code for multiple different machines from the same source code.</p></li>
+<li><p>Safety: writing machine code directly can be extremely error-prone. Programming languages can significantly limit amount of mistakes because compilers can analyze the code with much more information.</p></li>
+<li><p>Optimization: compilers can optimize programs during transformation to machine code.</p></li>
+</ul></section><section id="scripting-and-interpreted-languages"><h2>Scripting and interpreted languages</h2>
+<p>Some programming languages have been designed to be <em>interpreted</em>, not <em>compiled</em>. Instead of transforming source code to machine code by a compiler and running an executable, the user launches an interpreter which executes code while reading it. This approach has both advantages and disadvantages. For more information, see <a class="reference external" href="https://stackoverflow.com/a/38491646/4818802">https://stackoverflow.com/a/38491646/4818802</a>.</p>
+</section><section id="program-execution"><h2>Program execution</h2>
+<p>At the beginning, programs were sequences of instructions run on softwareless machines. As machines got more advanced, they started to allow to run multiple programs simultaneously and independently. Programs no longer run on "bare metal" but on a specific layer known as operating system (OS). Core OS jobs are separating programs one from another (for security reasons), allocation/distribution of hardware resources (e.g. CPU time, GPU time, available memory) and providing a uniform way of execution for different hardware (so that programs are focused on system, not hardware).</p>
+<p>One particulary important feature for programing languages is that many OSes allow 2 forms of machine code: <em>executables</em> and <em>dynamic libraries</em>.</p>
+<ul>
+<li><p>An <strong>executable</strong> (<code class="docutils literal">.exe</code> extension on Windows, file with "x" attribute on Unix systems) is a file which contains machine instructions and some metadata necessary to run the program.</p></li>
+<li><p>A <strong>dynamic library</strong> (<code class="docutils literal">.dll</code> on Windows, <code class="docutils literal">.so</code> on Unix systems, <code class="docutils literal">.dynlib</code> on Mac) is also a file which contains machine code but has 1 very significant difference from executables: it has no starting point. Dynamic libraries (also called shared libraries) are portions of machine code intended for reuse by other programs. Dynamic libraries are loaded at runtime, usually at the start of the application that wants to use them. The same library can be used by multiple executables, which saves memory as the OS needs to load it only once. Updating such library will affect all programs that use it.</p></li>
+<li>
+<p>A <strong>static library</strong> (<code class="docutils literal">.lib</code>, <code class="docutils literal">.a</code> and more extensions) is compiled code but not in a format ready to execute. Static libraries are intermediate files produced by program build process, they are usually merged with other compiled code to form executables or dynamic libraries.</p>
+<blockquote>
+<p>Is running a single, statically linked executable on bare metal no longer a thing?</p>
+</blockquote>
+</li>
+</ul>
+<p>It still is, mostly in embedded systems where hardware has significantly lower computing power and there are much higher security concerns what is run on the device. Such devices are designed to perform very narrow set of tasks so one of the big reasons for an operating system does not apply. Reducing amount of software layers makes teting easier and increases safety.</p>
+<blockquote>
+<p>Is it possible to reverse the process? Obtain source code from static library / dynamic library / executable?</p>
+</blockquote>
+<p>Not really. When source code is transformed into machine code, vast majority of information meaningful to humans is lost (unless it's a debug build). Reversing the process is like trying to form the recipe by analyzing the cake. You can find out what main ingredients were used and roughly their proportion, but there is no way to get certainty on all details how it was cooked. A very similar situation is with computer programs. Reversing the build process is known as <strong>reverse engineering</strong> and is most commonly used to develop cheats, security exploits, cracking and performing modifications not intended by program developers. Reverse engineering not only applies to machine code but also to file formats and network protocols.</p>
+</section><section id="today-s-tools"><h2>Today's tools</h2>
+<p>Nowadays the tools to write computer programs are pretty advanced so you will encounter few more terms:</p>
+<p><strong>IDE</strong> (integrated development environment) - A program (or collection of programs) with multiple features to ease the development of programs. Typical features are:</p>
+<ul class="simple">
+<li><p>smart editor with rich autocomplete and syntax highlighting</p></li>
+<li><p>refactoring and code generation tools</p></li>
+<li><p>build system integration</p></li>
+<li><p>debugger integration</p></li>
+<li><p>version control system integration</p></li>
+</ul></section><section id="the-c-world"><h2>The C++ world</h2>
+<p>Major C++ compilers are:</p>
+<ul class="simple">
+<li><p>MSVC (Microsoft Visual C++ compiler) - comes with Microsoft Visual Studio. The recommended compiler by Microsoft for their operating system.</p></li>
+<li><p>GCC (GNU compiler collection) - the standard compiler for most GNU/Linux distributions.</p></li>
+<li><p>Clang - a newer compiler based on LLVM project, an alternative to both above, default compiler on Mac OS.</p></li>
+</ul>
+<p>GCC and Clang are available on Windows through various ports. For GCC the most popular ones are MinGW-w64 distributions (Minimalist GNU for Windows) which come with ported compilers, linkers, GNU make and other build tools.</p>
+<p>There are more compilers but none are as popular as these and most of others are non-free and do not support newer C and C++ standards.</p>
+<p>All of mentioned above compilers come together with other necessary tools. All of these tools are command-line programs with no graphic interface so if you have trouble using them it's recommended to use an IDE which automates build tasks.</p>
+<blockquote>
+<p>Which compiler should I choose?</p>
+</blockquote>
+<p>It doesn't really matter as C++ is a standarized language. Any compiler is required to implement it according to the specification, so you should see no difference in behavior unless you want to use compiler-specific extensions.</p>
+<p>If you haven't choosen a compiler yet, I recommend to use GCC or Clang as their diagnostics (error messages) are much better for beginners than the ones produced by MSVC (which is bundled with Visual Studio). Check out TOWRITE page for details on installation.</p>
+<p>Most popular C++ IDEs:</p>
+<ul class="simple">
+<li><p>Visual Studio Code</p></li>
+<li><p>Visual Studio</p></li>
+<li><p>Qt Creator</p></li>
+<li><p>Eclipse CDT</p></li>
+<li><p>Code::Blocks</p></li>
+<li><p>KDevelop</p></li>
+</ul>
+<p><strong>Debugger</strong> - a program that simulates execution of other programs. You can pause the execution on choosen places (<em>breakpoints</em>) and edit program's state while viewing how it maps to the source code.</p>
+<p><strong>Build configuration</strong> - a set of options passed to the compiler and other tools that create programs. 2 common build configurations:</p>
+<ul class="simple">
+<li><p>debug - the program is built without optimizations and containts extra information for debuggers and other tools</p></li>
+<li><p>release - the program is built with optimizations, some code might be disabled (mostly diagnostics for programmers)</p></li>
+</ul>
+<p>Debug builds are mostly useful when developing - debuggers and other tools operate better on such programs. Release builds are for testing and ... releasing them to the target users of the program.</p>
+<p>A set of tools used to build a program is known as <strong>toolchain</strong>. The name comes from the fact that usually the output of one tool is the input to another, which forms a sequence of transformations. Intermediate build process products are generally incompatible across toolchains. GCC and Clang share some common parts in their toolchain.</p>
+<p>Today's programs often consist of multiple subprojects. A software project, usually intended to be used by other software rather than being an application on its own is a <strong>library</strong>. C++ has its own standard library, which means any C++ program can use it.</p>
+<hr class="docutils">
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>primarily - you can still find remnants of other systems, e.g. base 12 is present in date and time: 12 months, 24 hours, 60 minutes and 60 seconds.</p>
+</aside></aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

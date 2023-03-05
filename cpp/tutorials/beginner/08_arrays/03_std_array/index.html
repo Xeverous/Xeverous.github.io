@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 03 - std::array</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">08 - arrays</a></li>
+							<span>/</span>
+						<li>03 - std::array</li>
+					</ol></nav><div class="content">
+				<h1>03 - std::array</h1>				<!-- TODO this lesson seems too technical, probably too much details -->
+<!-- TODO this lesson duplicates "sarr" struct example -->
+<p>By the time you are reading this you should understand:</p>
+<ul class="simple">
+<li><p>how arrays work (size and indexing)</p></li>
+<li><p>how to pass and use arrays in functions</p></li>
+<li><p>array limitations (no easy way to compare and copy)</p></li>
+</ul>
+<p>The arrays presented so far are often called "raw arrays", "built-in arrays" or "C arrays". This is because they are one of fundamental parts of the C language, one which C++ inherited, including it's limitations. Since majority of rules regarding arrays can not be changed (too much code breakage), C++11 added an alternative.</p>
+<p>Originally developed as <code class="code custom-cpp"><span class="namespace">boost</span>::<span class="type">array</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> is a wrapper type build on top of C arrays. It's core definition looks roughly like this:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">namespace</span> <span class="namespace">std</span> {
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>, <span class="type">size_t</span> <span class="param-tmpl">N</span>&gt;
+<span class="keyword">struct</span> <span class="type">array</span>
+{
+	<span class="param-tmpl">T</span> <span class="var-member">arr</span>[<span class="param-tmpl">N</span>];
+
+	<span class="keyword">constexpr</span> <span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="keyword">operator</span><span class="func">[]</span>(<span class="type">size_t</span> <span class="param">n</span>) <span class="keyword">const</span> { <span class="keyword">return</span> <span class="var-member">arr</span>[<span class="param">n</span>]; }
+	<span class="keyword">constexpr</span>       <span class="param-tmpl">T</span>&amp; <span class="keyword">operator</span><span class="func">[]</span>(<span class="type">size_t</span> <span class="param">n</span>)       { <span class="keyword">return</span> <span class="var-member">arr</span>[<span class="param">n</span>]; }
+
+	<span class="keyword">constexpr</span> <span class="type">size_t</span> <span class="func">size</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span> { <span class="keyword">return</span> <span class="param-tmpl">N</span>; }
+
+	<span class="com-single">// [...] other functions and support for operators such as =, ==, !=</span>
+};
+
+}
+</pre></td>
+</tr></tbody></table>
+<p>The type syntax of this standard library type is different from C arrays because here the stored type and array size are specified as template parameters. <strong>All typical operations have been defined to be very intuitive by reusing existing operators.</strong> The specific feature in play here is <em>operator overloading</em> which allows to define meanings for operators for <em>user-defines types</em> so that they can be used just like built-in types. The feature is explained in its own chapter.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;array&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="type">array</span>&lt;<span class="keyword">int</span>, <span class="lit-num">5</span>&gt; <span class="var-local">arr1</span> = {<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>, <span class="lit-num">4</span>, <span class="lit-num">5</span>};
+
+	<span class="com-single">// std::array objects can be initialized and assigned from other objects</span>
+	<span class="keyword">auto</span> <span class="var-local">arr2</span> <span class="oo">=</span> <span class="var-local">arr1</span>;
+
+	<span class="com-single">// comparison checks all elements</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> (<span class="var-local">arr1</span> <span class="oo">==</span> <span class="var-local">arr2</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// 1</span>
+
+	<span class="com-single">// indexing works the same way</span>
+	<span class="var-local">arr2</span><span class="oo">[</span><span class="lit-num">0</span><span class="oo">]</span> = <span class="lit-num">2</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> (<span class="var-local">arr1</span> <span class="oo">==</span> <span class="var-local">arr2</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// 0</span>
+
+	<span class="com-single">// std::array offers additional functionalities:</span>
+
+	<span class="com-single">// member functions</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">arr2</span>.<span class="func">size</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// 5</span>
+
+	<span class="com-single">// ranged loops (known as for-each loops in other languages)</span>
+	<span class="com-single">// syntax sugar when compared to writing logic on an i variable</span>
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">value</span> : <span class="var-local">arr2</span>)
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">value</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Main benefits of using <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> are:</p>
+<ul class="simple">
+<li><p>type safety - unline C arrays, this type does not <em>decay</em></p></li>
+<li><p>support for common operations such as comparison and copying - <em>overloaded operators</em> are defined as functions which perform these tasks</p></li>
+<li><p>support for range-based loops and <em>iterators</em></p></li>
+<li><p>additional <em>member functions</em> such as <code class="code custom-cpp">.<span class="func">size</span>()</code></p></li>
+</ul>
+<section id="range-based-loops"><h2>Range-based loops</h2>
+<p>C++11 introduced syntax sugar that was already common in the programming world. Better known as <em>for-each loops</em> (<em>range-based loops</em> is strictly C++ terminology), it allows to write simplest loops in a shortened way.</p>
+<p>The syntax is:</p>
+<!-- I know cppreference also lists *attr* grammar but attributes can be applied pretty much everywhere so listing them all the time is verbose - better just write about them in a separate lesson dedicated to attributes -->
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// since C++11</span>
+<span class="keyword">for</span> (<span class="spec">range-declaration</span> : <span class="spec">range-expression</span>)
+	<span class="spec">loop-statement</span>
+<span class="com-single">// since C++20</span>
+<span class="keyword">for</span> (<span class="spec">init-statement</span> <span class="spec">range-declaration</span> : <span class="spec">range-expression</span>)
+	<span class="spec">loop-statement</span>
+</pre></td>
+</tr></tbody></table>
+<p>This is strictly syntax sugar - it doesn't rely on any particular magic feature of arrays, ranged-based loops are simply rewritten by the compiler to traditional for-loops.</p>
+<div class="docutils container">
+<details><summary>details</summary><div class="docutils container">
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp">{ <span class="com-single">// C++11 and C++14</span>
+	<span class="keyword">auto</span>&amp;&amp; <span class="var-local">__range</span> = <span class="spec">range-expression</span>;
+	<span class="keyword">for</span> (<span class="keyword">auto</span> <span class="var-local">__begin</span> = <span class="spec">begin_expr</span>, <span class="var-local">__end</span> = <span class="spec">end_expr</span>; <span class="var-local">__begin</span> != <span class="var-local">__end</span>; ++<span class="var-local">__begin</span>) {
+		<span class="spec">range-declaration</span> = *<span class="var-local">__begin</span>;
+		<span class="spec">loop-statement</span>
+	}
+}
+{ <span class="com-single">// C++17 and later (begin_expr and end_expr can be different types)</span>
+	<span class="spec">init-statement</span> <span class="com-single">// since C++20, if provided</span>
+	<span class="keyword">auto</span>&amp;&amp; <span class="var-local">__range</span> = <span class="spec">range-expression</span>;
+	<span class="keyword">auto</span> <span class="var-local">__begin</span> = <span class="spec">begin_expr</span>;
+	<span class="keyword">auto</span> <span class="var-local">__end</span> = <span class="spec">end_expr</span>;
+	<span class="keyword">for</span> (; <span class="var-local">__begin</span> != <span class="var-local">__end</span>; ++<span class="var-local">__begin</span>) {
+		<span class="spec">range-declaration</span> = *<span class="var-local">__begin</span>;
+		<span class="spec">loop-statement</span>
+	}
+}
+</pre></td>
+</tr></tbody></table>
+<ul class="simple">
+<li>
+<p>if <code class="code custom-cpp"><span class="spec">range-expression</span></code> is a C-array:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="spec">begin_expr</span></code> is <code class="code custom-cpp"><span class="var-local">__range</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="spec">end_expr</span></code> is <code class="code custom-cpp"><span class="var-local">__range</span> + <span class="var-local">__array_size</span></code> where <code class="code custom-cpp"><span class="var-local">__array_size</span></code> is the size of the array</p></li>
+</ul>
+</li>
+<li>
+<p>else if <code class="code custom-cpp"><span class="spec">range-expression</span></code> is a class type that has members named <code class="docutils literal">begin</code> and <code class="docutils literal">end</code>:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="spec">begin_expr</span></code> is <code class="code custom-cpp"><span class="var-local">__range</span>.<span class="func">begin</span>()</code></p></li>
+<li><p><code class="code custom-cpp"><span class="spec">end_expr</span></code> is <code class="code custom-cpp"><span class="var-local">__range</span>.<span class="func">end</span>()</code></p></li>
+</ul>
+</li>
+<li>
+<p>else:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="spec">begin_expr</span></code> is <code class="code custom-cpp"><span class="func">begin</span>(<span class="var-local">__range</span>)</code></p></li>
+<li><p><code class="code custom-cpp"><span class="spec">end_expr</span></code> is <code class="code custom-cpp"><span class="func">end</span>(<span class="var-local">__range</span>)</code></p></li>
+</ul>
+</li>
+</ul>
+<p>Don't worry if you don't get all this code - the whole feature exists so that you don't have to know all the details.</p>
+<p>In other words, the variables used in the loop are initialized to:</p>
+<ul class="simple">
+<li><p>memory address range if the type is a C-array</p></li>
+<li><p>result of <code class="code custom-cpp"><span class="func">begin</span>()</code> and <code class="code custom-cpp"><span class="func">end</span>()</code> if the type has such member functions</p></li>
+<li><p>result of global functions otherwise (functions are expected to match range as their argument) (functions found by <em>ADL</em>) - this specific variant allows to write helper functions to iterate on foreign types (usually from an external library) when the type can not be modified (it's not your code)</p></li>
+</ul>
+<!-- TODO where/when to explain ADL? --><p>Some examples to demonstrate:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">double</span> <span class="var-local">c_arr</span>[<span class="lit-num">5</span>] = {<span class="num">0.1</span>, <span class="num">0.2</span>, <span class="num">0.3</span>, <span class="num">0.4</span>, <span class="num">0.5</span>};
+
+<span class="keyword">for</span> (<span class="keyword">double</span>&amp; <span class="var-local">d</span> : <span class="var-local">c_arr</span>)
+	<span class="var-local">d</span> *= <span class="lit-num">2</span>;
+<span class="com-single">// expanded</span>
+{
+	<span class="keyword">auto</span>&amp;&amp; <span class="var-local">__range</span> = <span class="var-local">c_arr</span>; <span class="com-single">// auto = double(&amp;)[5] (reference to C-array)</span>
+	<span class="keyword">auto</span> <span class="var-local">__begin</span> = <span class="var-local">c_arr</span>;   <span class="com-single">// auto = double* (decays array to pointer)</span>
+	<span class="keyword">auto</span> <span class="var-local">__end</span> = <span class="var-local">c_arr</span> + <span class="lit-num">5</span>; <span class="com-single">// auto = double* (also decays and shifts the pointer to point further in memory)</span>
+	<span class="keyword">for</span> (; <span class="var-local">__begin</span> != <span class="var-local">__end</span>; ++<span class="var-local">__begin</span>) {
+		<span class="keyword">double</span>&amp; <span class="var-local">d</span> = *<span class="var-local">__begin</span>; <span class="com-single">// accesses memory pointed by __begin</span>
+		<span class="var-local">d</span> *= <span class="lit-num">2</span>;
+	}
+}
+
+<span class="namespace">std</span>::<span class="type">array</span>&lt;<span class="keyword">double</span>, <span class="lit-num">5</span>&gt; <span class="var-local">std_arr</span> = {<span class="num">0.1</span>, <span class="num">0.2</span>, <span class="num">0.3</span>, <span class="num">0.4</span>, <span class="num">0.5</span>};
+
+<span class="keyword">for</span> (<span class="keyword">double</span>&amp; <span class="var-local">d</span> : <span class="var-local">std_arr</span>)
+	<span class="var-local">d</span> *= <span class="lit-num">2</span>;
+<span class="com-single">// expanded</span>
+{
+	<span class="keyword">auto</span>&amp;&amp; <span class="var-local">__range</span> = <span class="var-local">std_arr</span>;       <span class="com-single">// auto = std::array&lt;double, 5&gt;&amp;</span>
+	<span class="keyword">auto</span> <span class="var-local">__begin</span> = <span class="var-local">std_arr</span>.<span class="func">begin</span>(); <span class="com-single">// auto = std::array&lt;double, 5&gt;::iterator</span>
+	<span class="keyword">auto</span> <span class="var-local">__end</span> = <span class="var-local">std_arr</span>.<span class="func">end</span>()      <span class="com-single">// auto = std::array&lt;double, 5&gt;::iterator</span>
+	<span class="keyword">for</span> (; <span class="var-local">__begin</span> != <span class="var-local">__end</span>; ++<span class="var-local">__begin</span>) {
+		<span class="keyword">double</span>&amp; <span class="var-local">d</span> = *<span class="var-local">__begin</span>;       <span class="com-single">// iterators overload * to imitate pointers</span>
+		<span class="var-local">d</span> *= <span class="lit-num">2</span>;
+	}
+}
+</pre></td>
+</tr></tbody></table>
+</div>
+</details>
+</div>
+<!--  -->
+<blockquote>
+<p>Can I loop backward using this syntax?</p>
+</blockquote>
+<p>No. The shortest way would be to use <em>reverse iterators</em>, from <code class="code custom-cpp"><span class="func">rbegin</span>()</code> and <code class="code custom-cpp"><span class="func">rend</span>()</code>. There is no syntax sugar for these, so you would have to manually write the loop.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Use range-based loops whenever you are iterating in ascending index order and don't actually need the index value.</p>
+</aside><p>Range-based loops shorten code and eliminate possible errors caused by various mistakes with <code class="code custom-cpp"><span class="var-local">i</span></code> and similar variables.</p>
+</section><section id="array-size"><h2>Array size</h2>
+<p>For C arrays I have mentioned that they must have a positive size (with the special case of 0 allowed by compiler extensions). <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> can have size 0 and will work just as expected:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp">.<span class="func">size</span>()</code> will return 0</p></li>
+<li><p><code class="code custom-cpp">.<span class="func">begin</span>()</code> will be <code class="code custom-cpp">==</code> to <code class="code custom-cpp">.<span class="func">end</span>()</code></p></li>
+<li><p>any loop will terminate immediately (no iterations would be made)</p></li>
+</ul>
+<!--  --><blockquote>
+<p>How does is this possible if <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> contains a C-array inside? Are they implemented with compiler extensions?</p>
+</blockquote>
+<p>No. They are implemented using <em>template specialization</em> which allows to provide separate definition for specific parameters. If the size parameter is 0, the definition is different. The main purpose of this specialization is to make it work consistently for any size parameter, even though size 0 has almost no practical value (but someone writing templates can accidentally create such arrays, without easily realizing it).</p>
+<blockquote>
+<p>How about negative size?</p>
+</blockquote>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> template parameter for size has type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">size_t</span></code> so it's not possible. If you write a negative value it will be converted to an unsigned type, likely resulting in a huge value because of how signed-to-unsigned convertion works (modulo 2 arithmetic).</p>
+</section><section id="passing-code-class-code-custom-cpp-span-class-namespace-std-span-span-class-type-array-span-code"><h2>Passing <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code>
+</h2>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> does not <em>decay</em> so you can write functions which accept is as a parameter, but it's quite limiting in other way - the function will accept arrays of only certain size (template parameters are a part of type information).</p>
+<p>Thus, it's recommended to still use:</p>
+<ul class="simple">
+<li><p>pointer + size: <code class="code custom-cpp">(<span class="keyword">const</span> <span class="param-tmpl">T</span>*, <span class="namespace">std</span>::<span class="type">size_t</span>)</code></p></li>
+<li><p>(C++20) <code class="code custom-cpp">(<span class="namespace">std</span>::<span class="type">span</span>&lt;<span class="param-tmpl">T</span>&gt;)</code> which essentially is a struct containing pointer and size</p></li>
+</ul>
+<p>Functions with such parameters will work for:</p>
+<ul class="simple">
+<li><p>C-arrays (<code class="code custom-cpp"><span class="param-tmpl">T</span>[]</code>)</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span></code></p></li>
+<li><p>any other container (not necessarily from standard library) that has <em>contiguous storage</em></p></li>
+</ul>
+<!--  --><blockquote>
+<p>How do you pass <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> into a function? How to turn it to <code class="code custom-cpp"><span class="keyword">const</span> <span class="param-tmpl">T</span>*</code>?</p>
+</blockquote>
+<p><code class="code custom-cpp"><span class="func">f</span>(<span class="var-local">arr</span>.<span class="func">data</span>(), <span class="var-local">arr</span>.<span class="func">size</span>())</code>. The approach is the same for any <em>container</em> that follows standard library conventions. Different containers implement different <em>data structures</em> in memory, so not every function is offered by every container, but if a function of specific name is present, you can expect it to have the same semantics.</p>
+<p>The size function is offered by pretty much every container (though elements may be laid out in memory very differently). The data function is offered by types which implement contiguous storage (only one block of stack or dynamically allocated memory) - most predominantly string types, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span></code>.</p>
+<p>By using a "pointer + size" (or C++20 span class) interfaces, you allow your functions to support a variety of containers without forcing external code to use any particular data structure implementation. What the function should care about is not any particular implementation but just contiguous storage.</p>
+</section><section id="exercise"><h2>Exercise</h2>
+<p>Take the code from previous exercise and rewrite C-arrays to <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code>.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

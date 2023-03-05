@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - declarations</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">04 - functions</a></li>
+							<span>/</span>
+						<li>02 - declarations</li>
+					</ol></nav><div class="content">
+				<h1>02 - declarations</h1>				<p>Before any entity is used (formally, <em>ODR-used</em>) it must be defined. This was already noticeable with variables (their definition specifies a type) and a similar mechanism exists with functions. So far all functions in example programs were defined before main function, because main function used them.</p>
+<p>However, a function <em>definition</em> is not required at the point of calling it. A <em>declaration</em> is enough. It is possible to declare a function and define it's body later:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="com-single">// note 1: declarations end with ;</span>
+<span class="com-single">// note 2: declarations do not have to specify parameter names, only types</span>
+<span class="keyword">void</span> <span class="func">greet</span>();
+<span class="keyword">int</span> <span class="func">test</span>(<span class="keyword">int</span>, <span class="keyword">int</span>);
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="com-single">// ok, functions were declared</span>
+	<span class="func">greet</span>();
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="func">test</span>(<span class="lit-num">2</span>, <span class="lit-num">3</span>) <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+
+<span class="keyword">int</span> <span class="func">test</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+{
+	<span class="keyword">return</span> <span class="param">x</span> * <span class="param">y</span>;
+}
+
+<span class="keyword">void</span> <span class="func">greet</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"hello, world<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Despite the fact that function parameter names can be skipped in the declaration, it's still recommended to write them. Function declaration is the place most readers will check for documentation comments and parameters with descriptive names are valuable information. Parameter names in the declaration do not have to be the same as in definition (only names in definition affect function body) but in pretty much every case they are written as identical for consistency.</p>
+<p>As long as the declaration appears before the function is called, the function definition can be placed later in the code. In fact, it can also be in a separate file!</p>
+<blockquote>
+<p>Is this the reason why <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span></code>s are needed to access standard library functions?</p>
+</blockquote>
+<p>Yes. These files (called headers) contain all the declarations (and definitions) necessary to use the standard library, which can be implemented elsewhere. Note that header/source files are not strictly declaration/definition separation - the mechanism is a bit different (more like "interface/implementation") and explained in the preprocessor chapter.</p>
+<section id="odr"><h2>ODR</h2>
+<p>Function declarations and function definitions are one of primary examples of ODR in practice.</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>One Definition Rule:</p>
+<ul class="simple">
+<li><p>Every C++ entity must be declared at least once. Each declaration must be equivalent.</p></li>
+<li><p>Every C++ entity can be defined at most once.</p></li>
+<li><p>Every C++ entity must be defined before it's <em>ODR-used</em>.</p></li>
+<li><p>Every definition is also a declaration.</p></li>
+</ul></aside><p>ODR is extremely important so to make sure you understand, let's go over each point.</p>
+<p><em>Every C++ entity must be declared at least once. Every definition is also a declaration.</em></p>
+<p>This should be self-explanatory. A single definition is enough to act as both. These points were already used in examples in previous lessons where other functions were defined before main function.</p>
+<p><em>Each declaration must be equivalent.</em></p>
+<p>Because declarations may repeat (in practice they almost never do), there is a risk for code duplication. To prevent bugs, the compiler verifies that duplicate declarations are equivalent.</p>
+<p><em>Every C++ entity can be defined at most once.</em></p>
+<p>The rule specifies <em>at most once</em>, not <em>exactly once</em> because some entities can be declared and left undefined. As long as they are not <em>ODR-used</em>, a declaration is enough.</p>
+<p><em>Every C++ entity must be defined before it's ODR-used.</em></p>
+<p>An <em>ODR-use</em> is a use of the entity which requires its definition. What requires definition and what only a declaration is very case-specific. Calling functions only requires declaration. Obviously the final program must have the function defined - if you only declare it and try to build the program it will fail.</p>
+<p>ODR is extremely important when separating code into multiple files. C and C++ build process (including the concept of <em>translation units</em>) requires ODR to be satisfied. More on multi-file projects later in the preprocessor chapter.</p>
+<aside class="admonition error"><p class="admonition-title">error</p>
+<p>ODR violations can result in undefined behavior.</p>
+</aside><p>In practice, vast majority of ODR violations are caught by the compiler or the linker. Undefined behavior (which means anything can happen) also includes the possibility of build errors.</p>
+</section><section id="advantages-of-declarations"><h2>Advantages of declarations</h2>
+<p>Most of the code can only rely on declarations and definitions can be compiled separately. The main benefits of this are:</p>
+<ul class="simple">
+<li><p>ability to organize code much more freely (e.g. putting function definition in a separate file)</p></li>
+<li><p>ability to have cross dependencies within the code</p></li>
+</ul>
+<p>The second point is very important. As the program gets more complex sooner or later you might find cycles: function A can call B which can call C which can call A. In some problems cycles of dependencies indicate flawed design but in some they are a necessity. A prime example of the second are mathematical and programming expressions - each can nest more subexpressions inside.</p>
+<p>Below is an example of 2 cross-dependent functions which can not be defined without declaring something first. However you would try to reorder the program, at least 1 function needs to be declared first.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">void</span> <span class="func">bar</span>(<span class="keyword">int</span> <span class="param">x</span>);
+
+<span class="keyword">void</span> <span class="func">foo</span>(<span class="keyword">int</span> <span class="param">x</span>)
+{
+	<span class="keyword">if</span> (<span class="param">x</span> == <span class="lit-num">0</span>)
+		<span class="keyword">return</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"foo: "</span> <span class="oo">&lt;&lt;</span> <span class="param">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="func">bar</span>(<span class="param">x</span> - <span class="lit-num">1</span>); <span class="com-single">// OK: bar declared</span>
+}
+
+<span class="keyword">void</span> <span class="func">bar</span>(<span class="keyword">int</span> <span class="param">x</span>)
+{
+	<span class="keyword">if</span> (<span class="param">x</span> == <span class="lit-num">0</span>)
+		<span class="keyword">return</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"bar: "</span> <span class="oo">&lt;&lt;</span> <span class="param">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="func">foo</span>(<span class="param">x</span> - <span class="lit-num">1</span>); <span class="com-single">// OK: foo declared (through foo definition)</span>
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="func">foo</span>(<span class="lit-num">5</span>);
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="func">foo</span>(<span class="lit-num">4</span>);
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="func">bar</span>(<span class="lit-num">3</span>);
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Necessary declarations are often called <em>forward declarations</em>.</p>
+<blockquote>
+<p>What would happen if one of these functions was called with a negative number?</p>
+</blockquote>
+<p>Then both functions would end up calling each other endlessly. Potential outcomes are:</p>
+<ul class="simple">
+<li><p>Value reaches end of signed integer range which is undefined behavior (only unsigned numbers have well-defined overflow).</p></li>
+<li><p>Function call stack exhausts stack memory space which causes stack overflow which is also undefined behavior.</p></li>
+</ul></section><section id="code-class-code-custom-cpp-span-class-keyword-void-span-code-declarations"><h2>
+<code class="code custom-cpp">(<span class="keyword">void</span>)</code> declarations</h2>
+<p>History time. Initially, in C, there was no mechanism of function declarations. Code which called a function was implicitly declaring it, assuming such function exists and has <code class="code custom-cpp"><span class="keyword">int</span></code> return type. If a function with such name was not found in compiled code (possibly originating from different file), it was a linker error. If a function with such name did exist, the linker would connect machine code of its call and definition, without checking whether provided arguments match function definition. At runtime, the function could start evaluating its parameters and if they did not match, it would perform improper read/write operations resulting in memory corruption.</p>
+<p>It was a big problem that a mistake as simple as mismatched amount and/or types of arguments could result something as bad as undefined behavior. Function declarations have been added but they weren't initially as detailed as today - they only stated function name and return type.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// before C89 this was all that was possible</span>
+<span class="com-single">// formal name: non-prototype function declaration</span>
+
+<span class="com-single">// return type: void</span>
+<span class="com-single">// name: f</span>
+<span class="com-single">// parameters: UNSPECIFIED</span>
+<span class="keyword">void</span> <span class="func">f</span>();
+<span class="com-single">// return type: void</span>
+<span class="com-single">// name: g</span>
+<span class="com-single">// parameters: UNSPECIFIED</span>
+<span class="keyword">void</span> <span class="func">g</span>();
+
+<span class="com-single">// new syntax added in C89</span>
+
+<span class="com-single">// return type: void</span>
+<span class="com-single">// name: f</span>
+<span class="com-single">// parameters (1): int</span>
+<span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">int</span> <span class="param">x</span>);
+<span class="com-single">// return type: void</span>
+<span class="com-single">// name: g</span>
+<span class="com-single">// parameters (0)</span>
+<span class="keyword">void</span> <span class="func">g</span>(<span class="keyword">void</span>);
+
+<span class="com-single">// before C89: both function calls are well-defined</span>
+<span class="com-single">// but will cause undefined behavior at runtime</span>
+<span class="com-single">// C89: both function calls are ill-formed</span>
+<span class="com-single">// compile time error (argument type/amount mismatch)</span>
+<span class="func">f</span>(<span class="num">3.14</span>);
+<span class="func">g</span>(<span class="num">3.14</span>);
+</pre></td>
+</tr></tbody></table>
+<p>The <code class="code custom-cpp">(<span class="keyword">void</span>)</code> thing does not specify an argument of type <code class="code custom-cpp"><span class="keyword">void</span></code> (you can not have objects of this type). It's a special syntax to differentiate it from old <em>non-prototype function declaration</em> syntax. Without this rule, both new and old syntax would look the same for functions taking 0 parameters - this would break existing code by changing its meaning.</p>
+<p>In other words, since C89 functions can be properly declared (with parameter types) but due to backwards compatibility and the fact that <code class="docutils literal">()</code> already had a meaning, <code class="code custom-cpp">(<span class="keyword">void</span>)</code> is needed for functions taking 0 parameters.</p>
+<p><strong>In C++, there is no such problem.</strong> C++ has no <em>non-prototype function declarations</em>, <code class="docutils literal">()</code> works as expected. <code class="code custom-cpp">(<span class="keyword">void</span>)</code> is supported only for compatibility with C code imported to C++.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// C</span>
+<span class="keyword">void</span> <span class="func">g</span>();     <span class="com-single">// unspecified amount of parameters</span>
+<span class="keyword">void</span> <span class="func">g</span>(<span class="keyword">void</span>); <span class="com-single">// 0 parameters</span>
+
+<span class="com-single">// C++</span>
+<span class="keyword">void</span> <span class="func">g</span>();     <span class="com-single">// 0 parameters</span>
+<span class="keyword">void</span> <span class="func">g</span>(<span class="keyword">void</span>); <span class="com-single">// 0 parameters, just ugly</span>
+</pre></td>
+</tr></tbody></table>
+<p>Summing it up, writing <code class="code custom-cpp">(<span class="keyword">void</span>)</code> in C++ is a mistake. It comes from misunderstanding how function declaration syntax evolved in C and how it works in C++.</p>
+</section><section id="exercise"><h2>Exercise</h2>
+<p>Take the example of cross-dependent functions and swap their order so that a different function has to be declared first.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 04 - std::vector</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">08 - arrays</a></li>
+							<span>/</span>
+						<li>04 - std::vector</li>
+					</ol></nav><div class="content">
+				<h1>04 - std::vector</h1>				<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span></code> works similarly to <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> but has few core differences:</p>
+<ul class="simple">
+<li><p>it allows to dynamically change the size: add and remove elements</p></li>
+<li><p>it dynamically allocates memory as needed (quite complex mechanism for this state of the tutorial)</p></li>
+<li><p>vector's data is put on heap memory, not on stack</p></li>
+</ul>
+<p>Example:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;vector&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="com-single">// note that there is no size parameter</span>
+	<span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="var-local">v</span> = {<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>};
+
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">i</span> = <span class="lit-num">0</span>; <span class="var-local">i</span> &lt; <span class="lit-num">4</span>; ++<span class="var-local">i</span>)
+		<span class="var-local">v</span>.<span class="func">push_back</span>(<span class="var-local">i</span> * <span class="lit-num">10</span>);
+
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">x</span> : <span class="var-local">v</span>)
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">", "</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>size: "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">v</span>.<span class="func">size</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"capacity: "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">v</span>.<span class="func">capacity</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-1" name="rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-1" href="#rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-1"></a>1, 2, 3, 0, 10, 20, 30,
+<a id="rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-2" name="rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-2" href="#rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-2"></a>size: 7
+<a id="rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-3" name="rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-3" href="#rest_code_a4293041ce8442e6bfbd63f3cc7b4c88-3"></a>capacity: 12
+</pre></div>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span></code> looks like an enhanced version of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> but note that it implements its storage very differently. It's way too early to showcase how exactly vector is implemented but for now you should just know that dynamic memory allocation has its cost. In most cases this cost is justified as many operations can not be easily done without dynamic allocation.</p>
+<blockquote>
+<p>If strings also allocate dynamically, what's the difference between <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="keyword">char</span>&gt;</code>?</p>
+</blockquote>
+<p>If you actually thought about this (unlike most questions in the tutorial which are fake, only to make Q&amp;A style content) then I have to inform you this is a really good question. Vector offers a more generic interface that can be used to store objects of any type, not just character types. The way a typical string is used make a separate type with different implementation quite valuable. The reasons for different implementations are:</p>
+<ul class="simple">
+<li><p>String is required to support (very undesirable) null-terminated C-string APIs - interfaces where instead of passing pointer+length (or other size information) only pointer is passed and it's expected that the end is marked with special <code class="code custom-cpp"><span class="lit-chr">'<span class="esc-seq">\0</span>'</span></code> character called null terminator (recall lesson about string literals). This means that even empty string requries 1 object to allocate (not necessarily 1 byte because <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">wstring</span></code> and other string types operate on other, potentially larger character types). This requirement alone makes separate type completely justifiable as vector is designed to operate on any type and for many non-character types there is no magic zero value that could be designated for null terminator.</p></li>
+<li>
+<p>String has a different allocation strategy. This is not required by the standard, but many implementations do it. Unlike vector, a typical string contains a quite small amount of data (e.g. button label, username, form address data, ID) - strings of large size are rare. For this reason, the string has a small statically allocated buffer inside and when the stored text would fit in it, it's put there to avoid dynamic allocation. In other words, if the string is small, it works like <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">array</span></code> instead of like <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span></code>. This complicates the logic but avoiding costly allocation pays off.</p>
+<ul>
+<li><p>When vector is empty (default state) it does no allocation. Strings can not easily avoid allocation as even empty strings still have to contain a null terminator. Small bufer optimization (sometimes called short string optimization for this specific case) allows to avoid this problem by having a small static array.</p></li>
+<li><p>Vectors do not implement small buffer optimization because in vast majority of cases the buffer would be too small to use. Still, there is <code class="code custom-cpp"><span class="namespace">boost</span>::<span class="namespace">container</span>::<span class="type">small_vector</span></code> which uses this strategy and has the buffer size as one of its template parameters.</p></li>
+</ul>
+</li>
+<li><p>Due to different usage patterns, vectors are typically passed as ranges (e.g. a pair of iterators, pointer + size) while strings are passed as a whole object. The reason for ranges is that many algorithms do not care how a given data structure layouts its memory, only what operations it performs (more on this in later chapters). Strings may have more expectations than just valid memory range.</p></li>
+</ul>
+<p>In short, strings have different expectations and usage patterns which make separate implementation justifiable.</p>
+<!-- TODO explain .c_str() -->
+<!-- TODO some vector exercises? -->
+<!-- TODO explain how vector implementation works -->
+			</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 03 - error reporting</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xa - error handling</a></li>
+							<span>/</span>
+						<li>03 - error reporting</li>
+					</ol></nav><div class="content">
+				<h1>03 - error reporting</h1>				<section id="introduction"><h2>Introduction</h2>
+<p>One of the most common kinds of errors are ones which are easily fixable but require taking a different control flow path from some function up the stack.</p>
+<p>Example:</p>
+<ul class="simple">
+<li>
+<p>The user attempts to save an image.</p>
+<ul>
+<li>
+<p>A "save as" dialog box appears and the user chooses a path.</p>
+<ul>
+<li>
+<p>User selects destination and the program attempts to save a file.</p>
+<ul>
+<li><p>User or standard library code eventually calls system function for I/O.</p></li>
+<li><p>The function returns an error code ENOSPC (no space left on device).</p></li>
+</ul>
+</li>
+<li><p>Failed save operation is reported to the UI part of the program.</p></li>
+</ul>
+</li>
+<li><p>UI displays the information that the file could not be saved.</p></li>
+</ul>
+</li>
+<li>
+<p>The user chooses a different path (different physical device).</p>
+<ul>
+<li><p>Operation succeeds.</p></li>
+</ul>
+</li>
+</ul>
+<p>The indent on this list matches function call stack. As you can see, the error happened deep in the stack and the solution requried to traverse the stack upwards (basically return from previously called functions) because an appropriate action could only be taken from high-level perspective.</p>
+<p>This is a very typical scenario:</p>
+<ul class="simple">
+<li><p>Error information is gathered in currently executed function and returned to the caller.</p></li>
+<li><p>Error information is passed upwards if the parent function can not handle it too.</p></li>
+<li><p>Eventually the error reaches a point where it can be handled.</p></li>
+</ul>
+<p>This results in 3 layers:</p>
+<ul class="simple">
+<li><p>a function that notices the error and builds error information (representations vary)</p></li>
+<li><p>zero or more functions that only pass received error informaion upwards</p></li>
+<li><p>a function that performs a specific action based on received error information</p></li>
+</ul>
+<!--  --><blockquote>
+<p>What if the error can not be dealth with?</p>
+</blockquote>
+<p>Then just report this inability to the source which triggered the operation (e.g. user: show an error dialog; networking: send a reply message with content according to the used protocol).</p>
+<p>It's important to understand the separation of reporting, passing and handling errors. A file-saving function is not capable of doing human interface like GUI (nor it should be) so it has to return error information to the calling function. A function should do just 1 task and if it can not be done, just report the inability. The reason for this is that functions deep down the stack do not have enough context and access to necessary information to perform an appropriate decision.</p>
+</section><section id="how-it-s-done"><h2>How it's done</h2>
+<p>There are many ways in which error information can be delivered. Most typical ones:</p>
+<ul class="simple">
+<li>
+<p>through functions:</p>
+<ul>
+<li><p>return mechanism (just returning if operation succeeded)</p></li>
+<li><p>out parameter (if the return type is already occupied by the result)</p></li>
+<li><p>special return type capable of both representing the result and error information</p></li>
+</ul>
+</li>
+<li>
+<p>other:</p>
+<ul>
+<li><p>externally accessible state such as <code class="code custom-cpp"><span class="macro">errno</span></code></p></li>
+<li><p><em>exceptions</em></p></li>
+</ul>
+</li>
+</ul>
+<p>Exceptions are a quite sophisticated feature offered by many programming languages (including C++) that come with very unique tradeoffs. They will be briefly showcased later in this chapter. A full explanation of exceptions is much later because of how much other topics need to be taught first (mostly classes, inherirance and polymorphism).</p>
+</section><section id="comparison-of-approaches"><h2>Comparison of approaches</h2>
+<p>As with many things in engineering (including software engineering) no solution is best for every situation - there are just different tradeoffs. For the purpose of comparison, I will showcase a very trivial safe division function and how differently errors can be reported.</p>
+<p>There are 2 cases where a division can not be performed:</p>
+<ul class="simple">
+<li><p>Integer division by 0 has undefined behavior (for floatint-point types it produces +/- infinity).</p></li>
+<li><p>Division of smallest possible integer by -1 falls just out of range of positive values - recall that two's complement representation has 1 more possible magnitude on negative numbers. For example, on an 8-bit integer (which has range [-128, 127]) operation -128 / -1 has result 128, which is not representable. Overflow on signed types is also undefined behavior.</p></li>
+</ul></section><section id="errno"><h2>errno</h2>
+<p>This approach to error reporting is very often seen in the C standard library and some system interfaces.</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="macro">errno</span></code> <a class="reference external" href="https://en.cppreference.com/w/cpp/error/errno">is a macro</a> that expands to a <code class="code custom-cpp"><span class="keyword">thread_local</span></code> non-const global object of type <code class="code custom-cpp"><span class="keyword">int</span></code>. <code class="code custom-cpp"><span class="keyword">thread_local</span></code> objects exist per thread of execution so in a multithreaded program each thread will have its own <code class="code custom-cpp"><span class="macro">errno</span></code> variable.</p></li>
+<li><p>The value 0 indicates no error. Non-zero values represent specific errors, which for portability (at early C times) were defined as macro constants. The <a class="reference external" href="https://en.cppreference.com/w/cpp/error/errno_macros">list of error constants</a> has majority of them defined as a part of C++11 standard, previously they were only a part of system interfaces, mainly <cite>POSIX &lt;https://en.wikipedia.org/wiki/POSIX&gt;_</cite> standards (that is, you needed to include system-specific headers to use them).</p></li>
+<li><p>No library function ever writes <code class="code custom-cpp"><span class="lit-num">0</span></code> to <code class="code custom-cpp"><span class="macro">errno</span></code> on success, only non-zero values are written on failures.</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cerrno&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;limits&gt;</span>
+
+<span class="keyword">int</span> <span class="func">safe_divide</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> == <span class="lit-num">0</span>)
+	{
+		<span class="com-single">// integer division by 0 is UB</span>
+		<span class="com-single">// such operation has no mathematical sense, thus "invalid argument"</span>
+		<span class="var-global">errno</span> = <span class="macro">EINVAL</span>;
+		<span class="keyword">return</span> <span class="lit-num">0</span>;
+	}
+
+	<span class="keyword">if</span> (<span class="var-local">x</span> == <span class="namespace">std</span>::<span class="type">numeric_limits</span>&lt;<span class="keyword">int</span>&gt;::<span class="func">min</span>() &amp;&amp; <span class="param">y</span> == -<span class="lit-num">1</span>)
+	{
+		<span class="com-single">// negation of lowest negative value is larger than highest possible positive value</span>
+		<span class="var-global">errno</span> = <span class="macro">ERANGE</span>;
+		<span class="keyword">return</span> <span class="lit-num">0</span>;
+	}
+
+	<span class="keyword">return</span> <span class="param">x</span> / <span class="param">y</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Example usage:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="var-global">errno</span> = <span class="lit-num">0</span>;
+<span class="keyword">int</span> <span class="var-local">result</span> = <span class="func">safe_divide</span>(<span class="var-local">x</span>, <span class="var-local">y</span>);
+<span class="keyword">if</span> (<span class="var-global">errno</span> == <span class="lit-num">0</span>)
+{
+	<span class="com-single">// use result</span>
+}
+<span class="keyword">else</span>
+{
+	<span class="com-single">// report error</span>
+	<span class="com-single">// if this function also uses errno, it can just return</span>
+}
+</pre></td>
+</tr></tbody></table>
+<p><code class="code custom-cpp"><span class="macro">errno</span></code> is a very old mechanism and although very simple it has multiple disadvantages:</p>
+<ul class="simple">
+<li><p>one must be aware that a function reports errors this way (it's not easily visible in the interface (function declaration) and one needs to read an informatory comment if such exists)</p></li>
+<li><p>it's quite easy to forget to check <code class="code custom-cpp"><span class="macro">errno</span></code> after function call - in many cases the return value always seems valid so an error might be unnoticed</p></li>
+<li><p>it's quite easy to forget to set <code class="code custom-cpp"><span class="macro">errno</span></code> to zero before function call - otherwise one can read non-zero value left after some operation in the past</p></li>
+<li><p>the error information is poor (a single integer indicating one of predefined list of possible problems)</p></li>
+<li><p>passing state through global thread-local object has negative performance consequences</p></li>
+</ul>
+<!--  --><blockquote>
+<p>Why is <code class="code custom-cpp"><span class="macro">errno</span></code> a macro?</p>
+</blockquote>
+<p>I don't know precisely but as with all such things: history, backwards compatibilty and portability. Many such things were outside standards (or - there were no standards at all) in the past and due to possible differences in implementation, macros were most portable way of allowing compilers to implement things as they prefer. Today the macro typically expands to a function call that returns a non-const reference.</p>
+<section id="performance"><h3>Performance</h3>
+<p>Some functions which implement this error reporting mechanism return error number directly instead of writing to <code class="code custom-cpp"><span class="macro">errno</span></code>. This approach avoids mentioned performance problem but limits return type of the function to <code class="code custom-cpp"><span class="keyword">int</span></code>. In rare cases, if only positive or only negative results are valid it's possible to fit both error number and the result into a single <code class="code custom-cpp"><span class="keyword">int</span></code> - the calling code has to check the sign to interpret returned value properly.</p>
+<p>Many mathematical functions from the standard library (e.g. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">pow</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">log</span></code>) report errors by setting <code class="code custom-cpp"><span class="macro">errno</span></code>. Some projects (especially ones which heavily rely on such functions) which do not need strict compliance but need performance are compiled with <code class="docutils literal"><span class="pre">-fno-math-errno</span></code> (or <code class="docutils literal"><span class="pre">-ffast-math</span></code> which is a superset), effectively changing approach from <code class="code custom-cpp"><span class="macro">errno</span></code> to "garbage in, garbage out".</p>
+<p>For more information see:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html">https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/7420665">SO: What does GCC's -ffast-math actually do?</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/6430448">SO: Why doesn't GCC optimize a*a*a*a*a*a to (a*a*a) * (a*a*a)?</a></p></li>
+</ul></section><section id="posix-vs-iso"><h3>POSIX vs ISO</h3>
+<p>To clear out some confusion, as it often happens in this area, multiple things are in play here:</p>
+<ul class="simple">
+<li><p>ISO C standard</p></li>
+<li><p>ISO C++ standard</p></li>
+<li><p>POSIX standards</p></li>
+<li><p>practice and implementation, where a lot of Unix-like systems are not strictly POSIX-compliant</p></li>
+</ul>
+<p>The C++ standard doesn't define the language entirely, for parts imported from C it refers to the C standard (newer C++ standards refer to newer C standards).</p>
+<p>POSIX specifies portable operating system interface. This touches many aspects of an operating system, some are about system-provided C libraries and their interfaces. Some functions specified in POSIX are the same as in the C standard, so the implementation of the C standard library can be as simple as directly calling system functions. Because functions specified by POSIX heavily overlap with ISO C, they are often in one library that is shipped with the system.</p>
+<p>A lot of work in this area has been done by the GNU project. Sometimes GNU makes decisions that are ISO and POSIX incompatible for practical reasons - this is mostly seen with system-level functions where GNU often implements slightly different interfaces. For more information, see <a class="reference external" href="https://stackoverflow.com/questions/5582211">SO: What does _GNU_SOURCE imply?</a>.</p>
+<p>What you should remember is that not everything you find in your system's C library is a part of C or C++. Some stuff is provided by the system and it's possible that some of the standard library headers expose system-specific or POSIX-specific headers for implementation reasons. So if you want to write "portable C or C++ program that does not require POSIX" check from where a given type of function comes from before using it. I'm writing this because I have seen and received (to review) many programs claimed to be multiplatform C or C++ that were actually relying on POSIX headers. POSIX is quite portable, but unlike ISO it is not on every operating system. Most GNU/Linux distributions are only partially POSIX-compliant.</p>
+</section><section id="extra-stuff"><h3>Extra stuff</h3>
+<p><code class="code custom-cpp"><span class="macro">errno</span></code> to text functions:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.cppreference.com/w/cpp/string/byte/strerror">https://en.cppreference.com/w/cpp/string/byte/strerror</a></p></li>
+<li><p><a class="reference external" href="https://en.cppreference.com/w/cpp/io/c/perror">https://en.cppreference.com/w/cpp/io/c/perror</a></p></li>
+</ul>
+<p>While <code class="code custom-cpp"><span class="macro">errno</span></code> is thread-local, functions which return textual representation aren't thread safe. <a class="reference external" href="http://www.club.cc.cmu.edu/~cmccabe/blog_strerror.html">An article elsewhere</a> describes the problem in detail.</p>
+<p>Care should be taken when mixing errno-based error reporting with <code class="code custom-cpp"><span class="keyword">bool</span></code> return types:</p>
+<ul class="simple">
+<li><p>in case of <code class="code custom-cpp"><span class="macro">errno</span></code>, 0 means success</p></li>
+<li><p>in case of <cite>bool</cite>, <code class="code custom-cpp"><span class="keyword">true</span></code> means success</p></li>
+</ul>
+<p>Many function calls are put into <code class="code custom-cpp"><span class="keyword">if</span></code> statements. <code class="code custom-cpp"><span class="macro">errno</span></code> (which has type <code class="code custom-cpp"><span class="keyword">int</span></code>) with value <code class="code custom-cpp"><span class="lit-num">0</span></code> is converted to <code class="code custom-cpp"><span class="keyword">false</span></code>. But the success for other kind of functions is represented by <code class="code custom-cpp"><span class="keyword">true</span></code>. This creates a program with very surprising and confusing code: sometimes <code class="code custom-cpp"><span class="keyword">if</span> (!<span class="func">func</span>())</code> is correct to check against errors and sometimes <code class="code custom-cpp"><span class="keyword">if</span> (<span class="func">func</span>())</code>.</p>
+</section><section id="summary"><h3>summary</h3>
+<p>Errno is a global variable (1 per thread) that holds an integer representing error number. The list of predefined error numbers is specified (with varying precision) by both ISO and POSIX standards.</p>
+<p>Generally, you should avoid using this mechanism. It delivers poor information, it is inefficient and ironically, it is quite error-prone.</p>
+<p>If you face a standard library or 3rd party function which reports errors this way you have 2 options:</p>
+<ul class="simple">
+<li><p>stick to it for consistency (though I discourage "consistently bad approaches")</p></li>
+<li><p>translate it to a different mechanism (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">error_code</span></code> is meant as a direct replacement)</p></li>
+</ul></section></section><section id="out-parameters"><h2>Out parameters</h2>
+<p>This approach is called <em>out</em> parameter because unlike usually, a function parameter is used to deliver data outside the function, not to inside.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;limits&gt;</span>
+
+<span class="com-single">// by convention, output parameter should be last</span>
+<span class="keyword">int</span> <span class="func">safe_divide</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>, <span class="keyword">bool</span>&amp; <span class="param">success</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> == <span class="lit-num">0</span>)
+	{
+		<span class="param">success</span> = <span class="keyword">false</span>;
+		<span class="keyword">return</span> <span class="lit-num">0</span>;
+	}
+
+	<span class="keyword">if</span> (<span class="param">x</span> == <span class="namespace">std</span>::<span class="type">numeric_limits</span>&lt;<span class="keyword">int</span>&gt;::<span class="func">min</span>() &amp;&amp; <span class="param">y</span> == -<span class="lit-num">1</span>)
+	{
+		<span class="param">success</span> = <span class="keyword">false</span>;
+		<span class="keyword">return</span> <span class="lit-num">0</span>;
+	}
+
+	<span class="param">success</span> = <span class="keyword">true</span>;
+	<span class="keyword">return</span> <span class="param">x</span> / <span class="param">y</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Usage:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">bool</span> <span class="var-local">success</span> = <span class="keyword">false</span>;
+<span class="com-single">// because the last parameter is taken by non-const reference,</span>
+<span class="com-single">// something like safe_divide(x, y, true) will not compile</span>
+<span class="keyword">int</span> <span class="var-local">result</span> = <span class="func">safe_divide</span>(<span class="param">x</span>, <span class="param">y</span>, <span class="param-out">success</span>);
+<span class="keyword">if</span> (<span class="var-local">success</span>)
+{
+	<span class="com-single">// use result</span>
+}
+<span class="keyword">else</span>
+{
+	<span class="com-single">// report error</span>
+}
+</pre></td>
+</tr></tbody></table>
+<p>Advantages:</p>
+<ul class="simple">
+<li><p>The function can deliver precise error message, e.g. by using an enum or any other custom type for holding error information.</p></li>
+<li><p>Non-const parameter forces function users to create a value that will be passed as an out parameter (non-const lvalue reference does not accept temporaries - it must be a writeable object with some lifetime).</p></li>
+</ul>
+<p>Disadvantages:</p>
+<ul class="simple">
+<li><p>Function parameters aren't well-suited for outputting information. This mechanism creates code that may be considered unclear and/or ugly. More than 1 out parameter leads to very complex and error-prone code.</p></li>
+<li><p>There is still a risk of accidentally using returned value when operation failed.</p></li>
+<li><p>Just like with <code class="code custom-cpp"><span class="macro">errno</span></code>, this mechanism is very problematic where a special value (in case of error) can not be returned. Objects of some types (classes specifically) may be very hard to create without valid data.</p></li>
+</ul>
+<p>Many C libraries use a convention where places are swapped: out parameter is used to deliver the result and function return type (typically <code class="code custom-cpp"><span class="keyword">int</span></code>) to deliver error code (often <code class="code custom-cpp"><span class="macro">errno</span></code>). The reason for this is that unlike C++, C does not have <em>return value optimization</em> which makes any return value larger (in bytes) than architecture size (typically 32 or 64 bit) inefficient. If such C function does not need to report errors but needs to output a large object, it will still return <code class="code custom-cpp"><span class="keyword">void</span></code> and use out parameter. In C++ there are optimizations for returning values (RVO, NRVO) so obviously you should prefer returning values normally.</p>
+</section><section id="monadic-interfaces"><h2>Monadic interfaces</h2>
+<p>C++17 added 2 <a class="reference external" href="https://en.wikipedia.org/wiki/Monad_(functional_programming)">monadic</a> types to the standard library:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">optional</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">variant</span></code></p></li>
+</ul>
+<p>If you don't have C++17, both of these are available in boost.</p>
+<section id="optional-type"><h3>Optional type</h3>
+<p>Optional is essentially a struct with an object of specified type and a <code class="code custom-cpp"><span class="keyword">bool</span></code> indicating whether it actually exists. The actual implementation is much more complex (to avoid problems caused by types which always require initialization) but can be thought as such. It either contains or does not contain an object.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;optional&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;limits&gt;</span>
+
+<span class="namespace">std</span>::<span class="type">optional</span>&lt;<span class="keyword">int</span>&gt; <span class="func">safe_divide</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> == <span class="lit-num">0</span>)
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="var-global">nullopt</span>; <span class="com-single">// return {}; works too</span>
+
+	<span class="keyword">if</span> (<span class="param">x</span> == <span class="namespace">std</span>::<span class="type">numeric_limits</span>&lt;<span class="keyword">int</span>&gt;::<span class="func">min</span>() &amp;&amp; <span class="param">y</span> == -<span class="lit-num">1</span>)
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="var-global">nullopt</span>; <span class="com-single">// return {}; works too</span>
+
+	<span class="keyword">return</span> <span class="param">x</span> / <span class="param">y</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Non-empty optional can be initialized and assigned with objects of the matching type or types that are implicitly convertible to the destination type. Empty optional can be created with <code class="docutils literal">{}</code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">nullopt</span></code>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// example calling code, somewhere else</span>
+<span class="namespace">std</span>::<span class="type">optional</span>&lt;<span class="keyword">int</span>&gt; <span class="var-local">result</span> = <span class="func">safe_divide</span>(<span class="var-local">x</span>, <span class="var-local">y</span>);
+<span class="keyword">if</span> (<span class="var-local">result</span>) <span class="com-single">// optional is convertible to bool, there is also .has_value()</span>
+	<span class="com-single">// result.value() - returns reference to T if present, otherwise throws an exception (safer)</span>
+	<span class="com-single">// *result        - returns reference to T if present, otherwise undefined behavior (faster)</span>
+	<span class="func">use_result</span>(<span class="oo">*</span><span class="var-local">result</span>);
+<span class="keyword">else</span>
+	<span class="com-single">// some error...</span>
+</pre></td>
+</tr></tbody></table>
+<p>More examples and information on <a class="reference external" href="https://en.cppreference.com/w/cpp/utility/optional">cppreference page about</a> <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">optional</span></code>. You shouldn't have significant problems using it in your own code. Most of the operations are very intuitive and can be easily remembered by their name. If you do have problems, write down your questions and revisit them later once you reach classes and further chapters.</p>
+<p>Compared to output parameters, there are multiple advantages:</p>
+<ul class="simple">
+<li><p>The code is much cleaner.</p></li>
+<li><p>It's impossible to read anything when empty.</p></li>
+<li><p>The function implementation does not have to return a special value in case of error, it simply creates an empty optional. No trouble with objects of types that have no special state.</p></li>
+</ul>
+<p>The core disadvantage of the optional type is that it doesn't support holding any error information, only whether the value is present or not. For this reason it's discouraged to use optional in places where a rich state is needed in case of an error. In case of the example above it's fine because an empty result indicates that value could not be computed and very likely we will not care about the exact cause - we just know that many mathematical operations can not produce meaningful results.</p>
+</section><section id="functional-programming"><h3>Functional programming</h3>
+<p>As the name suggests, functional programming is all about functions. A common pattern is to encapsulate state and use higher-order functions (functions which accept other functions as arguments). With the help of monads, it's possible to write very consise code:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">void</span> <span class="func">run_simulation</span>(<span class="keyword">double</span> <span class="param">speed</span> = <span class="num">1.0</span>);
+<span class="namespace">std</span>::<span class="type">optional</span>&lt;<span class="keyword">double</span>&gt; <span class="func">to_double</span>(<span class="namespace">std</span>::<span class="type">string_view</span> <span class="param">sv</span>);
+
+<span class="com-single">// read config, convert string to double</span>
+<span class="com-single">// if convertion fails use value 1.0</span>
+<span class="func">run_simulation</span>(<span class="func">to_double</span>(<span class="var-local">config</span>.<span class="var-member">speed</span>).<span class="func">value_or</span>(<span class="num">1.0</span>));
+</pre></td>
+</tr></tbody></table>
+<p>As of writing this, <code class="code custom-cpp"><span class="namespace">boost</span>::<span class="type">optional</span></code> has significantly richer interface than <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">optional</span></code>, so if you would like to play with functional style of programming, I recommend to read <a class="reference external" href="http://boost.org/libs/optional">boost's documentation</a> (it's quite thorough) and use their implementation (this boost library is header-only).</p>
+<p>Here is a more advanced example:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="namespace">boost</span>::<span class="type">optional</span>&lt;<span class="namespace">std</span>::<span class="type">size_t</span>&gt; <span class="func">get_user_id</span>(); <span class="com-single">// empty result if not logged</span>
+<span class="type">user_stats_t</span> <span class="func">get_user_stats</span>(<span class="namespace">std</span>::<span class="type">size_t</span> <span class="param">user_id</span>);
+<span class="namespace">std</span>::<span class="namespace">chrono</span>::<span class="type">seconds</span> <span class="func">compute_active_time</span>(<span class="keyword">const</span> <span class="type">user_stats_t</span>&amp; <span class="param">stats</span>);
+
+<span class="keyword">auto</span> <span class="var-local">time_active</span> = <span class="func">get_user_id</span>() <span class="com-single">// boost::optional&lt;std::size_t&gt;</span>
+	.<span class="func">map</span>(<span class="func">get_user_stats</span>) <span class="com-single">// boost::optional&lt;std::size_t&gt; =&gt; boost::optional&lt;user_stats_t&gt;</span>
+	.<span class="func">map</span>(<span class="func">compute_active_time</span>) <span class="com-single">// boost::optional&lt;user_stats_t&gt; =&gt; boost::optional&lt;std::chrono::seconds&gt;</span>
+	.<span class="func">value_or</span>(<span class="namespace">std</span>::<span class="namespace">chrono</span>::<span class="type">seconds</span>(<span class="lit-num">0</span>)); <span class="com-single">// boost::optional&lt;std::chrono::seconds&gt; =&gt; std::chrono::seconds</span>
+	<span class="com-single">// auto = std::chrono::seconds</span>
+</pre></td>
+</tr></tbody></table>
+<p>This code hides a lot of if-else instructions inside. Various monadic functions apply different transformations:</p>
+<ul class="simple">
+<li>
+<p><code class="code custom-cpp"><span class="func">map</span></code>:</p>
+<ul>
+<li><p>changes <code class="code custom-cpp"><span class="type">optional</span>&lt;<span class="param-tmpl">T</span>&gt;</code> into <code class="code custom-cpp"><span class="type">optional</span>&lt;<span class="param-tmpl">U</span>&gt;</code>, requires a function of the form <code class="code custom-cpp"><span class="param-tmpl">U</span> <span class="func">f</span>(<span class="param-tmpl">T</span>)</code> or <code class="code custom-cpp"><span class="type">optional</span>&lt;<span class="param-tmpl">U</span>&gt; <span class="func">f</span>(<span class="param-tmpl">T</span>)</code></p></li>
+<li><p>if there is a value, applies supplied function and returns its result as <code class="code custom-cpp"><span class="type">optional</span>&lt;<span class="param-tmpl">U</span>&gt;</code></p></li>
+<li><p>if there is no value, returns an empty optional of the destination type <code class="code custom-cpp"><span class="type">optional</span>&lt;<span class="param-tmpl">U</span>&gt;</code></p></li>
+</ul>
+</li>
+<li>
+<p><code class="code custom-cpp"><span class="func">flatmap</span></code>:</p>
+<ul>
+<li><p>like map, but the function has to have the form <code class="code custom-cpp"><span class="param-tmpl">U</span> <span class="func">f</span>(<span class="type">optional</span>&lt;<span class="param-tmpl">T</span>&gt;)</code> or <cite>optional&lt;U&gt; f(optional&lt;T&gt;)$$$type&lt;param_tmpl&gt; func(type&lt;param_tmpl&gt;)</cite></p></li>
+</ul>
+</li>
+<li>
+<p><code class="code custom-cpp"><span class="func">value_or</span></code>:</p>
+<ul>
+<li><p>if there is a value, returns stored value</p></li>
+<li><p>if there is no value, returns supplied argument</p></li>
+</ul>
+</li>
+<li>
+<p><code class="code custom-cpp"><span class="func">value_or_eval</span></code>:</p>
+<ul>
+<li><p>if there is a value, returns stored value</p></li>
+<li><p>if there is no value, returns value returned by supplied function (the function is only called if there is no value)</p></li>
+</ul>
+</li>
+</ul>
+<p><code class="code custom-cpp"><span class="namespace">boost</span>::<span class="type">optional</span></code> allows to hold a reference type, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">optional</span></code> does not. In this case I agree with the standard library approach: if you want an optional reference, just use a pointer. Additionally, optional references create some confusion when it comes to the assignment operator (boost documentation has examples on this problem).</p>
+<p>An optimized version of an optional monad is available on <a class="reference external" href="https://github.com/akrzemi1/markable">https://github.com/akrzemi1/markable</a>. This one does not hold a <code class="code custom-cpp"><span class="keyword">bool</span></code> but instead reserves one value to have the special meaning, specified as a template parameter. This value can not be used normally - assigning it will make the object appear as empty.</p>
+</section><section id="variant-type"><h3>Variant type</h3>
+<p>A variant type holds a value of one of specified types - e.g. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">variant</span>&lt;<span class="keyword">int</span>, <span class="keyword">float</span>&gt;</code> holds either an <code class="code custom-cpp"><span class="keyword">int</span></code> or a <code class="code custom-cpp"><span class="keyword">float</span></code>. There can be more than 2 types. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">variant</span></code> allows even duplicates in types, though then using it becomes cumbersome as the primary value extraction mechanism (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">get</span>&lt;<span class="param-tmpl">T</span>&gt;</code>) becomes ambiguous and one must use index-based extraction instead (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">get</span>&lt;<span class="param-tmpl">I</span>&gt;</code>).</p>
+<p>We could say that an optional is a specific case of a 2-type variant where the second type is <code class="code custom-cpp"><span class="keyword">void</span></code>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;system_error&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;variant&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;limits&gt;</span>
+
+<span class="namespace">std</span>::<span class="type">variant</span>&lt;<span class="keyword">int</span>, <span class="namespace">std</span>::<span class="type">errc</span>&gt; <span class="func">safe_divide</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> == <span class="lit-num">0</span>)
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="type">errc</span>::<span class="enum">invalid_argument</span>;
+
+	<span class="keyword">if</span> (<span class="param">x</span> == <span class="namespace">std</span>::<span class="type">numeric_limits</span>&lt;<span class="keyword">int</span>&gt;::<span class="func">min</span>() &amp;&amp; <span class="param">y</span> == -<span class="lit-num">1</span>)
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="type">errc</span>::<span class="enum">result_out_of_range</span>;
+
+	<span class="keyword">return</span> <span class="param">x</span> / <span class="param">y</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>If you understand optional, you should have no problems understanding variant. There is no support for pattern matching or other syntax sugar for variants in C++ (at least at the time of writing this), so code that uses variants can become verbose:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="namespace">std</span>::<span class="type">variant</span>&lt;<span class="keyword">int</span>, <span class="namespace">std</span>::<span class="type">errc</span>&gt; <span class="var-local">result</span> = <span class="func">safe_divide</span>(<span class="param">x</span>, <span class="param">y</span>);
+<span class="keyword">if</span> (<span class="namespace">std</span>::<span class="func">holds_alternative</span>&lt;<span class="keyword">int</span>&gt;(<span class="var-local">result</span>))
+	<span class="func">use_result</span>(<span class="namespace">std</span>::<span class="func">get</span>&lt;<span class="keyword">int</span>&gt;(<span class="var-local">result</span>));
+<span class="keyword">else</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">error_code</span>(<span class="namespace">std</span>::<span class="func">get</span>&lt;<span class="namespace">std</span>::<span class="type">errc</span>&gt;(<span class="var-local">result</span>)).<span class="func">message</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+</pre></td>
+</tr></tbody></table>
+<p>Boost implementation here also has a richer interface but it requires much more knowledge to take full advantage of it so I don't present expert-level examples.</p>
+<blockquote>
+<p>Why can not I use <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">variant</span></code> as an array?</p>
+</blockquote>
+<p>Because it is not an array. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">variant</span></code> has internal storage only for one element (size and alignment enough to hold one object of specified types). Adding array interface to <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">variant</span></code> is not even possible because for different indexes it would need to return objects of different types. Both <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">get</span>&lt;<span class="param-tmpl">T</span>&gt;</code> (which takes a type as a template parameter) and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">get</span>&lt;<span class="param-tmpl">I</span>&gt;</code> (which takes an index as template parameter) are function templates and their return types change depending on provided template parameters.</p>
+</section></section><section id="other"><h2>Other</h2>
+<p>There are many more approaches to error reporting - some as simple as creating a dedicated type for the result of the function. I have only listed the easiest and most popular ones. What you need to learn is how to use specific approaches correctly and develop the ability to notice advantages and disadvantages of each approach.</p>
+<p>Later, you will learn about one very special feature made specifically for error reporting and handling: <em>exceptions</em> (<code class="code custom-cpp"><span class="keyword">try</span></code>, <code class="code custom-cpp"><span class="keyword">throw</span></code> and <code class="code custom-cpp"><span class="keyword">catch</span></code>).</p>
+<p>There is also an article (outside the tutorial) about <a class="reference external" href="../../../../stdlib/system_error">standard library for system errors</a> which describes how to encapsulate <code class="code custom-cpp"><span class="macro">errno</span></code> and create own numbered error categories. The mechanism relies on classes though, which are yet to be explained.</p>
+<!-- TODO write exceptions chapter and revisit here to decide whether or not to make a short introduction to exceptions -->
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

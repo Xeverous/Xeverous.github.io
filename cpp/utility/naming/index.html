@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - naming</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../">HOME</a></li>
+				<li><a href="../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../tutorials/beginner/">beginner</a></li>
+						<li><a href="../../tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../cpp_myths/">C++ myths</a></li>
+						<li><a href="../glossary/">glossary</a></li>
+						<li><a href="../">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../about/">about</a></li>
+						<li><a href="../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../">HOME</a></li>
+				<li class="button"><a href="../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../">utility</a></li>
+							<span>/</span>
+						<li>naming</li>
+					</ol></nav><div class="content">
+				<h1>naming</h1>				<p>C++ has a lot of naming conventions, partially inherited from C. This page aims to list them all to help beginners and people coming from other languages better name stuff in C++ code.</p>
+<p>Some of these names are used pretty much always, some only when then there is no better alternative.</p>
+<section id="main-function"><h2>Main function</h2>
+<ul class="simple">
+<li><p><code class="docutils literal">argc</code> - argument count variable name</p></li>
+<li><p><code class="docutils literal">argv</code> - argument values variable name</p></li>
+</ul>
+<p>Examples:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">int</span> <span class="func">main</span>(<span class="keyword">int</span> <span class="param">argc</span>, <span class="keyword">char</span>** <span class="param">argv</span>)</code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">int</span> <span class="func">main</span>(<span class="keyword">int</span> <span class="param">argc</span>, <span class="keyword">char</span>* <span class="param">argv</span>[])</code></p></li>
+</ul></section><section id="variable-names"><h2>Variable names</h2>
+<p>When we want to concisely express variable purpose.</p>
+<ul class="simple">
+<li><p><code class="docutils literal">str</code> - string</p></li>
+<li><p><code class="docutils literal">sv</code> - string view</p></li>
+<li><p><code class="docutils literal">ptr</code>, <code class="docutils literal">p</code> - pointer</p></li>
+<li><p><code class="docutils literal">n</code>, <code class="docutils literal">len</code>, <code class="docutils literal">sz</code> - length/size (usually some integer type)</p></li>
+<li><p><code class="docutils literal">bufsz</code> - size of a buffer</p></li>
+<li><p><code class="docutils literal">i</code>, <code class="docutils literal">j</code>, <code class="docutils literal">k</code>, ... - loop control variables - probably originated from <code class="docutils literal">i</code> as a shortcut for <em>iteration</em> or <em>index</em> - this convention applies to many programming languages</p></li>
+<li><p><code class="docutils literal">x</code>, <code class="docutils literal">y</code>, <code class="docutils literal">z</code>, <code class="docutils literal">w</code>, <code class="docutils literal">u</code>, <code class="docutils literal">v</code> - anything related to position and other things closely related to math, sometimes also loop counters if iterating over specific axis</p></li>
+<li><p><code class="docutils literal">first</code>, <code class="docutils literal">last</code>, <code class="docutils literal">it</code> - counters in iterator-based loops, variables/parameters in algorithms</p></li>
+<li><p><code class="docutils literal">lhs</code>, <code class="docutils literal">rhs</code> (left/right hand side) - used for operator overloading and comparisons - use these if you have no better names to represent 2 different objects of the same type</p></li>
+</ul></section><section id="type-names"><h2>Type names</h2>
+<ul class="simple">
+<li><p><code class="docutils literal">basic_*</code> - for any class template that is expected to be instantiated with different template parameters, e.g. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> is an alias for <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_string</span>&lt;<span class="keyword">char</span>&gt;</code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string_view</span></code> is an alias for <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_string_view</span>&lt;<span class="keyword">char</span>&gt;</code></p></li>
+<li><p><code class="docutils literal">*_type</code> - member type aliases, e.g. if you have a class that holds some objects in a very specific container (which may have very long name) you should define a member type alias (inside the class) named <code class="docutils literal">container_type</code></p></li>
+<li><p><code class="docutils literal">scoped_</code> - RAII wrappers around specific tasks (e.g. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">scoped_lock</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">scoped_allocator_adaptor</span></code>)</p></li>
+<li><p>there is no pattern for exception class names like <code class="docutils literal">E*</code> or <code class="docutils literal">*Exception</code> in other languages</p></li>
+<li><p>there is no pattern for interface class names like <code class="docutils literal">I*</code> or <code class="docutils literal">*Interface</code> in other languages</p></li>
+</ul></section><section id="function-names"><h2>Function names</h2>
+<ul class="simple">
+<li><p><code class="docutils literal">to_*</code> - common name for functions which transform a single object to a different type, e.g. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">to_string</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">to_chars</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">to_address</span></code></p></li>
+<li><p><code class="docutils literal">make_*</code> - common name for factory functions which create an object of specific type (often from multiple arguments) (often multiple overloads), e.g. <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">make_unique</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">make_shared</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">make_pair</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">make_tuple</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">make_optional</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">make_error_code</span></code></p></li>
+<li><p><code class="docutils literal">*_impl</code> - common where a function (or class) implementation needs to be split, the implementation code has the same name with <code class="docutils literal">_impl</code> appended (or <code class="docutils literal">do_</code> prepended); very common in boost libraries, <a class="reference external" href="https://en.cppreference.com/w/cpp/locale/numpunct/truefalsename">also used in standard libarry</a></p></li>
+<li><p><code class="docutils literal">*_cast</code> for type convertions (based on 4 cast keywords: <code class="code custom-cpp"><span class="keyword">static_cast</span></code>, <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code>, <code class="code custom-cpp"><span class="keyword">const_cast</span></code> and <code class="code custom-cpp"><span class="keyword">reinterpret_cast</span></code>), other examples: <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">bit_cast</span></code>, <code class="code custom-cpp"><span class="namespace">boost</span>::<span class="func">lexical_cast</span></code>, <code class="code custom-cpp"><span class="namespace">boost</span>::<span class="func">numeric_cast</span></code></p></li>
+</ul></section><section id="templates"><h2>Templates</h2>
+<ul class="simple">
+<li><p><code class="docutils literal">T</code>, <code class="docutils literal">U</code>, <code class="docutils literal">V</code>, ... - similarly to loops, likely originated from <code class="docutils literal">T</code> as a shortcut for <em>type</em> or <em>template</em>, used as template type parameter names</p></li>
+<li><p><code class="docutils literal">ForwardIterator</code>, <code class="docutils literal">UnaryPredicate</code>, <code class="docutils literal">TriviallyCopyable</code> - concept names for types that are expected to satisfy certain requirements; since C++20 no longer a convention but actual language feature; while aliases in templates traditionally used <code class="docutils literal">PascalCase</code>, concept names in the standard library use <code class="docutils literal">snake_case</code> instead (any custom concept definitions should too)</p></li>
+<li><p><code class="docutils literal">Ts</code>, <code class="docutils literal">Args</code>, any noun in plural form - to name parameter pack in variadic templates</p></li>
+<li><p><code class="docutils literal">*_t</code> - types found inside type traits</p></li>
+<li><p><code class="docutils literal">*_v</code> - values found inside type traits</p></li>
+</ul></section><section id="other"><h2>Other</h2>
+<ul class="simple">
+<li><p><code class="docutils literal">impl</code>, <code class="docutils literal">detail</code> - common names for namespaces that indicate implementation details (code inside is not a part of public API and has no documentation)</p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

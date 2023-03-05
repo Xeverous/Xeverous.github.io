@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - beginner</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../">HOME</a></li>
+				<li><a href="../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href=".">beginner</a></li>
+						<li><a href="../accelerated/">accelerated</a></li>
+						<li><a href="../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../utility/glossary/">glossary</a></li>
+						<li><a href="../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../about/">about</a></li>
+						<li><a href="../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../">HOME</a></li>
+				<li class="button"><a href="../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../">tutorials</a></li>
+							<span>/</span>
+						<li>beginner</li>
+					</ol></nav><div class="content">
+				<h1>beginner</h1>				<div class="docutils container">
+<details><summary>Index</summary><div class="docutils container">
+<p></p>
+<ul>
+<li>
+<a href="01_start/">01 - start</a><ul>
+<li><a href="01_start/01_introduction/">01 - introduction</a></li>
+<li><a href="01_start/02_binary_system/">02 - binary system</a></li>
+</ul>
+</li>
+<li>
+<a href="02_basics/">02 - basics</a><ul>
+<li><a href="02_basics/01_program_structure/">01 - program structure</a></li>
+<li><a href="02_basics/02_comments/">02 - comments</a></li>
+<li><a href="02_basics/03_identifiers/">03 - identifiers</a></li>
+<li><a href="02_basics/04_types/">04 - types</a></li>
+<li><a href="02_basics/05_objects/">05 - objects</a></li>
+<li><a href="02_basics/06_behavior/">06 - behavior</a></li>
+<li><a href="02_basics/07_literals/">07 - literals</a></li>
+<li><a href="02_basics/08_operators/">08 - operators</a></li>
+<li><a href="02_basics/09_std_cin/">09 - std::cin</a></li>
+</ul>
+</li>
+<li>
+<a href="03_control_flow/">03 - control flow</a><ul>
+<li><a href="03_control_flow/01_introduction/">01 - introduction</a></li>
+<li><a href="03_control_flow/02_if/">02 - if</a></li>
+<li><a href="03_control_flow/03_switch/">03 - switch</a></li>
+<li><a href="03_control_flow/04_while/">04 - while</a></li>
+<li><a href="03_control_flow/05_for/">05 - for</a></li>
+<li><a href="03_control_flow/06_loop_control/">06 - loop control</a></li>
+</ul>
+</li>
+<li>
+<a href="04_functions/">04 - functions</a><ul>
+<li><a href="04_functions/01_introduction/">01 - introduction</a></li>
+<li><a href="04_functions/02_declarations/">02 - declarations</a></li>
+<li><a href="04_functions/03_recursion/">03 - recursion</a></li>
+<li><a href="04_functions/04_references/">04 - references</a></li>
+<li><a href="04_functions/05_overloading/">05 - overloading</a></li>
+<li><a href="04_functions/06_default_arguments/">06 - default arguments</a></li>
+<li><a href="04_functions/xx_variadic_arguments/">xx - variadic arguments</a></li>
+</ul>
+</li>
+<li>
+<a href="05_user_defined_types/">05 - user defined types</a><ul>
+<li><a href="05_user_defined_types/01_struct/">01 - struct</a></li>
+<li><a href="05_user_defined_types/02_enum/">02 - enum</a></li>
+<li><a href="05_user_defined_types/03_enum_flags/">03 - enum flags</a></li>
+</ul>
+</li>
+<li>
+<a href="06_preprocessor/">06 - preprocessor</a><ul>
+<li><a href="06_preprocessor/01_introduction/">01 - intro</a></li>
+<li><a href="06_preprocessor/02_object_like_macros/">02 - object-like macros</a></li>
+<li><a href="06_preprocessor/03_function_like_macros/">03 - function-like macros</a></li>
+<li><a href="06_preprocessor/04_include/">04 - include</a></li>
+<li><a href="06_preprocessor/05_header_guards/">05 - header guards</a></li>
+</ul>
+</li>
+<li>
+<a href="07_semantic_control/">07 - semantic control</a><ul>
+<li><a href="07_semantic_control/01_static_and_extern/">01 - static and extern</a></li>
+<li><a href="07_semantic_control/02_inline/">02 - inline</a></li>
+<li><a href="07_semantic_control/03_namespaces/">03 - namespaces</a></li>
+</ul>
+</li>
+<li>
+<a href="08_arrays/">08 - arrays</a><ul>
+<li><a href="08_arrays/01_introduction/">01 - introduction</a></li>
+<li><a href="08_arrays/02_nested_arrays/">02 - nested arrays</a></li>
+<li><a href="08_arrays/03_std_array/">03 - std::array</a></li>
+<li><a href="08_arrays/04_std_vector/">04 - std::vector</a></li>
+</ul>
+</li>
+<li>
+<a href="09_streams/">09 - streams</a><ul>
+<li><a href="09_streams/01_introduction/">01 - intro</a></li>
+<li><a href="09_streams/02_states/">02 - states</a></li>
+<li><a href="09_streams/03_formatted_io/">03 - formatted I/O</a></li>
+<li><a href="09_streams/04_unformatted_io/">04 - unformatted I/O</a></li>
+<li><a href="09_streams/05_files/">05 - files</a></li>
+<li><a href="09_streams/xx_cmd_line_arguments/">xx - command line arguments</a></li>
+</ul>
+</li>
+<li>
+<a href="appendix/">appendix</a><ul>
+<li><a href="appendix/fraction/">fraction</a></li>
+<li><a href="appendix/rationale/">rationale</a></li>
+</ul>
+</li>
+<li>
+<a href="xa_error_handling/">xa - error handling</a><ul>
+<li><a href="xa_error_handling/01_introduction/">01 - introduction</a></li>
+<li><a href="xa_error_handling/02_assertions/">02 - assertions</a></li>
+<li><a href="xa_error_handling/03_error_reporting/">03 - error reporting</a></li>
+</ul>
+</li>
+<li>
+<a href="xx_classes/">xx - classes</a><ul>
+<li><a href="xx_classes/01_introduction/">01 - introduction</a></li>
+<li><a href="xx_classes/02_member_functions/">02 - member functions</a></li>
+<li><a href="xx_classes/03_access_specifiers/">03 - access specifiers</a></li>
+<li><a href="xx_classes/04_constructors/">04 - constructors</a></li>
+<li><a href="xx_classes/05_explicit/">05 - explicit and std::initializer_list</a></li>
+<li><a href="xx_classes/06_destructors/">06 - destructors</a></li>
+<li><a href="xx_classes/07_const/">07 - const</a></li>
+<li><a href="xx_classes/08_mutable/">08 - mutable</a></li>
+<li><a href="xx_classes/09_static_fields/">09 - static fields</a></li>
+<li><a href="xx_classes/10_static_methods/">10 - static methods</a></li>
+<li><a href="xx_classes/11_member_types/">11 - member types</a></li>
+<li><a href="xx_classes/12_friends/">12 - friends</a></li>
+</ul>
+</li>
+<li>
+<a href="xy_operator_overloading/">xy - operator overloading</a><ul>
+<li><a href="xy_operator_overloading/01_introduction/">01 - introduction</a></li>
+<li><a href="xy_operator_overloading/02_2way_comparison/">02 - 2-way comparison</a></li>
+<li><a href="xy_operator_overloading/03_3way_comparison/">03 - 3-way comparison</a></li>
+<li><a href="xy_operator_overloading/04_arithmetic/">04 - arithmetic</a></li>
+<li><a href="xy_operator_overloading/05_compound_assignment/">05 - compound assignment</a></li>
+<li><a href="xy_operator_overloading/06_increment_decrement/">06 - increment and decrement</a></li>
+<li><a href="xy_operator_overloading/07_stream/">07 - stream operators</a></li>
+<li><a href="xy_operator_overloading/08_bit/">08 - bit</a></li>
+<li><a href="xy_operator_overloading/09_user_defined_convertions/">09 - user defined convertions</a></li>
+<li><a href="xy_operator_overloading/10_user_defined_literals/">10 - user defined literals</a></li>
+</ul>
+</li>
+<li>
+<a href="xz_polymorphism/">xz - polymorphism</a><ul>
+<li><a href="xz_polymorphism/01_inheritance/">01 - inheritance</a></li>
+<li><a href="xz_polymorphism/02_shadowing/">02 - shadowing</a></li>
+<li><a href="xz_polymorphism/03_virtual_functions/">03 - virtual functions</a></li>
+<li><a href="xz_polymorphism/04_abstract_classes/">04 - abstract classes</a></li>
+<li><a href="xz_polymorphism/05_smart_pointers/">05 - smart pointers</a></li>
+<li><a href="xz_polymorphism/06_dynamic_cast_typeid/">06 - dynamic_cast and typeid</a></li>
+<li><a href="xz_polymorphism/07_covariant_return_types/">07 - covariant return types</a></li>
+<li><a href="xz_polymorphism/08_multiple_inheritance/">08 - multiple inheritance</a></li>
+<li><a href="xz_polymorphism/09_virtual_inheritance/">09 - virtual inheritance</a></li>
+</ul>
+</li>
+<li>
+<a href="ya_exceptions/">ya - exceptions</a><ul>
+<li><a href="ya_exceptions/01_introduction/">01 - introduction</a></li>
+<li><a href="ya_exceptions/02_catching/">02 - catching</a></li>
+<li><a href="ya_exceptions/03_exception_specification/">03 - exception specification</a></li>
+<li><a href="ya_exceptions/04_exception_guarantees/">04 - exception guarantees</a></li>
+<li><a href="ya_exceptions/05_function_try_blocks/">05 - function-try-blocks</a></li>
+<li><a href="ya_exceptions/zz_meta/">zz - meta</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</details>
+</div>
+<p>This tutorial is aimed at teaching you modern C++ (by this term I mean ISO C++ 2011 and later standards) as the first programming language. Apart from C++, you will learn lots of principles, terminology, idioms and guidelines that are ubiquituous in the programming world. After learning the first programming language (especially a very voluminous one such as C++) it will be much easier for you to pick up another one. Programming is much more than writing code - code is read 10x more than written[citation needed] and there is also a significant amount of time spent on analyzing any given problem.</p>
+<p>Core goals:</p>
+<ul class="simple">
+<li><p>Understanding concepts that are ubiquitous in the programming world (e.g. objects, conditional instructions, loops, algorithms, function call stack and many more).</p></li>
+<li><p>Teaching you things that go with proper programming: making decisions, solving problems, good/bad habits, programming style...</p></li>
+<li><p>Understanding what differentiates C++ from other programming languages (features, syntax, conventions, ...).</p></li>
+</ul>
+<p>Other notes:</p>
+<ul class="simple">
+<li><p>Beginning is often the hardest part of programming. If you managed to setup the environment so that you can write code and run it, you have already accomplished a significant step. If not, you can read first chapter (which is theory only) - this should tremendously help you understand most fundamental elements and the process of installation of required tools.</p></li>
+<li><p>Don't copy-paste code samples until you memorize the grammar. It's obvious that at the start you will not remember perfectly where every punctuation goes. Just by rewriting examples you will learn it over time.</p></li>
+<li><p>If at any point you encounter a term that you don't know the meaning of, check the <a class="reference external" href="../../utility/glossary">glossary</a>.</p></li>
+<li><p>If you ever have an urge to edit example code and see what happens - do it. You will learn a lot through experience. If you encounter a non-trivial problem - don't put too much effort into it - there are tons of things you might not know at the beginning but will know later. Take notes of these problems and attempt to solve them later when you know more.</p></li>
+<li><p>Don't be turned off by the fact that most of first lessons is just reading. You need to understand many concepts (universal across programming languages) and such lessons give you this knowledge. You could obtain it through coding by trial and error but <em>especially for C++</em> it would be a very long and frustrating path.</p></li>
+</ul>
+<!--  --><blockquote>
+<p>Do I need to learn C before C++?</p>
+</blockquote>
+<p>Absolutely not. In fact, this is one of the biggest mistakes that a C++ teacher can make. Majority of C code is C++ compatible but also uncoventional and bad C++ code. C++ redefines a variety of C patterns and if someone learned C before C++, it might be needed to "unteach" C habits or the person will write unidiomatic C++.</p>
+<p>Learning C before C++ is like learning Latin before English. They use the same alphabet but that's basically it. C++ took C's grammar and abstraction concepts from Smalltalk and Simula and combined them in one language with specific philosophy, a slightly different philosophy than C which results is significant differences in various conventions.</p>
+<!-- TODO describe C++ philosophy? -->
+<!--  -->
+<blockquote>
+<p>What if I can't understand something?</p>
+</blockquote>
+<p>You can always research the topic on your own, but more often than not you can simply move on. Usually the fun part comes when you can mix 2 different features, after learning both separately which did not immediately presented their benefits. Sometimes you just need to gather enough building blocks untill it starts making sense. Some people might need multiple iterations of reading and coding over a single chapter untill they understand everything. Patience is highly valuable in beginners.</p>
+<p>Take notes during learning and if you feel like you can provide some feedback (especially on the order of lessons) - do it. TODO link.</p>
+<blockquote>
+<p>Do I need to be good in math to program?</p>
+</blockquote>
+<p>In my opinion, it's enough to understand functions and polynomial equations. By understanding I don't mean knowing how to draw and solve every equation, but to get the concept. Function as a term appears very frequently in programming but it doesn't represent mathematical functions, it's more of a concept of reusable mechanism that accepts certain input and provides certain output. Any math beyond that is not required. We program so that we are not bothered with math, this is the task for computers. Still, any additional knowledge will be beneficial - especially mathematical logic.</p>
+<blockquote>
+<p>Do I need to understand the binary system?</p>
+</blockquote>
+<p>It is not required, but it is an advantage. Except few operations, nothing really depends on understanding binary system - all programming languages abstract binary system unless you want to perform binary-level operations. All lessons relying on binary operations are optional.</p>
+<blockquote>
+<p>Do I need to be good in English?</p>
+</blockquote>
+<p>I don't think my english is particulary hard (I'm not a native speaker by the way) but I encourage you to learn English (before or during the course) if you have problems reading the content. English is the main language of IT industry so even if you somehow learned programming without speaking English, chances of getting a job are significantly lower.</p>
+<blockquote>
+<p>Do I need a powerful computer to program?</p>
+</blockquote>
+<p>No. The essential part of programming is reading and writing code. I hardly doubt your computer is not capable of launching a text editor. If you can view this website, you can program too.</p>
+			</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

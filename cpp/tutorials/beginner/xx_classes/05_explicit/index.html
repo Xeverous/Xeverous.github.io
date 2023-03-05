@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 05 - explicit and std::initializer_list</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xx - classes</a></li>
+							<span>/</span>
+						<li>05 - explicit and std::initializer_list</li>
+					</ol></nav><div class="content">
+				<h1>05 - explicit and std::initializer_list</h1>				<p>Now you should understand that constructors offer the ability to control object initialization. There are 2 further minor features.</p>
+<section id="convering-constructors"><h2>Convering constructors</h2>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>A constructor that is declared without the function specifier <code class="code custom-cpp"><span class="keyword">explicit</span></code> is called a converting constructor.</p>
+</aside><p>Since the keyword <code class="code custom-cpp"><span class="keyword">explicit</span></code> wasn't used in any prior example, all constructors written so far were <em>converting constructors</em>.</p>
+<p>What does it mean? It means that the call to the object constructor is allowed to perform <em>implicit convertions</em> if necesary. A good example is <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> which has a non-<code class="code custom-cpp"><span class="keyword">explicit</span></code> constructor overload accepting pointers to character arrays. This allows to do such things:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+
+<span class="keyword">void</span> <span class="func-free">print</span>(<span class="namespace">std</span>::<span class="type-class">string</span> <span class="param">str</span>)
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="param">str</span>;
+}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="func-free">print</span>(<span class="lit-str">"Hello<span class="esc-seq">\n</span>"</span>);
+	<span class="keyword">return</span> <span class="lit-num">0</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>The function accepts an object of type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code>, however the argument is an array of characters (<code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">char</span>[<span class="lit-num">7</span>]</code> to be specific - 5 characters, 1 escaped character and null terminator). Because <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> has a non-<code class="code custom-cpp"><span class="keyword">explicit</span></code> constructor overload that accepts <code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">char</span>*</code>, there is no "function parameter/argument type mismatch" error. The compiler notices that the provided argument is not of type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> but it also notices that it can be constructed from the provided argument.</p>
+<p>Reminder: function arguments passed by value always undergo a set of implicit convertions (<em>decay</em>) where most notably top-level <code class="code custom-cpp"><span class="keyword">const</span></code> is stripped and raw arrays (<code class="code custom-cpp"><span class="param-tmpl">T</span>[<span class="param-tmpl">N</span>]</code>) lose size information and become raw pointers (<code class="code custom-cpp"><span class="param-tmpl">T</span>*</code>).</p>
+<p>Adding <code class="code custom-cpp"><span class="keyword">explicit</span></code> to constructors simply disallows implicit convertions (other than decay) and some forms of initialization:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type-class">point</span>
+{
+	<span class="type-class">point</span>() = <span class="keyword">default</span>;
+	<span class="keyword">explicit</span> <span class="type-class">point</span>(<span class="keyword">int</span> <span class="param">val</span>)
+	: <span class="var-member">x</span>(<span class="param">val</span>), <span class="var-member">y</span>(<span class="param">val</span>) {}
+	<span class="keyword">explicit</span> <span class="type-class">point</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+	: <span class="var-member">x</span>(<span class="param">x</span>), <span class="var-member">y</span>(<span class="param">y</span>) {}
+
+	<span class="keyword">int</span> <span class="var-member">x</span> = <span class="lit-num">0</span>;
+	<span class="keyword">int</span> <span class="var-member">y</span> = <span class="lit-num">0</span>;
+};
+
+<span class="type-class">point</span> <span class="func-free">make_point</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+{
+	<span class="com-single">// return {x, y};   // error: constructor is explicit
+</span>	<span class="keyword">return</span> <span class="type-class">point</span>{<span class="param">x</span>, <span class="param">y</span>}; <span class="com-single">// ok
+</span>}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="com-single">// point p1 = 1;      // error: copy-initialization is not allowed
+</span>	<span class="type-class">point</span> <span class="var-local">p2</span>(<span class="lit-num">2</span>);          <span class="com-single">// ok: direct-initialization
+</span>	<span class="type-class">point</span> <span class="var-local">p3</span>{<span class="lit-num">3</span>, <span class="lit-num">3</span>};       <span class="com-single">// ok: direct-list-initialization
+</span>	<span class="com-single">// point p4 = {4, 4}; // error: copy-list-initialization is not allowed
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>This leads to the question - <strong>when should a constructor be marked</strong> <code class="code custom-cpp"><span class="keyword">explicit</span></code>?</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p><a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-explicit">CG C.46</a>: By default, declare single-argument constructors <code class="code custom-cpp"><span class="keyword">explicit</span></code>.</p>
+</aside><p>This is because implicit convertions are generally undesirable. For few cases where the convertion is desired (such as <code class="code custom-cpp"><span class="type">fraction</span> <span class="var-local">fr</span> = <span class="lit-num">1</span>;</code>) some people write <code class="code custom-cpp"><span class="com-multi">/* implicit */</span></code> before the constructor to signify it's intentionally not marked <code class="code custom-cpp"><span class="keyword">explicit</span></code>.</p>
+</section><section id="code-class-code-custom-cpp-span-class-namespace-std-span-span-class-type-initializer-list-span-code"><h2><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">initializer_list</span></code></h2>
+<p>Not to be confused with member initialization syntax, this simple class is intended to hold arbitrary amount of arguments of specific type for the purpose of initialization. The class is implemented as lightweight proxy object. Copying <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">initializer_list</span></code> does not copy underlying objects and objects from the list are read-only.</p>
+<p>Because <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">initializer_list</span></code> is intended for construction of other objects, it has special rules for its own construction:</p>
+<ul class="simple">
+<li><p>It is automatically constructed when constructors accept it as a parameter and the syntax used to initialize is <code class="docutils literal">{}</code> or <code class="docutils literal">=</code>.</p></li>
+<li><p>It is automatically constructed from braced init lists that are bound to <code class="code custom-cpp"><span class="keyword">auto</span></code>.</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// required even if the name is not explicitly used
+</span><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;initializer_list&gt;</span>
+
+<span class="keyword">auto</span> <span class="func-free">f</span>()
+{
+	<span class="keyword">auto</span> <span class="var-local">list</span> = {<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>}; <span class="com-single">// auto = std::initializer_list&lt;int&gt;
+</span>	<span class="keyword">return</span> <span class="var-local">list</span>; <span class="com-single">// return {1, 2, 3}; would require to specify function return type
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>This can be particulary surprising when a type has multiple overloads, some of which use this special class:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// overload (size_type count, const T&amp; value): {2, 2, 2, 2, 2}</span>
+<span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="var-local">v1</span>(<span class="lit-num">5</span>, <span class="lit-num">2</span>);
+<span class="com-single">// overload (std::initializer_list&lt;T&gt; init): {5, 2}</span>
+<span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="var-local">v2</span>{<span class="lit-num">5</span>, <span class="lit-num">2</span>};
+</pre></td>
+</tr></tbody></table>
+<p>In such case my recommendation is to write <code class="code custom-cpp"><span class="var-local">v2</span> = {<span class="lit-num">5</span>, <span class="lit-num">2</span>}</code> which is much clearer about intent.</p>
+<blockquote>
+<p>How about combining <code class="code custom-cpp"><span class="keyword">explicit</span></code> with <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">initializer_list</span></code>?</p>
+</blockquote>
+<p>Don't. The whole point of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">initializer_list</span></code> is to offer syntax sugar for construction, without having to explicitly write the class name.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

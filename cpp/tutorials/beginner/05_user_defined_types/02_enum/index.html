@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - enum</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">05 - user defined types</a></li>
+							<span>/</span>
+						<li>02 - enum</li>
+					</ol></nav><div class="content">
+				<h1>02 - enum</h1>				<!-- TOEXAMPLE -->
+<p>You already know that <em>magic numbers</em> are bad.</p>
+<!-- example with magic numbers -->
+<p>It's much better to use named constants - they increase code readability.</p>
+<!-- example with named constants -->
+<p>It's quite common to have a few closely related constants. To signal that they are related, we could add a common name prefix but this still doesn't prevent of mistakes like this:</p>
+<!-- example with function taking int, given constant from wrong set -->
+<p>There is a dedicated feature for a group of constants:</p>
+<!-- example enum - definition and usage, showcase last , -->
+<p><em>Enumerations</em> are an example of <em>user-defined types</em> - types not defined by the language but created in code by the user of the language (here <em>user</em> means programmer). Specific values of given enumeration are called <em>enumerators</em>. Enumerations are <em>implicitly convertible</em> to integers.</p>
+<p>Enumerations were already present in C. The feature is relatively simple, not much more than just a syntax sugar for specifying constants. There are 2 particular problems caused by this simplicity:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// 1) no scoping - name conflicts</span>
+<span class="keyword">enum</span> <span class="type">color</span> { <span class="enum">red</span>, <span class="enum">green</span>, <span class="enum">blue</span> };
+<span class="keyword">enum</span> <span class="type">light</span> { <span class="enum">red</span>, <span class="enum">yellow</span>, <span class="enum">green</span> }; <span class="com-single">// error: red and green already defined</span>
+
+<span class="com-single">// 2) no type safety</span>
+<span class="keyword">void</span> <span class="func">set_traffic_light</span>(<span class="type">light</span> <span class="param">l</span>);
+<span class="type">color</span> <span class="var-local">c</span> = <span class="enum">green</span>;
+<span class="func">set_traffic_light</span>(<span class="var-local">c</span>); <span class="com-single">// type mismatch but no error!</span>
+</pre></td>
+</tr></tbody></table>
+<!--  --><blockquote>
+<p>Why the function call here is not a compiler error?</p>
+</blockquote>
+<p>The enum is implicitly converted to an integer and then this integer is implicitly converted to a different enumeration type.</p>
+<section id="code-class-code-custom-cpp-span-class-keyword-enum-span-span-class-keyword-class-span-code"><h2><code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span></code></h2>
+<p>C++11 added <em>scoped enumerations</em>, sometimes called <em>strongly typed enumerations</em>. They are defined with <code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span></code> or <code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">struct</span></code> (both equivalent but the former became the convention) and solve the just mentioned problems:</p>
+<ul class="simple">
+<li><p>They behave as proper types: enumerator names from different <code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span></code> definitions do not conflict and names must be accessed using the <em>scope resolution operator</em> (<code class="code custom-cpp">::</code>)</p></li>
+<li><p>They are not implicitly convertible to/from integers. Use <code class="code custom-cpp"><span class="keyword">static_cast</span></code> to do so. As a consequence, mismatched enumeration types (e.g. when calling a function) will cause compiler errors.</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">color</span> { <span class="enum">red</span>, <span class="enum">green</span>, <span class="enum">blue</span> };
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">light</span> { <span class="enum">red</span>, <span class="enum">yellow</span>, <span class="enum">green</span> }; <span class="com-single">// color::red and light::red do not conflict</span>
+
+<span class="keyword">void</span> <span class="func">set_traffic_light</span>(<span class="type">light</span> <span class="param">l</span>);
+<span class="type">color</span> <span class="var-local">c</span> = <span class="enum">green</span>;        <span class="com-single">// error: no "green" in current scope</span>
+<span class="type">color</span> <span class="var-local">c</span> = <span class="type">color</span>::<span class="enum">green</span>; <span class="com-single">// ok</span>
+<span class="keyword">auto</span> <span class="var-local">c</span> = <span class="type">color</span>::<span class="enum">green</span>;  <span class="com-single">// ok, now even better</span>
+<span class="func">set_traffic_light</span>(<span class="var-local">c</span>);   <span class="com-single">// error: parameter 1 expects light but got color</span>
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span></code> and <code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">struct</span></code> do not create a <code class="code custom-cpp"><span class="keyword">class</span></code> or a <code class="code custom-cpp"><span class="keyword">struct</span></code>. These keywords here are only used to differentiate them from pre-C++11 enums which have much more relaxed rules.</p>
+</aside></section><section id="enumerator-values"><h2>Enumerator values</h2>
+<ul class="simple">
+<li><p>unless explicitly specified, each enumerator has value of the previous one + 1</p></li>
+<li><p>unless explicitly specified, the first enumerator has value 0</p></li>
+<li><p>there can be multiple enumerators with the same value</p></li>
+<li><p>there can be gaps within the value range</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">my_enum</span>
+{
+	<span class="enum">a</span>,         <span class="com-single">//  0</span>
+	<span class="enum">b</span>,         <span class="com-single">//  1</span>
+	<span class="enum">c</span>,         <span class="com-single">//  2</span>
+	<span class="enum">d</span> = <span class="lit-num">5</span>,     <span class="com-single">//  5</span>
+	<span class="enum">e</span>,         <span class="com-single">//  6</span>
+	<span class="enum">f</span>,         <span class="com-single">//  7</span>
+	<span class="enum">g</span> = <span class="enum">e</span> + <span class="lit-num">6</span>, <span class="com-single">// 12</span>
+	<span class="enum">h</span>,         <span class="com-single">// 13</span>
+	<span class="enum">i</span>          <span class="com-single">// 14</span>
+};
+</pre></td>
+</tr></tbody></table></section><section id="underlying-type"><h2>Underlying type</h2>
+<p>Since enumerations are an abstraction over constant integers, it's possible to specify on which <em>integral</em> type they should be implemented:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// ok</span>
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">e1</span> : <span class="keyword">char</span> { <span class="enum">a</span>, <span class="enum">b</span>, <span class="enum">c</span>, <span class="enum">d</span> };
+<span class="com-single">// error: value -1 outside range of unsigned char</span>
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">e2</span> : <span class="keyword">unsigned</span> <span class="keyword">char</span> { <span class="enum">a</span>, <span class="enum">b</span>, <span class="enum">c</span>, <span class="enum">x</span> = <span class="problem">-1</span> };
+<span class="com-single">// error: float is not an integral type</span>
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">e3</span> : <span class="problem">float</span> { <span class="enum">a</span>, <span class="enum">b</span>, <span class="enum">c</span>, <span class="enum">d</span> };
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>The default underlying type is:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">int</span></code> for scoped enumerations (defined inside a function or a class)</p></li>
+<li><p><em>implementation-defined</em> for unscoped enumerations (defined in global scope)</p></li>
+</ul></aside><p>Since C++11 the standard library contains a <em>type trait</em> that can be used to obtain enumeration's underlying type. Since C++23 there is also a function that converts the enumeration to its udnerlying type. Below I present a C++11-compatible implementation of this function. With such function, you can easily and safely convert enumerations to their underlying types with minimal effort.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// since C++11</span>
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">struct</span> <span class="type">underlying_type</span>
+{
+	<span class="keyword">using</span> <span class="type">type</span> = <span class="com-multi">/* compiler magic */</span>;
+};
+
+<span class="com-single">// since C++14 (short alias)</span>
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">using</span> <span class="type">underlying_type_t</span> = <span class="keyword">typename</span> <span class="type">underlying_type</span>&lt;<span class="param-tmpl">T</span>&gt;::<span class="type">type</span>;
+
+<span class="com-single">// since C++23 available as std::to_underlying in &lt;utility&gt;</span>
+<span class="com-single">// here a C++11-compatible implementation</span>
+<span class="com-single">// with this function you can write to_underlying(some_enum_value)</span>
+<span class="com-single">// which is much shorter than static_cast with a type trait</span>
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">Enum</span>&gt;
+<span class="keyword">constexpr</span> <span class="keyword">typename</span> <span class="type">underlying_type</span>&lt;<span class="param-tmpl">Enum</span>&gt;::<span class="type">type</span> <span class="func">to_underlying</span>(<span class="param-tmpl">Enum</span> <span class="param">e</span>) <span class="keyword">noexcept</span>
+{
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">typename</span> <span class="type">underlying_type</span>&lt;<span class="param-tmpl">Enum</span>&gt;::<span class="type">type</span>&gt;(<span class="param">e</span>);
+}
+</pre></td>
+</tr></tbody></table></section><section id="convertions-in-detail"><h2>Convertions in detail</h2>
+<ul class="simple">
+<li><p>If the <code class="code custom-cpp"><span class="keyword">enum</span></code> or <code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span></code> has specified <em>underlying type</em>, then all convertions to/from act as if the enumerator had value of this type.</p></li>
+<li><p>If the <em>underlying type</em> is not specified, the largest allowed value is the largest representable value in the smallest bitfield capable of holding enumeration values. No overflow, just undefined behavior.</p></li>
+<li><p>It's possible to convert a value of integral type to an enumeration type where no enumerator has such value. Object of the enumeration type will simply compare <code class="code custom-cpp"><span class="keyword">false</span></code> with every enumerator.</p></li>
+</ul>
+<!-- TOPASTE static_cast_enum.cpp
+
+What's the reason behind smallest possible bitfield for enums with no underlying type? --><p>No idea. In theory, it allows the compiler to use less bits than required by the type but no compiler actually does such optimization - first, you can't have <code class="code custom-cpp"><span class="keyword">sizeof</span></code> which is not a multiple of whole bytes, second, saving space this way complicates read/write instructions and in today's world we have much higher pressure on computing time, not memory. Some optimizations even intentionally cause the code to occupy more space in order to speed up execution (e.g. <code class="docutils literal"><span class="pre">-falign-functions</span></code>).</p>
+<blockquote>
+<p>Can I convert an enum to/from a string?</p>
+</blockquote>
+<p>Sadly no. Compared to other languages, <code class="code custom-cpp"><span class="keyword">enum</span></code>s in C++ are pretty basic - they are just a different form of writing constants with some added type safety. If you want more features, use a library like <a class="reference external" href="https://github.com/aantron/better-enums">Better Enums</a> which offers a macro that defines enumerations and the boilerplate needed to match strings with enumerators.</p>
+</section><section id="recommendation"><h2>Recommendation</h2>
+<ul class="simple">
+<li><p>Use <code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span></code> istead of <code class="code custom-cpp"><span class="keyword">enum</span></code>.</p></li>
+<li><p>Use enumerations when you have a group of related constants and each represents one possibility (which exludes others).</p></li>
+<li><p>Explicit values of enumerators should be only specified when there is a need to convert them to/from integers.</p></li>
+<li>
+<p>Enumerators with the same value generally should be avoided (it's kind of duplicate code) but they are useful in certain situations:</p>
+<ul>
+<li><p>Backwards compatibility: old name can still function while being equivalent to the new name.</p></li>
+<li><p>Future proofing: multiple enumerators can be introduced and if it's realized later that situations they denote are identical, values can be equivalent (<strong>differently named enumerators with the same assigned value compare equal</strong>).</p></li>
+<li><p>Clarity: in cases when there is a finite amount of things that could happen and some require the same reaction. Listing them all is still valuable - otherwise someone reading the code could think that some were forgotten.</p></li>
+</ul>
+</li>
+</ul></section><section id="additional-resources"><h2>Additional resources</h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://stackoverflow.com/q/18335861/4818802">SO: Why is enum class preferred over plain enum?</a></p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

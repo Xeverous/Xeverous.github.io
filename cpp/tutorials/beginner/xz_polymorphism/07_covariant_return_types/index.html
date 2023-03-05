@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 07 - covariant return types</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xz - polymorphism</a></li>
+							<span>/</span>
+						<li>07 - covariant return types</li>
+					</ol></nav><div class="content">
+				<h1>07 - covariant return types</h1>				<p>Due to various <em>design patterns</em>, polymorphic types rarely need to be copied. But sometimes there is a need to do so. However, polymorphic types can not be copied easily. Copies done using <code class="docutils literal">=</code> are potentially sliced because it's unknown what the dynamic type of the object is (the operator only considers the static type).</p>
+<p>An idiomatic workaround would be to write a virtual function for the copy. The problem is, memory-related properties (size, alignment etc.) of different types can be different so the potential return type or the type of a potential in-out parameter must be something clever that supports multiple, different dynamic types.</p>
+<p>This naturally brings us to pointers and references. A virtual function can be specified to return a pointer or reference to the base type. Any override of this function can actually produce an object which type is derived from specified and cast it upwards.</p>
+<p>Because references and pointers to function-local objects are dangling, the only way to avoid the problem is to use <em>dynamic memory allocation</em>. This leads us to a following implementation:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="type">base</span>* <span class="func">clone</span>() <span class="keyword">const</span>
+	{
+		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">base</span>(*<span class="keyword">this</span>);
+	}
+};
+
+<span class="keyword">class</span> <span class="type">derived</span>: <span class="keyword">public</span> <span class="type">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="type">base</span>* <span class="func">clone</span>() <span class="keyword">const</span> <span class="keyword">override</span>
+	{
+		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">derived</span>(*<span class="keyword">this</span>);
+	}
+};
+
+<span class="keyword">class</span> <span class="type">more_derived</span>: <span class="keyword">public</span> <span class="type">derived</span>
+{
+<span class="keyword">public</span>:
+	<span class="type">base</span>* <span class="func">clone</span>() <span class="keyword">const</span> <span class="keyword">override</span>
+	{
+		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">more_derived</span>(*<span class="keyword">this</span>);
+	}
+};
+</pre></td>
+</tr></tbody></table>
+<p>Dynamic memory allocation is a topic for a separate tutorial, so I'm not going to delve into it now. The only thing worth mentioning is that in modern C++ (2011 standard and later) <em>naked new</em> is a really bad thing. All dynamically allocated objects should be managed by <em>smart pointers</em> or <em>containers</em>. The example above should be rewritten as:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="namespace">std</span>::<span class="type">unique_ptr</span>&lt;<span class="type">base</span>&gt; <span class="func">clone</span>() <span class="keyword">const</span>
+	{
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">make_unique</span>&lt;<span class="type">base</span>&gt;(*<span class="keyword">this</span>);
+	}
+};
+
+<span class="keyword">class</span> <span class="type">derived</span>: <span class="keyword">public</span> <span class="type">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">unique_ptr</span>&lt;<span class="type">base</span>&gt; <span class="func">clone</span>() <span class="keyword">const</span> <span class="keyword">override</span>
+	{
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">make_unique</span>&lt;<span class="type">derived</span>&gt;(*<span class="keyword">this</span>);
+	}
+};
+
+<span class="keyword">class</span> <span class="type">more_derived</span>: <span class="keyword">public</span> <span class="type">derived</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">unique_ptr</span>&lt;<span class="type">base</span>&gt; <span class="func">clone</span>() <span class="keyword">const</span> <span class="keyword">override</span>
+	{
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">make_unique</span>&lt;<span class="type">more_derived</span>&gt;(*<span class="keyword">this</span>);
+	}
+};
+</pre></td>
+</tr></tbody></table>
+<p>However, for the purpose of explaining <em>covariant return types</em> we will stick to the first example. Why? Read further.</p>
+<p>Because casts upwards do not need any machine instructions (it's purely an abstraction cast), virtual functions offer a special feature which allows the return type to differ slightly.</p>
+<p>A virtual function in derived class can return a type that is <em>covariant</em> to the type specified in the base class. A type is covariant if:</p>
+<ul class="simple">
+<li><p>it's also a reference or also a first-level pointer (pointers to pointers not allowed)</p></li>
+<li><p>the referenced type is derived from the referenced type in function's return type in the base class</p></li>
+<li><p>the type is equally or less cv-qualified to the function's return type in the base class</p></li>
+<li><p>the type is complete (forward declarations not allowed)</p></li>
+</ul>
+<p>One of the best examples where covariant return types are useful is copying:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="type">base</span>* <span class="func">clone</span>() <span class="keyword">const</span>
+	{
+		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">base</span>(*<span class="keyword">this</span>);
+	}
+};
+
+<span class="keyword">class</span> <span class="type">derived</span>: <span class="keyword">public</span> <span class="type">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="type">derived</span>* <span class="func">clone</span>() <span class="keyword">const</span> <span class="keyword">override</span>
+	{
+		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">derived</span>(*<span class="keyword">this</span>);
+	}
+};
+
+<span class="keyword">class</span> <span class="type">more_derived</span>: <span class="keyword">public</span> <span class="type">derived</span>
+{
+<span class="keyword">public</span>:
+	<span class="type">more_derived</span>* <span class="func">clone</span>() <span class="keyword">const</span> <span class="keyword">override</span>
+	{
+		<span class="keyword">return</span> <span class="keyword">new</span> <span class="type">more_derived</span>(*<span class="keyword">this</span>);
+	}
+};
+</pre></td>
+</tr></tbody></table>
+<p>In this specific example the return type covariance uses the same class hierarchy - it's not necessary but given the occasional need for copying polymorphic objects, it's probably the most common use of covariant return types.</p>
+<p>In a typical scenario of calling virtual functions through a pointer/reference to the base class, the feature has no impact. But if for some reason the code has a pointer/reference to a derived type, it's rewarded with richer return type information. <strong>Sadly, as of C++20 it's not possible to use covariant return types over smart pointers.</strong> Smart pointers to derived types are implicitly convertible to smart pointers to base types, but they do not derive from them. The feature would need to be respecified to be based on object representation or something related, but that's a really hard problem given numerous mechanics that come into play here.</p>
+<p>Because the need for covariant return types is pretty rare, I recommend to use (non-covariant) smart pointers by default. In vast majority of cases, better resource management abstraction will be worth more than this minor polymorphism feature.</p>
+			</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

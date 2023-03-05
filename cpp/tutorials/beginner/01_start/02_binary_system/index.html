@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - binary system</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">01 - start</a></li>
+							<span>/</span>
+						<li>02 - binary system</li>
+					</ol></nav><div class="content">
+				<h1>02 - binary system</h1>				<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This lesson is optional, but understanding how binary system works will help you in some specific programming tasks.</p>
+</aside><p>First of all, you should understand that the binary system <strong>is only a different form of writing</strong>. The math is the same, we only represent numbers in a different way. A good comparison would be another writing system - for example roman numerals.</p>
+<p>Roman numerals is a system of writing numbers based on sums. M = 1000, D = 500, C = 100, L = 50, X = 10, I = 1, except in case when a lower-value symbol precedes higher value symbol they are subtracted.</p>
+<ul class="simple">
+<li><p>MMDCCLXXIV means 2774 (1000 + 1000 + 500 + 100 + 100 + 50 + 10 + 10 + (5 - 1))</p></li>
+<li><p>MMMCMXCIX means 3999 (1000 + 1000 + 1000 + (1000 - 100) + (100 - 10) + (10 - 1))</p></li>
+</ul>
+<p>The systems we use today are <em>positional systems</em> which are based on sums of multiplications and they use specific powers of the <em>system's base</em> instead of some fixed values.</p>
+<ul class="simple">
+<li><p>1234 is 1 * 10^3 + 2 * 10^2 + 3 * 10^1 + 4 * 10^0 which is 1 * 1000 + 2 * 100 + 3 * 10 + 4 * 1</p></li>
+<li><p>0.123 is 0 * 10^0 + 1 * 10^(-1) + 2 * 10^(-2) + 3 * 10^(-3) which is 0 * 1 + 1 * 1/10 + 2 * 1/100 + 3 * 1/1000</p></li>
+</ul>
+<p>The only difference between binary system (base 2) and decimal system (base 10) are the powers:</p>
+<ul class="simple">
+<li><p>1234 is represented as 10011010010 which is 1 * 2^10 + 0 * 2^9 + 0 * 2^8 + 1 * 2^7 + 1 * 2^6 + 0 * 2^5 + 1 * 2^4 + 0 * 2^3 + 0 * 2^2 + 1 * 2^1 + 0 * 2^0 which is 1024 + 128 + 64 + 16 + 2</p></li>
+<li><p>0.123 is not representable in binary because this fraction's denominator does not consist of multiples of 2. In base 10, we can only represent fractions which denominators are multiplies of 2 and 5, in binary - only of 2. Both systems can not represent 1/3: decimal goes 0.3333... and binary goes 0.01010101...</p></li>
+</ul>
+<p>As numbers grow, digits are replaced (0 with 1, 1 with 2, 2 with 3, ...). When max digit is reached (9 in decimal) the mechanism adds another digit on a higher-rank position and resets the current one (9 + 1 = 10, 69 + 1 = 70). This sometimes happens multiple times in a row (99 + 1 = 100, 999 + 1 = 1000). In binary, it's no different. Because there are only 2 digits, the visual length of numbers grows much faster.</p>
+<p>The table below showcases natural numbers written in different systems:</p>
+<!-- The table has been generated from a python script. -->
+<!-- TODO it would be nice to right-align text in this table -->
+<table>
+<thead><tr>
+<th class="head"><p>binary (base 2)</p></th>
+<th class="head"><p>octal (base 8)</p></th>
+<th class="head"><p>decimal (base 10)</p></th>
+<th class="head"><p>hexadecimal (base 16)</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr>
+<td><p>10</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>2</p></td>
+</tr>
+<tr>
+<td><p>11</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>3</p></td>
+</tr>
+<tr>
+<td><p>100</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+<td><p>4</p></td>
+</tr>
+<tr>
+<td><p>101</p></td>
+<td><p>5</p></td>
+<td><p>5</p></td>
+<td><p>5</p></td>
+</tr>
+<tr>
+<td><p>110</p></td>
+<td><p>6</p></td>
+<td><p>6</p></td>
+<td><p>6</p></td>
+</tr>
+<tr>
+<td><p>111</p></td>
+<td><p>7</p></td>
+<td><p>7</p></td>
+<td><p>7</p></td>
+</tr>
+<tr>
+<td><p>1000</p></td>
+<td><p>10</p></td>
+<td><p>8</p></td>
+<td><p>8</p></td>
+</tr>
+<tr>
+<td><p>1001</p></td>
+<td><p>11</p></td>
+<td><p>9</p></td>
+<td><p>9</p></td>
+</tr>
+<tr>
+<td><p>1010</p></td>
+<td><p>12</p></td>
+<td><p>10</p></td>
+<td><p>a</p></td>
+</tr>
+<tr>
+<td><p>1011</p></td>
+<td><p>13</p></td>
+<td><p>11</p></td>
+<td><p>b</p></td>
+</tr>
+<tr>
+<td><p>1100</p></td>
+<td><p>14</p></td>
+<td><p>12</p></td>
+<td><p>c</p></td>
+</tr>
+<tr>
+<td><p>1101</p></td>
+<td><p>15</p></td>
+<td><p>13</p></td>
+<td><p>d</p></td>
+</tr>
+<tr>
+<td><p>1110</p></td>
+<td><p>16</p></td>
+<td><p>14</p></td>
+<td><p>e</p></td>
+</tr>
+<tr>
+<td><p>1111</p></td>
+<td><p>17</p></td>
+<td><p>15</p></td>
+<td><p>f</p></td>
+</tr>
+<tr>
+<td><p>10000</p></td>
+<td><p>20</p></td>
+<td><p>16</p></td>
+<td><p>10</p></td>
+</tr>
+<tr>
+<td><p>10001</p></td>
+<td><p>21</p></td>
+<td><p>17</p></td>
+<td><p>11</p></td>
+</tr>
+<tr>
+<td><p>10010</p></td>
+<td><p>22</p></td>
+<td><p>18</p></td>
+<td><p>12</p></td>
+</tr>
+<tr>
+<td><p>10011</p></td>
+<td><p>23</p></td>
+<td><p>19</p></td>
+<td><p>13</p></td>
+</tr>
+<tr>
+<td><p>10100</p></td>
+<td><p>24</p></td>
+<td><p>20</p></td>
+<td><p>14</p></td>
+</tr>
+<tr>
+<td><p>10101</p></td>
+<td><p>25</p></td>
+<td><p>21</p></td>
+<td><p>15</p></td>
+</tr>
+<tr>
+<td><p>10110</p></td>
+<td><p>26</p></td>
+<td><p>22</p></td>
+<td><p>16</p></td>
+</tr>
+<tr>
+<td><p>10111</p></td>
+<td><p>27</p></td>
+<td><p>23</p></td>
+<td><p>17</p></td>
+</tr>
+<tr>
+<td><p>11000</p></td>
+<td><p>30</p></td>
+<td><p>24</p></td>
+<td><p>18</p></td>
+</tr>
+<tr>
+<td><p>11001</p></td>
+<td><p>31</p></td>
+<td><p>25</p></td>
+<td><p>19</p></td>
+</tr>
+<tr>
+<td><p>11010</p></td>
+<td><p>32</p></td>
+<td><p>26</p></td>
+<td><p>1a</p></td>
+</tr>
+<tr>
+<td><p>11011</p></td>
+<td><p>33</p></td>
+<td><p>27</p></td>
+<td><p>1b</p></td>
+</tr>
+<tr>
+<td><p>11100</p></td>
+<td><p>34</p></td>
+<td><p>28</p></td>
+<td><p>1c</p></td>
+</tr>
+<tr>
+<td><p>11101</p></td>
+<td><p>35</p></td>
+<td><p>29</p></td>
+<td><p>1d</p></td>
+</tr>
+<tr>
+<td><p>11110</p></td>
+<td><p>36</p></td>
+<td><p>30</p></td>
+<td><p>1e</p></td>
+</tr>
+<tr>
+<td><p>11111</p></td>
+<td><p>37</p></td>
+<td><p>31</p></td>
+<td><p>1f</p></td>
+</tr>
+<tr>
+<td><p>100000</p></td>
+<td><p>40</p></td>
+<td><p>32</p></td>
+<td><p>20</p></td>
+</tr>
+<tr>
+<td><p>100001</p></td>
+<td><p>41</p></td>
+<td><p>33</p></td>
+<td><p>21</p></td>
+</tr>
+</tbody>
+</table>
+<p>Hexadecimal numbers are often written with prefix <strong>0x</strong> or suffix <strong>h</strong> to inform that they are hexadecimal. "10" can be of any base but when written as 0x10 or 10h it's clear it's hexadecimal.</p>
+<p>The reasons why computers use base 2 are very pragmatic:</p>
+<ul class="simple">
+<li><p>Constructing electronic devices which operate using only 2 states of direct current has gone enormously easier during transistor revolution in XXth century.</p></li>
+<li><p>Binary system is the easiest system of all to form from logic functions.</p></li>
+</ul>
+<section id="logic"><h2>Logic</h2>
+<p>Logic is a subfield of mathematics. In computer science, boolean algebra plays a huge role - it is used as the theoretical basis of constructing devices that work in the binary system.</p>
+<p>When humans add numbers (using decimal system) they do so by applying a set of rules over consecutive digits<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. Computers do the same task but in the binary system. The rules are applied on the basis of boolean algebra.</p>
+<p>In boolean algebra, there are only 2 possible states: false and true. 0 and 1. No and yes. Negative and positive. ...and whatever else you like to call them.</p>
+<p>Boolean algebra by itself is not enough to perform computations, but it's a building block for more complex systems.</p>
+<p>In this algebra, there are 3 basic operations: NOT, OR and AND. We can think of them as functions - mechanisms which take certain input to provide certain output.</p>
+<p>NOT is the simplest of them. It simply reverses the value:</p>
+<table>
+<thead><tr>
+<th class="head"><p>x</p></th>
+<th class="head"><p>NOT x</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>The other 2 are 2-argument functions:</p>
+<ul class="simple">
+<li><p>OR is true when x <strong>or</strong> y is true</p></li>
+<li><p>AND is true when x <strong>and</strong> y is true</p></li>
+</ul>
+<table>
+<thead><tr>
+<th class="head"><p>x</p></th>
+<th class="head"><p>y</p></th>
+<th class="head"><p>x OR y</p></th>
+<th class="head"><p>x AND y</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>OR is sometimes referred to as boolean addition or maximum function</p></li>
+<li><p>AND is sometimes referred to as boolean multiplication or minimum function</p></li>
+</ul>
+<p>Out of these functions, it's possible to construct more complex ones:</p>
+<ul class="simple">
+<li><p>x NOR y is equivalent to NOT (x OR y)</p></li>
+<li><p>x NAND y is equivalent to NOT (x AND y)</p></li>
+<li>
+<p>x XOR y (e<strong>x</strong>clusive OR) is equivalent to:</p>
+<ul>
+<li><p>(x OR y) AND NOT (x AND y)</p></li>
+<li><p>(x OR y) AND (NOT x OR NOT y)</p></li>
+</ul>
+</li>
+<li>
+<p>x NXOR y is equivalent to NOT (x XOR y) which is also equivalent to:</p>
+<ul>
+<li><p>(x AND y) OR NOT (x OR y)</p></li>
+<li><p>(x AND y) OR (NOT x AND NOT y)</p></li>
+</ul>
+</li>
+</ul>
+<table>
+<thead><tr>
+<th class="head"><p>x</p></th>
+<th class="head"><p>y</p></th>
+<th class="head"><p>x NOR y</p></th>
+<th class="head"><p>x NAND y</p></th>
+<th class="head"><p>x XOR y</p></th>
+<th class="head"><p>x NXOR y</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>All of these functions are often referred to as <a class="reference external" href="https://en.wikipedia.org/wiki/Logic_gate">logic gates</a>.</p>
+<p>Numberphile has made <a class="reference external" href="https://www.youtube.com/watch?v=lNuPy-r1GuQ">a video</a> explaining how you can build logic gates using dominos. Through junctions and collisions you can imitate elements such as diode and transistor. Later they showcase a 10000 domino circuit that adds 2 4-bit integers.</p>
+<p>Below is an example of the 7400 chip which contains 4 NANDs. The two additional pins supply power (+5 V) and connect the ground.</p>
+<img alt="The 7400 chip" src="https://upload.wikimedia.org/wikipedia/commons/c/c6/TexasInstruments_7400_chip%2C_view_and_element_placement.jpg"><p>Connecting output of gates to the input of other gates allows to build complex circuits which can perform various computational tasks, including arithmetic in the binary system. Below is a 4-bit <em>multiplexer</em> which depending on the value of selectors (S0, S1), forwards one of the inputs (I0, I1, I2, I3) to the output:</p>
+<img alt="4-bit multiplexer" src="https://upload.wikimedia.org/wikipedia/commons/9/95/4to1_MUX_using_basic_gates.jpg"><p>The truth table for this device:</p>
+<table>
+<thead><tr>
+<th class="head"><p>S0</p></th>
+<th class="head"><p>S1</p></th>
+<th class="head"><p>output</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>I3</p></td>
+</tr>
+<tr>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>I1</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>I2</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>I0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Below is the <a class="reference external" href="https://en.wikipedia.org/wiki/74181">74181</a>, a 4-bit ALU (arithmetic logic unit):</p>
+<img alt="74181 4-bit arithmetic logic unit" src="https://upload.wikimedia.org/wikipedia/commons/c/c0/74181aluschematic.png"><p>The device has many inputs:</p>
+<ul class="simple">
+<li><p>4-bit data A (A0, A1, A2, A3)</p></li>
+<li><p>4-bit data B (B0, B1, B2, B3)</p></li>
+<li><p>4-bit function selector (S0, S1, S2, S3)</p></li>
+<li><p>Carry (Cn)</p></li>
+<li><p>Mode (M)</p></li>
+</ul>
+<p>And many outputs:</p>
+<ul class="simple">
+<li><p>4-bit function result (F0, F1, F2, F3)</p></li>
+<li><p>A = B bit</p></li>
+<li><p>Carry (C(n+4))</p></li>
+<li><p>propagate bit (P)</p></li>
+<li><p>generate bit (G)</p></li>
+</ul>
+<p>Selectors decide what the ALU is doing. Since there are 4 selection bits, the device can perform 2^4 = 16 different functions (which means 16 truth tables for inputs A and B), each with specific Mode and Carry. Some of possible operations are:</p>
+<ul class="simple">
+<li><p>addition of 2 4-bit integers (first integer represented in binary system by A inputs, second by B) (if sum does not fit in 4 bits it's signaled through Carry output)</p></li>
+<li><p>subtraction of 2 4-bit integers (if result is negative it's signaled through Carry output)</p></li>
+<li><p>bitwise logical operations (e.g. F0 = A0 XOR B0, F1 = A1 XOR B1, ...)</p></li>
+<li><p>bit shift operations (e.g. F0 = 0, F1 = A0, F2 = A1, F3 = A2)</p></li>
+</ul>
+<p>At this point you should understand how computers work. Modern hardware is made of highly-integrated circuits which can contain billions of transistors.</p>
+<hr class="docutils">
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p>If you are confused with the terminology: <em>numbers</em> are made of <em>digits</em>. There are infinitely many numbers but we use a finite set of digits (0, 1, 2, 3, 4, 5, 6, 7, 8, 9 in decimal system) to represent them.</p>
+</aside></aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

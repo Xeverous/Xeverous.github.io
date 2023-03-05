@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 04 - abstract classes</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xz - polymorphism</a></li>
+							<span>/</span>
+						<li>04 - abstract classes</li>
+					</ol></nav><div class="content">
+				<h1>04 - abstract classes</h1>				<p>The animal-cat-dog example in the previous lesson demonstrated how <code class="code custom-cpp"><span class="keyword">virtual</span></code> functions work and their primary purpose - implementing different behavior that can be invoked through the same interface.</p>
+<p>Constructing objects of the base type alone (<code class="code custom-cpp"><span class="type">animal</span></code>) doesn't make much sense. We can make the <code class="code custom-cpp"><span class="type">animal</span></code> constructor <code class="code custom-cpp"><span class="keyword">protected</span></code> so that derived classes can call it but not any code outside the class (this is actually done sometimes). This would still allow inheriting but effectively block creation of objects of the base <code class="code custom-cpp"><span class="type">animal</span></code> type.</p>
+<p>But there is another problem. What to do with the implementation of the virtual function in the base type? Functions at the top level of inheritance hierarchy often can not have any meaningful body. But the code must compile.</p>
+<p>In the case of <code class="code custom-cpp"><span class="type">animal</span></code> the function simply returned a dummy string to satisfy the compiler. But what if in a hypothetical base class the return type of a <code class="code custom-cpp"><span class="keyword">virtual</span></code> function had no default constructor? What if there was no way to return sensible special value?</p>
+<p>The problem could be dealt with in a generic way by using <em>exceptions</em> or functions that perform some halt/exit but there is a much better solution through a dedicated language feature.</p>
+<section id="pure-virtual-functions"><h2>Pure virtual functions</h2>
+<p>A <strong>pure virtual function</strong> is a virtual function that has no body.</p>
+<p>A class with at least 1 <em>pure virtual function</em> is an <strong>abstract class</strong>. <strong>Objects of abstract types can not be created</strong> (pointers and references to abstract types are still allowed).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+
+<span class="keyword">class</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="com-single">// for historical reasons, there is no "pure" or "abstract" keyword in C++</span>
+	<span class="com-single">// instead, pure virtual functions are denoted with "= 0"</span>
+	<span class="keyword">virtual</span> <span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> = <span class="lit-num">0</span>;
+};
+
+<span class="keyword">class</span> <span class="type">cat</span>: <span class="keyword">public</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"meow"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">dog</span>: <span class="keyword">public</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"whoof"</span>; }
+};
+
+<span class="keyword">void</span> <span class="func">print_sound</span>(<span class="keyword">const</span> <span class="type">animal</span>&amp; <span class="param">a</span>)
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="param">a</span>.<span class="func">sound</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// virtual function call</span>
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">cat</span> <span class="var-local">c</span>;
+	<span class="type">dog</span> <span class="var-local">d</span>;
+	<span class="func">print_sound</span>(<span class="var-local">c</span>);
+	<span class="func">print_sound</span>(<span class="var-local">d</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>You can attempt to modify this example just like the the one in the previous lesson (change <code class="code custom-cpp"><span class="func">print_sound</span></code> function to take argument by value) but this time, instead of causing undesirable object slicing the program will not compile. Since objects of abstract types can not exist, passing them by value (which requires creation, copy or slicing) is also impossible.</p>
+<p>It's worth noting that in C++ you can still define bodies of pure virtual functions (the body has to be outside the class - there is no syntax support for both <code class="code custom-cpp">= <span class="lit-num">0</span></code> and <code class="code custom-cpp">{}</code> in one place). The class will remain abstract, but the function can be called through usual means - usually inside bodies of the same virtual function in derived classes.</p>
+<p>There is no requirement for implementing all pure virtual functions in derived classes. A derived class can implement only some of them, making itself also an abstract type. Even more, any further derived class can "repurify" a non-abstract class by specifying non-pure virtual functions as pure virtual functions (though IIRC this feature is not present in many languages and I don't know any example where the feature is useful).</p>
+</section><section id="virtual-functions-vs-other-features"><h2>Virtual functions vs other features</h2>
+<p>Polymorphism can be a lot of fun, but due to its dynamic nature some specific language features should not be combined with virtual functions or be combined in special ways to avoid creating unwanted surprises.</p>
+<section id="default-arguments"><h3>Default arguments</h3>
+<p>Function default arguments are evaluated at the point of each call. This means that for something like <code class="code custom-cpp"><span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">int</span> <span class="param">n</span> = <span class="func">g</span>())</code> everytime the function is called with no explicit parameters, <code class="code custom-cpp"><span class="func">g</span></code> will be called to supply the parameter (as if the call was <code class="code custom-cpp"><span class="func">f</span>(<span class="func">g</span>())</code>). Default arguments almost always are literals or other simple expressions that produce temporary objects but the problem still remains: <strong>default arguments are not inherited</strong>, which means they need to be respecified at each level of inheritance.</p>
+<p>Respecifying default arguments at every level of inheritance is nothing more than code duplication. And we know that it's one of the worst things in programming. Even worse is the fact that if there is a mistake in the derived class, a different evaluation will happen depending whether the function is called in the context of base or some derived class.</p>
+<p>The problem can be solved in a very clean way: just use overloading! Specifically, write <strong>additional non-virtual overloads only in the base class</strong> that supply default arguments. Below a beautiful example that just came to my mind:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-multi-dox">/**</span>
+ <span class="com-multi-dox">*</span> <span class="com-tag-dox">@class</span> <span class="com-multi-dox">base class interface representing an arbitrary timer</span>
+ <span class="com-multi-dox">*/</span>
+<span class="keyword">class</span> <span class="type">timer</span>
+{
+<span class="keyword">public</span>:
+	<span class="com-multi-dox">/**</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@brief</span> <span class="com-multi-dox">start the timer</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@param</span> <span class="com-multi-dox">precision number of ticks per second</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@param</span> <span class="com-multi-dox">delay delay of the start in the unit of precision</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@return</span> <span class="com-multi-dox">true if timer started, false if already running</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@details</span> <span class="com-multi-dox">precision may be limited to max_precision()</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@sa</span> <span class="com-multi-dox">max_precision</span>
+	 <span class="com-multi-dox">*/</span>
+	<span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="func">start</span>(<span class="keyword">long</span> <span class="param">precision</span>, <span class="keyword">long</span> <span class="param">delay</span>) = <span class="lit-num">0</span>;
+	<span class="keyword">bool</span> <span class="func">start</span>(<span class="keyword">long</span> <span class="param">precision</span>) { <span class="keyword">return</span> <span class="func">start</span>(<span class="param">precision</span>, <span class="lit-num">0</span>); }
+	<span class="keyword">bool</span> <span class="func">start</span>() { <span class="keyword">return</span> <span class="func">start</span>(<span class="func">max_precision</span>()); }
+
+	<span class="com-multi-dox">/**</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@brief</span> <span class="com-multi-dox">stop the timer</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@return</span> <span class="com-multi-dox">amount of passed time,</span>
+	 <span class="com-multi-dox">* empty optional if the timer wasn't running</span>
+	 <span class="com-multi-dox">*/</span>
+	<span class="keyword">virtual</span> <span class="namespace">std</span>::<span class="type">optional</span>&lt;<span class="keyword">long</span>&gt; <span class="func">stop</span>() = <span class="lit-num">0</span>;
+
+	<span class="com-multi-dox">/**</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@brief</span> <span class="com-multi-dox">check whether the timer is running</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@return</span> <span class="com-multi-dox">true if running, false otherwise</span>
+	 <span class="com-multi-dox">*/</span>
+	<span class="keyword">virtual</span> <span class="keyword">bool</span> <span class="func">is_running</span>() <span class="keyword">const</span> = <span class="lit-num">0</span>;
+
+	<span class="com-multi-dox">/**</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@brief</span> <span class="com-multi-dox">get maximum precision supported by the timer</span>
+	 <span class="com-multi-dox">*</span> <span class="com-tag-dox">@return</span> <span class="com-multi-dox">maximum precision supported</span>
+	 <span class="com-multi-dox">*/</span>
+	<span class="keyword">virtual</span> <span class="keyword">long</span> <span class="func">max_precision</span>() <span class="keyword">const</span> = <span class="lit-num">0</span>;
+};
+</pre></td>
+</tr></tbody></table>
+<p>Overloading is actually more powerful than default arguments, in this specific example you can observe that the default value of precision comes from another <code class="code custom-cpp"><span class="keyword">virtual</span></code> function! Another benefit is that any derived class needs only to write one overload (and <code class="code custom-cpp"><span class="keyword">using</span> <span class="type">timer</span>::<span class="func">start</span>;</code> to avoid hiding base class overloads if they are called directly in the context of some derived type).</p>
+</section><section id="overloading"><h3>Overloading</h3>
+<p>The same function can have multiple <code class="code custom-cpp"><span class="keyword">virtual</span></code> overloads but this is generally a bad design because effectively it forms multiple chains of virtual functions that just happen to use the same name. Having to <code class="code custom-cpp"><span class="keyword">override</span></code> multiple functions that differ very little signifies that the interface (base class) wasn't designed properly. And bad interfaces attract (and sometimes even force) suboptimal implementations.</p>
+<p>In cases where there is a need for multiple, different inputs it would be much better to stick to the same approach as with default arguments: design only 1 virtual function and multiple non-virtual overloads that convert input data to match the one expected by the virtual overload.</p>
+<p>Supporting only 1 input type may seem limiting, but it's much better to have an unchangeable set of input-converting non-virtual functions than expecting derived classes to additionally implement their own convertion (a great place for subtle bugs caused by differences in behavior).</p>
+</section><section id="operator-overloading"><h3>Operator overloading</h3>
+<p>Operators which are defined as member functions can be <code class="code custom-cpp"><span class="keyword">virtual</span></code>, they work just like any other function - the only difference is that they have special name and offer special syntax.</p>
+<p>What do to when an operator should or must be implemented as non-member? Just call a virtual function inside it (sometimes this might require creating a virtual function just for the purpose of implementing the operator):</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ostream</span>&amp; <span class="keyword">operator</span><span class="func">&lt;&lt;</span>(<span class="namespace">std</span>::<span class="type">ostream</span>&amp; <span class="param">os</span>, <span class="keyword">const</span> <span class="type">animal</span>&amp; <span class="param">a</span>)
+{
+	<span class="keyword">return</span> <span class="param">os</span> <span class="oo">&lt;&lt;</span> <span class="param">a</span>.<span class="func">sound</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<p>Stream insertion/extraction is very different from other binary operators though - it's not commutative. For something like <code class="code custom-cpp"><span class="var-local">a</span> + <span class="var-local">b</span></code> (where there are 2 objects from the same type hierarchy):</p>
+<ul class="simple">
+<li><p>implementing it as <code class="code custom-cpp"><span class="var-local">a</span>.<span class="func">func</span>(<span class="var-local">b</span>)</code> will call implementation based on the dynamic type of <code class="code custom-cpp"><span class="var-local">a</span></code></p></li>
+<li><p>implementing it as <code class="code custom-cpp"><span class="var-local">b</span>.<span class="func">func</span>(<span class="var-local">a</span>)</code> will call implementation based on the dynamic type of <code class="code custom-cpp"><span class="var-local">b</span></code></p></li>
+</ul>
+<p>If such thing happens, using operator overloading was probably a bad decision (polymorphic classes rarely overload operators). If the implementation of the operation requires knowledge of dynamic types of both operands, <em>visitor design pattern</em> should be used instead.</p>
+</section><section id="constructors"><h3>Constructors</h3>
+<p>Virtual functions can be called in constructors (and <em>destructors</em> - these are covered in other tutorial, in the chapter about RAII), but there is a limitation. Because during construction the object may only be partially initialized (the <em>dynamic type</em> might be a type derived from the type of which currently a constructor is running) virtual calls in constructors are resolved only down to the level of the current class (analogical but reverse thing happens in destructors - object is partially destroyed). To illustrate:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">class</span> <span class="type">A</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"A::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">B</span>: <span class="keyword">public</span> <span class="type">A</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">B</span>() { <span class="func">f</span>(); }
+
+	<span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"B::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">C</span>: <span class="keyword">public</span> <span class="type">B</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"C::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">C</span> <span class="var-local">c</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_bdb065612c1c4c5cae913ffc71e54536-1" name="rest_code_bdb065612c1c4c5cae913ffc71e54536-1" href="#rest_code_bdb065612c1c4c5cae913ffc71e54536-1"></a>B::f
+</pre></div>
+<p>Inside the body of <code class="code custom-cpp"><span class="type">B</span>::<span class="func">B</span></code>, it's unknown whether the constructor is run to initialize an object of type <code class="code custom-cpp"><span class="type">B</span></code> or as a part of initialization of an object which type inherits from <code class="code custom-cpp"><span class="type">B</span></code>. Since the constructor can not assume what is the actual (<em>dynamic</em>) type of the constructed object (and even if it could, that part is still uninitialized), virtual call considers overriders only to the level of class <code class="code custom-cpp"><span class="type">B</span></code>.</p>
+<p>What if there are no overriders at the level of currently running constructor (that is, function remains pure virtual)? Well, nothing good:</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>A direct or indirect call to an unimplemented pure virtual function from a constructor or destructor has undefined behavior.</p>
+</aside><p>Reminder: UB also includes situations such as "doesn't compile" and "doesn't link". Some pure virtual calls might be caught by the linker (missing symbol definition). Some might crash in a very friendly way - I have seen GCC providing implementations for pure virtual functions so that if they happen to be called through UB, the body of the function prints an explanatory message and kills the program (this is much better than manually searching the cause of an unknown crash).</p>
+<p><a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rc-ctor-virtual">CG C.82</a> recommends to avoid virtual function calls in constructors and destructors. If initialization of the object requires such things (which is not always a bad design), use the <em>named constructor</em> approach, as described in <a class="reference external" href="../../xx_classes/10_static_methods">classes / static methods</a> - write a <code class="code custom-cpp"><span class="keyword">static</span></code> function that creates the object, calls necessary virtual functions and then returns it.</p>
+<!-- TODO it would be good to have some exercises to showcase example output of specific cases -->
+</section></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - catching</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">ya - exceptions</a></li>
+							<span>/</span>
+						<li>02 - catching</li>
+					</ol></nav><div class="content">
+				<h1>02 - catching</h1>				<section id="multiple-catch-blocks"><h2>Multiple catch blocks</h2>
+<p><code class="code custom-cpp"><span class="keyword">try</span></code> and <code class="code custom-cpp"><span class="keyword">catch</span></code> blocks always have to be together, but the <code class="code custom-cpp"><span class="keyword">catch</span></code> block can appear multiple times.</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>Choosing the handler <strong>does not</strong> work like function overloading. Instead, handlers are tested in order of their appearance. The first matching handler is choosen, even if it requires implicit convertions. Code from other handlers is not executed.</p>
+</aside><p>If no match is found, exception continues to propagate and unwind the stack untill another try-catch block is found upwards the call stack.</p>
+<p>If a match is found, control flow enters the scope of a specific handler. Because exception objects are polymorphic and they are rarely modified, they are typically caught by const reference - this prevents <em>object slicing</em> and ensures const-correctness.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;exception&gt;</span>
+
+<span class="keyword">class</span> <span class="type-class">a_exception</span> : <span class="keyword">public</span> <span class="namespace">std</span>::<span class="type-class">exception</span> {};
+<span class="keyword">class</span> <span class="type-class">b_exception</span> : <span class="keyword">public</span> <span class="type-class">a_exception</span> {};
+<span class="keyword">class</span> <span class="type-class">c_exception</span> : <span class="keyword">public</span> <span class="type-class">b_exception</span> {};
+<span class="keyword">class</span> <span class="type-class">d_exception</span> : <span class="keyword">public</span> <span class="type-class">c_exception</span> {};
+
+<span class="keyword">void</span> <span class="func-free">func</span>()
+{
+	<span class="com-single">// throw what you like here
+</span>}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"program start<span class="esc-seq">\n</span>"</span>;
+
+	<span class="keyword">try</span> {
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"before func()<span class="esc-seq">\n</span>"</span>;
+		<span class="func-free">func</span>();
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"after func()<span class="esc-seq">\n</span>"</span>; <span class="com-single">// if func() throws this is never executed
+</span>	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="type-class">d_exception</span>&amp; <span class="var-local">e</span>) {
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"caught d exception<span class="esc-seq">\n</span>"</span>;
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="type-class">c_exception</span>&amp; <span class="var-local">e</span>) {
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"caught c exception<span class="esc-seq">\n</span>"</span>;
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="type-class">b_exception</span>&amp; <span class="var-local">e</span>) {
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"caught b exception<span class="esc-seq">\n</span>"</span>;
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="type-class">a_exception</span>&amp; <span class="var-local">e</span>) {
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"caught a exception<span class="esc-seq">\n</span>"</span>;
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">exception</span>&amp; <span class="var-local">e</span>) {
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"caught standard exception<span class="esc-seq">\n</span>"</span>;
+	}
+	<span class="keyword">catch</span> (...) {
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"caught unknown exception<span class="esc-seq">\n</span>"</span>;
+	}
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"program end<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Suppose <code class="code custom-cpp"><span class="func">func</span>()</code> throws <code class="code custom-cpp"><span class="type">b_exception</span></code>, then:</p>
+<ul class="simple">
+<li><p>first catch block is ignored because <code class="code custom-cpp"><span class="type">b_exception</span></code> is not (a child of) <code class="code custom-cpp"><span class="type">d_exception</span></code></p></li>
+<li><p>second catch block is ignored because <code class="code custom-cpp"><span class="type">b_exception</span></code> is not (a child of) <code class="code custom-cpp"><span class="type">c_exception</span></code></p></li>
+<li><p>third catch block is matched (types are identical); it is executed</p></li>
+<li><p>program continues past last catch block</p></li>
+</ul>
+<p>Effectively, the program prints:</p>
+<div class="code"><pre class="code text"><a id="rest_code_3e36d1205f8c4cb4ba6541290cc6922e-1" name="rest_code_3e36d1205f8c4cb4ba6541290cc6922e-1" href="#rest_code_3e36d1205f8c4cb4ba6541290cc6922e-1"></a>program start
+<a id="rest_code_3e36d1205f8c4cb4ba6541290cc6922e-2" name="rest_code_3e36d1205f8c4cb4ba6541290cc6922e-2" href="#rest_code_3e36d1205f8c4cb4ba6541290cc6922e-2"></a>before func()
+<a id="rest_code_3e36d1205f8c4cb4ba6541290cc6922e-3" name="rest_code_3e36d1205f8c4cb4ba6541290cc6922e-3" href="#rest_code_3e36d1205f8c4cb4ba6541290cc6922e-3"></a>caught b exception
+<a id="rest_code_3e36d1205f8c4cb4ba6541290cc6922e-4" name="rest_code_3e36d1205f8c4cb4ba6541290cc6922e-4" href="#rest_code_3e36d1205f8c4cb4ba6541290cc6922e-4"></a>program end
+</pre></div>
+<p>If the order of handlers was different, exceptions objects could be caught with unnecessary loss of type information.</p>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-catch-span-code"><h2><code class="code custom-cpp"><span class="keyword">catch</span> (...)</code></h2>
+<p><code class="code custom-cpp"><span class="keyword">catch</span> (...)</code> will catch every exception regardless of it's type (it might not be even a class, just whatever that was thrown)*.</p>
+<p>The good is that it catches everything. The bad is that you don't know the type of caught exception and have no way to use it.</p>
+<p>Obviously catch-all block should be always the last. No handler after this one could ever be matched.</p>
+<p><strong>*:</strong> Microsoft compiler offers a language extension where some UB (such as null pointer dereference) is turned into exceptions. Such exceptions are beyond official C++ and require implementation-specific <code class="code custom-cpp"><span class="ext">__try</span></code> and <code class="code custom-cpp"><span class="ext">__except</span></code> keywords.</p>
+</section><section id="catching-multiple-exceptions"><h2>Catching multiple exceptions</h2>
+<p>Some languages offer a feature to catch exceptions of multiple, different <em>dynamic types</em> in one handler block. C++ does not - you just can't have multi-argument <code class="code custom-cpp"><span class="keyword">catch</span></code> clause.</p>
+<p>There are 2 solutions for it:</p>
+<ul class="simple">
+<li><p>catching each separately and invoking same code as the handler</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;stdexcept&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;optional&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;functional&gt;</span>
+
+<span class="keyword">int</span> <span class="func-free">may_throw</span>();
+
+<span class="keyword">int</span> <span class="func-free">func</span>()
+{
+	<span class="keyword">auto</span> <span class="var-local">handler</span> = [](<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">exception</span>&amp; <span class="com-multi">/* e */</span>) {
+		<span class="com-multi">/* do stuff with e */</span>
+		<span class="keyword">return</span> <span class="lit-num">0</span>;
+	};
+
+	<span class="keyword">try</span> {
+		<span class="keyword">return</span> <span class="func-free">may_throw</span>();
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">runtime_error</span>&amp; <span class="var-local">e</span>) {
+		<span class="keyword">return</span> <span class="var-local">handler</span>(<span class="var-local">e</span>);
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">bad_function_call</span>&amp; <span class="var-local">e</span>) {
+		<span class="keyword">return</span> <span class="var-local">handler</span>(<span class="var-local">e</span>);
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">bad_optional_access</span>&amp; <span class="var-local">e</span>) {
+		<span class="keyword">return</span> <span class="var-local">handler</span>(<span class="var-local">e</span>);
+	}
+
+	<span class="com-single">// This function produces no control flow warnings!
+</span>	<span class="com-single">// Any code here is unreachable - func either:
+</span>	<span class="com-single">// - executes return from the try block
+</span>	<span class="com-single">// - returns from a handler
+</span>	<span class="com-single">// - exits via uncaught exception
+</span>}
+</pre></td>
+</tr></tbody></table>
+<ul class="simple">
+<li><p>catching a generic type and performing dynamic casts to check dynamic type</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;stdexcept&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;optional&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;functional&gt;</span>
+
+<span class="keyword">int</span> <span class="func-free">may_throw</span>();
+
+<span class="keyword">int</span> <span class="func-free">func</span>()
+{
+	<span class="keyword">try</span> {
+		<span class="keyword">return</span> <span class="func-free">may_throw</span>();
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">exception</span>&amp; <span class="var-local">e</span>) {
+		<span class="keyword">if</span> (<span class="keyword">auto</span> <span class="var-local">ptr</span> = <span class="keyword">dynamic_cast</span>&lt;<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">runtime_error</span>*&gt;(&amp;<span class="var-local">e</span>); <span class="var-local">ptr</span> != <span class="keyword">nullptr</span>) {
+			<span class="com-single">// handle runtime_error
+</span>			<span class="keyword">return</span> <span class="lit-num">0</span>;
+		}
+		<span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">auto</span> <span class="var-local">ptr</span> = <span class="keyword">dynamic_cast</span>&lt;<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">bad_function_call</span>*&gt;(&amp;<span class="var-local">e</span>); <span class="var-local">ptr</span> != <span class="keyword">nullptr</span>) {
+			<span class="com-single">// handle bad_function_call
+</span>			<span class="keyword">return</span> <span class="lit-num">0</span>;
+		}
+		<span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">auto</span> <span class="var-local">ptr</span> = <span class="keyword">dynamic_cast</span>&lt;<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">bad_optional_access</span>*&gt;(&amp;<span class="var-local">e</span>); <span class="var-local">ptr</span> != <span class="keyword">nullptr</span>) {
+			<span class="com-single">// handle bad_optional_access
+</span>			<span class="keyword">return</span> <span class="lit-num">0</span>;
+		}
+		<span class="keyword">else</span> {
+			<span class="keyword">throw</span>; <span class="com-single">// rethrow exception
+</span>		}
+	}
+
+	<span class="com-single">// (unreachable code)
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>Comparing by machine code, they will be very similar. Both <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> and built-in <code class="code custom-cpp"><span class="keyword">catch</span></code> mechanism relies on RTTI so both implementations perform roughly the same operations. For the latter version, if the exception is not matched it can simply be thrown again. Because of this and additional conditional instructions I presume most programmers would think of the first approach as cleaner.</p>
+</section><section id="rethrowing"><h2>Rethrowing</h2>
+<p>Caught exceptions can be thrown again, simply by writing <code class="code custom-cpp"><span class="keyword">throw</span>;</code>. The statement doesn't have to be directly within a <code class="code custom-cpp"><span class="keyword">catch</span></code> block, it can be executed indirectly, e.g. from a function which is called inside the handler. No new objects are created, the current exception simply continues to propagate up the stack; any handlers immediately after the one which rethrows are not checked. One can also write regular <code class="code custom-cpp"><span class="keyword">throw</span></code> statement (with an argument) to throw a new exception object.</p>
+<p>If <code class="code custom-cpp"><span class="keyword">throw</span>;</code> is executed while there is no exception object, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">terminate</span></code> is called.</p>
+<p>Rethrowing and throwing again (an exception of a different type) is useful in some minor cases such as:</p>
+<ul class="simple">
+<li><p>Capturing a narrow set of errors and rethrowing them as something different (better understood by higher-level code).</p></li>
+<li><p>Logging intermediate state (that would be potentially lost if caught as a base class).</p></li>
+<li><p>Performing partial cleanup (e.g. closing the connection), then continuing to propagate failure about network operation.</p></li>
+</ul>
+<aside class="admonition warning"><p class="admonition-title">warning</p>
+<p>A common mistake when rethrowing: slicing the object.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">exception</span>&amp; <span class="var-local">e</span>) {
+	<span class="com-single">// [...]</span>
+
+	<span class="com-single">// BAD: does not rethrow, instead makes a slice and throws only</span>
+	<span class="com-single">// the std::exception subobject of the current exception</span>
+	<span class="keyword">throw</span> <span class="var-local">e</span>;
+}
+</pre></td>
+</tr></tbody></table></aside><p>Remember that the caught object might be of a more derived type than actually visible. <code class="code custom-cpp"><span class="keyword">throw</span>;</code> simply continues propagation of the current exception, whatever is is. It may also result in better diagnostics from some tools: correct rethrowing ensures continuity of the stack unwinding process, throwing another object may reset/discard exception call stack information.</p>
+</section><section id="additional-utilities"><h2>Additional utilities</h2>
+<p>The standard library header <code class="code custom-cpp"><span class="pp-header">&lt;exception&gt;</span></code> offers some additional (magic) utility functions.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">namespace</span> <span class="namespace">std</span> {
+
+<span class="com-single">// A special smart pointer type capable of referencing an exception object.
+</span><span class="com-single">// Can not be used as or converted to a raw pointer, but special
+</span><span class="com-single">// standard library functions accept exception_ptr as an argument.
+</span><span class="keyword">class</span> <span class="type-class">exception_ptr</span> {
+<span class="keyword">public</span>:
+	<span class="com-single">// creates empty exception_ptr
+</span>	<span class="type-class">exception_ptr</span>() <span class="keyword">noexcept</span>;
+	<span class="com-single">// the class is copyable, copies work like std::shared_ptr
+</span>	<span class="type-class">exception_ptr</span>(<span class="keyword">const</span> <span class="type-class">exception_ptr</span>&amp; <span class="param">other</span>) <span class="keyword">noexcept</span>;
+
+	<span class="com-single">// check if non-empty
+</span>	<span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="keyword">bool</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+
+<span class="keyword">private</span>:
+	<span class="com-multi">/* compiler magic */</span>
+};
+
+<span class="keyword">bool</span> <span class="keyword">operator</span>==(<span class="keyword">const</span> <span class="type-class">exception_ptr</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type-class">exception_ptr</span>&amp; <span class="param">rhs</span>) <span class="keyword">noexcept</span>;
+<span class="keyword">bool</span> <span class="keyword">operator</span>!=(<span class="keyword">const</span> <span class="type-class">exception_ptr</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type-class">exception_ptr</span>&amp; <span class="param">rhs</span>) <span class="keyword">noexcept</span>;
+
+<span class="com-single">// Return a smart pointer to the current exception
+</span><span class="com-single">// - if no exception is propagating, returns empty exception_ptr
+</span><span class="com-single">// - otherwise stops propagation and returns non-empty exception_ptr
+</span><span class="com-single">// - in case of problems (e.g. no memory) may return non-empty
+</span><span class="com-single">//   exception_ptr to std::bad_alloc or std::bad_exception
+</span><span class="type-class">exception_ptr</span> <span class="func-free">current_exception</span>() <span class="keyword">noexcept</span>;
+
+<span class="com-single">// Throw a given object and make exception_ptr for it.
+</span><span class="com-single">// The parameter is passed by value and thus may be sliced
+</span><span class="com-single">// (make sure you have the local object, not a reference to its base).
+</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">E</span>&gt;
+<span class="type-class">exception_ptr</span> <span class="func-free">make_exception_ptr</span>(<span class="param-tmpl">E</span> <span class="param">e</span>) <span class="keyword">noexcept</span>
+{
+	<span class="com-single">// This isn't the actual implementation, but it works as such.
+</span>	<span class="keyword">try</span> {
+		<span class="keyword">throw</span> <span class="param">e</span>;
+	} <span class="keyword">catch</span> (...) {
+		<span class="keyword">return</span> <span class="func-free">current_exception</span>();
+	}
+}
+
+<span class="com-single">// p must not be empty, otherwise undefined behavior.
+</span><span class="com-single">// The exception object may be copied for implementation reasons.
+</span>[[<span class="unknown">noreturn</span>]] <span class="keyword">void</span> <span class="func-free">rethrow_exception</span>(<span class="type-class">exception_ptr</span> <span class="param">p</span>);
+
+<span class="com-single">// ... even more obscure functionality, listed on
+</span><span class="com-single">// https://en.cppreference.com/w/cpp/header/exception
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>They are useful primarily in concurrent programs for:</p>
+<ul class="simple">
+<li><p>capturing a running exception, passing <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">exception_ptr</span></code> to a different thread and repropagating it there</p></li>
+<li><p>creating <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">future</span></code> objects holding exceptions to signal a failure in satisfying <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">promise</span></code> (a mechanism of asynchronous communication)</p></li>
+</ul>
+<p><a class="reference external" href="http://cppsecrets.blogspot.com/2013/12/using-lippincott-function-for.html">An external article</a> describes "Lippincott technique" which can be used as a pattern to implement the same uniform exception handling in multiple places.</p>
+</section><section id="summary"><h2>Summary</h2>
+<ul class="simple">
+<li><p>write handlers in order of decreasing specificity</p></li>
+<li><p>catch by const reference</p></li>
+<li><p>when rethrowing the same exception object, write just <code class="code custom-cpp"><span class="keyword">throw</span>;</code>, otherwise the exception will be sliced</p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

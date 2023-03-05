@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - object-like macros</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">06 - preprocessor</a></li>
+							<span>/</span>
+						<li>02 - object-like macros</li>
+					</ol></nav><div class="content">
+				<h1>02 - object-like macros</h1>				<p>The <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">define</span></code> directive offers text replacement and is commonly used as a building block for more complex preprocessor code.</p>
+<section id="syntax"><h2>Syntax</h2>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// object-like macros</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="spec">identifier</span> <span class="spec">replacement-list</span>
+<span class="com-single">// function-like macros</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="spec">identifier</span>(<span class="spec">parameters</span>) <span class="spec">replacement-list</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="spec">identifier</span>(<span class="spec">parameters</span>, ...) <span class="spec">replacement-list</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="spec">identifier</span>(...) <span class="spec">replacement-list</span>
+
+<span class="com-single">// undefine any macro</span>
+<span class="pp-hash">#</span><span class="pp-directive">undef</span> <span class="spec">identifier</span>
+</pre></td>
+</tr></tbody></table>
+<p>The <code class="code custom-cpp"><span class="spec">replacement-list</span></code> is always optional (a macro may have "empty" definition and just exist). The identifier can be anything except:</p>
+<ul class="simple">
+<li><p>keywords</p></li>
+<li><p><em>identifiers with special meaning</em> (list on <a class="reference external" href="https://en.cppreference.com/w/cpp/keyword">https://en.cppreference.com/w/cpp/keyword</a>)</p></li>
+<li><p>standard attribute tokens (list on <a class="reference external" href="https://en.cppreference.com/w/cpp/language/attributes#Standard_attributes">https://en.cppreference.com/w/cpp/language/attributes#Standard_attributes</a>)</p></li>
+</ul>
+<p>In practice, implementations allow such macros (preprocessor doesn't understand C++ grammar and keywords after all) but output a warning - the standard doesn't want programmers to hijack core parts of the language by the preprocessor text replacement mechanism.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>By convention, all preprocessor identifiers (especially <em>macros</em>) should be written in UPPERCASE_ONLY. This is to avoid clashes with ordinary code - <em>macros</em> must be clearly visible.</p>
+</aside><aside class="admonition note"><p class="admonition-title">note</p>
+<p>A macro can use other macros inside it's own <em>replacement-list</em>.</p>
+</aside><p>In the example below you can see both object-like and function-like macros in action. The preprocessor is capable of basic math operations - these are typically used to check the level of available features.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// inside the library</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="pp-macro">LIB_VERSION_ENCODE</span>(<span class="pp-macro-param">x</span>, <span class="pp-macro-param">y</span>, <span class="pp-macro-param">z</span>) (<span class="lit-num">10000</span> * <span class="pp-macro-param">x</span> + <span class="lit-num">100</span> * <span class="pp-macro-param">y</span> + <span class="pp-macro-param">z</span>)
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="pp-macro">LIB_VERSION</span> <span class="macro">LIB_VERSION_ENCODE</span>(<span class="lit-num">2</span>, <span class="lit-num">1</span>, <span class="lit-num">3</span>)
+
+<span class="com-single">// some code that uses the library</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;lib/version.hpp&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">if</span> <span class="macro">LIB_VERSION</span> &gt;= <span class="macro">LIB_VERSION_ENCODE</span>(<span class="lit-num">2</span>, <span class="lit-num">0</span>, <span class="lit-num">0</span>)
+	<span class="com-single">// [...] code that uses newer approach</span>
+<span class="pp-hash">#</span><span class="pp-directive">elif</span> <span class="macro">LIB_VERSION</span> &gt;= <span class="macro">LIB_VERSION_ENCODE</span>(<span class="lit-num">1</span>, <span class="lit-num">6</span>, <span class="lit-num">11</span>)
+	<span class="com-single">// [...] code that uses older approach</span>
+<span class="pp-hash">#</span><span class="pp-directive">else</span>
+	<span class="pp-hash">#</span><span class="pp-directive">error</span> <span class="pp-other">LIB_VERSION is too low!</span>
+<span class="pp-hash">#</span><span class="pp-directive">endif</span>
+</pre></td>
+</tr></tbody></table></section><section id="code-class-code-custom-cpp-span-class-pp-hash-span-span-class-pp-directive-undef-span-code"><h2><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">undef</span></code></h2>
+<p>Generally, there is no need to undefine previously defined macros - each <em>translation unit</em> that is a part of compilation process (source file + all files it includes) will run through separate preprocessor. Still, in some cases undefining may be desirable to affect other directives.</p>
+<p>Unlike the C++ compiler (when it comes to duplicate definitions), the preprocessor reacts differently to conflicting directives:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">define</span></code>: if the identifier is already defined as any type of macro, the program is <em>ill-formed</em> unless the definitions are identical.</p></li>
+<li><p><code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">undef</span></code>: if the identifier does not have associated macro, the directive is ignored.</p></li>
+</ul>
+<p>Still, major compilers in both cases (duplicate definition, undefining non-existing macro) will issue warnings as such code while technically valid, typically indicates some mistake within preprocessor code.</p>
+<p>When macro presence can not be easily predicted (which is the case on many platforms where supported features vary) one can prepend operations with checks to avoid warnings:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifndef</span> <span class="macro">ABC</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="macro">ABC</span> <span class="lit-num">1</span>
+<span class="pp-hash">#</span><span class="pp-directive">endif</span>
+
+<span class="pp-hash">#</span><span class="pp-directive">ifdef</span> <span class="macro">XYZ</span>
+<span class="pp-hash">#</span><span class="pp-directive">undef</span> <span class="macro">XYZ</span>
+<span class="pp-hash">#</span><span class="pp-directive">endif</span>
+</pre></td>
+</tr></tbody></table></section><section id="predefined-macros"><h2>Predefined macros</h2>
+<p>Several macros are defined by the C++ standard. You don't need to include any files to get them.</p>
+<section id="macro-constants"><h3>Macro constants</h3>
+<p>Most notable ones:</p>
+<ul class="simple">
+<li>
+<p><code class="code custom-cpp"><span class="macro">__cplusplus</span></code> - version of the C++ standard being used as a number in the form <code class="docutils literal">YYYYMM</code></p>
+<ul>
+<li><p>C++98: <code class="code custom-cpp"><span class="num">199711</span><span class="suf">L</span></code></p></li>
+<li><p>C++11: <code class="code custom-cpp"><span class="num">201103</span><span class="suf">L</span></code></p></li>
+<li><p>C++14: <code class="code custom-cpp"><span class="num">201402</span><span class="suf">L</span></code></p></li>
+<li><p>C++17: <code class="code custom-cpp"><span class="num">201703</span><span class="suf">L</span></code></p></li>
+<li><p>C++20: <code class="code custom-cpp"><span class="num">202002</span><span class="suf">L</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="code custom-cpp"><span class="macro">__STDC_HOSTED__</span></code> - <code class="code custom-cpp"><span class="lit-num">1</span></code> if the implementation runs on an OS, <code class="code custom-cpp"><span class="lit-num">0</span></code> if freestanding (the code is the operating system)</p></li>
+<li><p><code class="code custom-cpp"><span class="macro">__STDCPP_THREADS__</span></code> - if present and if has value <code class="code custom-cpp"><span class="lit-num">1</span></code> indicates that the implementation supports multiple threads of execution</p></li>
+</ul>
+<p>More listed on <a class="reference external" href="https://en.cppreference.com/w/cpp/preprocessor/replace">https://en.cppreference.com/w/cpp/preprocessor/replace</a></p>
+<aside class="admonition warning"><p class="admonition-title">warning</p>
+<p>Up untill Visual Studio 2017 version 15.7 Preview 3, the Microsoft's compiler implementation was erroneously stuck at <code class="code custom-cpp"><span class="macro">__cplusplus</span></code> being <code class="code custom-cpp"><span class="num">199711</span><span class="suf">L</span></code>. Library implementers had to rely on <code class="code custom-cpp"><span class="macro">_MSC_VER</span></code> or other MSVC-specific macros to check what is supported. See <a class="reference external" href="https://devblogs.microsoft.com/cppblog/msvc-now-correctly-reports-__cplusplus/">a post on Microsoft's blog</a> for more information.</p>
+</aside></section><section id="feature-testing-macros"><h3>Feature-testing macros</h3>
+<p>These macros indicate support for certain language features or certain standard library parts. Even though <code class="code custom-cpp"><span class="macro">__has_include</span></code> and <code class="code custom-cpp"><span class="macro">__has_cpp_attribute</span></code> are officially since C++17 and C++20 respectively, GCC and Clang supported them much earlier - if I'm right it was probably compiler implementers idea that later turned out to be so useful it has been standarized. With the help of these macros you can enable a better implementation of something at compile time and still have working code if the feature is not supported.</p>
+<p>Full list on <a class="reference external" href="https://en.cppreference.com/w/cpp/feature_test">https://en.cppreference.com/w/cpp/feature_test</a></p>
+</section><section id="magic-macros"><h3>Magic macros</h3>
+<p>There are also few "magic" macros which have very unique behavior:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="macro">__FILE__</span></code> - expands to an <em>implementation-defined</em> string literal indicating currently processed file. IMO GCC made a very good decision to simply output the same string as the file path provided to the compiler - so whether it's relative or absolute the form will be preserved.</p></li>
+<li><p><code class="code custom-cpp"><span class="macro">__LINE__</span></code> - expands to an integer constant indicating current line number.</p></li>
+<li><p><code class="code custom-cpp"><span class="macro">__DATE__</span></code> - expands to a string literal indicating date of preprocessing the file. Has the ugly <code class="docutils literal">Mmm dd yyyy</code> format - ugly because month is not a number and there is no order consistency like year/month/day in ISO 8601 format.</p></li>
+<li><p><code class="code custom-cpp"><span class="macro">__TIME__</span></code> - expands to a string literal indicating time of preprocessing the file in the format <code class="docutils literal">hh:mm:ss</code>.</p></li>
+</ul>
+<p>These are commonly used for testing, debugging (especially assertions) and logging. Note that <code class="code custom-cpp"><span class="macro">__DATE__</span></code> and <code class="code custom-cpp"><span class="macro">__TIME__</span></code> expand during preprocessing, not during runtime. Once a file with these is compiled it will contain the same value until a file containing the macro is recompiled again.</p>
+</section><section id="code-class-code-custom-cpp-span-class-ext-func-span-code"><h3><code class="code custom-cpp"><span class="ext">__func__</span></code></h3>
+<p>In the scope of every function body, there is a special function-local predefined variable named <code class="code custom-cpp"><span class="ext">__func__</span></code>, defined as a static character array holding the name of the function in implementation-defined format. It's not a preprocessor directive because the preprocessor does not understand C and C++ code - it sees everything as text and doesn't understand what a function is. For this reason <code class="code custom-cpp"><span class="ext">__func__</span></code> has been specified as magic function-local variable. This also means that directives like <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">ifdef</span> <span class="var-global">__func__</span></code> will not work.</p>
+<p>The value is implementation defined, but on all major implementations it's simply the name of the function. If you want a richer variant (enclosing scopes + arguments + cv-qualifiers etc.), <code class="code custom-cpp"><span class="pp-header">&lt;boost/current_function.hpp&gt;</span></code> offers <code class="code custom-cpp"><span class="macro">BOOST_PRETTY_FUNCTION</span></code> macro which tries to detect the compiler and use an alternative if the implementation supports it. GCC and Clang offer <code class="code custom-cpp"><span class="ext">__PRETTY_FUNCTION__</span></code> (magic variable) and MSVC offers <code class="code custom-cpp"><span class="macro">__FUNCSIG__</span></code> (macro - no idea why/how).</p>
+<p>For extra information, see <a class="reference external" href="https://stackoverflow.com/q/4384765/4818802">SO: What's the difference between __PRETTY_FUNCTION__, __FUNCTION__, __func__?</a>.</p>
+</section></section><section id="implementation-macros"><h2>Implementation macros</h2>
+<p>Compilers provide a lot of information about the implementation in their own macros (not defined by the standard). Many are very useful for writing multiplatform code or code that takes advantage of certain features available only under special conditions. They typically provide information such as compiler name and version, target architecture and operating system, min/max/size/alignment of built-in types, endianess and other details.</p>
+<p>For GCC and Clang, you can dump all of the predefined macros using a command like <code class="docutils literal">echo | g++ <span class="pre">-x</span> c++ <span class="pre">-std=c++17</span> <span class="pre">-dM</span> <span class="pre">-E</span> - | sort</code> (should work on Windows and many GNU/Linux distributions). See <a class="reference external" href="https://stackoverflow.com/q/2224334/4818802">https://stackoverflow.com/q/2224334/4818802</a> for more info.</p>
+<section id="code-class-code-custom-cpp-span-class-macro-ndebug-span-code"><h3><code class="code custom-cpp"><span class="macro">NDEBUG</span></code></h3>
+<p>One particular macro that is very often used is <code class="code custom-cpp"><span class="macro">NDEBUG</span></code>. It's presence signifies a release build and based on it, a lot of other macros may be defined differently to enable/disable/alter certain functionality that should be present only in debug or release builds. This typically includes <em>assertions</em> (explained later) and logging.</p>
+<p>The macro name is reversed ("not debug", present only in release builds) for historical reasons.</p>
+</section></section><section id="constants"><h2>Constants</h2>
+<p>In both C and C++ various data must be a constant expression, e.g. an array size. C++ has extended <code class="code custom-cpp"><span class="keyword">const</span></code> functionality so that some const-qualified objects could also be used for such purposes (this was before C++11 introduced <code class="code custom-cpp"><span class="keyword">constexpr</span></code>) (the rules are somewhat complex so in C++11 and later code I strongly recommend <code class="code custom-cpp"><span class="keyword">constexpr</span></code>).</p>
+<p>In C however, <code class="code custom-cpp"><span class="keyword">const</span></code> is not as powerful. This creates a necessity in C to use macros, otherwise the constants can not be used when a constant expression is needed:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// C approach</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="pp-macro">FOOBAR_SIZE</span> <span class="lit-num">1024</span>
+<span class="keyword">char</span> <span class="var-local">foobar</span>[<span class="macro">FOOBAR_SIZE</span>]; <span class="com-single">// ok: size is a constant expression</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">i</span> = <span class="lit-num">0</span>; <span class="var-local">i</span> &lt; <span class="macro">FOOBAR_SIZE</span>; ++<span class="var-local">i</span>)
+	<span class="com-single">// ... something with foobar[i]</span>
+
+<span class="com-single">// C++ approach (after C++11 would use constexpr)</span>
+<span class="keyword">const</span> <span class="keyword">int</span> <span class="var-local">foobar_size</span> = <span class="lit-num">1024</span>; <span class="com-single">// in C not treated as constant expression</span>
+<span class="keyword">char</span> <span class="var-local">foobar</span>[<span class="var-local">foobar_size</span>]; <span class="com-single">// this would not be valid in C</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">i</span> = <span class="lit-num">0</span>; <span class="var-local">i</span> &lt; <span class="var-local">foobar_size</span>; ++<span class="var-local">i</span>)
+	<span class="com-single">// ... something with foobar[i]</span>
+</pre></td>
+</tr></tbody></table>
+<p>In C using such macros is simply a necessity, otherwise there is no way to deal with code duplication. The language simply has no feature that solves this problem so the preprocessor text replacement is the only choice. In C++ the situation is much different so the following things are considered bad habits in C++:</p>
+<ul class="simple">
+<li><p>The use of macros when they are not needed. C++ has more powerful keywords and when macros can be avoided, they should be avoided.</p></li>
+<li><p>Naming constants using UPPERCASE when they are not macros. This may cause confusion and make regular code vulnerable to a macro of the same name. This is also mentioned in <a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Res-not-CAPS">ES.9</a>, <a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rl-all-caps">NL.9</a> and <a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Renum-caps">Enum.5</a> points in Core Guidelines.</p></li>
+</ul></section><section id="exercise"><h2>Exercise</h2>
+<p>Write a program that outputs <code class="docutils literal">Hello from <span class="pre">C++XX</span></code> where <code class="docutils literal">XX</code> are last 2 digits of the year of the standard used.</p>
+<div class="docutils container">
+<details><summary>solution</summary><div class="docutils container">
+<p>A solution with <code class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">if</span></code> for each value works too but here is the most clever one:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"Hello from C++"</span> <span class="oo">&lt;&lt;</span> <span class="macro">__cplusplus</span> / <span class="lit-num">100</span> % <span class="lit-num">100</span>;
+}
+</pre></td>
+</tr></tbody></table>
+</div>
+</details>
+</div>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 03 - formatted I/O</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">09 - streams</a></li>
+							<span>/</span>
+						<li>03 - formatted I/O</li>
+					</ol></nav><div class="content">
+				<h1>03 - formatted I/O</h1>				<p>All streams in C++ can do formatted or unformatted I/O.</p>
+<ul class="simple">
+<li><p>Unformatted I/O always behaves in the same way.</p></li>
+<li><p>Formatted I/O means that resulting data is dependent on stream's state (which also includes currently imbued <em>locale</em>).</p></li>
+<li><p>operators <code class="docutils literal">&lt;&lt;</code> and <code class="docutils literal">&gt;&gt;</code> are intended for formatted I/O.</p></li>
+<li><p>Unformatted I/O and more formatted I/O is available through stream's <em>member functions</em>.</p></li>
+</ul>
+<p>Locale is a pretty complex feature intended for localization which can affect formatted I/O and other specific text operations. Due to the size and uniqueness of the feature, it's outside the scope of the tutorial and instead is explained in a separate article TOWRITE. Custom locales are rarely used and the default "C" locale is universal to the point of being able to completely ignore this topic for now.</p>
+<p>Everything below is more of a reference than actual lesson - don't try to memorize it. You will do so naturally when there will be a frequent need for such operations. Otherwise just come back here when an occasional need appears.</p>
+<section id="formatting-states"><h2>Formatting states</h2>
+<p>Each setting is represented by a specific bit in stream's flags. They can be changed using <em>member functions</em> and manipulators.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// https://en.cppreference.com/w/cpp/io/ios_base/setf</span>
+<span class="var-local">stream</span>.<span class="func">setf</span>(<span class="namespace">std</span>::<span class="type">ios</span>::<span class="var-global">boolalpha</span>);
+<span class="var-local">stream</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">boolalpha</span>;
+</pre></td>
+</tr></tbody></table>
+<p>Because some settings (e.g. base of the output - 8/10/16) are represented by separate bits, you need to set new one and unset previous one:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="var-local">stream</span>.<span class="func">unsetf</span>(<span class="namespace">std</span>::<span class="type">ios</span>::<span class="var-global">dec</span>);
+<span class="var-local">stream</span>.<span class="func">setf</span>(<span class="namespace">std</span>::<span class="type">ios</span>::<span class="var-global">hex</span>);
+</pre></td>
+</tr></tbody></table>
+<p>A safer shortcut for this operation is to use a different overload of <code class="code custom-cpp"><span class="func">setf</span></code>, one that takes an additional argument which specifies a group of bits to be cleared (called mask):</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// set hex bit on, disable any other basefield bit</span>
+<span class="com-single">// list of bits and masks: https://en.cppreference.com/w/cpp/io/ios_base/flags</span>
+<span class="var-local">stream</span>.<span class="func">setf</span>(<span class="namespace">std</span>::<span class="type">ios</span>::<span class="var-global">hex</span>, <span class="namespace">std</span>::<span class="type">ios</span>::<span class="var-global">basefield</span>);
+</pre></td>
+</tr></tbody></table>
+<p>Manipulators (which are passed with <code class="docutils literal">&lt;&lt;</code>) will automatically disable other bits when necessary.</p>
+</section><section id="manipulators"><h2>Manipulators</h2>
+<p>Stream manipulators are functions which are either called (to create an object of specific but <em>unspecified</em> type) or passed directly (without calling) to stream insertion/extraction operators (which will call them internally). In any case, operator overloads are defined to support the way in which specific manipulator is intended to be used.</p>
+<section id="code-class-code-custom-cpp-span-class-keyword-bool-span-code"><h3><code class="code custom-cpp"><span class="keyword">bool</span></code></h3>
+<p>Enable or disable printing words for boolean values (default: numeric).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">boolalpha</span>   <span class="oo">&lt;&lt;</span> <span class="keyword">true</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">false</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">noboolalpha</span> <span class="oo">&lt;&lt;</span> <span class="keyword">true</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="keyword">false</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// default</span>
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_d2a43a5d82b544708dd4bf004d9ce80f-1" name="rest_code_d2a43a5d82b544708dd4bf004d9ce80f-1" href="#rest_code_d2a43a5d82b544708dd4bf004d9ce80f-1"></a>true false
+<a id="rest_code_d2a43a5d82b544708dd4bf004d9ce80f-2" name="rest_code_d2a43a5d82b544708dd4bf004d9ce80f-2" href="#rest_code_d2a43a5d82b544708dd4bf004d9ce80f-2"></a>1 0
+</pre></div>
+<p>These manipulators also affect input - after <code class="code custom-cpp"><span class="oo">&gt;&gt;</span> <span class="namespace">std</span>::<span class="func">boolalpha</span></code> the stream will expect string representation of boolean values.</p>
+</section><section id="positive-numbers"><h3>Positive numbers</h3>
+<p>Enable or disable printing <code class="docutils literal">+</code> for positive numbers (negative numbers are always printed with <code class="docutils literal">-</code>). Affects both integer and floating-point types.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">showpos</span>   <span class="oo">&lt;&lt;</span> -<span class="lit-num">1</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">1</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">noshowpos</span> <span class="oo">&lt;&lt;</span> -<span class="lit-num">1</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">1</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// default</span>
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_69f7f0ffcc7e4878a1d3cacadec00be5-1" name="rest_code_69f7f0ffcc7e4878a1d3cacadec00be5-1" href="#rest_code_69f7f0ffcc7e4878a1d3cacadec00be5-1"></a>-1 +1
+<a id="rest_code_69f7f0ffcc7e4878a1d3cacadec00be5-2" name="rest_code_69f7f0ffcc7e4878a1d3cacadec00be5-2" href="#rest_code_69f7f0ffcc7e4878a1d3cacadec00be5-2"></a>-1 1
+</pre></div>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Unlike integer types, floating-point types support multiple forms of representing 0 (the sign bit is independent). This causes floating-point types to have "positive zero" and "negative zero".</p>
+</aside><p>These manipulators have no effect on input.</p>
+</section><section id="numeric-system-and-prefix"><h3>Numeric system and prefix</h3>
+<ul class="simple">
+<li><p>Enable or disable printing base prefix (default: no prefix).</p></li>
+<li><p>Specify which base should be used (default: decimal).</p></li>
+</ul>
+<p>These manipulators apply only to integer types.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">showbase</span>; <span class="com-single">// enable printing base prefix (0 for octal, 0x for hex)</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"in octal       (base  8): "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">oct</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">42</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"in decimal     (base 10): "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">dec</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">42</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"in hexadecimal (base 16): "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">hex</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">42</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">noshowbase</span>; <span class="com-single">// disable printing base prefix (default)</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"in octal       (base  8): "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">oct</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">42</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"in decimal     (base 10): "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">dec</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">42</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"in hexadecimal (base 16): "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">hex</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">42</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_23a8cf535ea74ecd954b763b49282544-1" name="rest_code_23a8cf535ea74ecd954b763b49282544-1" href="#rest_code_23a8cf535ea74ecd954b763b49282544-1"></a>in octal       (base  8): 052
+<a id="rest_code_23a8cf535ea74ecd954b763b49282544-2" name="rest_code_23a8cf535ea74ecd954b763b49282544-2" href="#rest_code_23a8cf535ea74ecd954b763b49282544-2"></a>in decimal     (base 10): 42
+<a id="rest_code_23a8cf535ea74ecd954b763b49282544-3" name="rest_code_23a8cf535ea74ecd954b763b49282544-3" href="#rest_code_23a8cf535ea74ecd954b763b49282544-3"></a>in hexadecimal (base 16): 0x2a
+<a id="rest_code_23a8cf535ea74ecd954b763b49282544-4" name="rest_code_23a8cf535ea74ecd954b763b49282544-4" href="#rest_code_23a8cf535ea74ecd954b763b49282544-4"></a>
+<a id="rest_code_23a8cf535ea74ecd954b763b49282544-5" name="rest_code_23a8cf535ea74ecd954b763b49282544-5" href="#rest_code_23a8cf535ea74ecd954b763b49282544-5"></a>in octal       (base  8): 52
+<a id="rest_code_23a8cf535ea74ecd954b763b49282544-6" name="rest_code_23a8cf535ea74ecd954b763b49282544-6" href="#rest_code_23a8cf535ea74ecd954b763b49282544-6"></a>in decimal     (base 10): 42
+<a id="rest_code_23a8cf535ea74ecd954b763b49282544-7" name="rest_code_23a8cf535ea74ecd954b763b49282544-7" href="#rest_code_23a8cf535ea74ecd954b763b49282544-7"></a>in hexadecimal (base 16): 2a
+</pre></div>
+<p>Strangely, there is no <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">bin</span></code> that would print numbers in binary. As a workaround, <code class="code custom-cpp"><span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="type">bitset</span>&lt;<span class="param-tmpl">N</span>&gt;(<span class="var-local">val</span>)</code> can be used.</p>
+<p>Prefix manipulators also affect input but only <a class="reference external" href="https://en.cppreference.com/w/cpp/io/manip/get_money">monetary input</a> which I guess no one uses.</p>
+<p>Base manipulators affect both ouput and input. Because each of these 3 manipulators is stored on a separate bit in the stream state flags, there is a possibility that no bit will be set. In such case:</p>
+<ul class="simple">
+<li><p>output is decimal</p></li>
+<li><p>input is prefix dependent (no prefix means decimal)</p></li>
+</ul>
+<p>All base state bits can be cleared in 2 ways:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="oo">&gt;&gt;</span> <span class="namespace">std</span>::<span class="func">setbase</span>(<span class="lit-num">0</span>)</code> or <code class="code custom-cpp"><span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setbase</span>(<span class="lit-num">0</span>)</code></p></li>
+<li><p><code class="code custom-cpp"><span class="var-local">stream</span>.<span class="func">setf</span>(<span class="namespace">std</span>::<span class="type">ios_base</span>::<span class="type">fmtflags</span>(<span class="lit-num">0</span>), <span class="namespace">std</span>::<span class="type">ios_base</span>::<span class="var-global">basefield</span>)</code></p></li>
+</ul>
+<p>Example:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;sstream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">0</span>;
+	<span class="keyword">int</span> <span class="var-local">y</span> = <span class="lit-num">0</span>;
+	<span class="namespace">std</span>::<span class="type">istringstream</span> <span class="var-local">iss</span>(<span class="lit-str">"10 010"</span>);
+	<span class="com-single">// comment/uncomment line below for different parsing behavior</span>
+	<span class="com-single">// iss.setf(std::ios_base::fmtflags(0), std::ios_base::basefield);</span>
+	<span class="var-local">iss</span> <span class="oo">&gt;&gt;</span> <span class="var-local">x</span> <span class="oo">&gt;&gt;</span> <span class="var-local">y</span>;
+	<span class="com-single">//   commented: 10 10 (default state has dec bit on),</span>
+	<span class="com-single">// uncommented: 10 8  (no base bits cause parsing to depend on prefix)</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">y</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<!--  --><blockquote>
+<p>What if multiple bits are set?</p>
+</blockquote>
+<p>No idea, nothing about in on cppreference so I guess the behavior is <em>unspecified</em>.</p>
+</section><section id="casing"><h3>Casing</h3>
+<p>Use uppercase or lowercase letters for numerical output (default: lowercase).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">hex</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">showbase</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">uppercase</span>   <span class="oo">&lt;&lt;</span> <span class="fmt-seq">0x</span><span class="num">deadbeef</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="num">123456789.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">nouppercase</span> <span class="oo">&lt;&lt;</span> <span class="fmt-seq">0x</span><span class="num">deadbeef</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="num">123456789.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// default</span>
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_922776b51c0a4780b4d11fad14b252ad-1" name="rest_code_922776b51c0a4780b4d11fad14b252ad-1" href="#rest_code_922776b51c0a4780b4d11fad14b252ad-1"></a>0XDEADBEEF 1.23457E+08
+<a id="rest_code_922776b51c0a4780b4d11fad14b252ad-2" name="rest_code_922776b51c0a4780b4d11fad14b252ad-2" href="#rest_code_922776b51c0a4780b4d11fad14b252ad-2"></a>0xdeadbeef 1.23457e+08
+</pre></div>
+<p>You can also observe that default format for floating-point types rounds numbers when using scientific notation.</p>
+<p>These manipulators are only for numeric types and do not affect printing text in any way. They have no effect on input.</p>
+</section><section id="point"><h3>Point</h3>
+<p>Enable or disable printing point and decimal fraction digits when not necessary (default: off).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-other">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">showpoint</span>   <span class="oo">&lt;&lt;</span> <span class="num">1.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="num">12.34</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">noshowpoint</span> <span class="oo">&lt;&lt;</span> <span class="num">1.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="num">12.34</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// default</span>
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_9f13c64ffbdc4015bbe88202db13bc90-1" name="rest_code_9f13c64ffbdc4015bbe88202db13bc90-1" href="#rest_code_9f13c64ffbdc4015bbe88202db13bc90-1"></a>1.00000 12.3400
+<a id="rest_code_9f13c64ffbdc4015bbe88202db13bc90-2" name="rest_code_9f13c64ffbdc4015bbe88202db13bc90-2" href="#rest_code_9f13c64ffbdc4015bbe88202db13bc90-2"></a>1 12.34
+</pre></div>
+<p>This setting is locale-dependent - locales may specify different character than <code class="docutils literal">.</code>.</p>
+<p>These manipulators have no effect on input.</p>
+</section><section id="floating-point-formats"><h3>Floating-point formats</h3>
+<p>Specify which format should be used.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"0.001 in fixed:      "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">fixed</span>        <span class="oo">&lt;&lt;</span> <span class="num">0.001</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// ignores showpoint</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"0.001 in scientific: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">scientific</span>   <span class="oo">&lt;&lt;</span> <span class="num">0.001</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"0.001 in hexfloat:   "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">hexfloat</span>     <span class="oo">&lt;&lt;</span> <span class="num">0.001</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// ignores precision</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"0.001 in default:    "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">defaultfloat</span> <span class="oo">&lt;&lt;</span> <span class="num">0.001</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// this is the default</span>
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" 1000 in fixed:      "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">fixed</span>        <span class="oo">&lt;&lt;</span> <span class="num">1000.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" 1000 in scientific: "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">scientific</span>   <span class="oo">&lt;&lt;</span> <span class="num">1000.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" 1000 in hexfloat:   "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">hexfloat</span>     <span class="oo">&lt;&lt;</span> <span class="num">1000.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" 1000 in default:    "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">defaultfloat</span> <span class="oo">&lt;&lt;</span> <span class="num">1000.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_ed0c851534ac4e768be01d23aa366b10-1" name="rest_code_ed0c851534ac4e768be01d23aa366b10-1" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-1"></a>0.001 in fixed:      0.001000
+<a id="rest_code_ed0c851534ac4e768be01d23aa366b10-2" name="rest_code_ed0c851534ac4e768be01d23aa366b10-2" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-2"></a>0.001 in scientific: 1.000000e-03
+<a id="rest_code_ed0c851534ac4e768be01d23aa366b10-3" name="rest_code_ed0c851534ac4e768be01d23aa366b10-3" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-3"></a>0.001 in hexfloat:   0x1.0624dd2f1a9fcp-10
+<a id="rest_code_ed0c851534ac4e768be01d23aa366b10-4" name="rest_code_ed0c851534ac4e768be01d23aa366b10-4" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-4"></a>0.001 in default:    0.001
+<a id="rest_code_ed0c851534ac4e768be01d23aa366b10-5" name="rest_code_ed0c851534ac4e768be01d23aa366b10-5" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-5"></a>
+<a id="rest_code_ed0c851534ac4e768be01d23aa366b10-6" name="rest_code_ed0c851534ac4e768be01d23aa366b10-6" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-6"></a>1000 in fixed:      1000.000000
+<a id="rest_code_ed0c851534ac4e768be01d23aa366b10-7" name="rest_code_ed0c851534ac4e768be01d23aa366b10-7" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-7"></a>1000 in scientific: 1.000000e+03
+<a id="rest_code_ed0c851534ac4e768be01d23aa366b10-8" name="rest_code_ed0c851534ac4e768be01d23aa366b10-8" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-8"></a>1000 in hexfloat:   0x1.f4p+9
+<a id="rest_code_ed0c851534ac4e768be01d23aa366b10-9" name="rest_code_ed0c851534ac4e768be01d23aa366b10-9" href="#rest_code_ed0c851534ac4e768be01d23aa366b10-9"></a>1000 in default:    1000
+</pre></div>
+<p>These manipulators have no effect on input: parsing of floating-point numbers is unaffected.</p>
+</section><section id="whitespace"><h3>Whitespace</h3>
+<p>Enable or disable skipping whitespace before <em>formatted input</em> operations. By default, whitespace is skipped.</p>
+<!-- The example below might seem to be a good candidate to use std::quoted, but std::quoted has only const CharT*, string and string_view overloads. -->
+<!-- I do not want to write std::quoted(&c, 1). -->
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;sstream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">const</span> <span class="keyword">auto</span> <span class="var-local">text</span> = <span class="lit-str">"a b c d"</span>;
+	<span class="namespace">std</span>::<span class="type">istringstream</span> <span class="var-local">iss</span>;
+	<span class="keyword">char</span> <span class="var-local">c</span> = <span class="lit-chr">'<span class="esc-seq">\0</span>'</span>;
+
+	<span class="var-local">iss</span>.<span class="func">str</span>(<span class="var-local">text</span>);
+	<span class="var-local">iss</span> <span class="oo">&gt;&gt;</span> <span class="namespace">std</span>::<span class="func">skipws</span>; <span class="com-single">// default behavior (this statement has no effect)</span>
+	<span class="keyword">while</span> (<span class="var-local">iss</span> <span class="oo">&gt;&gt;</span> <span class="var-local">c</span>) <span class="com-single">// will stop on reaching end of internal string buffer and set EOF</span>
+	{
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"["</span> <span class="oo">&lt;&lt;</span> <span class="var-local">c</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"], "</span>;
+	}
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="var-local">iss</span>.<span class="func">clear</span>(); <span class="com-single">// clear EOF</span>
+
+	<span class="var-local">iss</span>.<span class="func">str</span>(<span class="var-local">text</span>);
+	<span class="var-local">iss</span> <span class="oo">&gt;&gt;</span> <span class="namespace">std</span>::<span class="func">noskipws</span>;
+	<span class="keyword">while</span> (<span class="var-local">iss</span> <span class="oo">&gt;&gt;</span> <span class="var-local">c</span>)
+	{
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"["</span> <span class="oo">&lt;&lt;</span> <span class="var-local">c</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"], "</span>;
+	}
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_c05fbbe1d9d645e18ce1636acbc19451-1" name="rest_code_c05fbbe1d9d645e18ce1636acbc19451-1" href="#rest_code_c05fbbe1d9d645e18ce1636acbc19451-1"></a>[a], [b], [c], [d],
+<a id="rest_code_c05fbbe1d9d645e18ce1636acbc19451-2" name="rest_code_c05fbbe1d9d645e18ce1636acbc19451-2" href="#rest_code_c05fbbe1d9d645e18ce1636acbc19451-2"></a>[a], [ ], [b], [ ], [c], [ ], [d],
+</pre></div>
+<p>These manipulators have no effect on output.</p>
+<p>Whitespace can also be skipped explicitly by doing <code class="code custom-cpp"><span class="oo">&gt;&gt;</span> <span class="namespace">std</span>::<span class="func">ws</span></code>. This operation will consume any consecutive whitespace in the input stream.</p>
+</section><section id="other"><h3>Other</h3>
+<p>There are 2 more manipulators:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">unitbuf</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">nounitbuf</span></code> - disable or enable output buffering (buffering is disabled for <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cerr</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">wcerr</span></code>); no effect on input</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">left</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">right</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">internal</span></code> - showcased further down as these manipulators have effect only in combination with width and fill manipulators</p></li>
+</ul></section></section><section id="additional-manipulators"><h2>Additional manipulators</h2>
+<p>These manipulators are defined in <code class="code custom-cpp"><span class="pp-header">&lt;iomanip&gt;</span></code>.</p>
+<section id="adjustment"><h3>Adjustment</h3>
+<p>Width:</p>
+<ul class="simple">
+<li><p><strong>Unlike other manipulators</strong>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">setw</span></code> (set width) is temporary: it only affects next <em>formatted I/O</em> operation. Thus, it's typically used inside loops.</p></li>
+<li><p>For <em>formatted output</em> operations, it specifies the minimum amount of characters that should be printed. Additional characters are repetitions of the fill character.</p></li>
+<li><p>For <em>formatted input</em> operations, see next example.</p></li>
+<li><p>By default width is zero, which means no additional characters are printed.</p></li>
+</ul>
+<p>Fill:</p>
+<ul class="simple">
+<li><p>Specifies the fill character. Default is space.</p></li>
+</ul>
+<p>Adjustment:</p>
+<ul class="simple">
+<li><p>Specify positioning of fill characters.</p></li>
+<li><p>Default adjustment is right, but any adjustment has effect only if width forces to print fill characters. Internal adjustment will separate all kinds of prefixes (<code class="docutils literal">0x</code> for hexadecimal, <code class="docutils literal">-</code> for negative numbers and currency symbols if monetary output is used).</p></li>
+</ul>
+<!-- TODO setw with input operations (for std::string fills N characters, for C arrays fills N-1 + null-terminator) --><table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iomanip&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="com-single">// adjust left and fill with *</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">left</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setfill</span>(<span class="lit-chr">'*'</span>);
+	<span class="keyword">for</span> (<span class="keyword">long</span> <span class="var-local">i</span> = <span class="lit-num">1</span>; <span class="var-local">i</span> &lt; <span class="lit-num">1000000000</span>; <span class="var-local">i</span> *= <span class="lit-num">10</span>)
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setw</span>(<span class="lit-num">8</span>) <span class="oo">&lt;&lt;</span> <span class="var-local">i</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// adjust right and fill with .</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">right</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setfill</span>(<span class="lit-chr">'.'</span>);
+	<span class="keyword">for</span> (<span class="keyword">long</span> <span class="var-local">i</span> = <span class="lit-num">1</span>; <span class="var-local">i</span> &lt; <span class="lit-num">1000000000</span>; <span class="var-local">i</span> *= <span class="lit-num">10</span>)
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setw</span>(<span class="lit-num">8</span>) <span class="oo">&lt;&lt;</span> <span class="var-local">i</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// use hex base and print prefix, fill with _</span>
+	<span class="com-single">// adjust numbers to the right but other characters to the left</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">hex</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">showbase</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">internal</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setfill</span>(<span class="lit-chr">'_'</span>);
+	<span class="keyword">for</span> (<span class="keyword">long</span> <span class="var-local">i</span> = <span class="lit-num">1</span>; <span class="var-local">i</span> &lt; <span class="lit-num">1000000000</span>; <span class="var-local">i</span> *= <span class="lit-num">10</span>)
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setw</span>(<span class="lit-num">8</span>) <span class="oo">&lt;&lt;</span> <span class="var-local">i</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-1" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-1" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-1"></a>1*******
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-2" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-2" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-2"></a>10******
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-3" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-3" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-3"></a>100*****
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-4" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-4" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-4"></a>1000****
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-5" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-5" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-5"></a>10000***
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-6" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-6" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-6"></a>100000**
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-7" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-7" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-7"></a>1000000*
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-8" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-8" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-8"></a>10000000
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-9" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-9" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-9"></a>100000000
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-10" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-10" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-10"></a>
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-11" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-11" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-11"></a>.......1
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-12" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-12" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-12"></a>......10
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-13" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-13" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-13"></a>.....100
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-14" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-14" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-14"></a>....1000
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-15" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-15" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-15"></a>...10000
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-16" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-16" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-16"></a>..100000
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-17" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-17" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-17"></a>.1000000
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-18" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-18" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-18"></a>10000000
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-19" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-19" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-19"></a>100000000
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-20" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-20" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-20"></a>
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-21" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-21" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-21"></a>0x_____1
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-22" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-22" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-22"></a>0x_____a
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-23" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-23" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-23"></a>0x____64
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-24" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-24" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-24"></a>0x___3e8
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-25" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-25" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-25"></a>0x__2710
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-26" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-26" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-26"></a>0x_186a0
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-27" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-27" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-27"></a>0x_f4240
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-28" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-28" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-28"></a>0x989680
+<a id="rest_code_c7141e80021b4471bb4c715f2de9a7b8-29" name="rest_code_c7141e80021b4471bb4c715f2de9a7b8-29" href="#rest_code_c7141e80021b4471bb4c715f2de9a7b8-29"></a>0x5f5e100
+</pre></div>
+</section><section id="precision"><h3>Precision</h3>
+<p>Specify minimum amount of digits that should be printed. This affects only floating-point output.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iomanip&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cmath&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;limits&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">const</span> <span class="keyword">long</span> <span class="keyword">double</span> <span class="var-local">pi</span> = <span class="namespace">std</span>::<span class="func">acos</span>(-<span class="num">1.0</span><span class="suf">l</span>); <span class="com-single">// (arc cosine)</span>
+	<span class="keyword">constexpr</span> <span class="keyword">auto</span> <span class="var-local">maxp</span> = <span class="namespace">std</span>::<span class="type">numeric_limits</span>&lt;<span class="keyword">long</span> <span class="keyword">double</span>&gt;::<span class="var-global">digits10</span> + <span class="lit-num">1</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"default precision (6): "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">pi</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>
+	          <span class="oo">&lt;&lt;</span> <span class="lit-str">"std::setprecision(10): "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setprecision</span>(<span class="lit-num">10</span>) <span class="oo">&lt;&lt;</span> <span class="var-local">pi</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>
+	          <span class="oo">&lt;&lt;</span> <span class="lit-str">"max precision        : "</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setprecision</span>(<span class="var-local">maxp</span>) <span class="oo">&lt;&lt;</span> <span class="var-local">pi</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n\n</span>"</span>;
+
+
+	<span class="com-single">// This value will likely not be ideal half due to</span>
+	<span class="com-single">// limited accuracy of floating-point computations.</span>
+	<span class="keyword">const</span> <span class="keyword">auto</span> <span class="var-local">almost_half</span> = <span class="namespace">std</span>::<span class="func">acos</span>(<span class="num">0.0</span>) / <span class="var-local">pi</span>;
+
+	<span class="com-single">// Setting precision larger than supported by the underlying</span>
+	<span class="com-single">// floating point type will cause weird output.</span>
+	<span class="com-single">// This is because streams always try to print the value (in decimal)</span>
+	<span class="com-single">// that is closest to the actually stored value (in floating-point).</span>
+	<span class="com-single">// Thus, 0.5 is choosen over 0.4999999999999999 (the first one is more accurate).</span>
+	<span class="com-single">// Once the precision allows to represent this tiny error, output changes.</span>
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">i</span> = <span class="lit-num">6</span>; <span class="var-local">i</span> &lt; <span class="var-local">maxp</span> + <span class="lit-num">3</span>; ++<span class="var-local">i</span>)
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">setprecision</span>(<span class="var-local">i</span>) <span class="oo">&lt;&lt;</span> <span class="var-local">almost_half</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>As a rough guideline:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">float</span></code> has 6 digits of accuracy</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">double</span></code> has 15</p></li>
+<li>
+<p><code class="code custom-cpp"><span class="keyword">long</span> <span class="keyword">double</span></code> is implementation-defined:</p>
+<ul>
+<li><p>18 in case of Intel's 80-bit floating-point type</p></li>
+<li><p>33 in case of true IEEE quadruple floating-point type</p></li>
+</ul>
+</li>
+</ul></section><section id="other-1"><h3>Other</h3>
+<p><a class="reference external" href="https://en.cppreference.com/w/cpp/header/iomanip">https://en.cppreference.com/w/cpp/header/iomanip</a> lists a few more but they are very specific and have lots of tiny details. They are hardly ever used.</p>
+</section></section><section id="exercise"><h2>Exercise</h2>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">showpos</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> -<span class="lit-num">0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="num">0.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> -<span class="num">0.0</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>What does the following program print?</p>
+<div class="docutils container">
+<details><summary>answer</summary><div class="docutils container">
+<div class="code"><pre class="code text"><a id="rest_code_c78bede642a8434d8ee2b9d06218b579-1" name="rest_code_c78bede642a8434d8ee2b9d06218b579-1" href="#rest_code_c78bede642a8434d8ee2b9d06218b579-1"></a>+0 +0
+<a id="rest_code_c78bede642a8434d8ee2b9d06218b579-2" name="rest_code_c78bede642a8434d8ee2b9d06218b579-2" href="#rest_code_c78bede642a8434d8ee2b9d06218b579-2"></a>+0 -0
+</pre></div>
+<p>And why?</p>
+<div class="docutils container">
+<details><summary>answer</summary><div class="docutils container">
+<p>Integers have only one representation of 0 and it's regarded as positive (in true mathematical sense 0 is neither positive nor negative). Negating integer 0 does nothing to the underlying bit pattern. Unlike integer types (which use two's complement), floating-point types have a separate bit for sign and thus allow multiple representations for 0, thus they have both "positive zero" and "negative zero".</p>
+</div>
+</details>
+</div>
+</div>
+</details>
+</div>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

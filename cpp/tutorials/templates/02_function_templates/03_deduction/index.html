@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 03 - deduction</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../../beginner/">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">templates</a></li>
+							<span>/</span>
+							<li><a href="../">01 - functions</a></li>
+							<span>/</span>
+						<li>03 - deduction</li>
+					</ol></nav><div class="content">
+				<h1>03 - deduction</h1>				<p>When a template is being used (<em>instantiated</em>), the compiler needs to "figure out" what types (or values in case of NTTP) should replace template parameters. This mechanism is known as <strong>deduction</strong>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="func-free">min</span>(<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">x</span>, <span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> &lt; <span class="param">x</span>)
+		<span class="keyword">return</span> <span class="param">y</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">x</span>;
+}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; ::<span class="func-free">min</span>(<span class="lit-num">2</span>, <span class="lit-num">1</span>)        &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// deduces T as int
+</span>	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; ::<span class="func-free">min</span>(<span class="lit-num">1.618</span>, <span class="lit-num">3.14</span>) &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// deduces T as double
+</span>	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; ::<span class="func-free">min</span>(<span class="lit-chr">'a'</span>, <span class="lit-chr">'b'</span>)    &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// deduces T as char
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>The example above is very trivial; however <em>template type deduction</em> itself is a rather complex feature. I won't describe it in detail because there are simply too many cases and too many possible combinations with other language features. Instead, you will learn specific deduction rules along the way, similarly how <code class="code custom-cpp"><span class="keyword">const</span></code> is laid out in the beginner tutorial - not a chapter of its own but an addition to every other feature (const objects, const parameters, const functions, const methods, ...). Deduction intertwines significantly with various elements of the type system and introducing them all in a single lesson would roughly be copy-pasting cppreference or the standard specification.</p>
+<p>The examples use <code class="docutils literal">::</code> to avoid ambiguities with standard library functions. Because of ADL, calls to function templates can also search identical names in the standard library if the type of one of arguments also comes from the standard library namespace.</p>
+<section id="deduction-vs-code-class-code-custom-cpp-span-class-keyword-auto-span-code"><h2>Deduction vs <code class="code custom-cpp"><span class="keyword">auto</span></code>
+</h2>
+<p><code class="code custom-cpp"><span class="keyword">auto</span></code> is based on the same mechanism. In fact, <code class="code custom-cpp"><span class="keyword">auto</span></code> is specified to use <em>template type deduction</em>, as if the deduced type was a function template parameter and the initializer was the argument.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">void</span> <span class="func-free">f1</span>(<span class="param-tmpl">T</span>) {}
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">void</span> <span class="func-free">f2</span>(<span class="param-tmpl">T</span>&amp;) {}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="keyword">const</span> <span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">1</span>;
+
+	<span class="keyword">auto</span>  <span class="var-local">a1</span> = <span class="var-local">x</span>; <span class="com-single">// auto =       int, a1 has type       int
+</span>	<span class="keyword">auto</span>&amp; <span class="var-local">a2</span> = <span class="var-local">x</span>; <span class="com-single">// auto = const int, a2 has type const int&amp;
+
+</span>	<span class="func-free">f1</span>(<span class="var-local">x</span>); <span class="com-single">// T =       int, parameter has type       int
+</span>	<span class="func-free">f2</span>(<span class="var-local">x</span>); <span class="com-single">// T = const int, parameter has type const int&amp;
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>You can observe that both sets of cases are identical:</p>
+<ul class="simple">
+<li><p>Template type deduction (and <code class="code custom-cpp"><span class="keyword">auto</span></code>) strip top-level cv-qualifiers when used without qualifiers.</p></li>
+<li><p>Existing qualifiers remain and participate in deduction.</p></li>
+<li><p>The final type is built from both present and deduced type modifiers.</p></li>
+</ul>
+<p>You can also observe that:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">auto</span></code> does deduction only for a single initializer value - not (potentially multiple) function parameters.</p></li>
+<li><p>Templates can be required to deduce something like <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="param-tmpl">T</span>&gt;</code> (where the template parameter is only a part of the final type) while (as of writing this) you can not write something like <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="keyword">auto</span>&gt; <span class="var-local">v</span> = <span class="com-multi">/* expr */</span>;</code>.</p></li>
+</ul>
+<p>In other words, deduction in templates covers significantly larger amount of (potentially more complex) situations.</p>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">initializer_list</span></code> is a special case:</p>
+<ul class="simple">
+<li><p>templates can not deduce it directly</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">auto</span></code> can deduce it only when paired with <em>copy-list-initialization</em></p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;initializer_list&gt;</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">void</span> <span class="func-free">f1</span>(<span class="namespace">std</span>::<span class="type-class">initializer_list</span>&lt;<span class="param-tmpl">T</span>&gt;) {}
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">void</span> <span class="func-free">f2</span>(<span class="param-tmpl">T</span>) {}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="com-single">// copy-list-initialization
+</span>	<span class="keyword">auto</span> <span class="var-local">a1</span> = {<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>}; <span class="com-single">// auto = std::initializer_list&lt;int&gt;
+
+</span>	<span class="com-single">// direct-list-initialization
+</span>	<span class="com-single">// auto a2{1, 2, 3}; // error: not allowed with muliple parameters and deduction
+</span>	<span class="keyword">auto</span> <span class="var-local">a3</span>{<span class="lit-num">1</span>};          <span class="com-single">// auto = int
+</span>	<span class="com-single">// <span class="com-tag-todo">TODO</span> when was N3922 introduced? C++11? C++17?
+
+</span>	<span class="func-free">f1</span>({<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>});    <span class="com-single">// T = int
+</span>	<span class="com-single">// f2({1, 2, 3}); // error: can not deduce from braced-init-list
+</span>}
+</pre></td>
+</tr></tbody></table></section><section id="deduction-vs-multiple-parameters"><h2>Deduction vs multiple parameters</h2>
+<p>Each function parameter is deduced separately. If there is a conflict between deductions or the deduction can not be performed, the instantiation will fail.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;vector&gt;</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>, <span class="keyword">typename</span> <span class="param-tmpl">U</span>&gt;
+<span class="keyword">void</span> <span class="func-free">f</span>(<span class="param-tmpl">T</span>, <span class="param-tmpl">T</span>, <span class="param-tmpl">U</span>) {}
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">void</span> <span class="func-free">g1</span>(<span class="namespace">std</span>::<span class="type-class">vector</span>&lt;<span class="param-tmpl">T</span>&gt;) {}
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">void</span> <span class="func-free">g2</span>(<span class="namespace">std</span>::<span class="type-class">vector</span>&lt;<span class="param-tmpl">T</span>&gt;, <span class="param-tmpl">T</span>) {}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="func-free">f</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>);   <span class="com-single">// ok: T deduced as int, U deduced as int
+</span>	<span class="func-free">f</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3.0</span>); <span class="com-single">// ok: T deduces as int, U deduced as double
+
+</span>	<span class="com-single">// error: conflicting deductions
+</span>	<span class="com-single">// argument 1 deduced T as int,
+</span>	<span class="com-single">// argument 2 deduced T as double
+</span>	<span class="com-single">// argument 3 deduced U as int
+</span>	<span class="com-single">// f(1, 2.0, 3);
+
+</span>	<span class="com-single">// error: can not deduce T (not std::initializer_list)
+</span>	<span class="com-single">// g1({1, 2, 3});
+
+</span>	<span class="com-single">// argument 1 can not deduce T
+</span>	<span class="com-single">// argument 2 deduces T as int
+</span>	<span class="func-free">g2</span>({<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>}, <span class="lit-num">4</span>); <span class="com-single">// ok
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>As you can see, deduction can fail for some arguments. What is important is that:</p>
+<ul class="simple">
+<li><p>there are no conflicts between deductions</p></li>
+<li><p>every template parameter has at least 1 successful deduction</p></li>
+</ul></section><section id="explicit-specification"><h2>Explicit specification</h2>
+<p>There are no requirements between function arguments and template parameters. This means that:</p>
+<ul class="simple">
+<li><p>types of function template arguments do not have to be in the same order as template parameters</p></li>
+<li><p>not every parameter must be declared using a unique template parameter</p></li>
+<li><p>not all template parameters have to be used within the list of arguments</p></li>
+</ul>
+<p>This in turn means that many function templates can not deduce their template parameters.</p>
+<p>Undeduced template parameters and parameters that have conflicting deduction can be fixed by explicitly specifying them when instantiating the template:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="func-free">min</span>(<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">x</span>, <span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> &lt; <span class="param">x</span>)
+		<span class="keyword">return</span> <span class="param">y</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">x</span>;
+}
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">U</span>, <span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="param-tmpl">U</span> <span class="func-free">convert_to</span>(<span class="param-tmpl">T</span> <span class="param">value</span>)
+{
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="param-tmpl">U</span>&gt;(<span class="param">value</span>);
+}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="com-single">// ::min(1, 2.0); // error: conflicting deductions for T
+</span>	::<span class="func-free">min</span>&lt;<span class="keyword">double</span>&gt;(<span class="lit-num">1</span>, <span class="lit-num">2.0</span>); <span class="com-single">// ok: T = double
+
+</span>	<span class="com-single">// U is explicitly specified as unsigned short
+</span>	<span class="com-single">// T is deduced from the argument as int
+</span>	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="func-free">convert_to</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">short</span>&gt;(-<span class="lit-num">1</span>); <span class="com-single">// ok
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>The order of template parameters is crucial. You generally want to have non-deducible template parameters first and deducible parameters later:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// good: T is deduced and U can be specified first
+</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">U</span>, <span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="param-tmpl">U</span> <span class="func-free">convert_to1</span>(<span class="param-tmpl">T</span> <span class="param">value</span>)
+{
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="param-tmpl">U</span>&gt;(<span class="param">value</span>);
+}
+
+<span class="com-single">// also good, just different (swapped) names of template parameters
+</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>, <span class="keyword">typename</span> <span class="param-tmpl">U</span>&gt;
+<span class="param-tmpl">T</span> <span class="func-free">convert_to2</span>(<span class="param-tmpl">U</span> <span class="param">value</span>)
+{
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="param-tmpl">T</span>&gt;(<span class="param">value</span>);
+}
+
+<span class="com-single">// bad: T will be deduced but U has to be specified second
+</span><span class="com-single">// any call will have to specify both to reach U
+</span><span class="com-single">//
+</span><span class="com-single">// error: U not specified and can not be deduced
+</span><span class="com-single">// convert_to3&lt;int&gt;(1)
+</span><span class="com-single">//
+</span><span class="com-single">// will work, but verbose and duplicate work
+</span><span class="com-single">// (int is both deduced and specified explicitly)
+</span><span class="com-single">// convert_to3&lt;int, double&gt;(1)
+</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>, <span class="keyword">typename</span> <span class="param-tmpl">U</span>&gt;
+<span class="param-tmpl">U</span> <span class="func-free">convert_to3</span>(<span class="param-tmpl">T</span> <span class="param">value</span>)
+{
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="param-tmpl">U</span>&gt;(<span class="param">value</span>);
+}
+</pre></td>
+</tr></tbody></table></section><section id="default-template-arguments"><h2>Default template arguments</h2>
+<p>Another way of dealing with non-deducible (but not conflicting) template parameters is to provide defaults. Below is a simplified implementation of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">exchange</span></code> - a function which sets a new value and returns the old one.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;vector&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>, <span class="keyword">typename</span> <span class="param-tmpl">U</span> = <span class="param-tmpl">T</span>&gt;
+<span class="param-tmpl">T</span> <span class="func-free">exchange</span>(<span class="param-tmpl">T</span>&amp; <span class="param">object</span>, <span class="param-tmpl">U</span> <span class="param">new_value</span>)
+{
+	<span class="param-tmpl">T</span> <span class="var-local">old_value</span> = <span class="param">object</span>;
+	<span class="param">object</span> = <span class="param">new_value</span>;
+	<span class="keyword">return</span> <span class="var-local">old_value</span>;
+}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="com-single">// the argument is non-deducible but the default template parameter solves the problem
+</span>	<span class="namespace">std</span>::<span class="type-class">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="var-local">v</span> = {<span class="lit-num">1</span>, <span class="lit-num">2</span>};
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; ::<span class="func-free">exchange</span>(<span class="param-out">v</span>, {<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>, <span class="lit-num">4</span>}).<span class="func-member">size</span>() &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// the argument is deducible but U (const char*) is different from T (std::string)
+</span>	<span class="namespace">std</span>::<span class="type-class">string</span> <span class="var-local">s</span> = <span class="lit-str">"abc"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; ::<span class="func-free">exchange</span>(<span class="param-out">s</span>, <span class="lit-str">"xyz"</span>) &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>The function could be implemented using just one template parameter for both arguments but:</p>
+<ul class="simple">
+<li>
+<p>using 2 different template type parameters allows assignment of objects of a different type</p>
+<ul>
+<li><p>in some cases this improves performance by avoiding creation of expensive objects (e.g. strings)</p></li>
+<li><p>in some cases this is desired because the target object intentionally accepts objects of a different type (e.g. a fraction class accepting assignment from integer types)</p></li>
+</ul>
+</li>
+<li><p>the default template argument functions as a fallback to <code class="code custom-cpp"><span class="param-tmpl">T</span></code> when the argument type can not be deduced</p></li>
+</ul>
+<p>In short, such implementation (2 template parameters with default) results in best of both worlds: support for mixed-type assignments and support for non-deducible arguments.</p>
+<p>Note another small thing: the default of the second template parameter depends on the first. Such dependency is not allowed within non-template default arguments:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="func-free">f1</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span> = <span class="lit-num">0</span>); <span class="com-single">// ok
+
+</span><span class="com-single">// error: parameter not allowed as default argument
+</span><span class="com-single">// int f2(int x, int y = x);
+
+</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>, <span class="keyword">typename</span> <span class="param-tmpl">U</span> = <span class="keyword">int</span>&gt; <span class="com-single">// ok
+</span><span class="param-tmpl">U</span> <span class="func-free">g1</span>(<span class="param-tmpl">T</span> <span class="param">x</span>, <span class="param-tmpl">T</span> <span class="param">y</span>);
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>, <span class="keyword">typename</span> <span class="param-tmpl">U</span> = <span class="param-tmpl">T</span>&gt; <span class="com-single">// also ok!
+</span><span class="param-tmpl">U</span> <span class="func-free">g2</span>(<span class="param-tmpl">T</span> <span class="param">x</span>, <span class="param-tmpl">T</span> <span class="param">y</span>);
+</pre></td>
+</tr></tbody></table></section><section id="summary"><h2>Summary</h2>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>When a template is being instantiated, the compiler must know what to substitute template parameters with. There are 3 ways to provide this information:</p>
+<ul class="simple">
+<li><p>explicitly specifying template parameters</p></li>
+<li><p>template argument deduction</p></li>
+<li><p>defaults for template parameters</p></li>
+</ul>
+<p>In case of combinations of multiple of these - the higher points on the list have higher priority.</p>
+</aside><aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>Undeduced template parameters can be fixed by explicit specification or default template arguments. Conflicting deductions can be fixed only by explicit specification</p>
+</aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

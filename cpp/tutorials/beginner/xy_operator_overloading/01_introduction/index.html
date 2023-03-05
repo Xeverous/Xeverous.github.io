@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - introduction</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xy - operator overloading</a></li>
+							<span>/</span>
+						<li>01 - introduction</li>
+					</ol></nav><div class="content">
+				<h1>01 - introduction</h1>				<p>Operators like <code class="docutils literal">+</code>, <code class="docutils literal">-</code>, <code class="docutils literal">*</code>, <code class="docutils literal">/</code>, <code class="docutils literal">%</code> (and many others) by default only work with built-in types. Operator overloading lets you define behaviour of operators for user-defined types (enumerations and classes). This feature allows to write very short and intuitive code.</p>
+<p>C++ standard library has overloaded operators in many places (many of which you have already used):</p>
+<ul class="simple">
+<li><p><code class="docutils literal">=</code>, <code class="docutils literal">==</code> and <code class="docutils literal">!=</code> for a huge number of types</p></li>
+<li><p><code class="docutils literal">&lt;&lt;</code> and <code class="docutils literal">&gt;&gt;</code> for stream I/O</p></li>
+<li><p><code class="docutils literal">+</code> for strings</p></li>
+<li><p><code class="docutils literal">*</code> and <code class="docutils literal"><span class="pre">-&gt;</span></code> for smart pointers</p></li>
+<li><p><code class="docutils literal">[]</code> for some containers</p></li>
+<li><p>and many more</p></li>
+</ul>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Even through this chapter is purely about operator overloading, it does not explain overloading of all operators.</p>
+<ul class="simple">
+<li><p>operators <code class="code custom-cpp"><span class="keyword">new</span></code>, <code class="code custom-cpp"><span class="keyword">new</span>[]</code>, <code class="code custom-cpp"><span class="keyword">delete</span></code> and <code class="code custom-cpp"><span class="keyword">delete</span>[]</code> are explained in seprate tutorial TOWRITE.</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">operator</span><span class="func">=</span></code> is explained in RAII chapter TOWRITE.</p></li>
+</ul></aside><p>TODO:</p>
+<ul class="simple">
+<li><p><code class="docutils literal"><span class="pre">-&gt;*</span></code>, <code class="docutils literal"><span class="pre">-&gt;</span></code> (???), also mention that <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">-&gt;</span></code> must return a raw pointer or a type (by value or by reference) for which this operator is also overloaded. This is because <code class="code custom-cpp"><span class="var-local">a</span>-&gt;<span class="var-member">b</span></code> is a shortcut for <code class="code custom-cpp">(*<span class="var-local">a</span>).<span class="var-member">b</span></code> which requires an object</p></li>
+<li><p><code class="docutils literal">()</code>, <code class="docutils literal">[]</code> (need good examples, possibly with STL)</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">co_await</span></code> (???)</p></li>
+</ul>
+<section id="restrictions"><h2>Restrictions</h2>
+<p>All of these restrictions aim to reduce potential surprises.</p>
+<ul class="simple">
+<li><p>These operators can not be overloaded: <code class="docutils literal">::</code>, <code class="docutils literal">.</code>, <code class="docutils literal">.*</code>, <code class="docutils literal"><span class="pre">?:</span></code>. Apart from (de)allocation functions, the only overloadable keyword operator is <code class="code custom-cpp"><span class="keyword">co_await</span></code>.</p></li>
+<li><p>You can not create new operators - e.g. <code class="docutils literal">%%</code> or <code class="docutils literal">&lt;-</code>.</p></li>
+<li><p>You can not change arity of operators - if <code class="docutils literal">/</code> takes 2 arguments normally, it must be a 2-argument function.</p></li>
+<li><p>Overloaded <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&amp;&amp;</span></code> and <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">||</span></code> lose <em>short-circuit evaluation</em>.</p></li>
+<li><p>At least one of operands must be a user-defined type - you can't redefine behaviour for built-in types.</p></li>
+<li><p>You can not change operator precedence - overloaded <code class="code custom-cpp"><span class="var-local">x</span> + <span class="var-local">y</span> * <span class="var-local">z</span></code> will always be treated as <code class="code custom-cpp"><span class="var-local">x</span> <span class="oo">+</span> (<span class="var-local">y</span> <span class="oo">*</span> <span class="var-local">z</span>)</code>, never as <code class="code custom-cpp">(<span class="var-local">x</span> <span class="oo">+</span> <span class="var-local">y</span>) <span class="oo">*</span> <span class="var-local">z</span></code>.</p></li>
+<li>
+<p>You can not change operator associativity:</p>
+<ul>
+<li><p>(RtL operators) overloaded <code class="code custom-cpp"><span class="var-local">x</span> = <span class="var-local">y</span> = <span class="var-local">z</span></code> will always be treated as <code class="code custom-cpp"><span class="var-local">x</span> <span class="oo">=</span> (<span class="var-local">y</span> <span class="oo">=</span> <span class="var-local">z</span>)</code>, never as <code class="code custom-cpp">(<span class="var-local">x</span> <span class="oo">=</span> <span class="var-local">y</span>) <span class="oo">=</span> <span class="var-local">z</span></code>.</p></li>
+<li><p>(LtR operators) overloaded <code class="code custom-cpp"><span class="var-local">x</span> &lt;&lt; <span class="var-local">y</span> &lt;&lt; <span class="var-local">z</span></code> will always be treated as <code class="code custom-cpp">(<span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="var-local">y</span>) <span class="oo">&lt;&lt;</span> <span class="var-local">z</span></code>, never as <code class="code custom-cpp"><span class="var-local">x</span> <span class="oo">&lt;&lt;</span> (<span class="var-local">y</span> <span class="oo">&lt;&lt;</span> <span class="var-local">z</span>)</code>.</p></li>
+</ul>
+</li>
+</ul>
+<p>Some operators must be member functions, some must be free functions and some can be both. Majority can not have default parameters (there is no syntax support). More info and recommendation for each in specific lessons.</p>
+<!-- cppreference: (untill C++17) &&, ||, and , (comma) lose their special sequencing properties when overloaded and behave like regular function calls even when they are used without function-call notation. -->
+<!-- TODO I don't know what it means (apparently it's not short-circuit evaluation?) and have no example -->
+</section><section id="syntax"><h2>Syntax</h2>
+<p>Operators are just functions with special names. The name syntax is <code class="code custom-cpp"><span class="keyword">operator</span></code> keyword followed by operator token. These functions can also be called directly by their name, not just as operators.</p>
+</section><section id="recommendations"><h2>Recommendations</h2>
+<ul class="simple">
+<li>
+<p>Unlike functions, operators don't have names so if they exist, it should be very clear what they do. Write their implementation so that it preserves what is expected:</p>
+<ul>
+<li><p><code class="docutils literal">x == y</code> should have the same result as <code class="docutils literal">y == x</code></p></li>
+<li><p><code class="docutils literal">x != y</code> should have the same result as <code class="docutils literal">!(x == y)</code></p></li>
+<li><p><code class="docutils literal">(x + y) + z</code> should have the same result as <code class="docutils literal">x + (y + z)</code></p></li>
+<li><p><code class="docutils literal">x = x + y</code> should have the same result as <code class="docutils literal">x += y</code></p></li>
+<li><p>after <code class="docutils literal">y = x</code>, <code class="docutils literal">y == x</code></p></li>
+<li><p>and so on...</p></li>
+</ul>
+</li>
+<li><p>Don't overload <code class="docutils literal">&amp;&amp;</code>, <code class="docutils literal">||</code>, <code class="docutils literal">,</code> and unary <code class="docutils literal">&amp;</code>. They can easily slip into unexpected places and have very nasty consequences. Even EDSLs don't use them often.</p></li>
+<li><p>Overloaded operators should be defined in the same namespace as one of their operand types (this isn't just for consistency, it has consequences in how overload resolution works). Remember that (by default) it's not allowed to place new entities in namespace <code class="code custom-cpp"><span class="namespace">std</span></code> so if one of operands is a standard library type and the other is your type - write the overload in your type's namespace (if the type is defined outside any namespace so should the operator).</p></li>
+</ul></section><section id="edsl"><h2>EDSL</h2>
+<p>There is one particular use of operator overloading that violates multiple recommendations, nonetheless it's very useful - EDSL (embedded domain specific language). The goal is to mimic a different language inside C++ through overloaded operators. A prime example of this is Boost.Spirit library, which uses overloaded operators to construct parsers that match specific grammars in arbitrary input:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// example using third edition of the library</span>
+<span class="keyword">namespace</span> <span class="namespace">x3</span> = <span class="namespace">boost</span>::<span class="namespace">spirit</span>::<span class="namespace">x3</span>;
+
+<span class="com-single">// # followed by any number of (any character except end-of-line) followed by (end-of-line or end-of-input)</span>
+<span class="keyword">const</span> <span class="keyword">auto</span> <span class="var-global">directive</span>           = <span class="lit-chr">'#'</span>  <span class="oo">&gt;</span> <span class="oo">*</span>(<span class="namespace">x3</span>::<span class="var-global">char_</span> <span class="oo">-</span> <span class="namespace">x3</span>::<span class="var-global">eol</span>) <span class="oo">&gt;</span> (<span class="namespace">x3</span>::<span class="var-global">eol</span> <span class="oo">|</span> <span class="namespace">x3</span>::<span class="var-global">eoi</span>);
+
+<span class="keyword">const</span> <span class="keyword">auto</span> <span class="var-global">single_line_comment</span> = <span class="lit-str">"//"</span> <span class="oo">&gt;</span> <span class="oo">*</span>(<span class="namespace">x3</span>::<span class="var-global">char_</span> <span class="oo">-</span> <span class="namespace">x3</span>::<span class="var-global">eol</span>) <span class="oo">&gt;</span> (<span class="namespace">x3</span>::<span class="var-global">eol</span> <span class="oo">|</span> <span class="namespace">x3</span>::<span class="var-global">eoi</span>);
+<span class="keyword">const</span> <span class="keyword">auto</span> <span class="var-global">multi_line_comment</span>  = <span class="lit-str">"/*"</span> <span class="oo">&gt;</span> <span class="oo">*</span>(<span class="namespace">x3</span>::<span class="var-global">char_</span> <span class="oo">-</span> <span class="lit-str">"*/"</span>) <span class="oo">&gt;</span> <span class="lit-str">"*/"</span>;
+<span class="keyword">const</span> <span class="keyword">auto</span> <span class="var-global">comment</span> = <span class="var-global">single_line_comment</span> <span class="oo">|</span> <span class="var-global">multi_line_comment</span>;
+</pre></td>
+</tr></tbody></table>
+<p>More information:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Spirit_Parser_Framework">https://en.wikipedia.org/wiki/Spirit_Parser_Framework</a> (describes older second edition but gives a good overview)</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Domain-specific_language">https://en.wikipedia.org/wiki/Domain-specific_language</a></p></li>
+</ul>
+<!--  --><blockquote>
+<p>Is there a project where overloading <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">,</span></code> made sense?</p>
+</blockquote>
+<p>Yes. C++ is a fun language where even the most obscure features will be found by someone to be useful. <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">,</span></code> is overloaded in <a class="reference external" href="http://www.boost.org/doc/libs/release/libs/assign/doc/index.html#intro">Boost.Assign</a> to extend interface of STL containers. This library is somewhat old (pre modern C++ era); since C++11 there are much better (and less confusing) ways to do things what the library provides.</p>
+</section><section id="in-practice"><h2>In practice</h2>
+<p>In practice, very few classes have overloaded operators other than <code class="docutils literal">=</code>, <code class="docutils literal">==</code> and <code class="docutils literal">!=</code> or user-defined convertion. <strong>Majority of code does not need to overload any operators</strong> so there is no significant value in trying to remember all possible recommendations for each operator mentioned in this chapter - <strong>use this chapter more as a reference than lessons you have to go through</strong>. If you want, skip all lessons except comparisons and user-defined convertion.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

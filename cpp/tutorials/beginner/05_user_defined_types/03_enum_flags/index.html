@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 03 - enum flags</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">05 - user defined types</a></li>
+							<span>/</span>
+						<li>03 - enum flags</li>
+					</ol></nav><div class="content">
+				<h1>03 - enum flags</h1>				<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This lesson requires knowledge about bit operations (AND, OR, XOR and bit shifts). Skip this lesson if you have skipped the lesson about these operations.</p>
+</aside><section id="motivation"><h2>Motivation</h2>
+<p>Enumerations explained in the previous lesson are a useful abstraction to represent a choice from finite number of predetermined possibilities. How about the case when each option is independent and multiple can be choosen at the same time?</p>
+</section><section id="bitmasks"><h2>Bitmasks</h2>
+<!-- TOINCLUDE copy bitmask definition -->
+<p>A good example are file permissions on <a class="reference external" href="https://en.wikipedia.org/wiki/POSIX">POSIX</a> operating systems.</p>
+<div class="docutils container">
+<details><summary>POSIX filesystem permissions</summary><div class="docutils container">
+<p>Each object in the filesystem has 3 independent permissions (read, write, execute) for each of (owner, group, others) and few other that specify partially implementation-defined behavior.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>These settings are often misunderstood. The type of the object (directory, symlink, socket, pipe, etc.) affects how they are interpreted.</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.hackinglinuxexposed.com/articles/20030417.html">explanation of rwx on files</a></p></li>
+<li><p><a class="reference external" href="https://www.hackinglinuxexposed.com/articles/20030424.html">explanation of rwx on directories</a></p></li>
+</ul></aside>
+</div>
+</details>
+</div>
+<p>C++17 added a filesystem library to the standard library (based on Boost.Filesystem). Synopsis for <a class="reference external" href="https://en.cppreference.com/w/cpp/filesystem/perms">https://en.cppreference.com/w/cpp/filesystem/perms</a>:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">namespace</span> <span class="namespace">std</span>::<span class="namespace">filesystem</span> {
+
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">perms</span>
+{
+	<span class="enum">none</span> = <span class="lit-num">0</span>,
+
+	<span class="enum">owner_read</span> = <span class="fmt-seq">0</span><span class="lit-num">400</span>,
+	<span class="enum">owner_write</span> = <span class="fmt-seq">0</span><span class="lit-num">200</span>,
+	<span class="enum">owner_exec</span> = <span class="fmt-seq">0</span><span class="lit-num">100</span>,
+	<span class="enum">owner_all</span> = <span class="enum">owner_read</span> | <span class="enum">owner_write</span> | <span class="enum">owner_exec</span>,
+
+	<span class="enum">group_read</span> = <span class="fmt-seq">0</span><span class="lit-num">40</span>,
+	<span class="enum">group_write</span> = <span class="fmt-seq">0</span><span class="lit-num">20</span>,
+	<span class="enum">group_exec</span> = <span class="fmt-seq">0</span><span class="lit-num">10</span>,
+	<span class="enum">group_all</span> = <span class="enum">group_read</span> | <span class="enum">group_write</span> | <span class="enum">group_exec</span>,
+
+	<span class="enum">others_read</span> = <span class="fmt-seq">0</span><span class="lit-num">4</span>,
+	<span class="enum">others_write</span> = <span class="fmt-seq">0</span><span class="lit-num">2</span>,
+	<span class="enum">others_execute</span> = <span class="fmt-seq">0</span><span class="lit-num">1</span>,
+	<span class="enum">others_all</span> = <span class="enum">others_read</span> | <span class="enum">others_write</span> | <span class="enum">others_execute</span>,
+
+	<span class="enum">all</span> = <span class="enum">owner_all</span> | <span class="enum">group_all</span> | <span class="enum">others_all</span>,
+
+	<span class="enum">set_uid</span> = <span class="fmt-seq">0</span><span class="lit-num">4000</span>,
+	<span class="enum">set_gid</span> = <span class="fmt-seq">0</span><span class="lit-num">2000</span>,
+	<span class="enum">sticky_bit</span> = <span class="fmt-seq">0</span><span class="lit-num">1000</span>,
+
+	<span class="enum">mask</span> = <span class="enum">all</span> | <span class="enum">set_uid</span> | <span class="enum">set_gid</span> | <span class="enum">sticky_bit</span>
+};
+
+<span class="type">perms</span> <span class="keyword">operator</span><span class="func">&amp;</span>(<span class="type">perms</span> <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>);
+<span class="type">perms</span> <span class="keyword">operator</span><span class="func">|</span>(<span class="type">perms</span> <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>);
+<span class="type">perms</span> <span class="keyword">operator</span><span class="func">^</span>(<span class="type">perms</span> <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>);
+
+<span class="type">perms</span>&amp; <span class="keyword">operator</span><span class="func">&amp;=</span>(<span class="type">perms</span>&amp; <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>);
+<span class="type">perms</span>&amp; <span class="keyword">operator</span><span class="func">|=</span>(<span class="type">perms</span>&amp; <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>);
+<span class="type">perms</span>&amp; <span class="keyword">operator</span><span class="func">^=</span>(<span class="type">perms</span>&amp; <span class="param">lhs</span>, <span class="type">perms</span> <span class="param">rhs</span>);
+
+<span class="type">perms</span> <span class="keyword">operator</span><span class="func">~</span>(<span class="type">perms</span> <span class="param">rhs</span>);
+
+}
+</pre></td>
+</tr></tbody></table>
+<p>There are 12 independent settings in total and few aliases for common combinations. How does it work? Each value is a different power of 2 which in binary system will be a different bit. Each bit can be changed and tested separately through bit operations.</p>
+<p>Literals have octal (base 8) notation for historical reasons - Unix file permissions have strong convention to be represented in octal. This even includes tools such as <code class="docutils literal">chmod</code>.</p>
+<p>A more typical definition of a bit mask enumeration uses shifts with increasing values. Since bit shifts are multiplications (or divisions in case of <code class="code custom-cpp">&gt;&gt;</code>) by powers of 2, they end up representing specific bits. Additionally, this clean and expressive way lets very easily add a new enumerator.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// hypothetical implementation of std::filesystem::copy_options</span>
+<span class="com-single">// https://en.cppreference.com/w/cpp/filesystem/copy_options</span>
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">copy_options</span> : <span class="keyword">unsigned</span> <span class="keyword">short</span>
+{
+	<span class="enum">none</span> = <span class="lit-num">0</span>,
+
+	<span class="enum">skip_existing</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">0</span>,
+	<span class="enum">overwrite_existing</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">1</span>,
+	<span class="enum">update_existing</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">2</span>,
+
+	<span class="enum">recursive</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">3</span>,
+
+	<span class="enum">copy_symlinks</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">4</span>,
+	<span class="enum">skip_symlinks</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">5</span>,
+
+	<span class="enum">directories_only</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">6</span>,
+	<span class="enum">create_symlinks</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">7</span>,
+	<span class="enum">create_hard_links</span> = <span class="lit-num">1</span> &lt;&lt; <span class="lit-num">8</span>
+};
+</pre></td>
+</tr></tbody></table></section><section id="common-mistakes"><h2>Common mistakes</h2>
+<p>A value of a bitmask type does not necessarily equal to any of its bits as it can be a sum of multiple ones. The value should not be checked for equality but tested with AND operation:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// wrong: this checks for equality of all bits</span>
+<span class="keyword">if</span> (<span class="var-local">p</span> == <span class="namespace">std</span>::<span class="namespace">filesystem</span>::<span class="type">perms</span>::<span class="enum">owner_read</span>)
+	<span class="com-single">// ...</span>
+
+<span class="com-single">// correct: check only for presence of specific bit</span>
+<span class="keyword">if</span> (<span class="var-local">p</span> <span class="oo">&amp;</span> <span class="namespace">std</span>::<span class="namespace">filesystem</span>::<span class="type">perms</span>::<span class="enum">owner_read</span>)
+	<span class="com-single">// ...</span>
+</pre></td>
+</tr></tbody></table></section><section id="recommendation"><h2>Recommendation</h2>
+<p>There are 2 approaches to bitmask enumerations:</p>
+<ul class="simple">
+<li><p>use <code class="code custom-cpp"><span class="keyword">enum</span></code> and use implicit convertion to integer types to apply bit operations</p></li>
+<li><p>use <code class="code custom-cpp"><span class="keyword">enum</span> <span class="keyword">class</span></code> and overload bit operators to support required operations</p></li>
+</ul>
+<p>The second requires more work to setup but is safer in practice (no implicit convertions and no name clashes). I would go for the first one only if there is a very frequent need to use enumerators as integers.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

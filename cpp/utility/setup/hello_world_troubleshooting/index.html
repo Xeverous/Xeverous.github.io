@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - hello world troubleshooting</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../">HOME</a></li>
+				<li><a href="../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../../tutorials/beginner/">beginner</a></li>
+						<li><a href="../../../tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../../tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../cpp_myths/">C++ myths</a></li>
+						<li><a href="../../glossary/">glossary</a></li>
+						<li><a href="../../">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../about/">about</a></li>
+						<li><a href="../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../">utility</a></li>
+							<span>/</span>
+							<li><a href="../">setup</a></li>
+							<span>/</span>
+						<li>hello world troubleshooting</li>
+					</ol></nav><div class="content">
+				<h1>hello world troubleshooting</h1>				<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/%22Hello,_World!%22_program">"hello horld"</a> should print a string on the terminal.</p>
+<!-- TOINCLUDE hello world -->
+<p>Below I wrote a list of common environment setup problems, ordered by toolchain. There are many more possile problems (I only listed ones I know well), usually an answer is found on Stack Overflow. If you have a reddit account, you can also ask on <a class="reference external" href="https://www.reddit.com/r/cpp_questions/">/r/cpp_questions</a>.</p>
+<section id="windows"><h2>Windows</h2>
+<section id="can-not-launch-the-executable"><h3>Can not launch the executable</h3>
+<p>This can be caused by an antivirus program, which assumes unknown executables are suspicious. To workaround, most antiviruses have an option to exclude specified directories from automatic scanning.</p>
+</section><section id="strange-x86-x86-64-error-when-launching-the-executable"><h3>Strange x86 / x86_64 error when launching the executable</h3>
+<p>You have a 32-bit computer but build the project for 64-bit. Your processor architecture can not run this instruction set.</p>
+<p>Solution: change settings so that 32 bit programs are built instead.</p>
+<ul class="simple">
+<li><p>GCC / Clang: add <code class="docutils literal"><span class="pre">-m32</span></code> to compiler and linker flags</p></li>
+<li><p>MSVC: open project properties and the linker settings</p></li>
+</ul></section><section id="works-but-disappears-immediately"><h3>Works, but disappears immediately</h3>
+<p>This is a correct behaviour, since the only task for the program was to print the text and close (sometimes it may not even open a terminal if build with specific compiler/linker options). It's actually a feature in some IDEs that they stop the program when it finishes so the window does not disappear.</p>
+<p>There are multiple workarounds:</p>
+<ul class="simple">
+<li><p>fiddle with IDE settings</p></li>
+<li><p>run the program in a console terminal (the program will close, but the terminal will not)</p></li>
+<li><p>insert <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cin</span>.<span class="func">get</span>();</code> at the end of <code class="code custom-cpp"><span class="func">main</span></code> function - this will wait for a key press; may not work if you mix it with other input methods - if this is the case use these (identical) methods instead (I don't want to explain stream peculiarities here)</p></li>
+</ul></section></section><section id="windows-mingw"><h2>Windows + MinGW</h2>
+<ul class="simple">
+<li><p>Windows XP or later</p></li>
+<li><p>any port of GCC toolchain (MinGW or MinGW-w64)</p></li>
+<li><p>any IDE other than Visual Studio (<em>Visual Studio Code</em> is different from <em>Visual Studio</em>)</p></li>
+</ul>
+<section id="ide-can-not-find-the-compiler"><h3>IDE can not find the compiler</h3>
+<p>This problem usually appears where after installing (or just unpacking) a compiler it's not automatically added to the <code class="docutils literal">PATH</code> environmental variable. This variable is used by many programs to search for other programs.</p>
+<p>Copy the path of your compiler binary directory and append it to the <code class="docutils literal">PATH</code> in <em>Control Panel</em> -&gt; <em>environmental variables</em> (this is a pretty deeply hidden option, search the internet for screens if you can't find it).</p>
+<p>The path should be a sequence of directories leading to the one where the compiler executable resides. For example, if your compiler path is <code class="docutils literal"><span class="pre">C:\MinGW\bin\g++.exe</span></code> (the <code class="docutils literal">bin</code> directory for various GCC ports is usually full of executables and some <code class="docutils literal">dll</code> files) the added path should be <code class="docutils literal"><span class="pre">C:\MinGW\bin</span></code>. MinGW-w64 distributions may have longer paths such as <code class="docutils literal"><span class="pre">C:\mingw-w64\i686-7.2.0-posix-dwarf-rt_v5-rev1\mingw32\bin</span></code>).</p>
+<ul class="simple">
+<li><p>If the variable <code class="docutils literal">PATH</code> does not exists in the list, just add it (name it <code class="docutils literal">PATH</code> and the value is the actual path)</p></li>
+<li><p>if <code class="docutils literal">PATH</code> already exists, append your path to it after semicolon: <code class="docutils literal"><span class="pre">C:\foo;C:\bar;C:\compiler\bin</span></code>. Newer Windows versions offer improved interface which presents <code class="docutils literal">PATH</code> as an array of values - then just add a new entry.</p></li>
+</ul>
+<p>Changes to environmental variables require to close all console terminals (e.g. cmd). If it doesn't work, try restarting the system.</p>
+<p>After <code class="docutils literal">PATH</code> is set, you should be able to call the compiler from the command line, regardless of the working directory:</p>
+<div class="code"><pre class="code text"><a id="rest_code_92b0074801f34d35916571f8258e34aa-1" name="rest_code_92b0074801f34d35916571f8258e34aa-1" href="#rest_code_92b0074801f34d35916571f8258e34aa-1"></a>C:\Users\admin&gt;g++ --version
+<a id="rest_code_92b0074801f34d35916571f8258e34aa-2" name="rest_code_92b0074801f34d35916571f8258e34aa-2" href="#rest_code_92b0074801f34d35916571f8258e34aa-2"></a>g++ (i686-posix-dwarf-rev1, Built by MinGW-W64 project) 7.2.0
+<a id="rest_code_92b0074801f34d35916571f8258e34aa-3" name="rest_code_92b0074801f34d35916571f8258e34aa-3" href="#rest_code_92b0074801f34d35916571f8258e34aa-3"></a>Copyright (C) 2017 Free Software Foundation, Inc.
+<a id="rest_code_92b0074801f34d35916571f8258e34aa-4" name="rest_code_92b0074801f34d35916571f8258e34aa-4" href="#rest_code_92b0074801f34d35916571f8258e34aa-4"></a>This is free software; see the source for copying conditions.  There is NO
+<a id="rest_code_92b0074801f34d35916571f8258e34aa-5" name="rest_code_92b0074801f34d35916571f8258e34aa-5" href="#rest_code_92b0074801f34d35916571f8258e34aa-5"></a>warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+</pre></div>
+</section><section id="ide-sees-the-compiler-but-can-not-find-make"><h3>IDE sees the compiler but can not find make</h3>
+<p>This problem is similar to the one above - this time the <code class="docutils literal">make</code> program can not be found.</p>
+<p>Go to your compiler installation directory and check that <code class="docutils literal">make</code> actually exists in the <code class="docutils literal">bin</code> directory. You may find something like <code class="docutils literal"><span class="pre">mingw-make32.exe</span></code> or <code class="docutils literal"><span class="pre">i686-w64-mingw32-make.exe</span></code>. It is because various GCC distributions prefix some executable names with architecture name in case someone wanted to have a multi-architecture toolchain installed in 1 place. I hardly doubt you want to compile now for something other than x86 (i686) / x86_64 (these are the architecture names of standard 32-bit and 64-bit PC).</p>
+<p>If this is the case - simply copy the executable and give the copy a <code class="docutils literal">make.exe</code> name. Do not just rename - copy and leave both variants - this is because some other tools might have hardcoded expectation of the original name.</p>
+<p>You might also find more executables with prefixed names - in case of problems do the same.</p>
+<p>Test that it works by calling make from the command line:</p>
+<p>TODO make --version</p>
+</section><section id="nothing-happens-when-the-executable-is-launched"><h3>Nothing happens when the executable is launched</h3>
+<p>If you are trying to launch it from the Explorer (the file/directory browsing program), open command line in this directory (as a shortcut you can click the path and just write "cmd") and attempt to launch it from the terminal. This sometimes results in displaying what has gone wrong.</p>
+</section><section id="missing-dll"><h3>Missing dll</h3>
+<p>This means that the program has been built successfully but some compiled code is missing - usually the implementation of the C++ standard library (<code class="docutils literal"><span class="pre">libstdc++-6.dll</span></code>) or other <em>dynamically linked libraries</em> that are needed in order to run (they vary depending on the compiler).</p>
+<p>These files can be found in the <code class="docutils literal">bin</code> directory of the compiler's installation. To avoid <a class="reference external" href="https://en.wikipedia.org/wiki/DLL_Hell">DLL Hell</a>, simply copy required files to your executable's directory.</p>
+<p>An alternative would be to use <em>static linking</em> instead, which copies required machine code into the executable. See <a class="reference external" href="https://stackoverflow.com/questions/26103966/how-can-i-statically-link-standard-library-to-my-c-program">https://stackoverflow.com/questions/26103966/how-can-i-statically-link-standard-library-to-my-c-program</a> for more information.</p>
+</section></section><section id="windows-visual-studio"><h2>Windows + Visual Studio</h2>
+<p>Often referred to as MSVC (Microsoft Visual C/C++ compiler).</p>
+<section id="something-stdafx-h-or-fatal-error-c1010"><h3>something <code class="docutils literal">stdafx.h</code> or <code class="docutils literal">fatal error C1010</code>
+</h3>
+<p>This comes from a popular feature known as <em>precompiled headers</em>. The purpose of it is to speed up building process, though I have to admit that no IDE does it in a so intrusive way as Visual Studio (this is the only implementation of precompiled headers I know which requires changes in code).</p>
+<p>You have few options:</p>
+<ul class="simple">
+<li><p>Create a file named <code class="docutils literal">stdafx.h</code> and add it to your project (the file can be empty)</p></li>
+<li><p>Disable precompiled headers</p></li>
+<li><p>Change precompiled headers to use a non-code-intrusive way (I heard this is somehow possible)</p></li>
+<li><p>Use a different project wizard (VS has a lot of options in the "new project" menu)</p></li>
+</ul>
+<p>See <a class="reference external" href="https://stackoverflow.com/questions/4726155/">https://stackoverflow.com/questions/4726155/</a> for more information.</p>
+</section></section><section id="gnu-linux"><h2>GNU+Linux</h2>
+<p>Also applies if using Clang compiler.</p>
+<section id="permission-denied-when-trying-to-launch-the-program"><h3>Permission denied when trying to launch the program</h3>
+<p>Check that the executable is actually an executable. Verify that it has <code class="docutils literal">x</code> flag on by using <code class="docutils literal">ls <span class="pre">-l</span> /path/to/executable</code>. If not, add the flag by <code class="docutils literal">chmod +x /path/to/executable</code>.</p>
+</section><section id="ide-can-not-find-the-compiler-1"><h3>IDE can not find the compiler</h3>
+<p>Some distributions may come with GCC already, but it may have only C components installed or have an old version of the C++ compiler. Check the version of both <code class="docutils literal">gcc</code> and <code class="docutils literal">g++</code>. On some system configurations <code class="docutils literal">gcc <span class="pre">--version</span></code> might print a different number from <code class="docutils literal">g++ <span class="pre">--version</span></code>.</p>
+<p>Various distributions offer C and C++ compilers in their package managers (<code class="docutils literal">apt</code>, <code class="docutils literal">yum</code>, etc.), installing them using commands like <code class="docutils literal">sudo apt install g++</code> is the simplest way although the delivered programs may not be very recent.</p>
+</section></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

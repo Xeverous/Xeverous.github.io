@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - 2-way comparison</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xy - operator overloading</a></li>
+							<span>/</span>
+						<li>02 - 2-way comparison</li>
+					</ol></nav><div class="content">
+				<h1>02 - 2-way comparison</h1>				<!-- TODO this lesson requires explanation of assert macro -->
+<p>We start with the simplest operators - ones which do not need to modify the object.</p>
+<section id="equality"><h2>Equality</h2>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cassert&gt;</span>
+
+<span class="keyword">class</span> <span class="type">fraction</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">m_numerator</span>;
+	<span class="keyword">int</span> <span class="var-member">m_denominator</span>;
+
+	<span class="keyword">static</span> <span class="keyword">int</span> <span class="func">make_valid_denominator</span>(<span class="keyword">int</span> <span class="param">value</span>)
+	{
+		<span class="keyword">if</span> (<span class="param">value</span> == <span class="lit-num">0</span>)
+			<span class="keyword">return</span> <span class="lit-num">1</span>;
+		<span class="keyword">else</span>
+			<span class="keyword">return</span> <span class="param">value</span>;
+	}
+
+<span class="keyword">public</span>:
+	<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span> = <span class="lit-num">0</span>, <span class="keyword">int</span> <span class="param">denominator</span> = <span class="lit-num">1</span>)
+	: <span class="var-member">m_numerator</span>(<span class="param">numerator</span>)
+	, <span class="var-member">m_denominator</span>(<span class="func">make_valid_denominator</span>(<span class="param">denominator</span>))
+	{}
+
+	<span class="keyword">int</span> <span class="func">numerator</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="var-member">m_numerator</span>; }
+	<span class="keyword">int</span> <span class="func">denominator</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="var-member">m_denominator</span>; }
+};
+
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="type">fraction</span> <span class="param">lhs</span>, <span class="type">fraction</span> <span class="param">rhs</span>)
+{
+	<span class="keyword">if</span> (<span class="param">lhs</span>.<span class="func">denominator</span>() == <span class="param">rhs</span>.<span class="func">denominator</span>())
+		<span class="keyword">return</span> <span class="param">lhs</span>.<span class="func">numerator</span>() == <span class="param">rhs</span>.<span class="func">numerator</span>();
+
+	<span class="com-single">// a/b == c/d is same as ad/bd == bc/bd</span>
+	<span class="com-single">// we don't need to compute new denominators, just compare ad and bc</span>
+	<span class="keyword">return</span> <span class="param">lhs</span>.<span class="func">numerator</span>() * <span class="param">rhs</span>.<span class="func">denominator</span>() == <span class="param">rhs</span>.<span class="func">numerator</span>() * <span class="param">lhs</span>.<span class="func">denominator</span>();
+}
+
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="type">fraction</span> <span class="param">lhs</span>, <span class="type">fraction</span> <span class="param">rhs</span>)
+{
+	<span class="keyword">return</span> !(<span class="param">lhs</span> <span class="oo">==</span> <span class="param">rhs</span>);
+}
+
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&lt;</span>(<span class="type">fraction</span> <span class="param">lhs</span>, <span class="type">fraction</span> <span class="param">rhs</span>)
+{
+	<span class="keyword">if</span> (<span class="param">lhs</span>.<span class="func">denominator</span>() == <span class="param">rhs</span>.<span class="func">denominator</span>())
+	{
+		<span class="com-single">// if denominator is negative, result must be reversed</span>
+		<span class="keyword">if</span> (<span class="param">lhs</span>.<span class="func">denominator</span>() &gt; <span class="lit-num">0</span>) <span class="com-single">// e.g. 2/4 &lt; 3/4</span>
+			<span class="keyword">return</span> <span class="param">lhs</span>.<span class="func">numerator</span>() &lt; <span class="param">rhs</span>.<span class="func">numerator</span>();
+		<span class="keyword">else</span> <span class="com-single">// e.g. 3/-4 &lt; 2/-4</span>
+			<span class="keyword">return</span> <span class="param">rhs</span>.<span class="func">numerator</span>() &lt; <span class="param">lhs</span>.<span class="func">numerator</span>();
+	}
+
+	<span class="com-single">// if denominator signs differ, result must be reversed</span>
+	<span class="keyword">if</span> ((<span class="param">lhs</span>.<span class="func">denominator</span>() &gt; <span class="lit-num">0</span>) == (<span class="param">rhs</span>.<span class="func">denominator</span>() &gt; <span class="lit-num">0</span>))
+		<span class="keyword">return</span> <span class="param">lhs</span>.<span class="func">numerator</span>() * <span class="param">rhs</span>.<span class="func">denominator</span>() &lt; <span class="param">rhs</span>.<span class="func">numerator</span>() * <span class="param">lhs</span>.<span class="func">denominator</span>();
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">rhs</span>.<span class="func">numerator</span>() * <span class="param">lhs</span>.<span class="func">denominator</span>() &lt; <span class="param">lhs</span>.<span class="func">numerator</span>() * <span class="param">rhs</span>.<span class="func">denominator</span>();
+}
+
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&gt;</span> (<span class="type">fraction</span> <span class="param">lhs</span>, <span class="type">fraction</span> <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="param">rhs</span> <span class="oo">&lt;</span> <span class="param">lhs</span>; }
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&lt;=</span>(<span class="type">fraction</span> <span class="param">lhs</span>, <span class="type">fraction</span> <span class="param">rhs</span>) { <span class="keyword">return</span> !(<span class="param">lhs</span> <span class="oo">&gt;</span> <span class="param">rhs</span>); }
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&gt;=</span>(<span class="type">fraction</span> <span class="param">lhs</span>, <span class="type">fraction</span> <span class="param">rhs</span>) { <span class="keyword">return</span> !(<span class="param">lhs</span> <span class="oo">&lt;</span> <span class="param">rhs</span>); }
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>) <span class="oo">==</span> <span class="type">fraction</span>(<span class="lit-num">2</span>, <span class="lit-num">4</span>));
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>) <span class="oo">!=</span> <span class="type">fraction</span>(-<span class="lit-num">1</span>, <span class="lit-num">2</span>));
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>) <span class="oo">!=</span> <span class="type">fraction</span>(<span class="lit-num">1</span>, -<span class="lit-num">2</span>));
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>) <span class="oo">==</span> <span class="type">fraction</span>(-<span class="lit-num">1</span>, -<span class="lit-num">2</span>));
+
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">2</span>, <span class="lit-num">6</span>) <span class="oo">==</span> <span class="type">fraction</span>(<span class="lit-num">3</span>, <span class="lit-num">9</span>));
+
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">3</span>, <span class="lit-num">5</span>) <span class="oo">&lt;</span> <span class="type">fraction</span>(<span class="lit-num">2</span>, <span class="lit-num">3</span>));
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">3</span>, <span class="lit-num">5</span>) <span class="oo">&gt;</span> <span class="type">fraction</span>(-<span class="lit-num">2</span>, <span class="lit-num">3</span>));
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">3</span>, <span class="lit-num">5</span>) <span class="oo">&gt;</span> <span class="type">fraction</span>(<span class="lit-num">2</span>, -<span class="lit-num">3</span>));
+	<span class="macro">assert</span>(<span class="type">fraction</span>(<span class="lit-num">3</span>, <span class="lit-num">5</span>) <span class="oo">&lt;</span> <span class="type">fraction</span>(-<span class="lit-num">2</span>, -<span class="lit-num">3</span>));
+}
+</pre></td>
+</tr></tbody></table>
+<p>Notes:</p>
+<ul class="simple">
+<li><p>There is no requiremenet to return <code class="code custom-cpp"><span class="keyword">bool</span></code>, but you need a really good reason to return an object of a different type (e.g. EDSL).</p></li>
+<li>
+<p>By convention (to avoid code duplication):</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="keyword">operator</span><span class="func">!=</span></code> is implemeted in terms of <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">==</span></code>.</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&gt;</span></code> is implemeted in terms of <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&lt;</span></code>.</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&lt;=</span></code> is implemeted in terms of <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&gt;</span></code>.</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&gt;=</span></code> is implemeted in terms of <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&lt;</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<!--  --><blockquote>
+<p>Isn't this reuse (negating result of a different comparison) slower than manual implementation?</p>
+</blockquote>
+<p>No, it is not. Compilers today do very advanced optimizations and they easily inline and remove redundant operations. There are also some hardware specific quirks (e.g. whether <code class="docutils literal">&lt;</code> takes less cycles than <code class="docutils literal">&lt;=</code>) that they take into account.</p>
+</section><section id="member-overloads"><h2>Member overloads</h2>
+<aside class="admonition error"><p class="admonition-title">error</p>
+<p>Many C++ learning materials (and beginners) notoriously commit this mistake.</p>
+</aside><aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Commutative binary operators should be implemented as free functions.</p>
+</aside><p>Free function implementation has easier to read code but more importantly, it treats both arguments the same way. Member operator overloads do not, because <strong>second operand can be implicitly converted while first not</strong>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cassert&gt;</span>
+
+<span class="keyword">class</span> <span class="type">fraction</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">m_numerator</span>;
+	<span class="keyword">int</span> <span class="var-member">m_denominator</span>;
+
+	<span class="keyword">static</span> <span class="keyword">int</span> <span class="func">make_valid_denominator</span>(<span class="keyword">int</span> <span class="param">value</span>)
+	{
+		<span class="keyword">if</span> (<span class="param">value</span> == <span class="lit-num">0</span>)
+			<span class="keyword">return</span> <span class="lit-num">1</span>;
+		<span class="keyword">else</span>
+			<span class="keyword">return</span> <span class="param">value</span>;
+	}
+
+<span class="keyword">public</span>:
+	<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span> = <span class="lit-num">0</span>, <span class="keyword">int</span> <span class="param">denominator</span> = <span class="lit-num">1</span>)
+	: <span class="var-member">m_numerator</span>(<span class="param">numerator</span>)
+	, <span class="var-member">m_denominator</span>(<span class="func">make_valid_denominator</span>(<span class="param">denominator</span>))
+	{}
+
+	<span class="keyword">int</span> <span class="func">numerator</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="var-member">m_numerator</span>; }
+	<span class="keyword">int</span> <span class="func">denominator</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="var-member">m_denominator</span>; }
+
+	<span class="com-single">// BAD: don't overload comparison operators as members</span>
+
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="type">fraction</span> <span class="param">rhs</span>) <span class="keyword">const</span>
+	{
+		<span class="keyword">if</span> (<span class="func">denominator</span>() == <span class="param">rhs</span>.<span class="func">denominator</span>())
+			<span class="keyword">return</span> <span class="func">numerator</span>() == <span class="param">rhs</span>.<span class="func">numerator</span>();
+
+		<span class="keyword">return</span> <span class="func">numerator</span>() * <span class="param">rhs</span>.<span class="func">denominator</span>() == <span class="param">rhs</span>.<span class="func">numerator</span>() * <span class="func">denominator</span>();
+	}
+
+	<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="type">fraction</span> <span class="param">rhs</span>) <span class="keyword">const</span>
+	{
+		<span class="keyword">return</span> !(*<span class="keyword">this</span> <span class="oo">==</span> <span class="param">rhs</span>);
+	}
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">fraction</span> <span class="var-local">fr</span>(<span class="lit-num">2</span>, <span class="lit-num">1</span>);
+
+	<span class="com-single">// fine: second operand undergoes implicit convertion (2 is treated as fraction(2))</span>
+	<span class="macro">assert</span>(<span class="var-local">fr</span> <span class="oo">==</span> <span class="lit-num">2</span>);
+	<span class="macro">assert</span>(<span class="var-local">fr</span>.<span class="keyword">operator</span><span class="func">==</span>(<span class="lit-num">2</span>));
+
+	<span class="com-single">// bad: first operand can not undergo implicit convertion</span>
+	<span class="macro">assert</span>(<span class="lit-num">2</span> <span class="problem">==</span> <span class="var-local">fr</span>);          <span class="com-single">// compiler error: no match for operator==(int, fraction)</span>
+	<span class="macro">assert</span>(<span class="problem">2.</span><span class="problem">operator</span>==(<span class="var-local">fr</span>)); <span class="com-single">// syntax error</span>
+}
+</pre></td>
+</tr></tbody></table>
+<p>The cause of this assymetry is the fact that if you call a member function, it's already known on what type of the object the function is called. The reverse situation - searching for member functions on a non-class type is not possible.</p>
+<p>Thus, "symmetrical" (commutative binary) operators should be implemented as free functions.</p>
+</section><section id="mixed-type-comparisons"><h2>Mixed-type comparisons</h2>
+<p>Sometimes you might also want to compare 2 different types, usually one is a subset of another.</p>
+<p>Example: a game where every player has unique ID:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">player</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">id</span>;
+	<span class="com-single">// lots of other fields... (potentially expensive to construct)</span>
+
+<span class="keyword">public</span>:
+	<span class="com-single">// [...]</span>
+
+	<span class="com-single">// reminder: friend functions defined inside classes are not members</span>
+	<span class="keyword">friend</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="keyword">const</span> <span class="type">player</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">player</span>&amp; <span class="param">rhs</span>)
+	{
+		<span class="keyword">return</span> <span class="param">lhs</span>.<span class="var-member">id</span> == <span class="param">rhs</span>.<span class="var-member">id</span>;
+	}
+};
+
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="keyword">const</span> <span class="type">player</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">player</span>&amp; <span class="param">rhs</span>)
+{
+	<span class="keyword">return</span> !(<span class="param">lhs</span> <span class="oo">==</span> <span class="param">rhs</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>Then you simply need to provide extra overloads:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// inside class definition</span>
+<span class="keyword">friend</span> <span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="keyword">const</span> <span class="type">player</span>&amp; <span class="param">lhs</span>, <span class="keyword">int</span> <span class="param">id</span>)
+{
+	<span class="keyword">return</span> <span class="param">lhs</span>.<span class="var-member">id</span> == <span class="param">id</span>;
+}
+
+<span class="com-single">// outside class definition</span>
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="keyword">int</span> <span class="param">id</span>, <span class="keyword">const</span> <span class="type">player</span>&amp; <span class="param">rhs</span>)
+{
+	<span class="keyword">return</span> <span class="param">rhs</span> == <span class="param">id</span>;
+}
+
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="keyword">const</span> <span class="type">player</span>&amp; <span class="param">lhs</span>, <span class="keyword">int</span> <span class="param">id</span>)
+{
+	<span class="keyword">return</span> !(<span class="param">lhs</span> <span class="oo">==</span> <span class="param">id</span>);
+}
+
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="keyword">int</span> <span class="param">id</span>, <span class="keyword">const</span> <span class="type">player</span>&amp; <span class="param">rhs</span>)
+{
+	<span class="keyword">return</span> !(<span class="param">id</span> <span class="oo">==</span> <span class="param">rhs</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>The benefit of writing such extra operators is that if you have an ID and a player, you don't need to construct a temporary player object only to compare them. If object construction is expensive, this extra code improves performance. If multiple types share a common subobject that needs to be compared, the most resonable implementation would be to add <code class="code custom-cpp"><span class="keyword">int</span> <span class="func">get_id</span>() <span class="keyword">const</span>;</code> to every type.</p>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string_view</span></code> and <code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">char</span>*</code> do not share a common member (each refers to a sequence of characters differently) so instead many operator overloads are present to support every combination.</p>
+<p>There is no need to do such thing with the <code class="code custom-cpp"><span class="type">fraction</span></code> class - we can rely on implicit construction from integers. Fraction is a very cheap type to construct and copy (it's just 2 integers) so there is no benefit in writing extra comparison operators. Very likely each comparison call is inlined and any temporary objects optimized out.</p>
+</section><section id="way-helpers"><h2>3-way helpers</h2>
+<p>Sometimes you might already have a comparison helper in the form of a 2-argument function, which returns negative, zero or positive number depending on the ordering between elements - this style is very popular in C, including standard library functions <code class="code custom-cpp"><span class="func">memcmp</span></code>, <code class="code custom-cpp"><span class="func">strcmp</span></code>, <code class="code custom-cpp"><span class="func">strncmp</span></code>. In such case, all comparison operators can use the helper:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">report</span> { <span class="com-multi">/* ... */</span> };
+<span class="keyword">int</span> <span class="func">compare</span>(<span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">rhs</span>);
+
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="func">compare</span>(<span class="param">lhs</span>, <span class="param">rhs</span>) == <span class="lit-num">0</span>; }
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="func">compare</span>(<span class="param">lhs</span>, <span class="param">rhs</span>) != <span class="lit-num">0</span>; }
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&lt;</span> (<span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="func">compare</span>(<span class="param">lhs</span>, <span class="param">rhs</span>) &lt;  <span class="lit-num">0</span>; }
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&gt;</span> (<span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="func">compare</span>(<span class="param">lhs</span>, <span class="param">rhs</span>) &gt;  <span class="lit-num">0</span>; }
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&lt;=</span>(<span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="func">compare</span>(<span class="param">lhs</span>, <span class="param">rhs</span>) &lt;= <span class="lit-num">0</span>; }
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&gt;=</span>(<span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">lhs</span>, <span class="keyword">const</span> <span class="type">report</span>&amp; <span class="param">rhs</span>) { <span class="keyword">return</span> <span class="func">compare</span>(<span class="param">lhs</span>, <span class="param">rhs</span>) &gt;= <span class="lit-num">0</span>; }
+</pre></td>
+</tr></tbody></table></section><section id="lexicographical-comparison"><h2>Lexicographical comparison</h2>
+<p>If you have a type with multiple members and need to implement lexicographical comparison, you can use <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">tie</span></code> (which creates <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">tuple</span></code> of references) and rely on tuple's comparison operators:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;tuple&gt;</span>
+
+<span class="keyword">struct</span> <span class="type">package</span>
+{
+	<span class="keyword">int</span> <span class="var-member">rack</span>;
+	<span class="keyword">int</span> <span class="var-member">shelf</span>;
+	<span class="keyword">int</span> <span class="var-member">position</span>;
+};
+
+<span class="com-single">// bug-prone manual implementation</span>
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&lt;</span>(<span class="type">package</span> <span class="param">lhs</span>, <span class="type">package</span> <span class="param">rhs</span>)
+{
+	<span class="keyword">if</span> (<span class="param">lhs</span>.<span class="var-member">rack</span> != <span class="param">rhs</span>.<span class="var-member">rack</span>)
+		<span class="keyword">return</span> <span class="param">lhs</span>.<span class="var-member">rack</span> &lt; <span class="param">rhs</span>.<span class="var-member">rack</span>;
+
+	<span class="keyword">if</span> (<span class="param">lhs</span>.<span class="var-member">shelf</span> != <span class="param">rhs</span>.<span class="var-member">shelf</span>)
+		<span class="keyword">return</span> <span class="param">lhs</span>.<span class="var-member">shelf</span> &lt; <span class="param">rhs</span>.<span class="var-member">shelf</span>;
+
+	<span class="keyword">return</span> <span class="param">lhs</span>.<span class="var-member">position</span> &lt; <span class="param">rhs</span>.<span class="var-member">position</span>;
+}
+
+<span class="com-single">// same behavior, but much cleaner</span>
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">&lt;</span>(<span class="type">package</span> <span class="param">lhs</span>, <span class="type">package</span> <span class="param">rhs</span>)
+{
+	<span class="com-single">// orders elements by rack first, then by shelf, then by position</span>
+	<span class="com-single">// this will call bool operator&lt;(std::tuple&lt;int&amp;, int&amp;, int&amp;&gt;, std::tuple&lt;int&amp;, int&amp;, int&amp;&gt;)</span>
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">tie</span>(<span class="param">lhs</span>.<span class="var-member">rack</span>, <span class="param">lhs</span>.<span class="var-member">shelf</span>, <span class="param">lhs</span>.<span class="var-member">position</span>)
+	     <span class="oo">&lt;</span> <span class="namespace">std</span>::<span class="func">tie</span>(<span class="param">rhs</span>.<span class="var-member">rack</span>, <span class="param">rhs</span>.<span class="var-member">shelf</span>, <span class="param">rhs</span>.<span class="var-member">position</span>);
+}
+</pre></td>
+</tr></tbody></table></section><section id="recommendation"><h2>Recommendation</h2>
+<ul class="simple">
+<li>
+<p>Every type should either:</p>
+<ul>
+<li><p>overload all 6 comparison operators</p></li>
+<li><p>overload only <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">==</span></code> and <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">!=</span></code></p></li>
+<li><p>overload none of these</p></li>
+</ul>
+</li>
+<li>
+<p>For types that overload all operators:</p>
+<ul>
+<li><p><em>equivalence</em> (<code class="docutils literal">!(a &lt; b) &amp;&amp; !(b &lt; a)</code>) and <em>equality</em> (<code class="docutils literal">a == b</code>) should always have the same result.</p></li>
+<li><p><code class="docutils literal">a &lt;= b</code> should always have the same result as <code class="docutils literal">a &lt; b || a == b</code>.</p></li>
+</ul>
+</li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 07 - literals</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">02 - basics</a></li>
+							<span>/</span>
+						<li>07 - literals</li>
+					</ol></nav><div class="content">
+				<h1>07 - literals</h1>				<p>When you initialize or assign an object, data you write in the code (e.g. numbers) is generally stored in some read-only memory block inside the executable.</p>
+<p>This data also has a type and there are ways to specify it.</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>Literals are the tokens of a C++ program that represent constant values embedded in the source code.</p>
+</aside><section id="integer-literals"><h2>Integer literals</h2>
+<p>By default, integer literals are of type <code class="code custom-cpp"><span class="keyword">int</span></code>. The type can be changed by applying specific suffix:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="lit-num">123</span>    <span class="com-single">// int</span>
+<span class="lit-num">123</span><span class="suf">u</span>   <span class="com-single">// unsigned</span>
+<span class="lit-num">123</span><span class="suf">ul</span>  <span class="com-single">// unsigned long</span>
+<span class="lit-num">123</span><span class="suf">ull</span> <span class="com-single">// unsigned long long</span>
+
+<span class="com-single">// C++23</span>
+<span class="num">123z</span>   <span class="com-single">// signed version of std::size_t</span>
+<span class="num">123uz</span>  <span class="com-single">// std::size_t (an alias, typically for unsigned long long)</span>
+</pre></td>
+</tr></tbody></table>
+<ul class="simple">
+<li><p>The suffix is not case-sensitive but for <code class="code custom-cpp"><span class="keyword">long</span> <span class="keyword">long</span></code>, it must be either <code class="docutils literal">ll</code> or <code class="docutils literal">LL</code>. Mixed (<code class="docutils literal">lL</code> or <code class="docutils literal">Ll</code>) are not valid. Lowercase is recommended.</p></li>
+<li><p>There is no suffix for <code class="code custom-cpp"><span class="keyword">short</span></code>.</p></li>
+</ul>
+<p>The size type is one of integer types which the target platform uses for storing sizes, indexes etc. Its unsigned variant has an alias name <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">size_t</span></code> and usually it is <code class="code custom-cpp"><span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">long</span></code>.</p>
+<p>Integers may be written using multiple numeric systems:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">decimal</span>      = <span class="lit-num">42</span>;         <span class="com-single">// base 10 (digits 0 - 9)</span>
+<span class="keyword">int</span> <span class="var-local">octal</span>        = <span class="fmt-seq">0</span><span class="num">52</span>;        <span class="com-single">// base  8 (digits 0 - 7)</span>
+<span class="keyword">int</span> <span class="var-local">hexadecimal1</span> = <span class="fmt-seq">0x</span><span class="num">2a</span>;       <span class="com-single">// base 16 (digits 0 - f/F)</span>
+<span class="keyword">int</span> <span class="var-local">hexadecimal2</span> = <span class="fmt-seq">0X</span><span class="num">2A</span>;       <span class="com-single">// as above (case doesn't matter)</span>
+<span class="keyword">int</span> <span class="var-local">binary</span>       = <span class="fmt-seq">0b</span><span class="num">00101010</span>; <span class="com-single">// base  2 (digits 0 and 1), requires C++14</span>
+</pre></td>
+</tr></tbody></table>
+<p>All of the above represent the same value.</p>
+<p>Since C++14 numbers may use single quotes to separate digit groups. There are no requirements on grouping, all quotes are simply ignored.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">x1</span> = <span class="lit-num">123456789</span>;
+<span class="keyword">int</span> <span class="var-local">x2</span> = <span class="num">123'456'789</span>;
+<span class="keyword">int</span> <span class="var-local">x3</span> = <span class="num">1'2345'6'7'89</span>;
+</pre></td>
+</tr></tbody></table>
+<!--  --><blockquote>
+<p>What happens if I try to assign/initialize a variable with a literal of a different type?</p>
+</blockquote>
+<p>The value will be converted. If the destination type can not represent the data, some of it might be lost (narrowing conversion). Convertions will be explained in-depth in a later lesson.</p>
+</section><section id="character-and-string-literals"><h2>Character and string literals</h2>
+<p>Characters are stored as numbers. Depending on the encoding, the value in memory can be interpreted as different text.</p>
+<p>Character literals use prefixes. They are case-sensitive.</p>
+<p>It's possible to write character value directly (in hexadecimal system) by using <code class="docutils literal">\U</code> character.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"> <span class="lit-chr">'a'</span>          <span class="com-single">// char, ASCII encoding (compatible with UTF-8)</span>
+<span class="lit-pre">u</span><span class="lit-chr">'貓'</span>         <span class="com-single">// char16_t, UTF-16, supports only BMP part of Unicode</span>
+<span class="lit-pre">U</span><span class="lit-chr">'🍌'</span>         <span class="com-single">// char32_t, UTF-32, supports any Unicode character</span>
+<span class="lit-pre">U</span><span class="chr">'</span><span class="esc-seq">\U0001f34c</span><span class="chr">'</span> <span class="com-single">// same as line above, value written as hex</span>
+<span class="lit-pre">L</span><span class="lit-chr">'β'</span>          <span class="com-single">// wchar_t, encoding and value implementation-defined</span>
+
+<span class="com-single">// introduced in C++17, char</span>
+<span class="com-single">// breaking change in C++20: now it has type char8_t</span>
+<span class="lit-pre">u8</span><span class="lit-chr">'a'</span>         <span class="com-single">// UTF-8, single byte characters from ISO 10646</span>
+
+<span class="com-single">// these forms are not really used</span>
+<span class="com-single">// compilers often give a warning about such code because</span>
+<span class="com-single">// multiple characters within '' are usually a typo</span>
+ <span class="lit-chr">'abc'</span> <span class="com-single">// int, value implementation-defined</span>
+<span class="lit-pre">L</span><span class="lit-chr">'abc'</span> <span class="com-single">// wchar_t, value implementation-defined</span>
+</pre></td>
+</tr></tbody></table>
+<p>Don't worry if you don't get UTF information right now, it will be useful later once you learn more about Unicode.</p>
+<p>In actual programs, it's really rare to have a need to write characters directly in the code - programs offering translations usually load language-specific text from files.</p>
+<p>String literals like <code class="code custom-cpp"><span class="lit-str">"abc"</span></code> follow identical rules, they can have identical prefixes. Doubly quoted text is simply an array of multiple objects of the same character type.</p>
+<p>Encoding used by <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code> is implementation-defined, but every known implementation uses UTF-8. The default encoding for source code files in most situations is also UTF-8, so you shouldn't have problems storing and outputting Unicode text in your programs. If you do, it's usually a matter of project's compiler settings.</p>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code> will not accept every possible character type. For <code class="code custom-cpp"><span class="keyword">wchar_t</span></code> (and its arrays) you will need to use <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">wcout</span></code>.</p>
+<section id="string-literal-concatenation"><h3>String literal concatenation</h3>
+<p>If multiple string literals are next to each other, only with whitespace between, they behave as if one long string literal. This allows splitting and formatting large blocks of text embedded in code without introducing unwanted line breaks.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// this will be one long string literal</span>
+<span class="lit-str">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod "</span>
+<span class="lit-str">"tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, "</span>
+<span class="lit-str">"quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo "</span>
+<span class="lit-str">"consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse "</span>
+<span class="lit-str">"cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat "</span>
+<span class="lit-str">"non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</span>
+</pre></td>
+</tr></tbody></table>
+<p>Each quoted string can have own prefix. If one prefix is present, the concatenated string will have the type specified by prefix. If multiple prefixes are present, they all must be the same.</p>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Lorem_ipsum">https://en.wikipedia.org/wiki/Lorem_ipsum</a></p>
+</section><section id="escape-sequences"><h3>Escape sequences</h3>
+<p>Some characters can not be represented easily in text - you have already seen this with line breaks. How about other conflicts? What if we want to output <code class="docutils literal">'</code> or <code class="docutils literal">"</code>?</p>
+<p>Escape sequences allow to represent troublesome characters in source code by specifying their numeric value or special predefined sequence.</p>
+<table>
+<thead><tr>
+<th class="head"><p>sequence</p></th>
+<th class="head"><p>description</p></th>
+<th class="head"><p>representation</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p><code class="docutils literal">\'</code></p></td>
+<td><p>single quote</p></td>
+<td><p>byte 0x27</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\"</code></p></td>
+<td><p>double quote</p></td>
+<td><p>byte 0x22</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\?</code></p></td>
+<td><p>question mark</p></td>
+<td><p>byte 0x3f</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\\</code></p></td>
+<td><p>backslash</p></td>
+<td><p>byte 0x5c</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\a</code></p></td>
+<td><p>audible bell</p></td>
+<td><p>byte 0x07</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\b</code></p></td>
+<td><p>backspace</p></td>
+<td><p>byte 0x08</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\f</code></p></td>
+<td><p>form feed (new page)</p></td>
+<td><p>byte 0x0c</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\n</code></p></td>
+<td><p>line feed (new line)</p></td>
+<td><p>byte 0x0a</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\r</code></p></td>
+<td><p>carriage return</p></td>
+<td><p>byte 0x0d</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\t</code></p></td>
+<td><p>horizontal tab</p></td>
+<td><p>byte 0x09</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\v</code></p></td>
+<td><p>vertical tab</p></td>
+<td><p>byte 0x0b</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\nnn</code></p></td>
+<td><p>arbitrary octal value</p></td>
+<td><p>byte <em>nnn</em></p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\Xnn</code></p></td>
+<td><p>arbitrary hexadecimal value</p></td>
+<td><p>byte <em>nn</em></p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\c</code></p></td>
+<td><p>implementation-defined</p></td>
+<td><p>implementation-defined</p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\unnnn</code></p></td>
+<td><p>arbitrary Unicode value; may result in several code units</p></td>
+<td><p>code point U+<em>nnnn</em></p></td>
+</tr>
+<tr>
+<td><p><code class="docutils literal">\Unnnnnnnn</code></p></td>
+<td><p>arbitrary Unicode value; may result in several code units</p></td>
+<td><p>code point U+<em>nnnnnnnn</em></p></td>
+</tr>
+</tbody>
+</table>
+<p>A very common sequence is <code class="docutils literal">\0</code> (represented as byte 0x00) which is the <em>null character</em>, used to denote end of data in various contexts.</p>
+<p><code class="docutils literal">\?</code> is not necessary, you can write <code class="docutils literal">?</code> directly too but it's kept for backwards compatibility. In the past (before C++17) there was a very weird feature called <a class="reference external" href="https://en.cppreference.com/w/cpp/language/operator_alternative">trigraphs</a> which allowed 3-character special sequences, parsed even before comments. This feature could accidentally be used by unescaped <code class="docutils literal">?</code>.</p>
+<p>Because Unicode is ASCII-compatible and ASCII is backwards compatible with very old telegraph systems, you can see some historical control characters:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">\a</code> caused the machine to output specific sound - see <a class="reference external" href="https://en.wikipedia.org/wiki/Bell_character">https://en.wikipedia.org/wiki/Bell_character</a> for its history</p></li>
+<li><p><code class="docutils literal">\f</code> - <a class="reference external" href="https://en.wikipedia.org/wiki/Page_break#Form_feed">https://en.wikipedia.org/wiki/Page_break#Form_feed</a></p></li>
+<li><p><code class="docutils literal">\r</code> was used to cause the machine to reset position to the beginning of a line. The <code class="docutils literal">\r\n</code> sequence was very common and in fact, Windows OS uses this sequence up to today - enter key in Windows-based programs outputs this 2-character sequence while every other system outputs only <code class="docutils literal">\n</code>. In many editors you can find the setting how line endings should be written: LF (Unix) or CRLF (Windows). As <code class="docutils literal">\r</code> has lost its meaning in the era of screens (not telegrams), programs which display text simply ignore this character. For more history - see <a class="reference external" href="https://en.wikipedia.org/wiki/Carriage_return">https://en.wikipedia.org/wiki/Carriage_return</a>.</p></li>
+<li><p><code class="docutils literal">\t</code>, <code class="docutils literal">\v</code> - historically they meant advancement to the next multiple of 8 characters horizontally and 6 lines vertically. <code class="docutils literal">\v</code> is not used anymore but <code class="docutils literal">\t</code> is still widely used to indent code. Editors often allow to change tab size (usually 2/4/8) and convert indentation to/from spaces.</p></li>
+</ul>
+<p>Backspace (<code class="docutils literal">\b</code>) is used by keyboards to indicate pressed backspace key. If you use this character in a program, its meaning can be different depending what other program will use this data:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal">\b</code> is written to a text file, it's up to the file reading/displaying program what will be done with it. Most will simply ignore this character.</p></li>
+<li><p>If <code class="docutils literal">\b</code> is written to an interactive shell (such as the one in which you can run your compiled programs) the shell will usually discard/overwrite previously output character, just like it was a telegraph machine. A similar behavior can be observed with <code class="docutils literal">\r</code> which will discard/overwrite entire line.</p></li>
+</ul></section><section id="raw-string-literals"><h3>Raw string literals</h3>
+<p>An alternative to escape sequences are raw strings, in which special characters loose their meaning and everything between delimeters is treated as it is.</p>
+<p>The syntax is:</p>
+<pre class="literal-block"><em>prefix</em>(optional) R"<em>delimiter</em>(<em>raw_characters</em>)<em>delimiter</em>"</pre>
+<p>Example:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// all are equivalent</span>
+<span class="lit-pre">R</span><span class="str">"(\a\b\c\d\e\f)"</span>
+<span class="lit-pre">R</span><span class="str">"xXx(\a\b\c\d\e\f)xXx"</span>
+<span class="lit-str">"<span class="esc-seq">\\</span>a<span class="esc-seq">\\</span>b<span class="esc-seq">\\</span>c<span class="esc-seq">\\</span>d<span class="esc-seq">\\</span>e<span class="esc-seq">\\</span>f"</span>
+</pre></td>
+</tr></tbody></table>
+<p>Raw string literals may span multiple code lines (without concatenation) and they will contain all characters between delimeters, including whitespace such as line breaks.</p>
+<p>Raw string literals can be concatenated with other string literals.</p>
+</section></section><section id="floating-point-literals"><h2>Floating-point literals</h2>
+<p>By default, floating-point literals are of type <code class="code custom-cpp"><span class="keyword">double</span></code>.</p>
+<ul class="simple">
+<li><p>With suffix <code class="docutils literal">f</code> or <code class="docutils literal">F</code>, they are <code class="code custom-cpp"><span class="keyword">float</span></code>.</p></li>
+<li><p>With suffix <code class="docutils literal">l</code> or <code class="docutils literal">L</code>, they are <code class="code custom-cpp"><span class="keyword">long</span> <span class="keyword">double</span></code>.</p></li>
+</ul>
+<p>Floating point literals support various formats, including expotential notation and hexadecimal fractions. When using dot (<code class="docutils literal">.</code>) one of digit sequences is optional.</p>
+<p>Examples:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="num">42.0</span><span class="suf">f</span> <span class="com-single">// 42, float</span>
+<span class="num">42.</span><span class="suf">f</span>  <span class="com-single">// 42, float</span>
+<span class="num">0.42</span><span class="suf">l</span> <span class="com-single">// 0.42, long double</span>
+<span class="num">.42</span><span class="suf">l</span>  <span class="com-single">// 0.42, long double</span>
+<span class="num">3</span><span class="fmt-seq">e</span><span class="num">10</span>  <span class="com-single">// 30000000000, double</span>
+<span class="num">123.456</span><span class="fmt-seq">e</span><span class="num">-67</span> <span class="com-single">// 123.456 * 10^(-67), double</span>
+<span class="num">.1</span><span class="fmt-seq">E</span><span class="num">4</span><span class="suf">l</span>       <span class="com-single">// 1000, long double</span>
+<span class="fmt-seq">0x</span><span class="num">10.1</span><span class="fmt-seq">p</span><span class="num">2</span><span class="suf">f</span>   <span class="com-single">// 64.25, float (uses hexadecimal digits)</span>
+<span class="fmt-seq">0x</span><span class="num">1.2</span><span class="fmt-seq">p</span><span class="num">3</span>     <span class="com-single">// 9 (1.125 * 2^3), double (uses hexadecimal digits)</span>
+
+<span class="macro">NAN</span> <span class="com-single">// NaN, float, macro constant defined in &lt;cmath&gt;</span>
+    <span class="com-single">// it's implementation-defined, may not exist if not supported</span>
+</pre></td>
+</tr></tbody></table></section><section id="other-literals"><h2>Other literals</h2>
+<p>It's worth noting that not all literals have to be made of characters or digits - some literals are keywords. You already know 2 of them: <code class="code custom-cpp"><span class="keyword">false</span></code> and <code class="code custom-cpp"><span class="keyword">true</span></code> are literals of type <code class="code custom-cpp"><span class="keyword">bool</span></code>.</p>
+<p>Later you will be learn about one more keyword literal - <code class="code custom-cpp"><span class="keyword">nullptr</span></code>.</p>
+</section><section id="automatic-type"><h2>Automatic type</h2>
+<p>A simple but very useful feature is the type placeholder <code class="code custom-cpp"><span class="keyword">auto</span></code>. It will deduce the type based on the expression used in intialization:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">auto</span> <span class="var-local">b</span> = <span class="keyword">true</span>; <span class="com-single">// bool</span>
+<span class="keyword">auto</span> <span class="var-local">i</span> = <span class="lit-num">1</span>;    <span class="com-single">// int</span>
+<span class="keyword">auto</span> <span class="var-local">l</span> = <span class="num">1</span><span class="lit-suf">l</span>;   <span class="com-single">// long</span>
+<span class="keyword">auto</span> <span class="var-local">f</span> = <span class="num">1.0</span><span class="lit-suf">f</span>; <span class="com-single">// float</span>
+<span class="keyword">auto</span> <span class="problem">x</span>; <span class="com-single">// error: can't deduce without initializer</span>
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>If <code class="code custom-cpp"><span class="keyword">auto</span></code> is used, the value must be initialized.</p>
+</aside></section><section id="exercise"><h2>Exercise</h2>
+<p>Try to output the text <code class="docutils literal"><span class="pre">"\n??='\\</span></code> using both escape sequences and raw strings.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

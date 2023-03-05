@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 03 - virtual functions</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xz - polymorphism</a></li>
+							<span>/</span>
+						<li>03 - virtual functions</li>
+					</ol></nav><div class="content">
+				<h1>03 - virtual functions</h1>				<p>All examples so far used relatively simple code that uses inheritance as a class extension mechanism. In this lesson I will showcase the main feature of object-oriented programming: <em>virtual functions</em>.</p>
+<p>This very unique feature allows to <em>implement</em> or <em>override</em> base class code, not <em>extend</em> it. The absolutely most classical example is the animal-cat-dog hierarchy, which examples will start in this lesson and be incrementally improved as more features are explained.</p>
+<section id="example"><h2>Example</h2>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+
+<span class="keyword">class</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="lit-str">"???"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">cat</span>: <span class="keyword">public</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"meow"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">dog</span>: <span class="keyword">public</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"whoof"</span>; }
+};
+
+<span class="keyword">void</span> <span class="func">print_sound</span>(<span class="keyword">const</span> <span class="type">animal</span>&amp; <span class="param">a</span>)
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="param">a</span>.<span class="func">sound</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// virtual function call</span>
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">cat</span> <span class="var-local">c</span>;
+	<span class="type">dog</span> <span class="var-local">d</span>;
+	<span class="func">print_sound</span>(<span class="var-local">c</span>);
+	<span class="func">print_sound</span>(<span class="var-local">d</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>output:</p>
+<div class="code"><pre class="code text"><a id="rest_code_937f6c11ed8f4d688f9c8ded9129436b-1" name="rest_code_937f6c11ed8f4d688f9c8ded9129436b-1" href="#rest_code_937f6c11ed8f4d688f9c8ded9129436b-1"></a>meow
+<a id="rest_code_937f6c11ed8f4d688f9c8ded9129436b-2" name="rest_code_937f6c11ed8f4d688f9c8ded9129436b-2" href="#rest_code_937f6c11ed8f4d688f9c8ded9129436b-2"></a>whoof
+</pre></div>
+<p>Unlike examples in the lesson about shadowing, <strong>virtual functions are always resolved based on the dynamic type</strong>. Even though <code class="code custom-cpp"><span class="func">print_sound</span></code> takes a reference to the base <code class="code custom-cpp"><span class="type">animal</span></code> class, it calls <code class="code custom-cpp"><span class="func">sound</span></code> function based on the actual type of the object, which is unknown to the <code class="code custom-cpp"><span class="func">print_sound</span></code> function.</p>
+<p>Virtual functions open up a world of dynamic behavior, where a code written against an <em>interface</em> (here: the base <code class="code custom-cpp"><span class="type">animal</span></code> class) can exhibit different behavior depending on the dynamic type of the object. Multiple types can satisfy one <em>interface</em>, promoting code reuse, allowing complex interactions and at the same time avoiding strong coupling - the only area where code "must match" is the base class. Each derived class can contain its own implementation, which modifications do not require changes in external code like the <code class="code custom-cpp"><span class="func">print_sound</span></code> function.</p>
+<p>Standard library streams are another example - all share the interface of reading and writing data but how and where exactly the data is written depends on the actual stream (standard I/O, file I/O, network and so on...). You can even create your own stream class that inherits one (or more) from the standard library and use it just like any other. Because it will be a derived type, everything that works on the base will also work with it - this includes stuff like overloads of <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&lt;&lt;</span></code>.</p>
+</section><section id="how-it-works"><h2>How it works</h2>
+<p>Virtual functions can be implemented in multiple ways, but majorty of programming languages (including C++) use roughly the same mechanism.</p>
+<p>When a class contains at least 1 <code class="code custom-cpp"><span class="keyword">virtual</span></code> function, the compiler inserts an additional, hidden field into the class (which is then inherited by all derived classes). This magic field is typically referred to as <strong>virtual table pointer</strong> (<strong>vptr</strong> for short). The pointer is set in the constructor to refer to specific <strong>virtual method table</strong> (<strong>vtable</strong> for short). Vtable holds an array of pointers to actual function implementations. Objects of the same dynamic type will have the same value of vptr - they will refer to the same table of actual functions.</p>
+<p>Calling a virtual function works this way:</p>
+<ul class="simple">
+<li><p>read vptr in the object (this is always possible because vptr is already present in the base type)</p></li>
+<li><p>go to vtable referenced by vptr (different dynamic types will refer to different tables)</p></li>
+<li><p>call a function present in the vtable on the current object</p></li>
+</ul>
+<p>Virtual tables are formed during compilation and embedded in the binary object, typically in some read-only section.</p>
+<!-- TODO some vtable infographic? -->
+<p>The mechanism itself is known as <strong>dynamic dispatch</strong>, in contrast to <strong>static dispatch</strong> where the address of the function is resolved at compile time. Other analogical terms are <strong>late binding</strong> and <strong>early binding</strong>.</p>
+<p>Sometimes <em>binding</em> terms may also appear when the topic is about loading shared (dynamic) libraries (such files typically have <code class="docutils literal">*.so</code> and <code class="docutils literal">*.dll</code> names). The difference with loading libraries is that addresses are resolved once, upon library load while with virtual functions addresses are resolved every time a function is called. So virtual functions bind later than dynamically loaded machine code which binds later than statically linked machine code.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="keyword">static</span></code> functions can not be <code class="code custom-cpp"><span class="keyword">virtual</span></code>.</p>
+</aside><p>The reason should be obvious: static functions are not tied to any object while virtual functions require an access to vtable which is done through vptr in the object.</p>
+</section><section id="performance"><h2>Performance</h2>
+<p>Virtual function calls impose an overhead - the address of the function is not immediately known - it has to be fetched from the vtable and vtable's address must be fetched from the object. This process isn't very computationally expensive (just 2 jumps in machine code) but the virtuality itself blocks multiple optimizations that happen across function boundaries. Generally it's not possible to inline virtual function calls because at the point of compilation it's unknown what the dynamic type of the object is (in cases where the compiler can determine the dynamic type it will <em>devirtualize</em> the call by using appropriate function address directly).</p>
+<p>Depending on the function size, the overhead might or might not be significant. The more a function does, the smaller is the proportion of the overhead (the cost is constant) to the whole.</p>
+</section><section id="terminology"><h2>Terminology</h2>
+<p><strong>Polymorphism</strong> is the act of using multiple different types through one interface that is shared between them.</p>
+<p>In C++ we can differentiate 2 kinds of polymorphism:</p>
+<ul class="simple">
+<li><p><strong>Static polymorphism</strong>, where the operation uses compile time information. A good example is a set of multiple function overloads. The same function (by name) can work differently depending on the type of the object. The interface here is the function (the name shared across overloads).</p></li>
+<li><p><strong>Dynamic polymorphism</strong> (more often referred to as <strong>runtime polymorphism</strong>) where the operation uses runtime information. The interface here is the base class with its virtual functions, which is shared across derived classes.</p></li>
+</ul>
+<p>A class that has at least 1 virtual function is a <strong>polymorphic type</strong>.</p>
+</section><section id="object-slicing"><h2>Object slicing</h2>
+<p>Previously it has been mentioned that dynamic types only make sense when the object is accessed through a pointer or a reference.</p>
+<p>Modify the example to have <code class="code custom-cpp"><span class="keyword">void</span> <span class="func">print_sound</span>(<span class="type">animal</span> <span class="param">a</span>)</code> and observe the result.</p>
+<div class="docutils container">
+<details><summary>result</summary><div class="docutils container">
+<div class="code"><pre class="code text"><a id="rest_code_234d2e90f8c84fc58137dc1d56d73b55-1" name="rest_code_234d2e90f8c84fc58137dc1d56d73b55-1" href="#rest_code_234d2e90f8c84fc58137dc1d56d73b55-1"></a>???
+<a id="rest_code_234d2e90f8c84fc58137dc1d56d73b55-2" name="rest_code_234d2e90f8c84fc58137dc1d56d73b55-2" href="#rest_code_234d2e90f8c84fc58137dc1d56d73b55-2"></a>???
+</pre></div>
+</div>
+</details>
+</div>
+<p>Suddenly virtual functions stopped working, all calls are performed as if <code class="code custom-cpp"><span class="keyword">virtual</span></code> was not used. You can try something like <code class="code custom-cpp"><span class="type">animal</span>&amp; <span class="var-local">ref</span> = <span class="var-local">a</span>;</code> inside the function but it won't revert the behavior.</p>
+<p>The problem is that now the function doesn't work on the object directly <strong>but on the copy of the actual object</strong>. Even worse, <strong>this is a sliced copy</strong>. The function call only copied the subpart of the object that the function expects, effectively creating a partial copy (sliced copies will have vptr modified to vtable of their class).</p>
+<p>Types that are cheap to copy can be passed by value, but this guideline no longer applies when you want to call <code class="code custom-cpp"><span class="keyword">virtual</span></code> functions. You simply should not copy <em>polymorphic</em> objects into functions. Because each derived type is different there is no way to properly copy them in a generic way (except writing a separate overload for each but this defeats the purpose of virtual functions).</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Avoid object slicing. Do not pass polymorphic objects by value.</p>
+</aside><p>Existence of slicing also means that something like <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="type">animal</span>&gt;</code> will not be able to store objects of types <code class="code custom-cpp"><span class="type">cat</span></code> and <code class="code custom-cpp"><span class="type">dog</span></code>. Workarounds will be presented in later lessons.</p>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-override-span-code"><h2><code class="code custom-cpp"><span class="keyword">override</span></code></h2>
+<p>Technically, <code class="code custom-cpp"><span class="keyword">override</span></code> and <code class="code custom-cpp"><span class="keyword">final</span></code> are not keywords but <em>identifiers with special meaning</em>. They were added in C++11 and because a lot of existing code already used these words, they are not specified as keywords to not break such code. They have their keyword-like behavior only in specific contexts. Obviously if you write any new code you should treat them like keywords and not use them for anything else to avoid unnecessary confusion.</p>
+<p><code class="code custom-cpp"><span class="keyword">override</span></code> is not necessary, but it has been added to C++ (at the time where many other languages already had it) to inform the compiler that it should verify that the function is in fact an implementation of a <code class="code custom-cpp"><span class="keyword">virtual</span></code> function from some base class. If a function has <code class="code custom-cpp"><span class="keyword">override</span></code> specified but does not match any <code class="code custom-cpp"><span class="keyword">virtual</span></code> function in any base classes, the program is <em>ill-formed</em>.</p>
+<p>Prior to C++11, some programmers used the convention to write <code class="code custom-cpp"><span class="keyword">virtual</span></code> in front of every virtual function to signify that the function is virtual (this is allowed but not necessary - writing <code class="code custom-cpp"><span class="keyword">virtual</span></code> in the base class alone is enough). This can create another problem: if there is a mistake within the function (which will cause it to not match base class function), it will start another virtual function from the current class:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">class</span> <span class="type">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">double</span>)
+	{
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"base::f<span class="esc-seq">\n</span>"</span>;
+	}
+};
+
+<span class="keyword">class</span> <span class="type">derived</span>: <span class="keyword">public</span> <span class="type">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">float</span>) <span class="com-single">// oops, wrong argument type</span>
+	{
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"derived::f<span class="esc-seq">\n</span>"</span>;
+	}
+};
+
+<span class="keyword">class</span> <span class="type">more_derived</span>: <span class="keyword">public</span> <span class="type">derived</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">double</span>)
+	{
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"more_derived::f<span class="esc-seq">\n</span>"</span>;
+	}
+};
+
+<span class="keyword">void</span> <span class="func">run</span>(<span class="type">base</span>&amp; <span class="param">b</span>)
+{
+	<span class="param">b</span>.<span class="func">f</span>(<span class="num">1.0</span>);
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">base</span> <span class="var-local">b</span>;
+	<span class="type">derived</span> <span class="var-local">d</span>;
+	<span class="type">more_derived</span> <span class="var-local">md</span>;
+	<span class="func">run</span>(<span class="param-out">b</span>);
+	<span class="func">run</span>(<span class="param-out">d</span>);
+	<span class="func">run</span>(<span class="param-out">md</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_b526ad2c9f374bcab371d90169172038-1" name="rest_code_b526ad2c9f374bcab371d90169172038-1" href="#rest_code_b526ad2c9f374bcab371d90169172038-1"></a>base::f
+<a id="rest_code_b526ad2c9f374bcab371d90169172038-2" name="rest_code_b526ad2c9f374bcab371d90169172038-2" href="#rest_code_b526ad2c9f374bcab371d90169172038-2"></a>base::f
+<a id="rest_code_b526ad2c9f374bcab371d90169172038-3" name="rest_code_b526ad2c9f374bcab371d90169172038-3" href="#rest_code_b526ad2c9f374bcab371d90169172038-3"></a>more_derived::f
+</pre></div>
+<p>In the example above there are actually 2 virtual function chains:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">double</span>)</code> that starts in <code class="code custom-cpp"><span class="type">base</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">float</span>)</code> that starts in <code class="code custom-cpp"><span class="type">derived</span></code></p></li>
+</ul>
+<p>Overriding virtual functions is not necessary - if it's not overriden the vtable for the current class will have the address of such function copied from it's parent class. You can even do things like this:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// definitions outside classes should not use any of virtual, override and final</span>
+<span class="keyword">void</span> <span class="type">more_derived</span>::<span class="func">f</span>(<span class="keyword">double</span> <span class="param">arg</span>)
+{
+	<span class="com-single">// code wants to use implementation from some parent class</span>
+	<span class="keyword">base</span>::<span class="func">f</span>(<span class="param">arg</span>); <span class="com-single">// this function call is non-virtual</span>
+}
+</pre></td>
+</tr></tbody></table>
+<p>There might be also an additional code in such function definition. When done at every inheritance level, it can be an implementation of the <em>decorator pattern</em> where instead of replacing base class function it's being augmented with additional code.</p>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-final-span-code"><h2><code class="code custom-cpp"><span class="keyword">final</span></code></h2>
+<p><code class="code custom-cpp"><span class="keyword">final</span></code> is written in the same place where <code class="code custom-cpp"><span class="keyword">override</span></code> is and informs the compiler that no further overrides are possible. If a derived class attempts to override a function marked <code class="code custom-cpp"><span class="keyword">final</span></code>, the program is <em>ill-formed</em>.</p>
+<p><code class="code custom-cpp"><span class="keyword">final</span></code> can also be applied to classes: <code class="code custom-cpp"><span class="keyword">class</span> <span class="type">more_derived</span> <span class="keyword">final</span>: <span class="keyword">public</span> <span class="type">derived</span></code> specifies that no class can inherit from <code class="code custom-cpp"><span class="type">more_derived</span></code>. If such thing is attempted, the program is <em>ill-formed</em>.</p>
+<p>In both cases, you should be very cautious about using <code class="code custom-cpp"><span class="keyword">final</span></code>. It artificially limits the code for further extension - you must have a very good reason to forbid overriding or further inheritance. In practice, <code class="code custom-cpp"><span class="keyword">final</span></code> is only used when implementing specific <em>design patterns</em> which are known to never have a need for further extension (<code class="code custom-cpp"><span class="keyword">final</span></code> sometimes lets the compiler perform some optimizations).</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Because <code class="code custom-cpp"><span class="keyword">override</span></code> implies <code class="code custom-cpp"><span class="keyword">virtual</span></code> and <code class="code custom-cpp"><span class="keyword">final</span></code> implies <code class="code custom-cpp"><span class="keyword">override</span></code> in any case you should use exactly 1 of these (<a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rh-override">CG C.128</a>).</p>
+</aside></section><section id="exercise"><h2>Exercise</h2>
+<p>What's the output of the following program?</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">struct</span> <span class="type">base</span> { <span class="keyword">char</span> <span class="var-member">b</span>; };
+<span class="keyword">struct</span> <span class="type">derived</span>: <span class="type">base</span> { <span class="keyword">char</span> <span class="var-member">d</span>; };
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">derived</span> <span class="var-local">d1</span>{{<span class="lit-chr">'a'</span>}, <span class="lit-chr">'b'</span>};
+	<span class="type">derived</span> <span class="var-local">d2</span>{{<span class="lit-chr">'x'</span>}, <span class="lit-chr">'y'</span>};
+
+	<span class="type">base</span>&amp; <span class="var-local">b_ref</span> = <span class="var-local">d1</span>;
+	<span class="var-local">b_ref</span> = <span class="var-local">d2</span>;
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"d1.b: "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">d1</span>.<span class="var-member">b</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>d1.d: "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">d1</span>.<span class="var-member">d</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<div class="docutils container">
+<details><summary>hint</summary><div class="docutils container">
+<p><code class="code custom-cpp"><span class="var-local">b_ref</span> = <span class="var-local">d2</span></code></p>
+</div>
+</details>
+</div>
+<div class="docutils container">
+<details><summary>answer</summary><div class="docutils container">
+<div class="code"><pre class="code text"><a id="rest_code_531cc73efb284f3eb94004d7a2fcf2ce-1" name="rest_code_531cc73efb284f3eb94004d7a2fcf2ce-1" href="#rest_code_531cc73efb284f3eb94004d7a2fcf2ce-1"></a>d1.b: x
+<a id="rest_code_531cc73efb284f3eb94004d7a2fcf2ce-2" name="rest_code_531cc73efb284f3eb94004d7a2fcf2ce-2" href="#rest_code_531cc73efb284f3eb94004d7a2fcf2ce-2"></a>d1.d: b
+</pre></div>
+</div>
+</details>
+</div>
+<div class="docutils container">
+<details><summary>explanation</summary><div class="docutils container">
+<p>Assignment through a reference to base causes object slicing: only the base subobject of the <code class="code custom-cpp"><span class="var-local">d2</span></code> object is assigned to <code class="code custom-cpp"><span class="var-local">d1</span></code>. This results in a partially assigned object with mixed state from <code class="code custom-cpp"><span class="var-local">d1</span></code> and <code class="code custom-cpp"><span class="var-local">d2</span></code>.</p>
+<p>How to properly copy polymorphic objects is described in a later lesson in this chapter.</p>
+</div>
+</details>
+</div>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

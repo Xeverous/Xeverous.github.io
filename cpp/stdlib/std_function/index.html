@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - std::function</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../">HOME</a></li>
+				<li><a href="../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../tutorials/beginner/">beginner</a></li>
+						<li><a href="../../tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../utility/glossary/">glossary</a></li>
+						<li><a href="../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../about/">about</a></li>
+						<li><a href="../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../">HOME</a></li>
+				<li class="button"><a href="../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../">standard library</a></li>
+							<span>/</span>
+						<li>std::function</li>
+					</ol></nav><div class="content">
+				<h1>std::function</h1>				<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> is an implementation of a generic function object - an object that can be used like a function while supporting passing itself by value and assigning different <em>callables</em>. It is the equivalent of <code class="code custom-cpp"><span class="keyword">delegate</span></code> in C#. Because of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code>'s primary ability, it's mainly used for callbacks - places where the user can specify what should happen when a certain action is triggered (e.g. GUI). It's essentially a replaceable virtual function that supports holding some state (usually lambda captures).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;functional&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">f1</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+{
+	<span class="keyword">return</span> <span class="param">x</span> * <span class="param">y</span>;
+}
+
+<span class="keyword">struct</span> <span class="type">foo</span>
+{
+	<span class="keyword">int</span> <span class="keyword">operator</span><span class="func">()</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>) <span class="keyword">const</span>
+	{
+		<span class="keyword">return</span> <span class="param">x</span> * <span class="param">y</span>;
+	}
+};
+
+<span class="keyword">struct</span> <span class="type">bar</span>
+{
+	<span class="keyword">int</span> <span class="func">func</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>) <span class="keyword">const</span>
+	{
+		<span class="keyword">return</span> <span class="param">x</span> * <span class="param">y</span> + <span class="var-member">z</span>;
+	}
+
+	<span class="keyword">int</span> <span class="var-member">z</span>;
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="com-single">// from a free function</span>
+	<span class="namespace">std</span>::<span class="type">function</span>&lt;<span class="keyword">int</span>(<span class="keyword">int</span>, <span class="keyword">int</span>)&gt; <span class="var-local">func</span> = <span class="func">f1</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">func</span><span class="oo">(</span><span class="lit-num">2</span>, <span class="lit-num">3</span><span class="oo">)</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// from a lambda expression</span>
+	<span class="var-local">func</span> <span class="oo">=</span> [](<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>) { <span class="keyword">return</span> <span class="param">x</span> * <span class="param">y</span>; };
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">func</span><span class="oo">(</span><span class="lit-num">2</span>, <span class="lit-num">3</span><span class="oo">)</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// from a type with overloaded operator()</span>
+	<span class="var-local">func</span> <span class="oo">=</span> <span class="type">foo</span>{};
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">func</span><span class="oo">(</span><span class="lit-num">2</span>, <span class="lit-num">3</span><span class="oo">)</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// from a class member function</span>
+	<span class="com-single">// member functions need an object to work on, thus &amp;b</span>
+	<span class="type">bar</span> <span class="var-local">b</span>{<span class="lit-num">4</span>};
+	<span class="var-local">func</span> <span class="oo">=</span> <span class="namespace">std</span>::<span class="func">bind</span>(&amp;<span class="type">bar</span>::<span class="func">func</span>, &amp;<span class="var-local">b</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>);
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">func</span><span class="oo">(</span><span class="lit-num">2</span>, <span class="lit-num">3</span><span class="oo">)</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="com-single">// this example could also use a capturing lambda</span>
+}
+</pre></td>
+</tr></tbody></table>
+<p>The primary features of this class template are:</p>
+<ul class="simple">
+<li><p>instances are copyable</p></li>
+<li><p>it can be assigned different <em>targets</em> (free functions, lambdas and many other <em>callables</em>)</p></li>
+<li><p>it overloads <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">()</span></code> so it can be called just like a function</p></li>
+</ul>
+<p>Internally, it allocates (statically or dynamically) a storage that holds all necessary state in order to be capable of performing the call. For free functions this simply means storing a pointer to them, for lambdas this means storing their captured state, for member functions this means storing a pointer to the object and so on...</p>
+<p>The exact implementation uses very advanced technique - <em>type erasure</em>. Explaining it goes far beyond this article, especially since it requires significant knowledge in all of: templates, pointers, polymorphism implementation (how vtable works and such) and C++ language rules (concept <em>callable</em>, operator overloading and lifetime semantics). Additionally, efficient implementations use <em>small buffer optimization</em> which even further complicates the code. The greatness of the <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> is that while it's one of the hardest things to implement, it's usage is extremely simple and thus the article is focused on less skilled readers - for now I will simply call the implementation <em>magic</em>.</p>
+<p>The core interface looks as follows:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>&gt;
+<span class="keyword">class</span> <span class="type">function</span>; <span class="com-single">// no primary definition</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">R</span>, <span class="keyword">typename</span>... <span class="param-tmpl">Args</span>&gt;
+<span class="keyword">class</span> <span class="type">function</span>&lt;<span class="param-tmpl">R</span>(<span class="param-tmpl">Args</span>...)&gt; <span class="com-single">// specialization only for function types</span>
+{
+	<span class="keyword">using</span> <span class="type">result_type</span> = <span class="param-tmpl">R</span>;
+
+	~<span class="type">function</span>();
+
+	<span class="type">function</span>();               <span class="com-single">// empty state</span>
+	<span class="type">function</span>(<span class="namespace">std</span>::<span class="type">nullptr_t</span>); <span class="com-single">// empty state</span>
+
+	<span class="type">function</span>(<span class="keyword">const</span> <span class="type">function</span>&amp; <span class="param">other</span>); <span class="com-single">// copy</span>
+	<span class="type">function</span>(<span class="type">function</span>&amp;&amp; <span class="param">other</span>);      <span class="com-single">// move, noexcept in C++20</span>
+
+	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">F</span>&gt;
+	<span class="type">function</span>(<span class="param-tmpl">F</span>&amp;&amp; <span class="param">f</span>); <span class="com-single">// store f and allow to call it</span>
+
+	<span class="type">function</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="keyword">const</span> <span class="type">function</span>&amp; <span class="param">other</span>);
+	<span class="type">function</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="type">function</span>&amp;&amp; <span class="param">other</span>); <span class="com-single">// interestingly not noexcept</span>
+	<span class="type">function</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="namespace">std</span>::<span class="type">nullptr_t</span>) <span class="keyword">noexcept</span>; <span class="com-single">// reset to empty state</span>
+
+	<span class="com-single">// assign a new callable target</span>
+	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">F</span>&gt;
+	<span class="type">function</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="param-tmpl">F</span>&amp;&amp; <span class="param">f</span>);
+	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">F</span>&gt;
+	<span class="type">function</span>&amp; <span class="keyword">operator</span><span class="func">=</span>(<span class="namespace">std</span>::<span class="type">reference_wrapper</span>&lt;<span class="param-tmpl">F</span>&gt; <span class="param">f</span>) <span class="keyword">noexcept</span>;
+
+	<span class="keyword">void</span> <span class="func">swap</span>(<span class="type">function</span>&amp; <span class="param">other</span>) <span class="keyword">noexcept</span>;
+
+	<span class="com-single">// return whether a target has been assigned</span>
+	<span class="com-single">// allows code like if (function_object) function_object();</span>
+	<span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="keyword">bool</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+
+	<span class="com-single">// invoke the target</span>
+	<span class="com-single">// throws std::bad_function_call if there is no target</span>
+	<span class="param-tmpl">R</span> <span class="keyword">operator</span><span class="func">()</span>(<span class="param-tmpl">Args</span>... <span class="param">args</span>) <span class="keyword">const</span>;
+
+	<span class="com-single">// returns typeid(T) if there is a target inside of type T</span>
+	<span class="com-single">// returns typeid(void) if there is no target</span>
+	<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">type_info</span>&amp; <span class="func">target_type</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+
+	<span class="com-single">// obtain a pointer to the target, if there is a target of type T</span>
+	<span class="com-single">// otherwise return a null pointer</span>
+	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+	<span class="param-tmpl">T</span>* <span class="func">target</span>() <span class="keyword">noexcept</span>;
+	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+	<span class="keyword">const</span> <span class="param-tmpl">T</span>* <span class="func">target</span>() <span class="keyword">const</span> <span class="keyword">noexcept</span>;
+};
+
+<span class="com-single">// compare function object with nullptr - test whether function is empty</span>
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">R</span>, <span class="keyword">typename</span>... <span class="param-tmpl">Args</span>&gt;
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">function</span>&lt;<span class="param-tmpl">R</span>(<span class="param-tmpl">Args</span>...)&gt;&amp; <span class="param">f</span>, <span class="namespace">std</span>::<span class="type">nullptr_t</span>) <span class="keyword">noexcept</span>;
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">R</span>, <span class="keyword">typename</span>... <span class="param-tmpl">Args</span>&gt;
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">==</span>(<span class="namespace">std</span>::<span class="type">nullptr_t</span>, <span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">function</span>&lt;<span class="param-tmpl">R</span>(<span class="param-tmpl">Args</span>...)&gt;&amp; <span class="param">f</span>) <span class="keyword">noexcept</span>;
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">R</span>, <span class="keyword">typename</span>... <span class="param-tmpl">Args</span>&gt;
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">function</span>&lt;<span class="param-tmpl">R</span>(<span class="param-tmpl">Args</span>...)&gt;&amp; <span class="param">f</span>, <span class="namespace">std</span>::<span class="type">nullptr_t</span>) <span class="keyword">noexcept</span>;
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">R</span>, <span class="keyword">typename</span>... <span class="param-tmpl">Args</span>&gt;
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!=</span>(<span class="namespace">std</span>::<span class="type">nullptr_t</span>, <span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">function</span>&lt;<span class="param-tmpl">R</span>(<span class="param-tmpl">Args</span>...)&gt;&amp; <span class="param">f</span>) <span class="keyword">noexcept</span>;
+</pre></td>
+</tr></tbody></table>
+<p>By default, the function object is empty (no <em>target</em> set). Calling <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">()</span></code> when there is no target causes <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> to throw <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">bad_function_call</span></code>.</p>
+<blockquote>
+<p>Why does it throw in such case? Couldn't it just do nothing?</p>
+</blockquote>
+<p>At first this sounds like a reasonable behavior alternative, but what when <code class="code custom-cpp"><span class="param-tmpl">R</span></code> is not <code class="code custom-cpp"><span class="keyword">void</span></code> (the result is potentially passed somewhere)? Theoretically if the type was <em>default-constructibe</em> <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> could return a new instance of it but - what if it doesn't make sense in the given application or the type has no default constructor? I think it's much better to have a single throw-on-no-target behavior than an entire set of rules that governs what <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">()</span></code> does when there is no target.</p>
+<p>The only other reasonable option would be to make it UB.</p>
+<section id="performance"><h2>Performance</h2>
+<section id="call-cost"><h3>Call cost</h3>
+<p>From performance point of view, if the cost of a function call is <code class="docutils literal">F</code> and the cost of a virtual function call is <code class="docutils literal">V + F</code>, the cost of a <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> call is not higher than <code class="docutils literal">2V + F</code> (at least that's what I observed from my own experiments - just slightly more expensive than standard virtual call). It's a pretty efficient mechanism for something that offers a polymorphic call with the possibility of copying and replacing the <em>target</em> - classical virtual functions inside classes do not allow reassignment.</p>
+</section><section id="allocation"><h3>Allocation</h3>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> may allocate its storage dynamically to hold necessary data to perform the call. In case of pointer or <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">reference_wrapper</span></code> targets, small buffer optimization is guaranteed (no dynamic allocation, the class will use its own static buffer capable of holding a pointer).</p>
+</section></section><section id="binds"><h2>Binds</h2>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">bind</span></code> makes very little sense even though it was added in C++11. Everything it does can be done by lambda expressions, sometimes even with better performance due to the fact that language features generally have higher potential of optimization than library code. A lot of helper binders and wrappers were already deprecated in C++11/17 and removed in C++17/20.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;functional&gt;</span>
+
+<span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">int</span> <span class="param">n1</span>, <span class="keyword">int</span> <span class="param">n2</span>, <span class="keyword">int</span> <span class="param">n3</span>, <span class="keyword">const</span> <span class="keyword">int</span>&amp; <span class="param">n4</span>, <span class="keyword">int</span> <span class="param">n5</span>)
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="param">n1</span> <span class="oo">&lt;&lt;</span> <span class="lit-chr">' '</span> <span class="oo">&lt;&lt;</span> <span class="param">n2</span> <span class="oo">&lt;&lt;</span> <span class="lit-chr">' '</span> <span class="oo">&lt;&lt;</span> <span class="param">n3</span> <span class="oo">&lt;&lt;</span> <span class="lit-chr">' '</span> <span class="oo">&lt;&lt;</span> <span class="param">n4</span> <span class="oo">&lt;&lt;</span> <span class="lit-chr">' '</span> <span class="oo">&lt;&lt;</span> <span class="param">n5</span> <span class="oo">&lt;&lt;</span> <span class="lit-chr">'<span class="esc-seq">\n</span>'</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">using</span> <span class="keyword">namespace</span> <span class="namespace">std</span>::<span class="namespace">placeholders</span>;
+
+	<span class="keyword">int</span> <span class="var-local">n</span> = <span class="lit-num">7</span>;
+	<span class="keyword">auto</span> <span class="var-local">b</span> = <span class="namespace">std</span>::<span class="func">bind</span>(<span class="func">f</span>, <span class="var-global">_2</span>, <span class="lit-num">42</span>, <span class="var-global">_1</span>, <span class="namespace">std</span>::<span class="func">cref</span>(<span class="var-local">n</span>), <span class="var-local">n</span>);
+	<span class="var-local">n</span> = <span class="lit-num">10</span>;
+	<span class="var-local">b</span><span class="oo">(</span><span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span><span class="oo">)</span>;
+
+	<span class="com-single">// same behavior</span>
+	<span class="var-local">n</span> = <span class="lit-num">7</span>;
+	<span class="keyword">auto</span> <span class="var-local">l</span> = [<span class="var-local">ncref</span> = <span class="namespace">std</span>::<span class="func">cref</span>(<span class="var-local">n</span>), <span class="var-local">n</span> = <span class="var-local">n</span>](<span class="keyword">auto</span> <span class="param">a</span>, <span class="keyword">auto</span> <span class="param">b</span>, <span class="keyword">auto</span> <span class="com-multi">/* unused */</span>) { <span class="func">f</span>(<span class="param">b</span>, <span class="lit-num">42</span>, <span class="param">a</span>, <span class="var-local">ncref</span>, <span class="var-local">n</span>); };
+	<span class="var-local">n</span> = <span class="lit-num">10</span>;
+	<span class="var-local">l</span><span class="oo">(</span><span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span><span class="oo">)</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>I have never found a reason to use <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">bind</span></code> over lambdas, so my recommendation is to use the latter.</p>
+</section><section id="lifetime"><h2>Lifetime</h2>
+<section id="const-reference"><h3>Const reference</h3>
+<p>Const reference extends the lifetime of a temporary. But this is not the case when it happens through <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> call - there are multiple layers of abstraction inside (potentially multiple function calls) and thus the temporary object dies before reaching final reference.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">int</span>&amp; <span class="var-local">r</span> = <span class="lit-num">42</span>; <span class="com-single">// ok: const reference extents the lifetime of a temporary</span>
+
+<span class="namespace">std</span>::<span class="type">function</span>&lt;<span class="keyword">const</span> <span class="keyword">int</span>&amp;()&gt; <span class="var-local">f</span> = []{ <span class="keyword">return</span> <span class="lit-num">42</span>; };
+<span class="keyword">const</span> <span class="keyword">int</span>&amp; <span class="var-local">rf</span> = <span class="var-local">f</span>(); <span class="com-single">// undefined behavior: dangling reference</span>
+</pre></td>
+</tr></tbody></table></section><section id="ownership"><h3>Ownership</h3>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> doesn't manage lifetime of objects used inside the target. It only cares about its storage that holds required information to perform the call. This means that if <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> is assigned a lambda expression with state captured by reference, the referenced state must live to the point of function object call.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span>&lt;<span class="keyword">int</span>()&gt; <span class="var-local">f</span>;
+
+{
+	<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">42</span>;
+	<span class="var-local">f</span> <span class="oo">=</span> [&amp;](){ <span class="keyword">return</span> <span class="var-local">x</span>; };
+}
+
+<span class="var-local">f</span>(); <span class="com-single">// undefined behavior: x is already dead</span>
+</pre></td>
+</tr></tbody></table>
+<p>Similarly, if you assign a <code class="code custom-cpp"><span class="keyword">struct</span></code> with overloaded <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">()</span></code>, the <code class="code custom-cpp"><span class="keyword">struct</span></code> will be held in <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code>'s storage, but anything referenced by the <code class="code custom-cpp"><span class="keyword">struct</span></code> can die before invokation takes place.</p>
+</section></section><section id="copying-issues"><h2>Copying issues</h2>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> requires the target to be copyable. If you don't have C++23 and need to store a move-only callable, you can wrap it using the class template below. It won't make it copyable (will throw exception on any attempt) but will at least make it compile so that you can use the callable as long as the function object copy is not attempted.</p>
+<blockquote>
+<p>Why such limitation exists? <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="param-tmpl">T</span>&gt;</code> doesn't require <code class="code custom-cpp"><span class="param-tmpl">T</span></code> to be copyable as long as vector's copy constructor is not used. Couldn't <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> go this way?</p>
+</blockquote>
+<p>My initial thought was the answer "no, because <em>type erasure</em> used within its implementation requires copyable types" but after experimenting with it, I realized that <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> indeed doesn't copy the callable when the function object is not copied (at least with libstdc++ implementation, used by GCC). So sadly, I can not answer the question now. I don't even know why for C++23 it was decided to add <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">move_only_function</span></code> than to change specification to make <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code> only require copyable types when copy constructor is called.</p>
+<p>TODO implementation of fake_copyable</p>
+</section><section id="move-only-function-object"><h2>Move-only function object</h2>
+<p>Since C++23 there is <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">move_only_function</span></code> that allows move-only callables. The interface is identical to that of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code>, except few things:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">const</span></code> qualifier, ref-qualifiers and <code class="code custom-cpp"><span class="keyword">noexcept</span></code> are a part of class template specializations and they are "forwarded" to the <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">()</span></code> so this class is more const-correct, ref-correct and noexcept-correct than <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">function</span></code>.</p></li>
+<li><p>Calling <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">()</span></code> when there is no target is UB instead of throwing an exception.</p></li>
+<li><p>No <code class="code custom-cpp"><span class="func">target</span></code> and <code class="code custom-cpp"><span class="func">target_type</span></code> member functions.</p></li>
+</ul>
+<p>For reasoning, see <a class="reference external" href="https://wg21.link/P0288">P0288</a></p>
+</section><section id="additional-resources"><h2>Additional resources</h2>
+<p>note: all talks are on somewhat advanced level</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=VY83afAJUIg">CppCon 2018: Tom Poole "Why and How to Roll Your Own std::function Implementation"</a></p></li>
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=SToaMS3jNH0">CppCon 2017: Sven Over "folly::Function: A Non-copyable Alternative to std::function"</a></p></li>
+<li><p><a class="reference external" href="https://www.youtube.com/watch?v=tbUCHifyT24">CppCon 2019: Arthur O'Dwyer "Back to Basics: Type Erasure"</a></p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

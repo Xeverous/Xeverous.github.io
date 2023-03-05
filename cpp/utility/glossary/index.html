@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - glossary</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../">HOME</a></li>
+				<li><a href="../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../tutorials/beginner/">beginner</a></li>
+						<li><a href="../../tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../cpp_myths/">C++ myths</a></li>
+						<li><a href=".">glossary</a></li>
+						<li><a href="../">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../about/">about</a></li>
+						<li><a href="../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../">HOME</a></li>
+				<li class="button"><a href="../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../">utility</a></li>
+							<span>/</span>
+						<li>glossary</li>
+					</ol></nav><div class="content">
+				<h1>glossary</h1>				<!-- TODO - article with symbol character names -->
+<ul class="simple">
+<li><p><strong>ABC</strong> - <em>abstract base class</em>. ABCs have at least 1 unimplemented virtual function and can not be instantiated. Some languages offer <code class="code custom-cpp"><span class="keyword">abstract</span></code> keyword to force a class being abstract without the need to declare any unimplemented function. In C++ you can do this by declaring at least 1 pure virtual function, possibly pure virtual destructor (<code class="code custom-cpp"><span class="keyword">virtual</span> <span class="func">~T</span>() = <span class="lit-num">0</span>;</code>). The destructor still needs to be implemented (outside the class).</p></li>
+<li><p><a class="reference external" href="https://www.boost.org"><strong>Boost</strong></a> - a collection of over 80 high-quality C++ libraries for a very wide set of purposes, some being state-of-the-art C++. Many have been incorporated into the C++ standard library, with also many proposed for inclusion in future standards. Boost is sometimes referred to as "the second standard library". Majority of Boost libraries are header-only.</p></li>
+<li><p><strong>build</strong> (as a noun) - a ready to use (compiled and linked) program made from source code with certain configuration.</p></li>
+<li><p><strong>CMake</strong> - meta build system and build system generator. Used by various C and C++ projects to generate project files and build scripts. Some IDEs use CMake to build projects or to discover dependencies and their properties (e.g. include paths).</p></li>
+<li><p><strong>ctor</strong> - constructor.</p></li>
+<li><p><strong>compiler</strong> - a program which turns source code (text file) in the given programming language into machine code (executable file, static or dynamic library). Major C++ compilers are GCC, Clang and MSVC.</p></li>
+<li><p><strong>CRTP</strong> - <em>curiously recurring template pattern</em>. A C++-specific unique form of static polymorphism where a derived class inherits from base class template instantiated with derived type as the template parameter. Explained in TOWRITE.</p></li>
+<li><p><strong>Cygwin</strong> - a Unix-like environment and command-line interface for Microsoft Windows which provides POSIX functionality on top of the Win32 API. If you want to create native Windows binaries (not requiring MSVC or Cygwin) use MinGW-w64 or Clang.</p></li>
+<li><p><a class="reference external" href="https://doxygen.nl"><strong>Doxygen</strong></a> - documentation generation tool supporting multiple programming languages. Generates static web pages from comments in the source code. Quite common in C++ projects. Doxygen's comment syntax is based on JavaDoc.</p></li>
+<li><p><strong>dtor</strong> - destructor.</p></li>
+<li><p><strong>errno</strong> - a macro that expands to a thread-local, global variable holding last POSIX error number. Set by many POSIX functions and some functions in the C and C++ standard library. Note that <a class="reference external" href="https://en.cppreference.com/w/c/error/errno_macros">only 3 constants are mandated by C</a> (EDOM, ELISEQ and ERANGE), <a class="reference external" href="https://en.cppreference.com/w/cpp/header/cerrno">C++ offers many more</a>. See also <a class="reference external" href="http://www.virtsync.com/c-error-codes-include-errno">a list of error numbers in Linux</a>.</p></li>
+<li><p><strong>GC</strong> - <a class="reference external" href="https://en.wikipedia.org/wiki/Garbage_collection_(computer_science)">garbage collector</a>. An automatic cleanup mechanism used in many higher-level languages which do not use RAII. GC simplifies resource management but imposes a performance penalty. Note that GC typically handles only memory while the RAII idiom used in C++ and Rust can handle any resource (e.g. file handles, network sockets).</p></li>
+<li><p><strong>GCC</strong> - originally <em>GNU C Compiler</em>, now <em>GNU Compiler Collecion</em>. The de facto standard compiler toolchain for C and C++ on most GNU/Linux distributions.</p></li>
+<li><p><strong>final</strong> - a keyword in many programming languages that blocks a method from being overriden or a class from being derived from. In Java, it has additional functionality of preventing assignments (similar to <code class="code custom-cpp"><span class="keyword">const</span></code> in other languages).</p></li>
+</ul>
+<ul class="simple" id="foss">
+<li><p><strong>FOSS</strong> - <em>free and open-source software</em>. The word <em>free</em> here <a class="reference external" href="https://www.gnu.org/philosophy/free-sw.html)">means freedom, not price</a>.</p></li>
+<li><p><strong>framework</strong> - a prepared set of tools and code base for certain purpose. Differs from library that it requires a certain application structure and can not be customized beyond creator's intent. Frameworks are more popular in higher level languages while libraries in lower level ones, although both are widely used in various languages.</p></li>
+<li><p><strong>IDE</strong> - <em>integrated development environment</em>. Usually an advanced code editor with autocomplete and rich refactor features integrated with build system, compiler and debugger.</p></li>
+<li><p><strong>idempotent</strong> - an operation that when applied multiple times has the same effect as applied only once. Can be used to describe both functional programming (a function where output depends only on the input) and high-level concepts (transactions in online shops should be idempotent to prevent cases where accidentally sent multiple identical requests would commit multiple purchases).</p></li>
+<li><p><strong>immutable</strong> - Something unchangeable, usually some data. In OOP means that a type by design has unchangeable state once constructed. This approach is very common for data shared across threads and strings - they are often implemented with <a class="reference external" href="https://en.wikipedia.org/wiki/Copy-on-write)">copy-on-write technique</a>. Since C++11 the specification for <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_string</span></code> API (on which <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> is based on) implicitly bans COW (non-const overloads of <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">[]</span></code> must be O(1)) in favor of an implementation based on <em>small buffer optimization</em>.</p></li>
+<li>
+<p><strong>interface</strong>:</p>
+<ul>
+<li><p>(in strict sense) a type that has no data members and containst only (pure) virtual functions. There is no special notion of interfaces in C++ (there is no <code class="code custom-cpp"><span class="keyword">interface</span></code> keyword) - the language allows basically unconstrained multiple inheritance and an interface is simply a <code class="code custom-cpp"><span class="keyword">class</span></code> that has no non-static data members.</p></li>
+<li><p>(more general) an abstraction specifying communication between 2 distinct elements (code-code or code-human). For example: graphic user interface (layout of buttons on the screen etc.), command line interface (a terminal where the user inputs textual commands) and POSIX interface (system-specific C headers offerred by POSIX-compliant systems).</p></li>
+</ul>
+</li>
+<li><p><strong>LEWG</strong>, <strong>LWG</strong> - <em>library (evolution) working groups</em>. Parts of <a class="reference external" href="https://isocpp.org/std/the-committee">the C++ Committee</a>.</p></li>
+<li><p><strong>ld</strong> - the GNU linker. Part of GCC toolchain.</p></li>
+<li><p><strong>linker</strong> - a program used to link compiled source code files into an executable or a static/dynamic library. Linkers can merge code from different programming languages and embed additional metadata.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/LLVM"><strong>LLVM</strong></a> - <em>low level virtual machine</em>. An open-source library for building compilers and related tools. Backend of the Clang compiler. <a class="reference external" href="https://stackoverflow.com/questions/2354725/what-exactly-is-llvm">https://stackoverflow.com/questions/2354725/what-exactly-is-llvm</a></p></li>
+<li><p><strong>Makefile</strong> - a file with directives for performing incremental builds. Used by <em>make</em> command line program. Various IDEs and other tools create makefiles and then call <em>make</em> which calls compiler and linker with appropriate arguments. Makefiles can also be used for other incremental command build tasks, for example LaTeX document generation.</p></li>
+<li><p><strong>memoization</strong> - caching (possibly intermediate) function results. Useful for operations where multiple subtasks may be identical, as is in some recursive functions - e.g. the Fibonacci function can result in identical recursive calls multiple times.</p></li>
+<li><p><strong>MinGW</strong> - <em>minimalist GNU for Windows</em>. A port of GCC toolchain for Windows (the most popular are <a class="reference external" href="https://www.mingw-w64.org">MinGW-w64 distributions</a>). Builds native Windows 32- and 64-bit executables without MSVC-specific code required such as <code class="code custom-cpp"><span class="func">WinMain</span></code> entry function.</p></li>
+<li><p><strong>MI</strong> - multiple inheritance, usually referring to a situation when a class inherits multiple non-interface classes - a feature supported only by some programming languages.</p></li>
+<li><p><strong>MSVC</strong> - Microsoft Visual C/C++ compiler.</p></li>
+<li><p><a class="reference external" href="https://www.msys2.org"><strong>MSYS2</strong></a> - <em>minimal system 2</em>. Software Distribution and Building Platform for Windows.</p></li>
+<li><p><strong>NTBS</strong> - <em>null-terminated byte string</em>, also called C-string.</p></li>
+<li><p><strong>null</strong> - the lack of object, an invalid memory address. On practically every (if not every) hardware represented by memory address zero. Using (dereferencing) a null pointer is undefined behaviour in C and C++ and typically an exception in other languages. In C represented by the macro <code class="code custom-cpp"><span class="macro">NULL</span></code>, in C++ by the keyword <code class="code custom-cpp"><span class="keyword">nullptr</span></code>.</p></li>
+<li><p><strong>OSS</strong> - <em>open source software</em>. See also <a class="reference internal" href="#foss">FOSS</a>.</p></li>
+<li><p><strong>PGO</strong> - <em>profile guided optimization</em>. Optimizations performed on the base of data generated by performance profiling. Information such as which code paths are more frequent (aka hot/cold code), how many times a given function is called or how much time does it take to run can help compilers optimize the program.</p></li>
+<li><p><strong>pimpl</strong> - <em>pointer to implementation</em>, a design pattern in C++, used mostly for reducing coupling and guaranteeing ABI stability. Explained in TOWRITE.</p></li>
+<li><p><strong>pointer</strong> - an object that does not store ordinary data, but holds the memory address of another object (possibly another pointer). In C and C++ pointer types are denoted with <code class="docutils literal">*</code>.</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/POSIX"><strong>POSIX</strong></a> - <em>portable operating system interface</em>. A standarized interface to create and maintain ABI, API, CLI and other compabilities between operating systems. Windows is the most well-known system that is not POSIX compliant. Cygwin and WSL can be used to create POSIX-compliant layer on Windows.</p></li>
+<li><p><strong>RAII</strong> - <em>resource aquisition is initialization</em>, an idiom where resources are managed by classes that implement user-defined constructor and special member functions (copy/move constructor and copy/move assignment operator), which are subject to special optimization rules in C++ - such classes are typically <em>containers</em> and <em>smart pointers</em>. RAII is the backbone of <span class="strikethrough">memory</span> resource management in C++ and Rust. Also sometimes referred to as SBRM (<em>scope based resource management</em>) or CADR (<em>constructor acquires, destructor releases</em>).</p></li>
+<li><p><strong>reference</strong> - an alias to another object. In C++ references are a simpler and safer version of pointers, they do not offer pointer arithmetics. In C++, references must always be initialized and always point to a valid object. In higher level languages references can be null but still do not offer pointer arithmetics.</p></li>
+<li><p><strong>RVO</strong>, <strong>NRVO</strong> - <em>(named) return value optimization</em>. An optimization in C++ where the return operation in a function returning expensive local object by value is optimized from copying the object to <em>moving</em> it or a zero-cost abstraction. This optimization does not exist in C.</p></li>
+<li><p><strong>segfault</strong> - <a class="reference external" href="https://en.wikipedia.org/wiki/Segmentation_fault"><em>segmentation fault</em></a>. A userspace error caused by violating virtual memory access, typically by trying to access memory referenced by a <em>dangling pointer</em> or a <em>null pointer</em>. Very common way to crash by programs with undefined behavior.</p></li>
+<li><p><strong>SFINAE</strong> - <em>substitution failure is not an error</em>. An exploit on the C++ template instantiation mechanism used to disable certain function template overloads and template specializations. A saner version of the feature are <em>concepts</em> added in C++20.</p></li>
+<li><p><strong>SIGSEGV</strong> - <a class="reference external" href="https://en.wikipedia.org/wiki/Signal_(IPC)">a signal</a> raised by the operating system to the program after encountering segmentation fault or similar error.</p></li>
+<li><p><strong>singleton</strong> - a design pattern where a type that is supposed to be instantiated only once as a global object. Often regarded as an anti-pattern. Explained in TOWRITE.</p></li>
+<li><p><strong>smart pointer</strong> - a pointer that automatically manages underlying resource (not necessarily memory). C++ standard library offers smart pointer class templates that model unique ownership (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">unique_ptr</span></code>) and shared ownership (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">weak_ptr</span></code>). Additional smart pointers are offered by Boost. <a class="reference external" href="https://stackoverflow.com/questions/106508/what-is-a-smart-pointer-and-when-should-i-use-one">https://stackoverflow.com/questions/106508/what-is-a-smart-pointer-and-when-should-i-use-one</a>.</p></li>
+<li><p><strong>std</strong> - the namespace name used by the C++ standard library. Every entity except macros is inside this namespace.</p></li>
+<li>
+<p><strong>STL</strong>:</p>
+<ul>
+<li><p>(the library) <em>standard template library</em>. A major part of the C++ standard library, which itself is sometimes referred to as STL due to its historical significance. STL is still a very important part of C++, somewhat analogic to LINQ in C#, though both differ in their design goals.</p></li>
+<li><p>(the person) Stephan T. Lavavej, a member of the C++ committee that also works on Microsoft's implementation of the STL. See <a class="reference external" href="https://old.reddit.com/r/cpp/comments/c90sxa/whats_the_difference_between_stl_and_c_standard/">this reddit post</a> for more information.</p></li>
+</ul>
+</li>
+<li><p><strong>strict aliasing</strong> - an assumption that pointers to <em>unfamiliar types</em> (mostly classes which do not share a common base) can never point to the same object (that is, they can not <em>alias</em> each other). Strict aliasing allows multiple optimizations based on <a class="reference external" href="https://en.wikipedia.org/wiki/Alias_analysis#Type-based_alias_analysis">type-based alias analysis</a>. Mandated by both C and C++, although there is a lot of code that violates this requirement and thus invokes undefined behavior unless a compiler-specific option like <code class="docutils literal"><span class="pre">-fno-strict-aliasing</span></code> is used. See TOWRITE for more information.</p></li>
+<li><p><strong>this</strong> - in C++, a pointer to the object itself, available in any non-static member function. <code class="code custom-cpp"><span class="keyword">this</span></code> is never null.</p></li>
+<li><p><strong>toolchain</strong> - a set of tools used to develop a software project. A typical toolchain includes a text editor, a compiler, a linker and a debugger. Additionally: documentation tools, static analyzers, continuous integration/delivery and more.</p></li>
+<li><p><strong>UDL</strong> - <em>user-defined literal</em>. A C++11 feature that allows to define custom suffixes for literals which create objects of possibly user-defined types. Explained in <a class="reference external" href="../../tutorials/beginner/xy_operator_overloading/10_user_defined_literals">operator overloading / user-defined literals</a>.</p></li>
+<li><p><strong>Qt</strong> (read <em>cute</em>) - one of the biggest C++ GUI frameworks and set of GUI-related libraries. Loved by many for its backwards compatibility, mature and large libraries, advanced tooling and rich platform support. Hated by many for its non-idiomatic/non-conventional use of C++, complicated build system involving code generation and reliance on macros.</p></li>
+<li><p><strong>Qt Creator</strong> - an IDE from the Qt project. Has integrated support for Qt libraries and can also be used for non-Qt C++ projects.</p></li>
+<li><p><strong>vtable</strong> - <a class="reference external" href="https://en.wikipedia.org/wiki/Virtual_method_table"><em>virtual method table</em></a>. In a typical implementation of runtime function dispatch, each polymorphic object holds a pointer to vtable specifying method implementations for its class.</p></li>
+</ul>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

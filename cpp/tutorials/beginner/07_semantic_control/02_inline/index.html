@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - inline</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">07 - semantic control</a></li>
+							<span>/</span>
+						<li>02 - inline</li>
+					</ol></nav><div class="content">
+				<h1>02 - inline</h1>				<p>Sometimes you may write or encounter very short but nonetheless useful functions:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">constexpr</span> <span class="keyword">double</span> <span class="var-global">pi</span> = <span class="num">3.141592653589793238</span>;
+
+<span class="com-single">// 360 degrees = 2π radians</span>
+<span class="keyword">inline</span> <span class="keyword">double</span> <span class="func">deg_to_rad</span>(<span class="keyword">double</span> <span class="param">deg</span>)
+{
+	<span class="keyword">return</span> <span class="param">deg</span> * (<span class="var-global">pi</span> / <span class="num">180.0</span>);
+}
+
+<span class="keyword">inline</span> <span class="keyword">double</span> <span class="func">rad_to_deg</span>(<span class="keyword">double</span> <span class="param">rad</span>)
+{
+	<span class="keyword">return</span> <span class="param">rad</span> * (<span class="num">180.0</span> / <span class="var-global">pi</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>Historically, <code class="code custom-cpp"><span class="keyword">inline</span></code> was recommneded for such functions. It informed the compiler that the function is very small and should not be called, but put <em>inline</em> where the function call is. Essentially this:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// ordinary function call</span>
+<span class="keyword">double</span> <span class="var-local">angle</span> = <span class="func">deg_to_rad</span>(<span class="var-local">degrees</span>);
+<span class="com-single">// inlined function call</span>
+<span class="keyword">double</span> <span class="var-local">angle</span> = <span class="var-local">degrees</span> * (<span class="var-global">pi</span> / <span class="num">180.0</span>);
+</pre></td>
+</tr></tbody></table>
+<p>In other words, the function body should be copied into where it is called. The motivation was to reduce overhead caused by function calls - for each call there is some work to do (put arguments to registers and/or push them onto the stack, save return address, perform jump from current code to function code) and if the function is very small, this overhead can be significant when compared to what is actually computed.</p>
+<p>Such functions would be then put into header files and since the keyword meant "don't compile it, just paste its body when it's used" there were no ODR violations as the function was never compiled as a standalone entity. Basically as if the function was a macro.</p>
+<p>Over time, it turned out that humans are pretty bad at deciding what is worth inlining and what is not. Sometimes very small amount of high-level code compiles to hundreds machine instructions and sometimes a lot of high-level code is optimized well and compiles into just few instructions. For this reasons, compilers started to:</p>
+<ul class="simple">
+<li><p>inline some functions which were not explicitly marked <code class="code custom-cpp"><span class="keyword">inline</span></code></p></li>
+<li><p>not inline some functions which were explicitly marked <code class="code custom-cpp"><span class="keyword">inline</span></code></p></li>
+</ul>
+<p>The keyword <code class="code custom-cpp"><span class="keyword">inline</span></code> has lost its former meaning but gained a different one - <strong>it allows the definition to repeat across TUs</strong>. <code class="code custom-cpp"><span class="keyword">inline</span></code> entities can be put into headers, be included multiple times in different TUs and will not cause "multiple reference" linker errors. <code class="code custom-cpp"><span class="keyword">inline</span></code> doesn't break ODR, it only opens a possibility of multiple definitions - but all must be identical.</p>
+<blockquote>
+<p>How do linkers deal with such functions?</p>
+</blockquote>
+<p>Linkers are much more complex when compared to C++ point of view. Each symbol (usually from compiled function) can have a lot of metadata attached and/or encoded within it's mangled name.</p>
+<p>So ... should the keyword be used today? Well, yes and no - depends on the case.</p>
+<section id="optimization"><h2>Optimization</h2>
+<p>Compilers are much better at deciding what should be inlined and what not. But there is a catch - they often can not do it across TUs. The reason is that when compiling one TU, they only see definitions of what has been defined in this TU (current source file + all included headers). But what if a hypothetically-worth-inlining function is defined in another TU? Since they don't see the definition, there is no way to perform inlining.</p>
+<p>To avoid this problem, some compilers offer LTO - <strong>link-time optimization</strong>. Basically, the compiler generates extra metadata for each compiled TU and the decision about inlining is performed at the linking step when metadata from multiple TUs is available. LTO offers better program performance but comes with the cost of significantly larger linking times.</p>
+<p>Inlining is one of the most powerful optimizations, especially if there is a lot of high-level code that does low amount of actual computations but a lot of abstraction logic (which in C++ often is zero-overhead and can be optimized out). If you want to benefit from this optimization without having to use LTO, put definitions of functions that you think are worth inlining into header files and mark them <code class="code custom-cpp"><span class="keyword">inline</span></code> - in such case the keyword is not used as an optimization hint but as a way to avoid ODR violations.</p>
+<p>Note that inlining optimizations are done per call, not per function. The same function can be inlined in one place but not in the other. Compilers can have complex <a class="reference external" href="https://en.wikipedia.org/wiki/Heuristic">heuristic</a> logic that decides whether it's worth or not - too much inlining can hurt cache a lot. See <a class="reference external" href="https://en.wikipedia.org/wiki/Inline_expansion">https://en.wikipedia.org/wiki/Inline_expansion</a> for more details.</p>
+<p>For GCC and Clang, LTO requires <code class="docutils literal"><span class="pre">-flto</span></code> option for both the compiler and the linker. To enable it through a CMake build recipe, use <code class="docutils literal">set_target_properties(target_name PROPERTIES INTERPROCEDURAL_OPTIMIZATION TRUE)</code>.</p>
+</section><section id="header-only-libraries"><h2>Header-only libraries</h2>
+<p>If the function is short or is the only entity that would constitute the source file, putting its definition in a header marked with <code class="code custom-cpp"><span class="keyword">inline</span></code> removes the need for the source file and also reduces some boilerplate (no need to copy the line which specifies function parameters, no need to write another copyright notice and whatever else given project does on a file basis).</p>
+<p>If we apply this approach to all entities (since C++17 <code class="code custom-cpp"><span class="keyword">inline</span></code> can also be applied to global objects, in C++11 there are some workarounds) we will end up with header-only code. Header-only libraries may negatively impact compilation times of projects that use them (as for each TU that includes them the compiler compiles definitions again) but have the benefit that no actual library build is needed. Many libraries go for header-only code, especially the ones aimed at less experienced C++ users as for such programmers the barrier to use these libraries is significantly lowered.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="keyword">template</span></code> and <code class="code custom-cpp"><span class="keyword">constexpr</span></code> imply <code class="code custom-cpp"><span class="keyword">inline</span></code>.</p>
+</aside><p>If the library project consists of mostly templates and <code class="code custom-cpp"><span class="keyword">constexpr</span></code> code, it's already header-heavy and going header-only will make using the library easier at a very low cost.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="keyword">inline</span></code> works differently in C. <code class="code custom-cpp"><span class="keyword">inline</span></code> there alone isn't very useful, it's typically used together with <code class="code custom-cpp"><span class="keyword">extern</span></code> or <code class="code custom-cpp"><span class="keyword">static</span></code>. See <a class="reference external" href="https://stackoverflow.com/questions/34937816/inline-static-extern-in-c99">https://stackoverflow.com/questions/34937816/inline-static-extern-in-c99</a> for more information.</p>
+</aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

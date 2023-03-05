@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 03 - exception specification</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">ya - exceptions</a></li>
+							<span>/</span>
+						<li>03 - exception specification</li>
+					</ol></nav><div class="content">
+				<h1>03 - exception specification</h1>				<section id="dynamic-exception-specification"><h2>Dynamic exception specification</h2>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This section describes a feature deprecated in C++11 that was later removed in C++17.</p>
+</aside><p>Until C++17, functions (including special member functions) could have <em>dynamic exception specification</em>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// may throw std::runtime_error, std::bad_alloc or something derived from these</span>
+<span class="keyword">void</span> <span class="func">f1</span>() <span class="keyword">throw</span>(<span class="namespace">std</span>::<span class="type">runtime_error</span>, <span class="namespace">std</span>::<span class="type">bad_alloc</span>);
+
+<span class="com-single">// never throws any exceptions</span>
+<span class="keyword">void</span> <span class="func">f2</span>() <span class="keyword">throw</span>();
+
+<span class="com-single">// equivalent to the above, the preferred way since C++11</span>
+<span class="keyword">void</span> <span class="func">f3</span>() <span class="keyword">noexcept</span>;
+</pre></td>
+</tr></tbody></table>
+<p>This informed the compiler which types of exceptions (or types derived from) can be thrown (otherwise each function is assumed to potentially throw everything). From cppreference:</p>
+<blockquote>
+<p>If the function throws an exception of the type not listed in its exception specification, the function <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">unexpected</span></code> is called. The default function calls <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">terminate</span></code>, but it may be replaced by a user-provided function (via <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">set_unexpected</span></code>) which may call <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">terminate</span></code> or throw an exception. If the exception thrown from <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">unexpected</span></code> is accepted by the exception specification, stack unwinding continues as usual. If it isn't, but <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">bad_exception</span></code> is allowed by the exception specification, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">bad_exception</span></code> is thrown. Otherwise, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">terminate</span></code> is called.</p>
+</blockquote>
+<p>Why the feature was removed? Well, it was wonky from the start. Java has identical feature and while not removed, it receives strong criticizm. The reasons for removing dynamic exception specification from C++ were:</p>
+<ul class="simple">
+<li><p>It did not enforce what it stated at compile time. In the case of Java, compilers can track possible exceptions and block code at compile time that violates it, but in case of C++ the feature was introduced too late to put such a high requirement on already existing code. Thus, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">unexpected</span></code> was born.</p></li>
+<li><p>There was hope for potential performance gains from providing such information to compilers. No possible optimizations were found. <strong>Even worse</strong>, the feature has <strong>actually prevented certain optimizations</strong> because of additional violation checks that had to be performed.</p></li>
+<li><p>Because there were no compile time checks, writing dynamic-exception-specification-correct code was a huge burden on programmers (and still is in Java). The meta of ignorance in both languages reached a point where people simply specified standard library base exception class for every function, making it useless in Java and marginally-informative in C++ (which allows non-class exceptions which no one uses).</p></li>
+<li><p>The feature was not consistent with C++ type system. Unlike <code class="code custom-cpp"><span class="keyword">const</span></code> and <code class="code custom-cpp"><span class="keyword">volatile</span></code>, it could not fully propagate and was not syntaxically allowed in some subgrammars (e.g. <code class="code custom-cpp"><span class="keyword">typedef</span></code>s of function pointers). Exception specification did not participate in function's type, <em>except when it did</em>.</p></li>
+</ul>
+<p>For a longer description read <a class="reference external" href="http://www.gotw.ca/publications/mill22.htm">this article by Herb Sutter</a>.</p>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-noexcept-span-code-specification"><h2>
+<code class="code custom-cpp"><span class="keyword">noexcept</span></code> specification</h2>
+<p>Exception specification is not gone entirely, but it has been reduced to 2 simplest cases:</p>
+<ul class="simple">
+<li><p>a function can throw objects of any type (nothing is written)</p></li>
+<li><p>a function can not throw (<code class="code custom-cpp"><span class="keyword">noexcept</span></code> is written) (if it actually throws - <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">terminate</span></code>)</p></li>
+</ul>
+<p>And this time it fully works with the type system - analogically to <code class="code custom-cpp"><span class="keyword">const</span></code> and <code class="code custom-cpp"><span class="keyword">volatile</span></code> the qualification can be increased, but not removed. That is:</p>
+<ul class="simple">
+<li><p>You can assign addresses of <code class="code custom-cpp"><span class="keyword">noexcept</span></code> functions to function pointers, but not vice versa (non-<code class="code custom-cpp"><span class="keyword">noexcept</span></code> functions to <code class="code custom-cpp"><span class="keyword">noexcept</span></code> function pointers).</p></li>
+<li><p>If a base class <code class="code custom-cpp"><span class="keyword">virtual</span></code> function is <code class="code custom-cpp"><span class="keyword">noexcept</span></code>, all overrides have to be too.</p></li>
+<li>
+<p>Just like the return type of a function:</p>
+<ul>
+<li><p>It is a part of the function type.</p></li>
+<li><p>It is not a part of the function signature - it is not possible to overload functions only by exception specification.</p></li>
+</ul>
+</li>
+</ul>
+<p><code class="code custom-cpp"><span class="keyword">noexcept</span></code> allows some optimizations on stack unwinding that normally would break implementation of destructors. It also informs the programmer that a given function is safe to use in exception-unsafe contexts such as the body of a destructor or any other function that is also <code class="code custom-cpp"><span class="keyword">noexcept</span></code>.</p>
+<p>It's possible to call potentially throwing functions and have an exception inside a <code class="code custom-cpp"><span class="keyword">noexcept</span></code> function. The exception should just not escape such function (must be caught inside). It if escapes - <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">terminate</span></code>.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>The following are implicitly <code class="code custom-cpp"><span class="keyword">noexcept</span></code>:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.cppreference.com/w/cpp/thread#Atomic_operations">atomic operations</a></p></li>
+<li><p>all C++ standard library functions that come from the C standard library</p></li>
+<li><p>destructors (can be disabled by <code class="code custom-cpp"><span class="keyword">noexcept</span>(<span class="keyword">false</span>)</code> but it's heavily discouraged - destructors should never throw exceptions)</p></li>
+</ul></aside><section id="code-class-code-custom-cpp-span-class-keyword-noexcept-span-span-class-keyword-bool-span-code"><h3><code class="code custom-cpp"><span class="keyword">noexcept</span>(<span class="keyword">bool</span>)</code></h3>
+<p>The keyword <cite>noexcept</cite> can accept a constant expression that is convertible to <code class="code custom-cpp"><span class="keyword">bool</span></code>. Defaults to <code class="code custom-cpp"><span class="keyword">true</span></code>, which means <code class="code custom-cpp"><span class="keyword">noexcept</span></code> specifier is equivalent to <code class="code custom-cpp"><span class="keyword">noexcept</span>(<span class="keyword">true</span>)</code>. This feature is typically used within function templates to conditionally apply <code class="code custom-cpp"><span class="keyword">noexcept</span></code> depending on template parameters.</p>
+</section></section><section id="code-class-code-custom-cpp-span-class-keyword-noexcept-span-code-operator"><h2>
+<code class="code custom-cpp"><span class="keyword">noexcept</span></code> operator</h2>
+<p>Apart from exception specification, the keyword can also be used as an operator. It returns a compile time constant of type <code class="code custom-cpp"><span class="keyword">bool</span></code> which value is <code class="code custom-cpp"><span class="keyword">true</span></code> if the expression can not throw exceptions. Just like <code class="code custom-cpp"><span class="keyword">sizeof</span></code> and <code class="code custom-cpp"><span class="keyword">alignof</span></code> operators, the expression is an <em>unevaluated context</em> - it is not executed, only checked for specific behavior. The returned value is <code class="code custom-cpp"><span class="keyword">constexpr</span></code> but the expression itself does not have to be.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;vector&gt;</span>
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="com-single">// If executed, the expression in the first noexcept would result in undefined behavior.
+</span>	<span class="com-single">// But because the noexcept operator has unevaluated context, there is no problem.
+</span>	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="namespace">std</span>::<span class="func-free">boolalpha</span>; <span class="com-single">// print true/false instead of 1/0
+</span>	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"Can vector's operator[] throw? "</span> &lt;&lt; !<span class="keyword">noexcept</span>(<span class="namespace">std</span>::<span class="type-class">vector</span>&lt;<span class="keyword">int</span>&gt;()[<span class="lit-num">0</span>]) &lt;&lt; <span class="lit-chr">'<span class="esc-seq">\n</span>'</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"Can vector's at function throw? "</span> &lt;&lt; !<span class="keyword">noexcept</span>(<span class="namespace">std</span>::<span class="type-class">vector</span>&lt;<span class="keyword">int</span>&gt;().<span class="func-member">at</span>(<span class="lit-num">0</span>)) &lt;&lt; <span class="lit-chr">'<span class="esc-seq">\n</span>'</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>In rare cases both the <code class="code custom-cpp"><span class="keyword">noexcept</span></code> specifier and <code class="code custom-cpp"><span class="keyword">noexcept</span></code> operator can appear together: <code class="code custom-cpp"><span class="param-tmpl">T</span> <span class="func">func</span>() <span class="keyword">noexcept</span>(<span class="keyword">noexcept</span>(<span class="param-tmpl">T</span>()))</code>. This tests the expression and immediately uses the result to specify whether the current function is <code class="code custom-cpp"><span class="keyword">noexcept</span></code>.</p>
+<blockquote>
+<p>Couldn't it be simplified to just 1 use of the keyword?</p>
+</blockquote>
+<p>While it looks like a simplification, it would actually result in a significantly more complicated definition of the keyword - it would have to dynamically adapt depending on a complex context information; some ambiguities might arise. The current definition is much simpler: <code class="code custom-cpp"><span class="keyword">noexcept</span></code> works as an operator except in the immediate context of a function (template) declaration - then a specifier. Apparently the committee is fine with this approach, because C++20 introduces identical situation with double <code class="code custom-cpp"><span class="keyword">requires</span></code> for concepts.</p>
+</section><section id="in-practice"><h2>In practice</h2>
+<p>Apply <code class="code custom-cpp"><span class="keyword">noexcept</span></code> very carefully. Just because a function doesn't throw doesn't mean it will never do after any future edits. You can easily <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">terminate</span></code> your program by applying <code class="code custom-cpp"><span class="keyword">noexcept</span></code> and realizing that many stack frames deeper some subfunction can throw. Don't use <code class="code custom-cpp"><span class="keyword">noexcept</span></code> unless you can verify and guarantee that all calls within will never throw.</p>
+<p>Only a small subset of functions is recommended to be marked as <code class="code custom-cpp"><span class="keyword">noexcept</span></code>:</p>
+<ul class="simple">
+<li><p>special member functions: move constructor and move assignment (destructors are already implicitly <code class="code custom-cpp"><span class="keyword">noexcept</span></code>)</p></li>
+<li><p>swap operations (a kind of functions written to implement <em>copy and swap</em> idiom which is used in some special member functions)</p></li>
+<li><p>memory and resource (de)allocation functions (pretty low-level code) - such functions are used within destructors</p></li>
+<li>
+<p>functions intended to operate in an exception-unsafe context:</p>
+<ul>
+<li><p>interacting with C: passing addresses of C++ functions to a C API - if C code calls a C++ function and it throws, undefined behavior occurs</p></li>
+<li><p>badly written C++ - there is a lot of exception-unsafe C++ code, including whole libraries (e.g. Qt)</p></li>
+</ul>
+</li>
+</ul>
+<p>Special member functions do not have to be <code class="code custom-cpp"><span class="keyword">noexcept</span></code>, but if they are the C++ standard library takes advantage of it in various places (mostly containers and algorithms - improved performance or better <em>exception guarantees</em>).</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

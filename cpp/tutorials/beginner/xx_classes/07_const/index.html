@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 07 - const</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xx - classes</a></li>
+							<span>/</span>
+						<li>07 - const</li>
+					</ol></nav><div class="content">
+				<h1>07 - const</h1>				<p>So far we have talked about member functions and how they can shield the class from undesirable use. This lesson extends the topic, covering few very common kinds of member functions.</p>
+<!-- The only exception is that constructors can not have any member function qualifiers - they would not make any sense anyway since at the point of the call no object exists yet. -->
+<p>Setters:</p>
+<ul class="simple">
+<li><p>primary purpose: change data members (they <em>set</em> things)</p></li>
+<li><p>secure class <strong>invariants</strong>.</p></li>
+<li><p>function names often start with <code class="docutils literal">set</code></p></li>
+<li><p>such functions almost always return <code class="code custom-cpp"><span class="keyword">void</span></code> (if not, it's usually <code class="code custom-cpp"><span class="keyword">bool</span></code> to indicate whether operation succeeded)</p></li>
+</ul>
+<p>Getters:</p>
+<ul class="simple">
+<li><p>primary purpose: obtain information (they <em>get</em> things)</p></li>
+<li><p>function names often start with <code class="docutils literal">get</code> (return value of a private data member or compute something from them)</p></li>
+<li><p>almost always are read-only operations that do not change data members</p></li>
+</ul>
+<p>Question-like functions (a subset of getters):</p>
+<ul class="simple">
+<li><p>very often return <code class="code custom-cpp"><span class="keyword">bool</span></code></p></li>
+<li><p>names usually start with <code class="docutils literal">is</code> or <code class="docutils literal">has</code> - for example: <code class="docutils literal">is_ready</code>, <code class="docutils literal">is_full</code>, <code class="docutils literal">is_open</code>, <code class="docutils literal">has_completed</code>,</p></li>
+<li><p>almost always are read-only operations that do not change data members</p></li>
+</ul>
+<p>Action-like functions:</p>
+<ul class="simple">
+<li><p>primary purpose: modify the object to complete specific task</p></li>
+<li><p>names are formed like orders - for example: <code class="docutils literal">next_item</code>, <code class="docutils literal">load_file</code>, <code class="docutils literal">refresh</code></p></li>
+<li>
+<p>typically return one of:</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="keyword">void</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">bool</span></code> (to inform if the operation succeeded)</p></li>
+<li><p>specific data type that holds operation result and/or detailed error information</p></li>
+</ul>
+</li>
+</ul>
+<p>Action-like functions are the most broad group and usually they will contain most important code for any given class.</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>Getters are commonly referred as <strong>accessors</strong>. Setters as <strong>mutators</strong>.</p>
+</aside><p>Getters and setters do not always come in pairs - getters may combine information from multiple members and setters (and action functions) may change multiple fields. This all depends on class invariants.</p>
+<section id="exercise"><h2>Exercise</h2>
+<p>Recall <code class="code custom-cpp"><span class="type">fraction</span></code> class from previous lessons. Can you assign each of its member functions a specific category?</p>
+<div class="docutils container">
+<details><summary>Answer</summary><div class="docutils container">
+<ul class="simple">
+<li><p><code class="docutils literal">set</code> - setter</p></li>
+<li><p><code class="docutils literal">simplify</code> - action</p></li>
+<li><p><code class="docutils literal">print</code> - getter (although instead of returning it prints the values)</p></li>
+</ul>
+</div>
+</details>
+</div>
+</section><section id="member-function-qualifiers"><h2>Member function qualifiers</h2>
+<p>In C++ member functions can have certain qualifiers:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">const</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">volatile</span></code></p></li>
+<li><p><code class="code custom-cpp">&amp;</code> - the lvalue reference qualifier or <code class="code custom-cpp">&amp;&amp;</code> - the rvalue reference qualifier</p></li>
+</ul>
+<p>In this lesson you will learn about the simplest of them - the const qualifier.</p>
+<p>When applied to a variable, <code class="code custom-cpp"><span class="keyword">const</span></code> prevents its modification. When applied to a member function, it prevents that function from modifying fields - it's as if all fields were <code class="code custom-cpp"><span class="keyword">const</span></code> for the code inside the function. You can still do everything else in such function, the only restriction is on modifying member variables.</p>
+<p>The fraction class already has a function that could use it - you probably already know which one.</p>
+<p>Const-qualified member functions follow const-correctness:</p>
+<ul class="simple">
+<li><p>they can be called on const-qualified objects</p></li>
+<li><p>they can not call non-const-qualified member functions</p></li>
+</ul>
+<p>Let's have an example (with improved <code class="code custom-cpp"><span class="func">print</span></code> function - now it also supports other streams):</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="com-single">// (greatest common divisor)</span>
+<span class="com-single">// if you have C++17, you can remove this function and use std::gcd from &lt;numeric&gt;</span>
+<span class="keyword">int</span> <span class="func">gcd</span>(<span class="keyword">int</span> <span class="param">a</span>, <span class="keyword">int</span> <span class="param">b</span>)
+{
+	<span class="keyword">if</span> (<span class="param">b</span> == <span class="lit-num">0</span>)
+		<span class="keyword">return</span> <span class="param">a</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="func">gcd</span>(<span class="param">b</span>, <span class="param">a</span> % <span class="param">b</span>);
+}
+
+<span class="keyword">int</span> <span class="func">make_valid_denominator</span>(<span class="keyword">int</span> <span class="param">value</span>)
+{
+	<span class="keyword">if</span> (<span class="param">value</span> == <span class="lit-num">0</span>)
+		<span class="keyword">return</span> <span class="lit-num">1</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">value</span>;
+}
+
+<span class="keyword">class</span> <span class="type">fraction</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">numerator</span>;
+	<span class="keyword">int</span> <span class="var-member">denominator</span>;
+
+<span class="keyword">public</span>:
+	<span class="func">fraction</span>(<span class="keyword">int</span> <span class="param">numerator</span> = <span class="lit-num">0</span>, <span class="keyword">int</span> <span class="param">denominator</span> = <span class="lit-num">1</span>)
+	: <span class="var-member">numerator</span>(<span class="param">numerator</span>)
+	, <span class="var-member">denominator</span>(<span class="func">make_valid_denominator</span>(<span class="param">denominator</span>))
+	{}
+
+	<span class="keyword">void</span> <span class="func">simplify</span>()
+	{
+		<span class="keyword">const</span> <span class="keyword">int</span> <span class="var-local">n</span> = <span class="func">gcd</span>(<span class="var-member">numerator</span>, <span class="var-member">denominator</span>);
+		<span class="var-member">numerator</span> /= <span class="var-local">n</span>;
+		<span class="var-member">denominator</span> /= <span class="var-local">n</span>;
+	}
+
+	<span class="com-single">// note where the const keyword is placed</span>
+	<span class="com-single">// "const double approx()" would affect return type, not the function</span>
+	<span class="keyword">double</span> <span class="func">approx</span>() <span class="keyword">const</span>
+	{
+		<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">double</span>&gt;(<span class="var-member">numerator</span>) / <span class="var-member">denominator</span>;
+	}
+
+	<span class="com-single">// std::cout is a global object of type std::ostream</span>
+	<span class="keyword">void</span> <span class="func">print</span>(<span class="namespace">std</span>::<span class="type">ostream</span>&amp; <span class="param">os</span> = <span class="namespace">std</span>::<span class="var-global">cout</span>) <span class="keyword">const</span>
+	{
+		<span class="param">os</span> <span class="oo">&lt;&lt;</span> <span class="var-member">numerator</span> <span class="oo">&lt;&lt;</span> "/" <span class="oo">&lt;&lt;</span> <span class="var-member">denominator</span>;
+	}
+};
+
+<span class="com-multi">/*</span>
+<span class="com-multi"> * Because fraction class is small and inexpensive to copy,</span>
+<span class="com-multi"> * it should be passed by value instead of const reference.</span>
+<span class="com-multi"> * Const reference is used here to demonstrate potential</span>
+<span class="com-multi"> * errors of calling non-const methods on const objects.</span>
+<span class="com-multi"> */</span>
+<span class="keyword">void</span> <span class="func">print_details</span>(<span class="keyword">const</span> <span class="type">fraction</span>&amp; <span class="param">fr</span>)
+{
+	<span class="param">fr</span>.<span class="func">print</span>();
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">", approx. "</span> <span class="oo">&lt;&lt;</span> <span class="param">fr</span>.<span class="func">approx</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+	<span class="com-single">// fr.simplify(); // error: can not call non-const member function on const-qualified object</span>
+}
+
+<span class="keyword">void</span> <span class="func">test</span>(<span class="type">fraction</span> <span class="param">fr</span>)
+{
+	<span class="func">print_details</span>(<span class="param">fr</span>);
+	<span class="param">fr</span>.<span class="func">simplify</span>();
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"after simplification:<span class="esc-seq">\n</span>"</span>;
+	<span class="func">print_details</span>(<span class="param">fr</span>);
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="func">test</span>(<span class="type">fraction</span>(<span class="lit-num">8</span>, <span class="lit-num">12</span>));
+	<span class="func">test</span>(<span class="type">fraction</span>(<span class="lit-num">8</span>, -<span class="lit-num">12</span>));
+	<span class="func">test</span>(<span class="type">fraction</span>(-<span class="lit-num">8</span>, -<span class="lit-num">12</span>));
+}
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Getters should be const-qualified.</p>
+</aside><p>Don't get it wrong - do not const-qualify a function just becase it can be. Think what is the function's purpose and only then add <code class="code custom-cpp"><span class="keyword">const</span></code> if it's a getter. Action-like functions should not be const-qualified even if they can (for whatever reason). If you make this mistake, there is a chance that the function implementation will change at some point in a way that prevents applying <code class="code custom-cpp"><span class="keyword">const</span></code>. This can cause compilation issues in other code which was (incorrectly) using the class by relying on the action constness.</p>
+<blockquote>
+<p>Does const-qualifying a function help in optimization?</p>
+</blockquote>
+<p>Generally no. <code class="code custom-cpp"><span class="keyword">const</span></code> does not help the compiler except in few corner cases. It's much more of a help for the programmer to catch bugs related to object misuse.</p>
+</section><section id="overloading-on-qualification"><h2>Overloading on qualification</h2>
+<p>Const-qualifying a function changes its type. This in turn allows overloading based on constness of the object. The following style of getters and setters is very popular in C++ (and often the recommended one):</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">button</span>
+{
+<span class="keyword">public</span>:
+	      <span class="namespace">std</span>::<span class="type">string</span>&amp; <span class="func">text</span>()       { <span class="keyword">return</span> <span class="var-member">m_text</span>; }
+	<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">string</span>&amp; <span class="func">text</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="var-member">m_text</span>; }
+
+	<span class="com-single">// [...] other methods</span>
+
+<span class="keyword">private</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="var-member">m_text</span>;
+	<span class="com-single">// [...] other fields</span>
+};
+
+<span class="com-single">// example use</span>
+<span class="com-single">// if the object is const-qualified, const-qualified overload is called</span>
+<span class="com-single">// the non-const overload returns non-const reference to the string</span>
+<span class="type">button</span> <span class="var-local">btn1</span>(<span class="com-multi">/* ... */</span>);
+<span class="var-local">btn1</span>.<span class="func">text</span>() <span class="oo">=</span> <span class="lit-str">"Exit"</span>;
+
+<span class="keyword">const</span> <span class="type">button</span> <span class="var-local">btn2</span>(<span class="com-multi">/* ... */</span>);
+<span class="var-local">btn2</span>.<span class="func">text</span>() <span class="oo">=</span> <span class="lit-str">"Exit"</span>; <span class="com-single">// error: std::string::operator= is not const-qualified</span>
+</pre></td>
+</tr></tbody></table>
+<p>This example presents multiple conventions, common in C++ code:</p>
+<ul class="simple">
+<li>
+<p>Member variables are named with some prefix (usually <code class="docutils literal">m_</code> or <code class="docutils literal">_</code>):</p>
+<ul>
+<li><p>This avoids name clashes with method names.</p></li>
+<li><p>This improves code readability of method implementations (member variables can be easily distinguished from function-local variables).</p></li>
+<li><p>This helps with tooling (e.g. IDE autocomplete feature)</p></li>
+</ul>
+</li>
+<li><p>Functions should generally be named as verbs but here they are named as nouns - they only return references to fields.</p></li>
+<li><p>There are 2 overloads which differ in const qualification and analogically their return type.</p></li>
+</ul>
+<p>Which overload is choosen when a method is called? It depends on the constness of the object on which it is done.</p>
+<ul class="simple">
+<li><p>For const objects, the const-qualified overload is choosen which acts only as a getter.</p></li>
+<li><p>For non-const objects, the non-const-qualified overload is choosen which can be used both as a getter and as a setter.</p></li>
+</ul>
+<p>The tradeoffs of this style:</p>
+<ul class="simple">
+<li><p>Such functions expose an implementation detail - the return type must match member type. If the class is later refactored to contain fields of different types, code which was using the class may also need to be changed.</p></li>
+<li>
+<p>Since the setter does not take the value as a parameter but returns a reference to a field:</p>
+<ul>
+<li><p>...it no longer can control what is actually written to it. This makes the style undesirable if the class has invariants to enforce. For the <code class="code custom-cpp"><span class="type">fraction</span></code> class, this style should not be used because the denominator has to be checked against zero.</p></li>
+<li><p>...the calling code can access field's methods, which allows significant code reuse. Example above accesses <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span>::<span class="keyword">operator</span><span class="func">=</span></code>.</p></li>
+</ul>
+</li>
+</ul>
+<p>In other words, the approach of returning a reference to the field offers code reuse (access to methods of the field) at the cost of coupling external code to the implementation (the type of the field).</p>
+</section><section id="selecting-desired-overload"><h2>Selecting desired overload</h2>
+<p>If an object is const-qualified, only const-qualified methods can be called. But in the opposite situation, both const and non-const overloads can be called. For a non-const object, <strong>the compiler doesn't check how the function is used and what is done with it's return type (if non-void)</strong> - it simply picks non-const overload for consistency.</p>
+<p>In some situations, calling const-qualified overload on a non-const object is beneficial. This often happens for types which use COW (copy-on-write) implementation as an optimization.</p>
+<p>For a type that implements COW, specific data is shared across multiple objects. Each object holds some form of access to a shared state (e.g. a pointer) and only such pointer is copied. This allows read operations for actual data from multiple places (potentially multiple threads) while not wasting memory by duplicating the data for each thread. If at any point in time, there is a need for modification, the object will create a new copy of the data and refer to this new copy. Many file systems use this optimization - copied files are not actually copied but only their metadata, a real copy is made only when one of users attempts to edit the file. Thus "copy-on-write" name. This approach of sharing identical copies is also known as <em>shallow copying</em> and is a part of <em>flyweight</em> design pattern.</p>
+<p>In C++ COW can be used whenever there is a resource which is expensive to obtain (simplest example is dynamically allocated memory, such as buffers for strings). String types in many libraries (but not <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code> in C++11 and later) are implemented with COW. Below is a hypothetical excerpt from such class:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">cow_string</span>
+{
+<span class="keyword">public</span>:
+	<span class="com-single">// always cheap to use this overload</span>
+	<span class="keyword">char</span> <span class="keyword">operator</span><span class="func">[]</span>(<span class="keyword">int</span> <span class="param">index</span>) <span class="keyword">const</span>
+	{
+		<span class="com-single">// directly return character</span>
+		<span class="keyword">return</span> <span class="var-member">buffer</span>-&gt;<span class="var-member">data</span>[<span class="param">index</span>];
+	}
+
+	<span class="com-single">// potentially expensive overload</span>
+	<span class="keyword">char</span>&amp; <span class="keyword">operator</span><span class="func">[]</span>(<span class="keyword">int</span> <span class="param">index</span>)
+	{
+		<span class="com-single">// if multiple string objects refer to the data...</span>
+		<span class="keyword">if</span> (<span class="var-member">buffer</span>-&gt;<span class="var-member">use_count</span> &gt; <span class="lit-num">1</span>)
+		{
+			<span class="com-single">// ...make a copy of the data to support independent changes</span>
+			<span class="com-single">// (other string objects should remain unaffected)</span>
+			--<span class="var-member">buffer</span>-&gt;<span class="var-member">use_count</span>;
+			<span class="var-member">buffer</span> = <span class="func">allocate_buffer</span>(<span class="func">size</span>());
+		}
+
+		<span class="com-single">// now it's sure that returned non-const reference</span>
+		<span class="com-single">// is to a string that has exactly 1 use</span>
+		<span class="keyword">return</span> <span class="var-member">buffer</span>-&gt;<span class="var-member">data</span>[<span class="param">index</span>];
+	}
+
+<span class="keyword">private</span>:
+	<span class="type">shared_buffer</span>* <span class="var-member">buffer</span>;
+};
+</pre></td>
+</tr></tbody></table>
+<p>In such situation, there is a big difference between calling const-qualified overload and non-const-qualified overload. For this reason, C++17 added a helper function:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;utility&gt;</span>
+
+<span class="keyword">char</span> <span class="func">get_first_char</span>()
+{
+	<span class="type">cow_string</span> <span class="var-local">str</span> = <span class="func">returns_str_from_somewhere</span>();
+
+	<span class="keyword">if</span> (<span class="var-local">str</span>.<span class="func">empty</span>())
+		<span class="keyword">return</span> <span class="lit-chr">'<span class="esc-seq">\0</span>'</span>;
+
+	<span class="com-single">// bad: potentially expensive call</span>
+	<span class="com-single">// return str[0];</span>
+
+	<span class="com-single">// good: std::as_const returns const reference</span>
+	<span class="com-single">// now a const-qualified overload of operator[] will be used</span>
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">as_const</span>(<span class="var-local">str</span>)[<span class="lit-num">0</span>];
+}
+</pre></td>
+</tr></tbody></table>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">as_const</span></code> is a very simple function, it just returns a const reference to the passed object. If you don't have C++17 you can implement this function in C++11 compatible code:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;type_traits&gt;</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt; <span class="keyword">constexpr</span>
+<span class="keyword">typename</span> <span class="namespace">std</span>::<span class="type">add_const</span>&lt;<span class="param-tmpl">T</span>&gt;::<span class="type">type</span>&amp; <span class="func">as_const</span>(<span class="param-tmpl">T</span>&amp; <span class="param">t</span>) <span class="keyword">noexcept</span>
+{
+	<span class="keyword">return</span> <span class="param">t</span>;
+}
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">void</span> <span class="func">as_const</span>(<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp;&amp;) = <span class="keyword">delete</span>; <span class="com-single">// disallows temporary objects</span>
+</pre></td>
+</tr></tbody></table>
+<p>Later you will also learn about <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">shared_ptr</span></code> which can be used to implement types with COW behavior.</p>
+<!-- TODO short question about pre-C++11 std::string and SSO? Currently SSO is mentioned in arrays chapter which might be too early. -->
+</section><section id="setters-for-classes-with-invariants"><h2>Setters for classes with invariants</h2>
+<p>The style of const + non-const overloads is quite popular but it's not appropriate when a class has some invariants - returning a non-const reference makes external code totally unconstrained. For something like the <code class="code custom-cpp"><span class="type">fraction</span></code> class, the following implementation can be used:</p>
+<ul class="simple">
+<li><p>the const-qualified overload returns const reference</p></li>
+<li><p>the non-const-qualified overload, instead of retuning a non-const reference, takes the value to set as a parameter</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="func">numerator</span>() <span class="keyword">const</span>
+{
+	<span class="keyword">return</span> <span class="var-member">m_numerator</span>;
+}
+
+<span class="keyword">void</span> <span class="func">numerator</span>(<span class="keyword">int</span> <span class="param">value</span>)
+{
+	<span class="var-member">m_numerator</span> = <span class="param">value</span>;
+}
+
+<span class="keyword">int</span> <span class="func">denominator</span>() <span class="keyword">const</span>
+{
+	<span class="keyword">return</span> <span class="var-member">m_denominator</span>;
+}
+
+<span class="keyword">void</span> <span class="func">denominator</span>(<span class="keyword">int</span> <span class="param">value</span>)
+{
+	<span class="var-member">m_denominator</span> = <span class="func">make_valid_denominator</span>(<span class="param">value</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>Data member names were changed to avoid name conflicts with function names.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

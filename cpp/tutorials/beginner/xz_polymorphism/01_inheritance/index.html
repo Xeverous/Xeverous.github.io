@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - inheritance</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xz - polymorphism</a></li>
+							<span>/</span>
+						<li>01 - inheritance</li>
+					</ol></nav><div class="content">
+				<h1>01 - inheritance</h1>				<p>You can create classes which contain objects of different types, possibly different classes. This is known as <strong>composition</strong>. You can also create classes which are an extension of existing classes. This is known as <strong>inheritance</strong>.</p>
+<section id="example"><h2>Example</h2>
+<p>Suppose a shop which sells car parts. I will showcase 2 ways to implement similar code, both will use this code fragment:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">dimentions</span>
+{
+	<span class="keyword">int</span> <span class="var-member">width_cm</span>;
+	<span class="keyword">int</span> <span class="var-member">length_cm</span>;
+	<span class="keyword">int</span> <span class="var-member">height_cm</span>;
+};
+
+<span class="keyword">class</span> <span class="type">product</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">product</span>(<span class="keyword">int</span> <span class="param">price</span>, <span class="keyword">int</span> <span class="param">warranty_months</span>, <span class="type">dimentions</span> <span class="param">dims</span>)
+	: <span class="var-member">price</span>(<span class="param">price</span>), <span class="var-member">warranty_months</span>(<span class="param">warranty_months</span>), <span class="var-member">dimentions</span>(<span class="param">dims</span>)
+	{
+		<span class="com-single">// some checks (e.g. negative values not accepted)</span>
+	}
+
+	<span class="com-single">// some methods...</span>
+
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">price</span>;
+	<span class="keyword">int</span> <span class="var-member">warranty_months</span>;
+	<span class="type">dimentions</span> <span class="var-member">dims</span>;
+};
+</pre></td>
+</tr></tbody></table>
+<p>An example product written using <em>composition</em>:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">tyre</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">tyre</span>(<span class="type">product</span> <span class="param">prod</span>, <span class="keyword">int</span> <span class="param">diameter</span>)
+	: <span class="var-member">prod</span>(<span class="param">prod</span>), <span class="var-member">diameter</span>(<span class="param">diameter</span>) {}
+
+	      <span class="type">product</span>&amp; <span class="func">get_product</span>()       { <span class="keyword">return</span> <span class="var-member">prod</span>; }
+	<span class="keyword">const</span> <span class="type">product</span>&amp; <span class="func">get_product</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="var-member">prod</span>; }
+
+<span class="keyword">private</span>:
+	<span class="type">product</span> <span class="var-member">prod</span>;
+	<span class="keyword">int</span> <span class="var-member">diameter</span>;
+	<span class="com-single">// some other tyre-specific data...</span>
+};
+</pre></td>
+</tr></tbody></table>
+<p>The same product written using <em>inheritance</em>:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">tyre</span>: <span class="keyword">public</span> <span class="type">product</span> <span class="com-single">// public inheritance</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">tyre</span>(<span class="keyword">int</span> <span class="param">price</span>, <span class="keyword">int</span> <span class="param">warranty_months</span>, <span class="type">dimentions</span> <span class="param">dims</span>, <span class="keyword">int</span> <span class="param">diameter</span>)
+	: <span class="type">product</span>(<span class="param">price</span>, <span class="param">warranty_months</span>, <span class="param">dims</span>), <span class="var-member">diameter</span>(<span class="param">diameter</span>) {}
+	<span class="com-single">// ^^^^^^ calling constructor of the base type</span>
+	<span class="com-single">// if it was skipped, product() would be assumed (default 0-argument constructor)</span>
+
+	<span class="func">tyre</span>(<span class="type">product</span> <span class="param">prod</span>, <span class="keyword">int</span> <span class="param">diameter</span>)
+	: <span class="type">product</span>(<span class="param">prod</span>), <span class="var-member">diameter</span>(<span class="param">diameter</span>) {}
+
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">diameter</span>;
+	<span class="com-single">// some other tyre-specific data...</span>
+};
+</pre></td>
+</tr></tbody></table>
+<p>In the second example, the <code class="code custom-cpp"><span class="type">tyre</span></code> class has not been defined as containing a <code class="code custom-cpp"><span class="type">product</span></code>, but <strong>as an extensions of it</strong>.</p>
+<p>It has the following effects:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="type">tyre</span></code> gets (<em>inherits</em>) all of <code class="code custom-cpp"><span class="type">product</span></code> members. You can call <code class="code custom-cpp"><span class="type">product</span></code> member functions on objects of type <code class="code custom-cpp"><span class="type">tyre</span></code>.</p></li>
+<li><p>Objects of type <code class="code custom-cpp"><span class="type">tyre</span></code> are <em>implicitly convertible</em> to <code class="code custom-cpp"><span class="type">product</span></code>.</p></li>
+<li><p>When constructing <code class="code custom-cpp"><span class="type">tyre</span></code>, in <em>member init list</em>, type name (<code class="code custom-cpp"><span class="type">product</span></code>) is written instead of member name.</p></li>
+</ul>
+<p>Code which uses <code class="code custom-cpp"><span class="type">tyre</span></code> will be slightly different depending on the implementation:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="func">calculate_bargain_percent</span>(<span class="keyword">const</span> <span class="type">product</span>&amp; <span class="param">p</span>);
+
+<span class="keyword">void</span> <span class="func">f</span>(<span class="keyword">const</span> <span class="type">tyre</span>&amp; <span class="param">t</span>)
+{
+	<span class="com-single">// composition - obtain a member</span>
+	<span class="keyword">int</span> <span class="var-local">bargain_percent</span> = <span class="func">calculate_bargain_percent</span>(<span class="param">t</span>.<span class="func">get_product</span>());
+
+	<span class="com-single">// inheritance - tyre is implicitly convertible to product</span>
+	<span class="com-single">// this specific convertion is referred to as "upcast"</span>
+	<span class="keyword">int</span> <span class="var-local">bargain_percent</span> = <span class="func">calculate_bargain_percent</span>(<span class="param">t</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>Untill we move to more advanced features available through <em>inheritance</em>, you may have a feeling that both <em>composition</em> and <em>inheritance</em> can achieve the same thing, they just produce slightly different code... and you would be right.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>If possible, favor <em>composition</em> over <em>inheritance</em>.</p>
+</aside><p>Inheritance will start to make sense once you reach further topics described in this chapter, specifically <em>virtual functions</em>. If such features are not being used, more often than not writing inheritance-based code is a mistake. Practice has shown that composition results in simpler code that is easier to maintain and has less bugs, thus <strong>you should prefer composition when there is no need for inheritance-specific features</strong>.</p>
+</section><section id="terminology"><h2>Terminology</h2>
+<p>When speaking about inheritance:</p>
+<ul class="simple">
+<li><p>the type that is used as a base is called <em>base type</em></p></li>
+<li><p>the type that <em>inherits</em> from base is called <em>derived type</em></p></li>
+</ul>
+<p>We can say that:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="type">tyre</span></code> is derived from <code class="code custom-cpp"><span class="type">product</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="type">product</span></code> is a base of <code class="code custom-cpp"><span class="type">tyre</span></code></p></li>
+</ul>
+<p>Other popular set of names is <em>parent</em> and <em>child</em>:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="type">tyre</span></code> is a child of <code class="code custom-cpp"><span class="type">product</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="type">product</span></code> is a parent of <code class="code custom-cpp"><span class="type">tyre</span></code></p></li>
+</ul>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Just like composition can nest objects within objects, inheritance can:</p>
+<ul class="simple">
+<li><p>be used to define classes that inherit from already derived classes (multiple layers of inheritance)</p></li>
+<li><p>be applied multiple times for the same class (<em>multiple inheritance</em> - a situation when a class has multiple parents)</p></li>
+</ul></aside><p>A <strong>direct base</strong> is a class that is an immediate base type of the given class.</p>
+<p>Another set of terms specifies how an object is seen:</p>
+<ul class="simple">
+<li><p>A <strong>static type</strong> is a type of the object that is visible during compilation of the program.</p></li>
+<li><p>A <strong>dynamic type</strong> is the real type of the object during runtime, which might be identical to the <em>static type</em> or be a type derived from it.</p></li>
+</ul>
+<p>Inside the function <code class="code custom-cpp"><span class="func">calculate_bargain_percent</span></code> which was called in the expression <code class="code custom-cpp"><span class="func">calculate_bargain_percent</span>(<span class="var-local">t</span>)</code>:</p>
+<ul class="simple">
+<li><p>The <em>static type</em> of the argument is <code class="code custom-cpp"><span class="type">product</span></code> - that's what the function sees.</p></li>
+<li><p>The <em>dynamic type</em> of the argument is <code class="code custom-cpp"><span class="type">tyre</span></code> - actual object given is of this type.</p></li>
+</ul>
+<p>How it works? How can a function operate on an object which type is derived from the argument type? Strictly technically it's <em>implementation-defined</em> but to illustrate typical compiler implementation:</p>
+<ul class="simple">
+<li><p>An object of base type occupies <code class="docutils literal">B</code> bytes in memory.</p></li>
+<li><p>An object of derived type occupies <code class="docutils literal">D</code> bytes in memory (typically <code class="docutils literal">D &gt; B</code> but <code class="docutils literal">D == B</code> if derived type has no extra <em>non-static data members</em>).</p></li>
+<li><p>A function which references base type only operates on first <code class="docutils literal">B</code> bytes of the object.</p></li>
+<li><p>The remaining bytes (<code class="docutils literal">D - B</code> bytes exactly) are not accessed by the function - it doesn't know if the object if of derived type. There might be actually multiple derived types (with sizes <code class="docutils literal">D1</code>, <code class="docutils literal">D2</code>, <code class="docutils literal">D3</code>, ...) where after first <code class="docutils literal">B</code> bytes, each has different data further in memory.</p></li>
+</ul>
+<p>The implicit convertion mentioned earlier (<em>upcast</em> - the convertion from derived type to base type) doesn't actually do anything in the machine code (unless <em>virtual inheritance</em> is used) - it's purely a language abstraction. For any <code class="docutils literal">D1</code>, <code class="docutils literal">D2</code>, <code class="docutils literal">D3</code> bytes of derived types the fitst <code class="docutils literal">B</code> bytes will be the same and represent the base type object.</p>
+<p>Speaking about <em>dynamic types</em> only makes sense when objects are referred through pointers or references. Otherwise dynamic type can not be different from the <em>static type</em>.</p>
+</section><section id="construction"><h2>Construction</h2>
+<p>Objects are initializated by calling constructors of base types first, then of members. Apart from initialization of members and <em>delegating constructors</em>, <em>member initializer list</em> can also call constructors of <em>direct base</em> classes (they have to be constructed somehow after all). If no initializers are given, default constructor is assumed.</p>
+<p>This example doesn't use calls to base type constructors but the order of prints should let you understand in what order objects are being initialized:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">class</span> <span class="type">X</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">X</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"X::X()<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">Y</span>: <span class="keyword">public</span> <span class="type">X</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">Y</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"Y::Y()<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">Z</span>: <span class="keyword">public</span> <span class="type">Y</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">Z</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"Z::Z()<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">A</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">A</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"A::A()<span class="esc-seq">\n</span>"</span>; }
+
+<span class="keyword">private</span>:
+	<span class="type">X</span> <span class="var-member">x</span>;
+};
+
+<span class="keyword">class</span> <span class="type">B</span>: <span class="keyword">public</span> <span class="type">A</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">B</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"B::B()<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">C</span>: <span class="keyword">public</span> <span class="type">B</span>
+{
+<span class="keyword">public</span>:
+	<span class="func">C</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"C::C()<span class="esc-seq">\n</span>"</span>; }
+
+<span class="keyword">private</span>:
+	<span class="type">Z</span> <span class="var-member">z</span>;
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">C</span> <span class="var-local">c</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Output:</p>
+<div class="code"><pre class="code text"><a id="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-1" name="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-1" href="#rest_code_1a3ceef164fa4f11bf50df1379cfc9af-1"></a>X::X()
+<a id="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-2" name="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-2" href="#rest_code_1a3ceef164fa4f11bf50df1379cfc9af-2"></a>A::A()
+<a id="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-3" name="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-3" href="#rest_code_1a3ceef164fa4f11bf50df1379cfc9af-3"></a>B::B()
+<a id="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-4" name="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-4" href="#rest_code_1a3ceef164fa4f11bf50df1379cfc9af-4"></a>X::X()
+<a id="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-5" name="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-5" href="#rest_code_1a3ceef164fa4f11bf50df1379cfc9af-5"></a>Y::Y()
+<a id="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-6" name="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-6" href="#rest_code_1a3ceef164fa4f11bf50df1379cfc9af-6"></a>Z::Z()
+<a id="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-7" name="rest_code_1a3ceef164fa4f11bf50df1379cfc9af-7" href="#rest_code_1a3ceef164fa4f11bf50df1379cfc9af-7"></a>C::C()
+</pre></div>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-protected-span-code"><h2><code class="code custom-cpp"><span class="keyword">protected</span></code></h2>
+<p>You already know that <code class="code custom-cpp"><span class="keyword">public</span></code> sets no restrictions and <code class="code custom-cpp"><span class="keyword">private</span></code> only gives the access to code within the class.</p>
+<p><code class="code custom-cpp"><span class="keyword">protected</span></code> works like <code class="code custom-cpp"><span class="keyword">private</span></code> but additionally grants access to derived classes.</p>
+</section><section id="access-when-deriving"><h2>Access when deriving</h2>
+<p>You very likely noticed that inheritance wasn't written as <code class="code custom-cpp"><span class="keyword">class</span> <span class="type">tyre</span>: <span class="type">product</span></code> but as <code class="code custom-cpp"><span class="keyword">class</span> <span class="type">tyre</span>: <span class="keyword">public</span> <span class="type">product</span></code>. Actually, the first one is valid syntax too - it just uses default access specifiers. Just like for members with no explicitly specified access:</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<ul class="simple">
+<li><p>The default inheritance for <code class="code custom-cpp"><span class="keyword">struct</span></code> is <code class="code custom-cpp"><span class="keyword">public</span></code>.</p></li>
+<li><p>The default inheritance for <code class="code custom-cpp"><span class="keyword">class</span></code> is <code class="code custom-cpp"><span class="keyword">private</span></code> (rarely useful).</p></li>
+</ul></aside><!-- TOINCLUDE cheatsheets - inheritance access --><table>
+<thead><tr>
+<th class="head"><p>access in base</p></th>
+<th class="head"><p>derived as public</p></th>
+<th class="head"><p>derived as protected</p></th>
+<th class="head"><p>derived as private</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>public</p></td>
+<td><p>public</p></td>
+<td><p>protected</p></td>
+<td><p>private</p></td>
+</tr>
+<tr>
+<td><p>protected</p></td>
+<td><p>protected</p></td>
+<td><p>protected</p></td>
+<td><p>private</p></td>
+</tr>
+<tr>
+<td><p>private</p></td>
+<td><p>(no access)</p></td>
+<td><p>(no access)</p></td>
+<td><p>(no access)</p></td>
+</tr>
+</tbody>
+</table>
+<!--  --><blockquote>
+<p>Does it mean that inside <code class="code custom-cpp"><span class="type">tyre</span></code> functions, there is no access to <code class="code custom-cpp"><span class="keyword">private</span></code> members of <code class="code custom-cpp"><span class="type">product</span></code>?</p>
+</blockquote>
+<p>Yes. And that's a good thing. Derived types should not mess with their base type <code class="code custom-cpp"><span class="keyword">private</span></code> data. A class is supposed to encapsulate specific behavior and member functions are supposed to preserve class invariants. Practice has shown that if derived types can modify base type data members there is a high chance of creating a bug by breaking invariants.</p>
+<p>The <a class="reference external" href="https://en.wikipedia.org/wiki/Open%E2%80%93closed_principle">open-closed principle</a> states that classes should be open for extension, but closed for modification. Thus, the general recommendation is:</p>
+<ul class="simple">
+<li><p>data members should be <code class="code custom-cpp"><span class="keyword">private</span></code></p></li>
+<li><p>functions intended to be used everywhere should be <code class="code custom-cpp"><span class="keyword">public</span></code></p></li>
+<li><p>functions intended to be used in current class and its derived classes should be <code class="code custom-cpp"><span class="keyword">protected</span></code></p></li>
+<li><p>functions intended to be used only in other functions of the current class should be <code class="code custom-cpp"><span class="keyword">private</span></code></p></li>
+<li><p>inheritance should use <code class="code custom-cpp"><span class="keyword">public</span></code> access</p></li>
+</ul>
+<p>If data has invariants (one of primary purposes of classes is to preserve invariants), <code class="code custom-cpp"><span class="keyword">private</span></code> enforces that only the class that manages this data has access to it. If a derived class wants to modify data of its parents, it should do so through parent's <code class="code custom-cpp"><span class="keyword">public</span></code> or <code class="code custom-cpp"><span class="keyword">protected</span></code> functions.</p>
+<p>It's worth mentioning that non-public inheritance is a C++-specific feature (at least I haven't seen another language that supported it). Other languages do not have the concept of changing access level in derived types, they do not have a syntax that supports access specifier in inheritance and always work as if the type was derived as <code class="code custom-cpp"><span class="keyword">public</span></code>. Non-public inheritance is not typical OOP practice, it's a niche within C++ for some implementation tricks (many which are used in standard library implementations).</p>
+<p>Classes which are derived in non-public way disallow convertions to their non-public bases for code outside the class. This effectively prevents any outside code in treating the type as if it was a base, making inheritance act as a hidden implementation detail, usually only for the purpose of code reuse inside the class. Any external code can only treat the class as if it had no such parent. Why composition is not used in such cases? It could be, but specific <code class="code custom-cpp"><span class="keyword">template</span></code> patterns in C++ (e.g. <em>policy-based design</em>) are easier and more optimal (<em>empty base optimization</em>) to write this way.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>When implementing typical OO code (not non-OO implementation tricks for something else) always use <code class="code custom-cpp"><span class="keyword">public</span></code> inheritance.</p>
+</aside></section><section id="shapes-example"><h2>Shapes example</h2>
+<p>A very popular inheritance example uses shapes, which looks like this:</p>
+<ul class="simple">
+<li><p>triangle is a shape</p></li>
+<li><p>quadrangle is a shape</p></li>
+<li><p>rectangle is a quadrangle</p></li>
+<li><p>square is a rectangle</p></li>
+</ul>
+<p>Intuitively, shapes seem to be a great example of an <strong>is-a</strong> relationship. The problem is that this example suggests a class hierarchy which violates LSP (<a class="reference external" href="https://en.wikipedia.org/wiki/Liskov_substitution_principle">Liskov substitution principle</a>). LSP states that if something can be done with one type, it should also be possible with its derived types. Derived types are supposed to be extensions, not limitations.</p>
+<ul class="simple">
+<li><p>in mathematics, more derived types have stronger invariants (rectangle has 2 parallel sides of equal length, square has 4 sides of equal length)</p></li>
+<li>
+<p>in programming, more derived types are expected to:</p>
+<ul>
+<li><p>not have stronger preconditions</p></li>
+<li><p>not have weaker postconditions</p></li>
+</ul>
+</li>
+</ul>
+<p>Apart from violating LSP, there are representation problems too:</p>
+<ul class="simple">
+<li><p>If rectangle is represented as 2 variables describing side lengths, a square would make no sense with 2 variables</p></li>
+<li><p>If rectangle is represented as 4 points and functions which allow to modify them, a square would not work with these functions because it has stronger requirements.</p></li>
+</ul>
+<!--  --><blockquote>
+<p>So, should it be reverse? A rectangle inheriting square?</p>
+</blockquote>
+<p>No. <strong>OOP is simply not feasible to be used for this problem</strong>. Another important detail is that the square-rectangle problem is very abstract - it encourages thinking in terms of mathematical logic instead of practical approaches like "which code is reused, which code is extended". In practice, code is used to implement specific behavior so <strong>first, you should look at the problem and find out any patterns/invariants within it before deciding on any particular abstraction</strong>. Inheritance makes no sense if LSP can not be satisfied. OOP is very popular, but it's not panacea and is not an appropriate solution to every abstraction problem.</p>
+<ul class="simple">
+<li><p>If it's some tile-based game or simulation, there is no need to create different classes for different shapes - everything on the board/map can be treated as rectangle. Sometimes there may be squares, but if there is a need for any extra logic it will be implemented alongside rectangle-handling code, not as a derived class.</p></li>
+<li><p>If it's some 2D/3D graphics rendering code, if there will be any hierarchy it will be that all concrete shapes inherit "base shape" class. Each shape will have its own specific function that implements particular rendering algorithm. The only extension would be that all shapes implement rendering.</p></li>
+</ul>
+<p>The square-rectangle problem (AKA circle-ellipse) has also been described in on <a class="reference external" href="https://en.wikipedia.org/wiki/Circle-ellipse_problem">https://en.wikipedia.org/wiki/Circle-ellipse_problem</a>.</p>
+</section><section id="summary"><h2>Summary</h2>
+<p>This lesson is more philosophical than others in this chapter, similarly to the first lesson in the classes chapter. It doesn't present a lot of compilable code - it's more important that you understand the concept and the good practices that come with it. You can perfectly memorize all language rules and still write compiling, working code that will be just bad: hard to modify/maintain, unclear and bug-prone.</p>
+<p>In the classes chapter, you learned about <em>single responsibility principle</em> - a class should represent exactly one thing (and take care to preserve its invariants). That's <strong>S</strong> in <a class="reference external" href="https://en.wikipedia.org/wiki/SOLID">SOLID</a>.</p>
+<p>In this lesson, 2 additional principles were mentioned:</p>
+<ul class="simple">
+<li><p><strong>O</strong> - the open-closed principle</p></li>
+<li><p><strong>L</strong> - Liskov substitution principle (LSP)</p></li>
+</ul>
+<p>The last 2 will be explained later. LSP will become even more significant once you read about <em>virtual functions</em>.</p>
+</section><section id="faq"><h2>FAQ</h2>
+<blockquote>
+<p>Upcasts are allowed as implicit convertions. How about downcasts?</p>
+</blockquote>
+<p>Downcasts must be explicit and there are semantic differences between <code class="code custom-cpp"><span class="keyword">static_cast</span></code> and <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code>. Explained in a later lesson in this chapter.</p>
+<blockquote>
+<p>Can a class inherit from and contain a member of the same type?</p>
+</blockquote>
+<p>Yes, but it doesn't make much sense - what would you do with 2 sets of the same functionality, each with slightly different syntax? You should do one of these or none if OO style is not appropriate for the given problem. Typically by looking at the definition of a class it can be said whether it's supposed to be contained (as a member) or inherited from - by default we can assume containment ("prefer composition over inheritance") and decide on inheritance by noticing inheritance-specific features such as <em>virtual functions</em>. Every class can be used as a member but only specific kinds of classes makes sense to inherit from.</p>
+<blockquote>
+<p>Can a class inherit from another multiple times?</p>
+</blockquote>
+<p>Yes, but not on the same inheritance level. It's not so rare but usually accidental, which creates the <em>diamond problem</em>. Explained in a later lesson in this chapter.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

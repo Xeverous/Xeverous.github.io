@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 06 - dynamic_cast and typeid</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xz - polymorphism</a></li>
+							<span>/</span>
+						<li>06 - dynamic_cast and typeid</li>
+					</ol></nav><div class="content">
+				<h1>06 - dynamic_cast and typeid</h1>				<p>You already know that pointers/references to derived types can be implicitly converted to their base types - after all, they are extensions of them so a cast doesn't do anything special, the abstraction will simply refer to a smaller block of memory.</p>
+<p>However, what if we would like to do the reverse? Is it even possible?</p>
+<section id="downcasts"><h2>Downcasts</h2>
+<p>A situation like this might appear in some code:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">void</span> <span class="func">func</span>(<span class="type">animal</span>&amp; <span class="param">a</span>)
+{
+	<span class="keyword">if</span> (<span class="com-multi">/* a is a cat */</span>)
+	{
+		<span class="com-single">// do some cat-specific thing</span>
+	}
+	<span class="keyword">else</span> <span class="keyword">if</span> (<span class="com-multi">/* a is a dog */</span>)
+	{
+		<span class="com-single">// do some dog-specific thing</span>
+	}
+	<span class="keyword">else</span>
+	{
+		<span class="com-single">// do some generic thing</span>
+	}
+}
+</pre></td>
+</tr></tbody></table>
+<p>First of all, <strong>downcasts are against OOP principles</strong>. The code above should be refactored to use a virtual function which is implemented in derived classes. Then there is no need for checking actual (dynamic) type of the object. The whole point of virtual functions is that you do not care what the dynamic type is. Downcasts are an example of <a class="reference external" href="https://en.wikipedia.org/wiki/Code_smell">code smell</a>.</p>
+<p>Still, if you really want to do (ugly) downcasts, there are 2 ways: <code class="code custom-cpp"><span class="keyword">static_cast</span></code> and <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code>.</p>
+<section id="static-downcasts"><h3>Static downcasts</h3>
+<p>Just like upcasts don't do anything (except when <em>virtual inhertance</em> is used), so do downcasts. But there is a problem: in case of upcasts it's known at compile time that a given class has a base class. But in the case of downcasts, it's not known what the dynamic type of the object is (and multiple different types can inherit from the same base type). <code class="code custom-cpp"><span class="keyword">static_cast</span>&lt;<span class="type">cat</span>&amp;&gt;(<span class="param">a</span>)</code> is valid, but will only succeed if the dynamic type of the object is <code class="code custom-cpp"><span class="type">cat</span></code> or something derived from it. <strong>If not, it will invoke undefined behavior.</strong></p>
+<p>Downcasts using <code class="code custom-cpp"><span class="keyword">static_cast</span></code> can be performed on both references (e.g. from <code class="code custom-cpp"><span class="type">animal</span>&amp;</code> to <code class="code custom-cpp"><span class="type">cat</span>&amp;</code>) and pointers (e.g. from <code class="code custom-cpp"><span class="type">animal</span>*</code> to <code class="code custom-cpp"><span class="type">cat</span>*</code>). In both cases, the code must guarantee through other means that the object is in fact of derived type to avoid undefined behavior. This is usually done by calling a virtual function before the cast that indicates object's dynamic type - a common approach is to return an enumerator.</p>
+<p>In case of pointers, if the input pointer is a <em>null pointer</em>, the result is also a <em>null pointer</em> (no undefined behavior).</p>
+</section><section id="dynamic-downcasts"><h3>Dynamic downcasts</h3>
+<p>Unlike <code class="code custom-cpp"><span class="keyword">static_cast</span></code>, <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> performs a runtime check to avoid undefined behavior. In order for this to work, the input class to the cast has to be <em>polymorphic</em> (that is, contain at least 1 <code class="code custom-cpp"><span class="keyword">virtual</span></code> function). Otherwise the program is <em>ill-formed</em>.</p>
+<p>How does the check work? Polymorphic types contain vtable pointer and the table (apart from addresses of virtual function implementations) contains additional metadata known as <strong>RTTI</strong> (<a class="reference external" href="https://en.wikipedia.org/wiki/Run-time_type_information">run-time type information</a>). Based on this information, <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> can check whether the cast is valid.</p>
+<p>If the cast is not valid:</p>
+<ul class="simple">
+<li><p>if performed on pointers, <em>null pointer</em> is returned</p></li>
+<li><p>if performed on references, an exception is thrown of type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">bad_cast</span></code> or a type derived from it</p></li>
+</ul>
+<!-- TODO exceptions when? --><p>Since exceptions are a quite heavy mechanism intended primarily for error handling, typical dynamic downcasts are performed on pointers. Using exceptions for type casting is considered an overcomplication.</p>
+<p>Here is example code that showcases all approaches:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;typeinfo&gt;</span> <span class="com-single">// for std::bad_cast</span>
+
+<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">animal_type_info</span> { <span class="enum">cat</span>, <span class="enum">dog</span> };
+
+<span class="keyword">class</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> = <span class="lit-num">0</span>;
+	<span class="keyword">virtual</span> <span class="type">animal_type_info</span> <span class="func">type_info</span>() <span class="keyword">const</span> = <span class="lit-num">0</span>;
+};
+
+<span class="keyword">class</span> <span class="type">cat</span>: <span class="keyword">public</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"meow"</span>; }
+	<span class="type">animal_type_info</span> <span class="func">type_info</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="type">animal_type_info</span>::<span class="enum">cat</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">dog</span>: <span class="keyword">public</span> <span class="type">animal</span>
+{
+<span class="keyword">public</span>:
+	<span class="namespace">std</span>::<span class="type">string</span> <span class="func">sound</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="lit-str">"whoof"</span>; }
+	<span class="type">animal_type_info</span> <span class="func">type_info</span>() <span class="keyword">const</span> <span class="keyword">override</span> { <span class="keyword">return</span> <span class="type">animal_type_info</span>::<span class="enum">dog</span>; }
+};
+
+<span class="keyword">void</span> <span class="func">test</span>(<span class="type">animal</span>&amp; <span class="param">a</span>)
+{
+	<span class="com-single">// A: static downcast</span>
+	<span class="com-single">// because invalid static downcasts are UB, we need to check actual type</span>
+	<span class="keyword">if</span> (<span class="param">a</span>.<span class="func">type_info</span>() == <span class="type">animal_type_info</span>::<span class="enum">cat</span>)
+	{
+		<span class="keyword">auto</span>&amp; <span class="var-local">c</span> = <span class="keyword">static_cast</span>&lt;<span class="type">cat</span>&amp;&gt;(<span class="param">a</span>);
+	}
+
+	<span class="com-single">// B: dynamic downcast on pointers</span>
+	<span class="com-single">// since C++17 it can be written using 2-statement syntax:</span>
+	<span class="com-single">// if (auto ptr = dynamic_cast&lt;cat*&gt;(&amp;a); ptr != nullptr)</span>
+	<span class="keyword">auto</span> <span class="var-local">ptr</span> = <span class="keyword">dynamic_cast</span>&lt;<span class="type">cat</span>*&gt;(&amp;<span class="param">a</span>);
+	<span class="keyword">if</span> (<span class="var-local">ptr</span> != <span class="keyword">nullptr</span>)
+	{
+		<span class="type">cat</span>&amp; <span class="var-local">c</span> = *<span class="var-local">ptr</span>;
+	}
+
+	<span class="com-single">// C: dynamic downcast on references</span>
+	<span class="keyword">try</span>
+	{
+		<span class="keyword">auto</span>&amp; <span class="var-local">c</span> = <span class="keyword">dynamic_cast</span>&lt;<span class="type">cat</span>&amp;&gt;(<span class="param">a</span>);
+	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">bad_cast</span>&amp; <span class="com-multi">/* e */</span>)
+	{
+		<span class="com-single">// object is not a cat</span>
+	}
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">cat</span> <span class="var-local">c</span>;
+	<span class="func">test</span>(<span class="param-out">c</span>);
+}
+</pre></td>
+</tr></tbody></table></section></section><section id="rtti"><h2>RTTI</h2>
+<p>The <code class="code custom-cpp"><span class="func">type_info</span></code> function in the example above can be thought as a way of implementing manual RTTI. Many different approaches are possible, another simple one being an additional parameter in <code class="code custom-cpp"><span class="type">animal</span></code> constructor of type <code class="code custom-cpp"><span class="type">animal_type_info</span></code> - derived types would have to supply an appropriate enumerator value. This approach would move the implementation from virtual function to a non-virtual function + extra data member in the base class.</p>
+<p>Which approach is the best depeds on a lot of factors:</p>
+<ul class="simple">
+<li><p>runtime efficiency (time of performing type checks)</p></li>
+<li><p>memory efficiency (extra members will mean larger memory usage)</p></li>
+<li><p>binary size (more and larger vtables means potentially worse cache usage)</p></li>
+<li><p>simplicity and maintainability of implementation</p></li>
+</ul>
+<p>The language-built-in implementation is the simplest to maintain (no additional code is required - <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> just works) but often has the largest binary size, memory and efficiency impact. Compilers offer options like <code class="docutils literal"><span class="pre">-fno-rtti</span></code> to disable this feature (RTTI-requiring <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> becomes unusable in such case) if it's not needed (disabling RTTI will reduce binary object size).</p>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-typeid-span-code"><h2><code class="code custom-cpp"><span class="keyword">typeid</span></code></h2>
+<p><code class="code custom-cpp"><span class="keyword">typeid</span></code> is a keyword that returns a reference to RTTI of the given type, specifically the keyword acts like a function that has return type <code class="code custom-cpp"><span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">type_info</span>&amp;</code> (this means it can actually return an object of a type derived from <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">type_info</span></code>). Just like <code class="code custom-cpp"><span class="keyword">sizeof</span></code> and <code class="code custom-cpp"><span class="keyword">alignof</span></code>, it can be called with both type and value expressions. Because the keyword returns a const reference to the type info class:</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>The header <code class="code custom-cpp"><span class="pp-header">&lt;typeinfo&gt;</span></code> must be included before using <code class="code custom-cpp"><span class="keyword">typeid</span></code>. Otherwise every use of the keyword is ill-formed.</p>
+</aside><p>For <code class="code custom-cpp"><span class="keyword">typeid</span></code>, the type (not necessarily a class) <strong>does not have to</strong> be polymorphic. It can be any <em>complete</em> type - for non-polymorphic types it will simply return information about the <em>static type</em> of the object. If the type is polymorphic, <code class="code custom-cpp"><span class="keyword">typeid</span></code> will access object's vtable and read RTTI from it.</p>
+<p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">type_info</span></code> is documented on <a class="reference external" href="https://en.cppreference.com/w/cpp/types/type_info">https://en.cppreference.com/w/cpp/types/type_info</a>. Given that the class has a comparison operator, it's possible to implement another form of safe static downcast using this keyword:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">if</span> (<span class="keyword">typeid</span>(<span class="param">a</span>) == <span class="keyword">typeid</span>(<span class="type">cat</span>))
+{
+	<span class="keyword">auto</span>&amp; <span class="var-local">c</span> = <span class="keyword">static_cast</span>&lt;<span class="type">cat</span>&amp;&gt;(<span class="param">a</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p>It's likely that the code above produces very similar machine code as downcasts with <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code>. The only behavioral difference is that <code class="code custom-cpp"><span class="keyword">typeid</span></code> checks the type identification for exact match while <code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> checks whether type dynamic type of the object is of the destination type or a type derived from it.</p>
+</section><section id="summary"><h2>Summary</h2>
+<p>Avoid downcasts - they indicate flawed design. Use them only if there is no better way.</p>
+<!-- TOINCLUDE cheatsheets -->
+<p>Small cheatsheet of casts over class hierarchies (note: this table assumes there is no virtual inheritance):</p>
+<table>
+<thead><tr>
+<th class="head"><p>cast</p></th>
+<th class="head"><p>implicit convertion</p></th>
+<th class="head"><p><code class="code custom-cpp"><span class="keyword">static_cast</span></code></p></th>
+<th class="head"><p><code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code></p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>upwards (always succeeds)</p></td>
+<td><p>well-defined behavior</p></td>
+<td><p>unnecessary</p></td>
+<td><p>unnecessary</p></td>
+</tr>
+<tr>
+<td><p>downwards (success)</p></td>
+<td><p>ill-formed</p></td>
+<td><p>well-defined behavior</p></td>
+<td><p>well-defined behavior</p></td>
+</tr>
+<tr>
+<td><p>downwards (failure)</p></td>
+<td><p>ill-formed</p></td>
+<td><p>undefined behavior</p></td>
+<td><p>well-defined behavior</p></td>
+</tr>
+</tbody>
+</table></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

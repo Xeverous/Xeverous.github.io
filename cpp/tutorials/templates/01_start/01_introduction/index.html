@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - introduction</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../../beginner/">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">templates</a></li>
+							<span>/</span>
+							<li><a href="../">00 - start</a></li>
+							<span>/</span>
+						<li>01 - introduction</li>
+					</ol></nav><div class="content">
+				<h1>01 - introduction</h1>				<p>Templates are one of the most characteristic C++ features, yet they remain mostly unknown. Only a few seem to grasp their power in significant amount and any template-heavy library looks like some arcane magic.</p>
+<p>While templates feel more or less like just a better-than-preprocessor replacement mechanism, when paired with specific language features they can offer surprisingly rich functionalities such as:</p>
+<ul class="simple">
+<li><p>using member types/values of subsituted types</p></li>
+<li><p>defining classes that inherit from types specified in template parameters</p></li>
+<li><p>defining functions which return objects of new, unique types that are formed based on template parameters</p></li>
+</ul>
+<p>By the size of this tutorial you probably already know that templates are much more than just replacing <code class="code custom-cpp"><span class="param-tmpl">T</span></code> with custom types. It's only a tip of the iceberg.</p>
+<section id="a-brief-history"><h2>A brief history</h2>
+<p><em>Redacted, from Wikipedia:</em> STL (Standard Template Library) did not originated right in C++. In 1979 Alexander Stepanov began working out his initial ideas of generic programming and exploring their potential for revolutionizing software development. At the time there was no real support in any programming language for generic programming. By 1987 Stepanov and David Musser had developed and published an Ada library for list processing that embodied the results of much of their research on generic programming. However, Ada had not achieved much acceptance outside the defense industry and C++ seemed more likely to become widely used and provide good support for generic programming even though the language was relatively immature. Another reason for turning to C++, which Stepanov recognized early on, was the C/C++ model of computation that allows very flexible access to storage via pointers, which is crucial to achieving generality without losing efficiency. Andrew Koenig at Bell Labs become aware of the work and asked Stepanov to present the main ideas at a November 1993 meeting of the ANSI/ISO committee for C++ standardization. The response was overwhelmingly favorable. Over time, STL proposed by the SGI company began to grow and C++ got more and more generic programming features.</p>
+<p>Today templates are one of the few core features C++ is known for. They are also a huge part of the C++ standard library - so big that sometimes (technically incorrectly) STL is referred to as the standard library even though it's only a part of it, albeit very significant.</p>
+<p>You can also read <a class="reference external" href="https://stackoverflow.com/questions/1039853/why-is-the-c-stl-is-so-heavily-based-on-templates-and-not-on-interfaces">https://stackoverflow.com/questions/1039853/why-is-the-c-stl-is-so-heavily-based-on-templates-and-not-on-interfaces</a> regarding STL history and why templates were chosen over object-oriented design for C++ standard library.</p>
+</section><section id="the-benefits"><h2>The benefits</h2>
+<p>The main benefits of having templates in the language are:</p>
+<ul class="simple">
+<li><p>High portability and code reuse.</p></li>
+<li><p>Higher performance compared to alternative approaches (templates are optimized compile-time for specific types/values, they do not use virtual functions or any similar runtime mechanism).</p></li>
+<li><p>Increased type safety and compile time information compared to other approaches (each <em>template instantiation</em> is a separate entity with full information, not a base class with an interface).</p></li>
+<li><p>Templates significantly reduce the need for other forms of metaprogramming, such as writing programs that generate source code.</p></li>
+<li><p>They are a part of the language which means they offer a standarized solution (more efficient and convenient to use than external tools such as code generation scripts).</p></li>
+</ul></section><section id="the-core-difference"><h2>The core difference</h2>
+<p>The core difference between C++ templates and similar mechanisms in other languages (e.g. Java generics) is that C++ templates are a fully compile time mechanism. They are a functional language inside C++. Because they are Turing-complete, they form a standalone metaprogram which result can not be easily predicted (if it was possible the <a class="reference external" href="https://en.wikipedia.org/wiki/Halting_problem">halting problem</a> would have been solved). In other words, the compiler can not predict when metaprogram will finish. The only way to know it is to execute it. Just like with ordinary programs, it's possible to write template code that produces nothing meaningful or gets stuck in a loop during evaluation of specializations, resulting in infinite compile time (obviously compilers will point it out if they notice too deep instantiations).</p>
+<p>Templates are not implemented using virtual tables nor anything that relies on runtime mechanisms. Types within templates do not even have to be classes. Templates work as if occurences of abstracted types/values were replaced with template parameters in the source code each time the template was used (producing a new set of source code).</p>
+</section><section id="overview"><h2>Overview</h2>
+<p>Templates consist of multiple subfeatures. There are 4 kinds of templates:</p>
+<ul class="simple">
+<li><p>function templates</p></li>
+<li><p>class templates</p></li>
+<li><p>alias templates (since C++11)</p></li>
+<li><p>variable templates (since C++14)</p></li>
+</ul>
+<p>It's worth noting that:</p>
+<ul class="simple">
+<li><p>templates can be nested (e.g. a member function template inside class template)</p></li>
+<li><p>function templates are not limited to just substitution of parameter and return types</p></li>
+<li><p>class templates are not limited to just members of substituted types - they can also inherit from <code class="code custom-cpp"><span class="param-tmpl">T</span></code> and do many other shenanigans</p></li>
+</ul>
+<p>Most kinds of templates can be combined with most of additional features creating sophisticated abstraction mechanisms:</p>
+<ul class="simple">
+<li><p>non-type template parameters (NTTP) - subsituting values</p></li>
+<li><p>(partial) template specialization - overriding template implementation for specific template parameters</p></li>
+<li><p>(since C++11) variadic templates - templates with an arbitrary amount of template parameters</p></li>
+<li><p>SFINAE - disabling certain function template overloads or template specializations for template parameters that satisfy certain criteria</p></li>
+<li><p>templates of other templates</p></li>
+</ul>
+<p>In addition to these, newer C++ stadards introduced additional convenience features:</p>
+<ul class="simple">
+<li><p>(since C++17) fold expressions - syntax sugar for binary operators</p></li>
+<li><p>(since C++17) class template argument deduction (CTAD) + deduction guides</p></li>
+<li><p>(since C++20) concepts (constrained templates with much better diagnostics), a replacement for SFINAE</p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

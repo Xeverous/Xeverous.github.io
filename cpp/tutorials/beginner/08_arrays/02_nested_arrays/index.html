@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - nested arrays</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">08 - arrays</a></li>
+							<span>/</span>
+						<li>02 - nested arrays</li>
+					</ol></nav><div class="content">
+				<h1>02 - nested arrays</h1>				<p>An array holds multiple objects of the same type. This type can also be an array!</p>
+<section id="syntax"><h2>Syntax</h2>
+<p>Notice order of layers. The outer layers of multidimentional arrays appear on the left in declarator syntax.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">arr</span>[<span class="lit-num">2</span>][<span class="lit-num">3</span>] = {{<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>}, {<span class="lit-num">4</span>, <span class="lit-num">5</span>, <span class="lit-num">6</span>}};
+<span class="keyword">int</span> <span class="var-local">arr</span>[<span class="lit-num">4</span>][<span class="lit-num">2</span>][<span class="lit-num">3</span>] = {
+	{{<span class="lit-num">1</span>, <span class="lit-num">2</span>,  <span class="lit-num">3</span>}, { <span class="lit-num">4</span>,  <span class="lit-num">5</span>,  <span class="lit-num">6</span>}},
+	{{<span class="lit-num">2</span>, <span class="lit-num">4</span>,  <span class="lit-num">6</span>}, { <span class="lit-num">8</span>, <span class="lit-num">10</span>, <span class="lit-num">12</span>}},
+	{{<span class="lit-num">3</span>, <span class="lit-num">6</span>,  <span class="lit-num">9</span>}, {<span class="lit-num">12</span>, <span class="lit-num">15</span>, <span class="lit-num">18</span>}},
+	{{<span class="lit-num">4</span>, <span class="lit-num">8</span>, <span class="lit-num">12</span>}, {<span class="lit-num">16</span>, <span class="lit-num">20</span>, <span class="lit-num">24</span>}}
+};
+</pre></td>
+</tr></tbody></table>
+<p>For multidimentional arrays, only the first (outermost) layer can have inferred size:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">arr</span>[][<span class="lit-num">2</span>] = {{<span class="lit-num">1</span>, <span class="lit-num">2</span>}, {<span class="lit-num">10</span>, <span class="lit-num">20</span>}}; <span class="com-single">// ok: inferred size 2</span>
+<span class="keyword">int</span> <span class="var-local">arr</span>[<span class="lit-num">2</span>][] = {{<span class="lit-num">1</span>, <span class="lit-num">2</span>}, {<span class="lit-num">10</span>, <span class="lit-num">20</span>}}; <span class="com-single">// error</span>
+</pre></td>
+</tr></tbody></table></section><section id="multidimentional-traversal"><h2>Multidimentional traversal</h2>
+<p>When looping over multidimentional arrays, pay attention in which order layers are accessed:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="var-local">size_y</span> = <span class="lit-num">5</span>;
+	<span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="var-local">size_x</span> = <span class="lit-num">10</span>;
+
+	<span class="keyword">int</span> <span class="var-local">arr</span>[<span class="var-local">size_y</span>][<span class="var-local">size_x</span>] = {};
+
+	<span class="com-single">// do not change these loops, they fill the array</span>
+	<span class="com-single">// with data that represents its order in memory</span>
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">y</span> = <span class="lit-num">0</span>; <span class="var-local">y</span> &lt; <span class="var-local">size_y</span>; ++<span class="var-local">y</span>)
+		<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">0</span>; <span class="var-local">x</span> &lt; <span class="var-local">size_x</span>; ++<span class="var-local">x</span>)
+			<span class="var-local">arr</span>[<span class="var-local">y</span>][<span class="var-local">x</span>] = <span class="var-local">size_x</span> * <span class="var-local">y</span> + <span class="var-local">x</span>;
+
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"proper multidimentional array loop:<span class="esc-seq">\n</span>"</span>;
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">y</span> = <span class="lit-num">0</span>; <span class="var-local">y</span> &lt; <span class="var-local">size_y</span>; ++<span class="var-local">y</span>)
+	{
+		<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">0</span>; <span class="var-local">x</span> &lt; <span class="var-local">size_x</span>; ++<span class="var-local">x</span>)
+			<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">arr</span>[<span class="var-local">y</span>][<span class="var-local">x</span>] <span class="oo">&lt;&lt;</span> <span class="lit-str">", "</span>;
+
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	}
+
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"badly written multidimentional array loop:<span class="esc-seq">\n</span>"</span>;
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">0</span>; <span class="var-local">x</span> &lt; <span class="var-local">size_x</span>; ++<span class="var-local">x</span>)
+	{
+		<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">y</span> = <span class="lit-num">0</span>; <span class="var-local">y</span> &lt; <span class="var-local">size_y</span>; ++<span class="var-local">y</span>)
+			<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">arr</span>[<span class="var-local">y</span>][<span class="var-local">x</span>] <span class="oo">&lt;&lt;</span> <span class="lit-str">", "</span>;
+
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	}
+}
+</pre></td>
+</tr></tbody></table>
+<p>The example above aims to present that a working set of nested loops may cause very inefficient memory traversal. Both sets of loops work but only the first one accesses elements in order of increasing memory addresses. The second one correctly accesses each element exactly once, but does it in a very "jumpy" way which will generally limit effectiveness of cache - modern hardware is designed to access memory sequentially.</p>
+<p>For this reason, when looping over nested arrays you should start with outer layers first and go into inner layers in nested loops.</p>
+<!-- TODO add infographic -->
+</section><section id="translated-indexes"><h2>Translated indexes</h2>
+<p>Multidimentional arrays are often replaced with 1D arrays that map multidimentional indexes to a single dimention in order to simplify code that uses them.</p>
+<p>Here is the same program as above but realized using this method instead:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">index_2d_to_1d</span>(<span class="keyword">int</span> <span class="param">y</span>, <span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">size_x</span>)
+{
+	<span class="keyword">return</span> <span class="param">size_x</span> * <span class="param">y</span> + <span class="param">x</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="var-local">size_y</span> = <span class="lit-num">5</span>;
+	<span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="var-local">size_x</span> = <span class="lit-num">10</span>;
+	<span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="var-local">size_total</span> = <span class="var-local">size_x</span> * <span class="var-local">size_y</span>;
+
+	<span class="keyword">int</span> <span class="var-local">arr</span>[<span class="var-local">size_total</span>] = {};
+
+	<span class="com-single">// do not change these loops, they fill the array</span>
+	<span class="com-single">// with data that represents its order in memory</span>
+	<span class="com-single">// (these could also be written using 1D index)</span>
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">y</span> = <span class="lit-num">0</span>; <span class="var-local">y</span> &lt; <span class="var-local">size_y</span>; ++<span class="var-local">y</span>)
+		<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">0</span>; <span class="var-local">x</span> &lt; <span class="var-local">size_x</span>; ++<span class="var-local">x</span>)
+			<span class="var-local">arr</span>[<span class="func">index_2d_to_1d</span>(<span class="var-local">y</span>, <span class="var-local">x</span>, <span class="var-local">size_x</span>)] = <span class="var-local">size_x</span> * <span class="var-local">y</span> + <span class="var-local">x</span>;
+
+	<span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">i</span> = <span class="lit-num">0</span>; <span class="var-local">i</span> &lt; <span class="var-local">size_total</span>; ++<span class="var-local">i</span>)
+	{
+		<span class="keyword">if</span> (<span class="var-local">i</span> % <span class="var-local">size_x</span> == <span class="lit-num">0</span>)
+			<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">arr</span>[<span class="var-local">i</span>] <span class="oo">&lt;&lt;</span> <span class="lit-str">", "</span>;
+	}
+}
+</pre></td>
+</tr></tbody></table>
+<p>In such case looping over elements is much easier, you only need a small helper function to translate 2D index into 1D.</p>
+<blockquote>
+<p>Which approach is more efficient?</p>
+</blockquote>
+<p>I don't think there is any significant difference between both, assuming there is any. In the case of the first, when <code class="docutils literal">[]</code> operator is nested it basically does the same thing as the helper function in the later example. It just hides the same computation inside <em>pointer arithmetics</em> while in the second example it is done explicitly. The goal of both is to move in a such way that memory is accessed sequentially.</p>
+<blockquote>
+<p>How would 3D to 1D translation look like?</p>
+</blockquote>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="func">index_3d_to_1d</span>(<span class="keyword">int</span> <span class="param">z</span>, <span class="keyword">int</span> <span class="param">y</span>, <span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">size_y</span>, <span class="keyword">int</span> <span class="param">size_x</span>)
+{
+	<span class="keyword">return</span> <span class="param">size_y</span> * <span class="param">size_x</span> * <span class="param">z</span> + <span class="param">size_x</span> * <span class="param">y</span> + <span class="param">x</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<!--  --><blockquote>
+<p>Is it possible to do a reverse index translation? From 1D back to multidimentional?</p>
+</blockquote>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// 2D</span>
+<span class="var-local">x</span> = <span class="var-local">index</span> % <span class="var-local">size_x</span>;
+<span class="var-local">y</span> = <span class="var-local">index</span> / <span class="var-local">size_x</span>;
+
+<span class="com-single">// 3D</span>
+<span class="var-local">x</span> = <span class="var-local">index</span> % <span class="var-local">size_x</span>;
+<span class="var-local">y</span> = <span class="var-local">index</span> % (<span class="var-local">size_x</span> * <span class="var-local">size_y</span>) / <span class="var-local">size_x</span>;
+<span class="var-local">z</span> = <span class="var-local">index</span> / (<span class="var-local">size_x</span> * <span class="var-local">size_y</span>);
+</pre></td>
+</tr></tbody></table></section><section id="exercise"><h2>Exercise</h2>
+<p>Recall previous task with printing multiplication table. Now modify it so that first it fills an array with values and then loops over the array to print contained values. Do it in both ways (nested array and translated index).</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

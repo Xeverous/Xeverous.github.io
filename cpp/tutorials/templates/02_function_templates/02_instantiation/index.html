@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - instantiation</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../../beginner/">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">templates</a></li>
+							<span>/</span>
+							<li><a href="../">01 - functions</a></li>
+							<span>/</span>
+						<li>02 - instantiation</li>
+					</ol></nav><div class="content">
+				<h1>02 - instantiation</h1>				<p>Anywhere a type or value appears it can be substituted with a template parameter. The types may be even <em>incomplete</em> if operations they are used with allow it. The only restriction is that the code formed by template subsitution mechanism is itself valid.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="param-tmpl">T</span>* <span class="func-free">f1</span>(<span class="param-tmpl">T</span>* <span class="param">p</span>) { <span class="keyword">return</span> <span class="param">p</span>; }
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="param-tmpl">T</span> <span class="func-free">f2</span>(<span class="param-tmpl">T</span>*) {}
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="param-tmpl">T</span>&amp; <span class="func-free">f3</span>(<span class="param-tmpl">T</span>* <span class="param">p</span>) { <span class="keyword">return</span> *<span class="param">p</span>; }
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="keyword">void</span>* <span class="var-local">p</span> = <span class="keyword">nullptr</span>;
+	<span class="func-free">f1</span>(<span class="var-local">p</span>);    <span class="com-single">// ok: returns void*
+</span>	<span class="func-free">f2</span>(<span class="var-local">p</span>);    <span class="com-single">// ok: returns void
+</span>	<span class="com-single">// f3(p); // error: type void&amp; is invalid and *p is invalid
+
+</span>	<span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">1</span>;
+	<span class="func-free">f1</span>(&amp;<span class="var-local">x</span>); <span class="com-single">// ok: returns int*
+</span>	<span class="func-free">f3</span>(&amp;<span class="var-local">x</span>); <span class="com-single">// ok: returns int&amp;
+
+</span>	<span class="com-single">// will compile, but has undefined behavior
+</span>	<span class="com-single">// (no return statement in function returning int)
+</span>	<span class="com-single">// f2(&amp;x);
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>As you can see, the <code class="code custom-cpp"><span class="func">f2</span></code> has return type <code class="code custom-cpp"><span class="param-tmpl">T</span></code> and no return statement. If the template parameter is <code class="code custom-cpp"><span class="keyword">void</span></code> the function is valid. <code class="code custom-cpp"><span class="func">f3</span></code> looks like it could work on any pointer, yet because forming references to void is not allowed, compilation of this function template combined with <code class="code custom-cpp"><span class="keyword">void</span></code> template parameter will fail.</p>
+<p>The example leads to an interesting conclusion:</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>When writing templates, errors may appear only when they are used with specific template parameters.</p>
+</aside><p>The act of using a template with specific template parameters is called <strong>template instantiation</strong>.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Each template instantiation can generate different machine code (or different compiler errors).</p>
+</aside><section id="phase-translation"><h2>2-phase translation</h2>
+<p>Because of instantiation, the code of each template is analyzed twice:</p>
+<ul class="simple">
+<li><p>First, when a definition is encountered. The compiler can not compile the code yet, but it checks the syntax and code that does not depend on template paramaters.</p></li>
+<li><p>Second, when a template is instantiated. Template-parameter-dependent code is now turned into non-template code and compiled.</p></li>
+</ul>
+<p>The first step happens once for every template entity in the given translation unit. The second step (instantiation) can happen multiple times. Each instantiation can result in different compiler errors.</p>
+<p>The 2-phase nature is best demonstrated with another example. The following program will fail with every possible instantiation (no type has size zero and <code class="code custom-cpp"><span class="keyword">sizeof</span>(<span class="keyword">void</span>)</code> is <em>ill-formed</em>) but the 1st phase will succeed:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">void</span> <span class="func-free">f</span>(<span class="param-tmpl">T</span> <span class="param">t</span>)
+{
+	<span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(<span class="param-tmpl">T</span>) == <span class="lit-num">0</span>);
+	<span class="dep-name">nonexistent_function</span>(<span class="param">t</span>); <span class="com-single">// also dependent on T
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>A program will compile successfully if this function template is never used. No instantiation - no errors.</p>
+<blockquote>
+<p>Why is the non-existent function not causing any errors? How is the template parameter relevant to it? Searching for a function declaration/definition doesn't depend on the type of the argument, right?</p>
+</blockquote>
+<p>It does. But not on the template argument itself, but on the namespace of the argument. ADL (<em>argument dependent lookup</em>) means that functions are searched in the global namespace but also in namespaces of the arguments. This rarely-thought-of mechanism is the reason why overloaded operators work - they are functions that are often defined in namespaces of the types they support.</p>
+<blockquote>
+<p>What if the compiler is smart enough to figure it out that it's impossible to instantiate this function template successfully?</p>
+</blockquote>
+<p>It can not be. The language specification dictates that statements dependent on template parameters (in any semantic way possible) are analyzed only at the second (instantiation) phase. It would also be computationally expensive to implement to handle more complex situations.</p>
+<p>You can make this example fail in the first phase by modifying it to have <code class="code custom-cpp"><span class="keyword">static_assert</span>(<span class="keyword">false</span>)</code>. Such statement is not dependent on template parameters and will be caught in the first phase, before any instantiations.</p>
+<p>When working with templates, you will typically encounter compiler errors coming from the second (instantiation) phase. GCC and Clang will include "in instantiation of" string with template parameters in the diagnostic message if the error comes from this phase.</p>
+<p>When receiving instantiation errors, you need to think which might be incorrect:</p>
+<ul class="simple">
+<li><p>the template definition</p></li>
+<li><p>the template parameter (this specific instantiation)</p></li>
+</ul>
+<p>In typical situation, it's a mistake how the template is being used (usually a wrong type parameter). Rarely you may write a template that accidentally limits possible uses and it's the template definition that requires changes. Subtle changes in the definition (e.g. <code class="code custom-cpp"><span class="param-tmpl">T</span>()</code> vs <code class="code custom-cpp"><span class="param-tmpl">T</span>{}</code>) may alter meaning for some types and have no effect for others.</p>
+</section><section id="declarations"><h2>Declarations</h2>
+<p>Just like any non-template entity, templates can be forward declared too:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="func-free">min</span>(<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">x</span>, <span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">y</span>);
+</pre></td>
+</tr></tbody></table>
+<p>In the case of templates it's done rarely because <strong>the template definition (and all specializations) must be present before the first instantiation</strong>.</p>
+<p>The reason is simple: <strong>templates are ODR-used upon instantiation</strong>. The compiler can not enter second phase if it knows only the declaration of the entity. The primary use of declarations is resolving dependencies between templates themselves - a good example would be a set of function templates that can call each other recursively. For this reason declarations of template entities are generally rare.</p>
+<p>Because of the requirement that a definition must be visible at the point of instantiation and the fact that templates are implicitly <code class="code custom-cpp"><span class="keyword">inline</span></code>, they are typically put into header files.</p>
+<!-- TODO move the paragraph below to a separate article and develop it further? -->
+<p>Some library projects list all template declarations first and then write or include their definitions at the bottom of the file. This separates interface/implementation similarly to ordinary non-template code (2 separate files) while still technically delivering all necessary information to the compiler within a single header. It's a lot more code to write but it improves readability if the headers are a primary source of documentation and users of the library are expected to read comments within the source code. Having definitions separately reduces the noise while reading documentation comments.</p>
+<!-- TODO section about constexpr? -->
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

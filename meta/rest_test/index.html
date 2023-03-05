@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - reStructuredText test page</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../">HOME</a></li>
+				<li><a href="../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../cpp/tutorials/beginner/">beginner</a></li>
+						<li><a href="../../cpp/tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../cpp/tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../cpp/stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../cpp/utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../cpp/utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../cpp/utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../cpp/utility/glossary/">glossary</a></li>
+						<li><a href="../../cpp/utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../about/">about</a></li>
+						<li><a href="../site_faq/">website FAQ</a></li>
+						<li><a href="../markdown_test/">Markdown test page</a></li>
+						<li><a href=".">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../">HOME</a></li>
+				<li class="button"><a href="../../index">INDEX</a></li>
+				<li class="button"><a href="../../faq">FAQ</a></li>
+				<li class="button"><a href="../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../">meta</a></li>
+							<span>/</span>
+						<li>reStructuredText test page</li>
+					</ol></nav><div class="content">
+				<h1>reStructuredText test page</h1>				<p>The following page presents reStructuredText examples and how they look on the site. Compare the source of this page with how it looks on the site (after the build) to learn how everything is rendered. Not everything may look pretty - reStructuredText is an output-agnostic format and this website build process does not implement every possible reStructuredText feature. While the HTML may be well generated, majority of reStructuredText features rely on CSS.</p>
+<p>This page should not be treated as an reStructuredText learning material. At most as a quick refresher. For learning reStructuredText, read first:</p>
+<p>User documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docutils.sourceforge.io/docs/user/rst/quickstart.html">reStructuredText Primer</a></p></li>
+<li><p><a class="reference external" href="https://docutils.sourceforge.io/docs/user/rst/quickref.html">quick reStructuredText reference</a></p></li>
+<li><p><a class="reference external" href="https://docutils.sourceforge.io/docs/user/rst/cheatsheet.txt">reStructuredText Cheat Sheet</a> (text only)</p></li>
+<li><p><a class="reference external" href="https://docutils.sourceforge.io/docs/user/rst/demo.html">reStructuredText Demonstration</a></p></li>
+</ul>
+<p>Reference documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">reStructuredText Directives</a></p></li>
+<li><p><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/restructuredtext.html">reStructuredText Markup Specificaton</a></p></li>
+<li><p><a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/roles.html">reStructuredText Interpreted Text Roles</a></p></li>
+</ul>
+<p>Most of the content on this page comes from these materials (primarily demo and directives). I have pasted examples only of features that have support on this site.</p>
+<p>Custom directives (implemented as additions specifically for this site) can be found at the bottom of this article.</p>
+<section id="heading-2"><h2>Heading 2</h2>
+<section id="heading-3"><h3>Heading 3</h3>
+<section id="heading-4"><h4>Heading 4</h4>
+<section id="heading-5"><h5>Heading 5</h5>
+<section id="heading-6"><h6>Heading 6</h6>
+<p>Unlike Markdown, reStructuredText does not specify exact characters for any heading. It will create smaller headings as long as each further-nested heading uses a different character. <strong>The underline/overline character sequence must be at least as long as the heading text.</strong></p>
+<p>It is recommended to stick to the order presented above for consistency (<code class="docutils literal">#</code> - 2, <code class="docutils literal">=</code> - 3, <code class="docutils literal">-</code> - 4, <code class="docutils literal">~</code> - 5, <code class="docutils literal">_</code> - 6). There is no <code class="docutils literal">&lt;h1&gt;</code> heading example <strong>because for every page, the generator will automatically prepend such heading with the page title (specified in metadata at the top of the source file)</strong>.</p>
+</section></section></section></section></section><section id="comments"><h2>Comments</h2>
+<p>Any text which begins with an explicit markup start but doesn't use the syntax of any other construct, is a comment.</p>
+<!-- This text will not be shown
+(but, for instance, in HTML might be
+rendered as an HTML comment) -->
+<p>An "empty comment" does not
+consume following blocks.
+(An empty comment is ".." with
+blank lines before and after.)</p>
+<!--  -->
+<blockquote>
+<p>So this block is not "lost",
+despite its indentation.</p>
+</blockquote>
+<p>Comments are started with <em>explicit markup start</em> (<code class="docutils literal">..</code>).
+It's quite complex how/when comments end, so IMO for multiline comments
+the best approach is to simply start each line with <code class="docutils literal">..</code>.</p>
+<p>Additionally, Visual Studio Code has been observed to parse and highlight comments incorrectly.</p>
+</section><section id="paragraphs"><h2>Paragraphs</h2>
+<p>Paragraphs are separated by blank lines.</p>
+<p>Don't line-wrap long text manually by inserting line breaks. Enable line wrap in editor and leave wrapping up to the final content reader (e.g. web browser). Long text will be rendered in multiple lines, but from the source file point of view it should be on the same line.</p>
+</section><section id="inline-markup"><h2>Inline markup</h2>
+<p>By definition, in all inline markups line breaks are not allowed. Inline markup can not be nested.</p>
+<p><em>italic text</em> - surround text by <code class="docutils literal">*</code>. Use to indicate a term/keyword.</p>
+<p><strong>bold text</strong> - surround text by <code class="docutils literal">**</code>. Use to indicate something important.</p>
+<p><code class="docutils literal">literal text</code> - surround text by <code class="docutils literal">``</code>. Use to indicate any form of code.</p>
+<section id="interpreted-text"><h3>Interpreted text</h3>
+<p>Interpreted text (text surrounded by single <code class="docutils literal">`</code>) is not intended for literal text but for domain- or application-specific meaning. So far there is only 1 use of interpretext text - custom code highlight (with explicit naming of the <code class="docutils literal">cch</code> plugin). Search (unwanted) uses of interpreted text by <code class="docutils literal">grep <span class="pre">-rn</span> <span class="pre">"[^\`:]\`[A-Za-z0-9_</span> <span class="pre">]\+\`[^_\`]"</span> <span class="pre">--include="*.rst"</span> website/pages/</code> (the only results should be on the this test page).</p>
+</section><section id="escaping"><h3>Escaping</h3>
+<p>If you find that you want to use one of the "special" characters in text, it will generally be OK -- reStructuredText is pretty smart. For example, this lone asterisk * is handled just fine, as is the asterisk in this equation: 5*6=30. If you actually want text <em>surrounded by asterisks</em> to not be italicised, then you need to indicate that the asterisk is not special. You do this by placing a backslash just before it, like so "*". Inline markup by itself (surrounded by whitespace) or in the middle of a word won't be recognized - it has to be escaped like in the following sentence:</p>
+<p>Possible in <em>re</em><code class="docutils literal">Structured</code><em>Text</em>, though not encouraged.</p>
+</section><section id="inline-markup-html"><h3>Inline markup - HTML</h3>
+<p><strong>Do not use HTML tags inside reStructuredText pages</strong>. reStructuredText exists with its features to avoid manually writing HTML (or other output-specific) markup. HTML in reStructuredText sources will be escaped and render &lt;u&gt;unformatted&lt;/u&gt;.</p>
+</section></section><section id="explicit-markup"><h2>Explicit Markup</h2>
+<p>Explicit markup blocks are used for constructs which float (footnotes), have no direct paper-document representation (hyperlink targets, comments), or require specialized processing (directives). They all begin with <strong>two periods and whitespace</strong>, the "explicit markup start".</p>
+<p>The numbering of auto-numbered footnotes is determined by the order of the footnotes, not of the references. For auto-numbered footnote references without autonumber labels (<code class="docutils literal"><span class="pre">[#]_</span></code>), the references and footnotes must be in the same relative order. Similarly for auto-symbol footnotes (<code class="docutils literal"><span class="pre">[*]_</span></code>).</p>
+<section id="references"><h3>References</h3>
+<section id="example-1"><h4>Example 1</h4>
+<p>Footnote references, like <a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>.
+Note that footnotes may get
+rearranged, e.g., to the bottom of
+the "page".</p>
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">5</a><span class="fn-bracket">]</span></span>
+<p>A numerical footnote. Note
+there's no colon after the <code class="docutils literal">]</code>.</p>
+</aside></aside></section><section id="example-2"><h4>Example 2</h4>
+<p>Autonumbered footnotes are
+possible, like using <a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-2" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">1</a><span class="fn-bracket">]</span></span>
+<p>This is the first one.</p>
+</aside><aside class="footnote brackets" id="footnote-3" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">2</a><span class="fn-bracket">]</span></span>
+<p>This is the second one.</p>
+</aside></aside><p>They may be assigned 'autonumber
+labels' - for instance,
+<a class="footnote-reference brackets" href="#fourth" id="footnote-reference-4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#third" id="footnote-reference-5" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="third" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-5">3</a><span class="fn-bracket">]</span></span>
+<p>a.k.a. <a class="reference internal" href="#third">third</a></p>
+</aside><aside class="footnote brackets" id="fourth" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-4">4</a><span class="fn-bracket">]</span></span>
+<p>a.k.a. <a class="reference internal" href="#fourth">fourth</a></p>
+</aside></aside></section><section id="example-3"><h4>Example 3</h4>
+<p>Auto-symbol footnotes are also
+possible, like this: <a class="footnote-reference brackets" href="#footnote-4" id="footnote-reference-6" role="doc-noteref"><span class="fn-bracket">[</span>*<span class="fn-bracket">]</span></a> and <a class="footnote-reference brackets" href="#footnote-5" id="footnote-reference-7" role="doc-noteref"><span class="fn-bracket">[</span>†<span class="fn-bracket">]</span></a>.</p>
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-4" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-6">*</a><span class="fn-bracket">]</span></span>
+<p>This is the first one.</p>
+</aside><aside class="footnote brackets" id="footnote-5" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-7">†</a><span class="fn-bracket">]</span></span>
+<p>This is the second one.</p>
+</aside></aside></section></section><section id="citations"><h3>Citations</h3>
+<p>Citation references, like <a class="citation-reference" href="#cit2002" id="citation-reference-1" role="doc-biblioref">[CIT2002]</a>.
+Note that citations may get
+rearranged, e.g., to the bottom of
+the "page".</p>
+<div role="list" class="citation-list">
+<div class="citation" id="cit2002" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-1">CIT2002</a><span class="fn-bracket">]</span></span>
+<p>A citation
+(as often used in journals).</p>
+</div>
+</div>
+<p>Citation labels contain alphanumerics,
+underlines, hyphens and fullstops.
+Case is not significant.</p>
+<p>Given a citation like <a class="citation-reference" href="#this" id="citation-reference-2" role="doc-biblioref">[this]</a>, one
+can also refer to it like <a class="reference internal" href="#this">this</a>.</p>
+<div role="list" class="citation-list">
+<div class="citation" id="this" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#citation-reference-2">this</a><span class="fn-bracket">]</span></span>
+<p>here.</p>
+</div>
+</div>
+</section><section id="hyperlink-targets"><h3>Hyperlink Targets</h3>
+<section id="external-hyperlink-targets"><h4>External Hyperlink Targets</h4>
+<p>External hyperlinks, like <a class="reference external" href="http://www.python.org/">Python</a>.</p>
+</section><section id="embedded-uris"><h4>Embedded URIs</h4>
+<p>External hyperlinks, like <a class="reference external" href="http://www.python.org/">Python</a>.</p>
+</section><section id="links-inside-the-website"><h4>Links inside the website</h4>
+<p>Nikola has a <a class="reference external" href="https://getnikola.com/path-handlers.html">built-in feature</a> do to it, like this: <a class="reference external" href="../rest_test">reST test</a>.</p>
+</section><section id="internal-hyperlink-targets"><h4>Internal Hyperlink Targets</h4>
+<p>Internal crossreferences, like <a class="reference internal" href="#example">example</a>.</p>
+<p id="example">This is an example crossreference target.</p>
+</section><section id="indirect-hyperlink-targets"><h4>Indirect Hyperlink Targets</h4>
+<p>The second hyperlink target (the line beginning with "__") is both an indirect hyperlink target (<em>indirectly</em> pointing at the Python website via the "<a class="reference external" href="http://www.python.org/">Python</a>" reference) and an <strong>anonymous hyperlink target</strong>. In the text, a double-underscore suffix is used to indicate an <strong>anonymous hyperlink reference</strong>. In an anonymous hyperlink target, the reference text is not repeated. This is useful for references with long text or throw-away references, but the target should be kept close to the reference to prevent them going out of sync.</p>
+<p><a class="reference external" href="http://www.python.org/">Python</a> is <a class="reference external" href="http://www.python.org/">my favourite programming language</a>.</p>
+</section><section id="implicit-hyperlink-targets"><h4>Implicit Hyperlink Targets</h4>
+<p>Section titles, footnotes, and citations automatically generate hyperlink targets (the title text or footnote/citation label is used as the hyperlink name).</p>
+<p>Implict references, like <a class="reference internal" href="#heading-2">Heading 2</a> are automatically linked.</p>
+</section></section><section id="substitution-references-and-definitions"><h3>Substitution References and Definitions</h3>
+<p>Substitutions are like inline directives, allowing graphics and arbitrary constructs within text.</p>
+<p>The <img alt="biohazard" src="https://docutils.sourceforge.io/docs/user/rst/images/biohazard.png"> symbol must be used on containers used to dispose of medical waste. And here is a fancy jumping ball: <img alt="ball" src="https://docutils.sourceforge.io/docs/user/rst/images/ball1.gif">.</p>
+</section></section><section id="blockquotes"><h2>Blockquotes</h2>
+<p>Generates <code class="docutils literal">&lt;blockquote&gt;</code> elements. Has CSS support implemented. Block quotes are just indented paragraphs and they may nest.</p>
+<blockquote>
+<p>Destructors for virtual base classes are executed in the reverse order of their appearance in a depth-first left-to-right traversal of the directed acyclic graph of base classes - Bjarne Stroustrup.</p>
+</blockquote>
+</section><section id="literal-blocks"><h2>Literal Blocks</h2>
+<p>A paragraph containing only two colons
+indicates that the following indented
+or quoted text is a literal block.</p>
+<pre class="literal-block">Whitespace, newlines, blank lines, and
+all kinds of markup (like *this* or
+\this) is preserved by literal blocks.
+
+The paragraph containing only '::'
+will be omitted from the result.</pre>
+<p>The <code class="docutils literal">::</code> may be tacked onto the very
+end of any paragraph. The <code class="docutils literal">::</code> will be
+omitted if it is preceded by whitespace.
+The <code class="docutils literal">::</code> will be converted to a single
+colon if preceded by text, like this:</p>
+<pre class="literal-block">It's very convenient to use this form.</pre>
+<p>Literal blocks end when text returns to
+the preceding paragraph's indentation.
+This means that something like this
+is possible:</p>
+<pre class="literal-block">    We start here
+  and continue here
+and end here.</pre>
+<p>Per-line quoting can also be used on
+unindented literal blocks:</p>
+<pre class="literal-block">&gt; Useful for quotes from email and
+&gt; for Haskell literate programming.</pre>
+</section><section id="parsed-literal-blocks"><h2>Parsed Literal Blocks</h2>
+<p>Unlike an ordinary literal block, the "parsed-literal" directive constructs a literal block where the text is parsed for inline markup. It is equivalent to a line block with different rendering: typically in a typewriter/monospaced typeface, like an ordinary literal block. Parsed literal blocks are useful for adding hyperlinks to code examples.</p>
+<p>However, care must be taken with the text, because inline markup is recognized and there is no protection from parsing. Backslash-escapes may be necessary to prevent unintended parsing. And because the markup characters are removed by the parser, care must also be taken with vertical alignment. Parsed "ASCII art" is tricky, and extra whitespace may be necessary.</p>
+<p>This can be useful for presenting heavily-formatted text that is not strictly code. A good example are grammar specifications:</p>
+<pre class="literal-block"><em>function-specifier</em>:
+    virtual
+    <em>explicit-specifier</em>
+
+<em>explicit-specifier</em>:
+    explicit ( <em>constant-expression</em> )
+    explicit
+
+<em>placeholder-type-specifier</em>:
+    <em>type-constraint</em>(optional) auto
+    <em>type-constraint</em>(optional) decltype ( auto )</pre>
+</section><section id="line-blocks"><h2>Line Blocks</h2>
+<div class="line-block">
+<div class="line">Line blocks are useful for addresses,</div>
+<div class="line">verse, and adornment-free lists.</div>
+<div class="line"><br></div>
+<div class="line">Each new line begins with a</div>
+<div class="line">vertical bar ("|").</div>
+<div class="line-block">
+<div class="line">Line breaks and initial indents</div>
+<div class="line">are preserved.</div>
+</div>
+<div class="line">Continuation lines are wrapped
+portions of long lines; they begin
+with spaces in place of vertical bars.</div>
+</div>
+<p>This feature has no CSS support for it right now. Additionally, HTML discards repeated whitespace much makes this feature troublesome for HTML output.</p>
+</section><section id="doctest-blocks"><h2>Doctest Blocks</h2>
+<p>Doctest blocks are interactive
+Python sessions. They begin with
+"<code class="docutils literal">&gt;&gt;&gt;</code>" and end with a blank line.</p>
+<pre class="code python doctest">&gt;&gt;&gt; print "This is a doctest block."
+This is a doctest block.
+</pre>
+<p>This feature has no direct support in CSS. Use <code class="docutils literal">code</code> directive instead.</p>
+</section><section id="lists"><h2>Lists</h2>
+<section id="implemented-lists"><h3>Implemented lists</h3>
+<p>Note that a blank line is required before the first item and after the last, but is optional between items.</p>
+<section id="bullet-lists"><h4>Bullet lists</h4>
+<ul class="simple">
+<li><p>This is item 1</p></li>
+<li><p>This is item 2</p></li>
+<li>
+<p>Bullets are "-", "*" or "+".
+Continuing text must be aligned
+after the bullet and whitespace.</p>
+<ul>
+<li><p>This is a sublist.  The bullet lines up with the left edge of
+the text blocks above.  A sublist is a new list so requires a
+blank line above and below.</p></li>
+</ul>
+</li>
+</ul></section><section id="enumerated-lists"><h4>Enumerated lists</h4>
+<ol class="arabic simple">
+<li><p>This is the first item</p></li>
+<li><p>This is the second item</p></li>
+<li><p>Enumerators are arabic numbers,
+single letters, or roman numerals</p></li>
+<li><p>List items should be sequentially
+numbered, but need not start at 1
+(although not all formatters will
+honour the first index)</p></li>
+<li><p>This item is auto-enumerated</p></li>
+</ol></section></section><section id="unsupported-lists"><h3>Unsupported lists</h3>
+<p>Not recommended to use, not implemented and likely will not be needed:</p>
+<ul class="simple">
+<li><p>definition list</p></li>
+<li><p>field list</p></li>
+<li><p>option list</p></li>
+</ul>
+<section id="definition-lists"><h4>Definition lists</h4>
+<dl class="simple">
+<dt>what</dt>
+<dd>
+<p>Definition lists associate a term with
+a definition.</p>
+</dd>
+<dt>how</dt>
+<dd>
+<p>The term is a one-line phrase, and the
+definition is one or more paragraphs or
+body elements, indented relative to the
+term. Blank lines are not allowed
+between term and definition.</p>
+</dd>
+</dl></section><section id="field-lists"><h4>Field Lists</h4>
+<dl class="field-list simple">
+<dt>Authors<span class="colon">:</span>
+</dt>
+<dd>
+<p>Tony J. (Tibs) Ibbs,
+David Goodger
+(and sundry other good-natured folks)</p>
+</dd>
+<dt>Version<span class="colon">:</span>
+</dt>
+<dd>
+<p>1.0 of 2001/08/08</p>
+</dd>
+<dt>Dedication<span class="colon">:</span>
+</dt>
+<dd>
+<p>To my father.</p>
+</dd>
+</dl></section><section id="option-lists"><h4>Option Lists</h4>
+<p>There must be at least two spaces between the option and the description.</p>
+<dl class="option-list">
+<dt><kbd><span class="option">-a</span></kbd></dt>
+<dd>
+<p>command-line option "a"</p>
+</dd>
+<dt><kbd><span class="option">-b <var>file</var></span></kbd></dt>
+<dd>
+<p>options can have arguments
+and long descriptions</p>
+</dd>
+<dt><kbd><span class="option">--long</span></kbd></dt>
+<dd>
+<p>options can be long also</p>
+</dd>
+<dt><kbd><span class="option">--input=<var>file</var></span></kbd></dt>
+<dd>
+<p>long options can also have
+arguments</p>
+</dd>
+<dt><kbd><span class="option">/V</span></kbd></dt>
+<dd>
+<p>DOS/VMS-style options too</p>
+</dd>
+</dl></section></section></section><section id="tables"><h2>Tables</h2>
+<p>There are two syntaxes for tables in reStructuredText. Grid tables are complete but cumbersome to create. Simple tables are easy to create but limited (no row spans, etc.).</p>
+<section id="grid-table"><h3>Grid table</h3>
+<table>
+<thead><tr>
+<th class="head"><p>Header 1</p></th>
+<th class="head"><p>Header 2</p></th>
+<th class="head"><p>Header 3</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>body row 1</p></td>
+<td><p>column 2</p></td>
+<td><p>column 3</p></td>
+</tr>
+<tr>
+<td><p>body row 2</p></td>
+<td colspan="2"><p>Cells may span columns.</p></td>
+</tr>
+<tr>
+<td><p>body row 3</p></td>
+<td rowspan="2"><p>Cells may
+span rows.</p></td>
+<td rowspan="2"><ul class="simple">
+<li><p>Cells</p></li>
+<li><p>contain</p></li>
+<li><p>blocks.</p></li>
+</ul></td>
+</tr>
+<tr>
+<td><p>body row 4</p></td>
+</tr>
+</tbody>
+</table></section><section id="simple-table"><h3>Simple table</h3>
+<table>
+<thead>
+<tr>
+<th class="head" colspan="2"><p>Inputs</p></th>
+<th class="head"><p>Output</p></th>
+</tr>
+<tr>
+<th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>A or B</p></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p>False</p></td>
+<td><p>False</p></td>
+<td><p>False</p></td>
+</tr>
+<tr>
+<td><p>True</p></td>
+<td><p>False</p></td>
+<td><p>True</p></td>
+</tr>
+<tr>
+<td><p>False</p></td>
+<td><p>True</p></td>
+<td><p>True</p></td>
+</tr>
+<tr>
+<td><p>True</p></td>
+<td><p>True</p></td>
+<td><p>True</p></td>
+</tr>
+</tbody>
+</table></section><section id="csv-table"><h3>CSV Table</h3>
+<p>The "csv-table" directive is used to create a table from CSV (comma-separated values) data. CSV is a common data format generated by spreadsheet applications and commercial databases. The data may be internal (an integral part of the document) or external (a separate file).</p>
+<p>Example:</p>
+<table>
+<caption>Frozen Delights!</caption>
+<colgroup>
+<col style="width: 27.3%">
+<col style="width: 18.2%">
+<col style="width: 54.5%">
+</colgroup>
+<thead><tr>
+<th class="head"><p>Treat</p></th>
+<th class="head"><p>Quantity</p></th>
+<th class="head"><p>Description</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>Albatross</p></td>
+<td><p>2.99</p></td>
+<td><p>On a stick!</p></td>
+</tr>
+<tr>
+<td><p>Crunchy Frog</p></td>
+<td><p>1.49</p></td>
+<td><p>If we took the bones out, it wouldn't be
+crunchy, now would it?</p></td>
+</tr>
+<tr>
+<td><p>Gannet Ripple</p></td>
+<td><p>1.99</p></td>
+<td><p>On a stick!</p></td>
+</tr>
+</tbody>
+</table>
+<p>Block markup and inline markup within cells is supported. Line ends are recognized within cells.</p>
+<p>Working limitations:</p>
+<ul class="simple">
+<li><p>There is no support for checking that the number of columns in each row is the same.  However, this directive supports CSV generators that do not insert "empty" entries at the end of short rows, by automatically adding empty entries.</p></li>
+<li><p>Whitespace delimiters are supported only for external CSV files.</p></li>
+<li><p>With Python 2, the valuess for the <code class="docutils literal">delimiter</code>, <code class="docutils literal">quote</code>, and <code class="docutils literal">escape</code> options must be ASCII characters. (The csv module does not support Unicode and all non-ASCII characters are encoded as multi-byte utf-8 string). This limitation does not exist under Python 3.</p></li>
+</ul>
+<p>The following options are recognized:</p>
+<dl>
+<dt>
+<code class="docutils literal">widths</code><span class="classifier">integer [, integer...] or "auto"</span>
+</dt>
+<dd>
+<p>A comma- or space-separated list of relative column widths.  The
+default is equal-width columns (100%/#columns).</p>
+<p>The special value "auto" may be used by writers to decide
+whether to delegate the determination of column widths to the backend
+(LaTeX, the HTML browser, ...).</p>
+</dd>
+<dt>
+<code class="docutils literal">width</code><span class="classifier"><em>length</em> or <em>percentage</em> of the current line width</span>
+</dt>
+<dd>
+<p>Forces the width of the table to the specified length or percentage
+of the line width.  If omitted, the renderer determines the width
+of the table based on its contents.</p>
+</dd>
+<dt>
+<code class="docutils literal"><span class="pre">header-rows</span></code><span class="classifier">integer</span>
+</dt>
+<dd>
+<p>The number of rows of CSV data to use in the table header.
+Defaults to 0.</p>
+</dd>
+<dt>
+<code class="docutils literal"><span class="pre">stub-columns</span></code><span class="classifier">integer</span>
+</dt>
+<dd>
+<p>The number of table columns to use as stubs (row titles, on the
+left).  Defaults to 0.</p>
+</dd>
+<dt>
+<code class="docutils literal">header</code><span class="classifier">CSV data</span>
+</dt>
+<dd>
+<p>Supplemental data for the table header, added independently of and
+before any <code class="docutils literal"><span class="pre">header-rows</span></code> from the main CSV data.  Must use the
+same CSV format as the main CSV data.</p>
+</dd>
+<dt>
+<code class="docutils literal">file</code><span class="classifier">string (newlines removed)</span>
+</dt>
+<dd>
+<p>The local filesystem path to a CSV data file.</p>
+</dd>
+<dt>
+<code class="docutils literal">url</code><span class="classifier">string (whitespace removed)</span>
+</dt>
+<dd>
+<p>An Internet URL reference to a CSV data file.</p>
+</dd>
+<dt>
+<code class="docutils literal">encoding</code><span class="classifier">name of text encoding</span>
+</dt>
+<dd>
+<p>The text encoding of the external CSV data (file or URL).
+Defaults to the document's encoding (if specified).</p>
+</dd>
+<dt>
+<code class="docutils literal">delim</code><span class="classifier">char | "tab" | "space"</span>
+</dt>
+<dd>
+<p>A one-character string used to separate fields.
+Defaults to <code class="docutils literal">,</code> (comma).  May be specified as a Unicode code
+point; see the <em>unicode</em> directive for syntax details.</p>
+</dd>
+<dt>
+<code class="docutils literal">quote</code><span class="classifier">char</span>
+</dt>
+<dd>
+<p>A one-character string used to quote elements
+containing the delimiter or which start with the quote
+character.  Defaults to <code class="docutils literal">"</code> (quote).  May be specified as a
+Unicode code point; see the <em>unicode</em> directive for syntax
+details.</p>
+</dd>
+<dt>
+<code class="docutils literal">keepspace</code><span class="classifier">flag</span>
+</dt>
+<dd>
+<p>Treat whitespace immediately following the delimiter as
+significant.  The default is to ignore such whitespace.</p>
+</dd>
+<dt>
+<code class="docutils literal">escape</code><span class="classifier">char</span>
+</dt>
+<dd>
+<p>A one-character string used to escape the
+delimiter or quote characters.  May be specified as a Unicode
+code point; see the <em>unicode</em> directive for syntax details.  Used
+when the delimiter is used in an unquoted field, or when quote
+characters are used within a field.  The default is to double-up
+the character, e.g. "He said, ""Hi!"""</p>
+<!-- Add another possible value, "double", to explicitly indicate
+the default case? -->
+</dd>
+<dt>
+<code class="docutils literal">align</code><span class="classifier">"left", "center", or "right"</span>
+</dt>
+<dd>
+<p>The horizontal alignment of the table.
+(New in Docutils 0.13)</p>
+</dd>
+</dl>
+<p>and the common options <code class="docutils literal">:class:</code> and <code class="docutils literal">:name:</code>.</p>
+</section><section id="list-table"><h3>List Table</h3>
+<p>The "list-table" directive is used to create a table from data in a uniform two-level bullet list. "Uniform" means that each sublist (second-level list) must contain the same number of list items.</p>
+<table>
+<caption>Frozen Delights!</caption>
+<colgroup>
+<col style="width: 27.3%">
+<col style="width: 18.2%">
+<col style="width: 54.5%">
+</colgroup>
+<thead><tr>
+<th class="head"><p>Treat</p></th>
+<th class="head"><p>Quantity</p></th>
+<th class="head"><p>Description</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><p>Albatross</p></td>
+<td><p>2.99</p></td>
+<td><p>On a stick!</p></td>
+</tr>
+<tr>
+<td><p>Crunchy Frog</p></td>
+<td><p>1.49</p></td>
+<td><p>If we took the bones out, it wouldn't be
+crunchy, now would it?</p></td>
+</tr>
+<tr>
+<td><p>Gannet Ripple</p></td>
+<td><p>1.99</p></td>
+<td><p>On a stick!</p></td>
+</tr>
+</tbody>
+</table>
+<p>The following options are recognized:</p>
+<dl>
+<dt>
+<code class="docutils literal">widths</code><span class="classifier">integer [integer...] or "auto"</span>
+</dt>
+<dd>
+<p>A comma- or space-separated list of relative column widths.  The
+default is equal-width columns (100%/#columns).</p>
+<p>The special value "auto" may be used by writers to decide
+whether to delegate the determination of column widths to the backend
+(LaTeX, the HTML browser, ...).</p>
+</dd>
+<dt>
+<code class="docutils literal">width</code><span class="classifier"><em>length</em> or <em>percentage</em> of the current line width</span>
+</dt>
+<dd>
+<p>Forces the width of the table to the specified length or percentage
+of the line width.  If omitted, the renderer determines the width
+of the table based on its contents.</p>
+</dd>
+<dt>
+<code class="docutils literal"><span class="pre">header-rows</span></code><span class="classifier">integer</span>
+</dt>
+<dd>
+<p>The number of rows of list data to use in the table header.
+Defaults to 0.</p>
+</dd>
+<dt>
+<code class="docutils literal"><span class="pre">stub-columns</span></code><span class="classifier">integer</span>
+</dt>
+<dd>
+<p>The number of table columns to use as stubs (row titles, on the
+left).  Defaults to 0.</p>
+</dd>
+<dt>
+<code class="docutils literal">align</code><span class="classifier">"left", "center", or "right"</span>
+</dt>
+<dd>
+<p>The horizontal alignment of the table.
+(New in Docutils 0.13)</p>
+</dd>
+</dl>
+<p>and the common options <code class="docutils literal">:class:</code> and <code class="docutils literal">:name:</code>.</p>
+</section></section><section id="transitions"><h2>Transitions</h2>
+<p>Transitions are commonly seen in novels and short fiction, as a gap spanning one or more lines, marking text divisions or signaling changes in subject, time, point of view, or emphasis.</p>
+<p>A transition marker is a horizontal line of 4 or more repeated punctuation characters.</p>
+<hr class="docutils">
+<p>A transition should not begin or end a section or document, nor should two transitions be immediately adjacent.</p>
+</section><section id="directives"><h2>Directives</h2>
+<p>Directives are a general-purpose extension mechanism, a way of adding support for new constructs without adding new syntax. For a description of all standard directives, see <a class="reference external" href="https://docutils.sourceforge.io/docs/ref/rst/directives.html">reStructuredText Directives</a>.</p>
+<section id="image"><h3>Image</h3>
+<p>Inline images can be defined with an "image" directive in a substitution definition.</p>
+<p>The URI for the image source file is specified in the directive argument. As with hyperlink targets, the image URI may begin on the same line as the explicit markup start and target name, or it may begin in an indented text block immediately following, with no intervening blank lines. If there are multiple lines in the link block, they are stripped of leading and trailing whitespace and joined together.</p>
+<p>Optionally, the image link block may contain a flat field list, the image options.</p>
+<p>Most useful options: <code class="docutils literal">alt</code> and <code class="docutils literal">target</code> (clickable image).</p>
+<img alt="large example image" src="http://placehold.it/800x400"><img alt="medium example image" src="http://placehold.it/400x200"><img alt="small example image" src="http://placehold.it/200x200"><p>The following options are recognized:</p>
+<dl>
+<dt>
+<code class="docutils literal">alt</code><span class="classifier">text</span>
+</dt>
+<dd>
+<p>Alternate text: a short description of the image, displayed by
+applications that cannot display images, or spoken by applications
+for visually impaired users.</p>
+</dd>
+<dt>
+<code class="docutils literal">height</code><span class="classifier"><em>length</em></span>
+</dt>
+<dd>
+<p>The desired height of the image.
+Used to reserve space or scale the image vertically.  When the "scale"
+option is also specified, they are combined.  For example, a height of
+200px and a scale of 50 is equivalent to a height of 100px with no scale.</p>
+</dd>
+<dt>
+<code class="docutils literal">width</code><span class="classifier"><em>length</em> or <em>percentage</em> of the current line width</span>
+</dt>
+<dd>
+<p>The width of the image.
+Used to reserve space or scale the image horizontally.  As with "height"
+above, when the "scale" option is also specified, they are combined.</p>
+</dd>
+<dt>
+<code class="docutils literal">scale</code><span class="classifier">integer percentage (the "%" symbol is optional)</span>
+</dt>
+<dd>
+<p>The uniform scaling factor of the image.  The default is "100%", i.e.
+no scaling.</p>
+<p>If no "height" or "width" options are specified, the <em>Python Imaging
+Library</em> (PIL) may be used to determine them, if it is installed and
+the image file is available.</p>
+</dd>
+<dt>
+<code class="docutils literal">align</code><span class="classifier">"top", "middle", "bottom", "left", "center", or "right"</span>
+</dt>
+<dd>
+<p>The alignment of the image, equivalent to the HTML <code class="docutils literal">&lt;img&gt;</code> tag's
+deprecated "align" attribute or the corresponding "vertical-align" and
+"text-align" CSS properties.
+The values "top", "middle", and "bottom"
+control an image's vertical alignment (relative to the text
+baseline); they are only useful for inline images (substitutions).
+The values "left", "center", and "right" control an image's
+horizontal alignment, allowing the image to float and have the
+text flow around it.  The specific behavior depends upon the
+browser or rendering software used.</p>
+</dd>
+<dt>
+<code class="docutils literal">target</code><span class="classifier">text (URI or reference name)</span>
+</dt>
+<dd>
+<p>Makes the image into a hyperlink reference ("clickable").  The
+option argument may be a URI (relative or absolute), or a
+<em>reference name</em> with underscore suffix (e.g. <code class="docutils literal">`a name`_</code>).</p>
+</dd>
+</dl>
+<p>and the common options <code class="docutils literal">:class:</code> and <code class="docutils literal">:name:</code>.</p>
+</section><section id="figure"><h3>Figure</h3>
+<p>A "figure" consists of image data (including image options), an optional caption (a single paragraph), and an optional legend (arbitrary body elements). For page-based output media, figures might float to a different position if this helps the page layout.</p>
+<figure><img alt="map to buried treasure" src="picture.png"><figcaption><p>This is the caption of the figure (a simple paragraph).</p>
+<div class="legend">
+<p>The legend consists of all elements after the caption.  In this
+case, the legend consists of this paragraph and the following
+table:</p>
+<table>
+<thead><tr>
+<th class="head"><p>Symbol</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr></thead>
+<tbody>
+<tr>
+<td><img alt="tent.png" src="tent.png"></td>
+<td><p>Campground</p></td>
+</tr>
+<tr>
+<td><img alt="waves.png" src="waves.png"></td>
+<td><p>Lake</p></td>
+</tr>
+<tr>
+<td><img alt="peak.png" src="peak.png"></td>
+<td><p>Mountain</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figcaption></figure></section><section id="unicode-character-codes"><h3>Unicode Character Codes</h3>
+<p>The "unicode" directive converts Unicode character codes (numerical
+values) to characters, and may be used in substitution definitions
+only.</p>
+<p>The arguments, separated by spaces, can be:</p>
+<ul class="simple">
+<li>
+<p><strong>character codes</strong> as</p>
+<ul>
+<li><p>decimal numbers or</p></li>
+<li><p>hexadecimal numbers, prefixed by <code class="docutils literal">0x</code>, <code class="docutils literal">x</code>, <code class="docutils literal">\x</code>, <code class="docutils literal">U+</code>,
+<code class="docutils literal">u</code>, or <code class="docutils literal">\u</code> or as XML-style hexadecimal character entities,
+e.g. <code class="docutils literal">&amp;#x1a2b;</code></p></li>
+</ul>
+</li>
+<li><p><strong>text</strong>, which is used as-is.</p></li>
+</ul>
+<p>Text following " .. " is a comment and is ignored.  The spaces between
+the arguments are ignored and thus do not appear in the output.
+Hexadecimal codes are case-insensitive.</p>
+<p>For example:</p>
+<blockquote>
+<p>Copyright © 2003, BogusMegaCorp™—all rights reserved.</p>
+</blockquote>
+</section><section id="including-an-external-document-fragment"><h3>Including an External Document Fragment</h3>
+<p>The "include" directive reads a text file. The directive argument is the path to the file to be included, relative to the document containing the directive. For example:</p>
+<pre class="literal-block">This first example will be parsed at the document level, and can
+thus contain any construct, including section headers.
+
+.. include:: inclusion.txt
+
+Back in the main document.</pre>
+<p>This can be useful for articles/tutorials which share same/similar set of information. Nikola also supports root-relative include paths, which are preferred in this project.</p>
+</section><section id="code"><h3>Code</h3>
+<p>The "code" directive constructs a literal block. Language and <code class="docutils literal"><span class="pre">number-lines</span></code> options are optional. Currently there is no Pygments-based highlighting. The indent needs to be the same for directive options and directive content.</p>
+<div class="code"><table class="codetable">
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-1"><code data-line-number="1"></code></a></td>
+<td class="code"><code><a id="rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-1" name="rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-1"></a><span class="k">def</span> <span class="nf">my_function</span><span class="p">():</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-2"><code data-line-number="2"></code></a></td>
+<td class="code"><code><a id="rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-2" name="rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-2"></a>    <span class="s2">"just a test"</span>
+</code></td>
+</tr>
+<tr>
+<td class="linenos linenodiv"><a href="#rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-3"><code data-line-number="3"></code></a></td>
+<td class="code"><code><a id="rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-3" name="rest_code_a8b0c7e5f6b248e08d8c0d908d93d838-3"></a>    <span class="nb">print</span> <span class="mi">8</span><span class="o">/</span><span class="mi">2</span>
+</code></td>
+</tr>
+</table></div>
+<p>The <code class="docutils literal">code</code> directive is used on the website but only for non-highlighted code like shell output of sample programs. Use custom directives for highlighted code.</p>
+<p>Non-highlighted code sample:</p>
+<div class="code"><pre class="code text"><a id="rest_code_702b08e4786f4e8698482965030333b5-1" name="rest_code_702b08e4786f4e8698482965030333b5-1" href="#rest_code_702b08e4786f4e8698482965030333b5-1"></a>/tmp/ccQJjzeS.o: In function `main':
+<a id="rest_code_702b08e4786f4e8698482965030333b5-2" name="rest_code_702b08e4786f4e8698482965030333b5-2" href="#rest_code_702b08e4786f4e8698482965030333b5-2"></a>main.cpp:(.text+0x5): undefined reference to `write_hello()'
+<a id="rest_code_702b08e4786f4e8698482965030333b5-3" name="rest_code_702b08e4786f4e8698482965030333b5-3" href="#rest_code_702b08e4786f4e8698482965030333b5-3"></a>collect2: error: ld returned 1 exit status
+</pre></div>
+</section></section><section id="unsupported"><h2>Unsupported</h2>
+<p>Do not use any other reStructuredText directive not mentioned on this page.</p>
+</section><section id="custom-directives"><h2>Custom directives</h2>
+<section id="details-element"><h3>Details element</h3>
+<p>Creates spoiler-like element, using HTML <code class="docutils literal">&lt;details&gt;</code> tag. Support through <code class="docutils literal">details_element</code> plugin.</p>
+<ul class="simple">
+<li><p>Optional option: <code class="docutils literal">open</code> (no arguments), causes the details element to be initially open (<code class="docutils literal">&lt;details open&gt;</code>).</p></li>
+<li><p>Required option: <code class="docutils literal">summary</code>, text to always display (<code class="docutils literal">&lt;summary&gt;</code>)</p></li>
+</ul>
+<div class="docutils container">
+<details><summary>summary</summary><div class="docutils container">
+<p>content, which may be arbitrary reST content</p>
+<ul class="simple">
+<li><p>list item A</p></li>
+<li><p>list item B</p></li>
+<li><p>list item C</p></li>
+</ul>
+</div>
+</details>
+</div>
+</section><section id="admonitions"><h3>Admonitions</h3>
+<p>There are some predefined admonitions but they do not allow to change the title text, which is a reason big enough to abandom them. Use only these custom admonitions:</p>
+<aside class="admonition note"><p class="admonition-title">Note</p>
+<p>Admonition titles (e.g. Note) are disabled through CSS. The <code class="docutils literal">class</code> propety determines background color.</p>
+</aside><aside class="admonition warning"><p class="admonition-title">Warning</p>
+<p>Enable warnings when compiling any code.</p>
+</aside><aside class="admonition error"><p class="admonition-title">Error</p>
+<p>An error occured while displaying previous error.</p>
+</aside><aside class="admonition tip"><p class="admonition-title">Tip</p>
+<p>2 days of debugging can save you 5 minutes of reading the documentation.</p>
+</aside><aside class="admonition success"><p class="admonition-title">Success</p>
+<p>You have finished the easy-mode Python tutorial. Now complete the inferno difficulty by changing the language to C++ or Java Script.</p>
+</aside><aside class="admonition definition"><p class="admonition-title">Definition</p>
+<p>There should be at most one definition of One Definition Rule on this page.</p>
+</aside></section><section id="custom-code-highlight"><h3>Custom code highlight</h3>
+<p>Custom code highlight is implemented in <code class="docutils literal">rest_highlighter</code> plugin. It offers 3 ways to generate highlighted code:</p>
+<ul class="simple">
+<li><p>interpreted text (inline markup, not a directive)</p></li>
+<li><p>mirror-based highlight (explicit semi-automatic colorization)</p></li>
+<li><p>Clangd-based highlight (compiler-backed automatic colorization)</p></li>
+</ul>
+<p>and one extra feature:</p>
+<ul class="simple">
+<li><p>ANSI highlight (colorful terminal output)</p></li>
+</ul>
+<p>For all directives, if paths begin with <code class="docutils literal">/</code>, they are relative to the <code class="docutils literal">conf.py</code> file, otherwise they are relative to the file containing the directive.</p>
+<section id="inline-interpreted-highlight"><h4>Inline interpreted highlight</h4>
+<p>The interpreted code must either:</p>
+<ul class="simple">
+<li><p>Be defined in <code class="docutils literal">data/inline_codes.cpp</code> and its highlight in <code class="docutils literal">data/inline_codes.color</code>, matching line number. The code in interpreted text must be exact copy of a specific line. The code need not to be C++, the source file has just <code class="docutils literal">cpp</code> extension for better editor support. Example: <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span>::<span class="var-global">npos</span></code>.</p></li>
+<li><p>Have code and colorizarion written together in one interpreted text call, separated by <code class="docutils literal">$$$</code> token. Example: <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">holds_alternative</span>&lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>::<span class="type">value_type</span>&gt;(<span class="var-local">v</span>)</code>.</p></li>
+</ul>
+<p>More documentation about colorization can be found on the <a class="reference external" href="https://github.com/Xeverous/arbitrary_code_highlighter">ACH readme</a>.</p>
+<p>Optional option: <code class="docutils literal">lang</code>, defaults to CSS class used for C++.</p>
+</section><section id="mirror-highlight"><h4>Mirror highlight</h4>
+<p>Paths to both code and color spec are mandatory.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;fmt&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iomanip&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;type_traits&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;variant&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;vector&gt;</span>
+
+<span class="pp-hash">#</span><span class="pp-directive">ifdef</span> <span class="macro">SOME_MACRO</span>
+<span class="pp-hash">#</span><span class="pp-directive">undef</span> <span class="macro">SOME_MACRO</span> <span class="com-single">// macros are bad</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">struct</span> <span class="type">always_false</span> : <span class="namespace">std</span>::<span class="type">false_type</span> {};
+
+<span class="com-multi-dox">/**</span> <span class="com-tag-dox">@brief</span> <span class="com-multi-dox">alias for our variant */</span>
+<span class="keyword">using</span> <span class="type">var_t</span> = <span class="namespace">std</span>::<span class="type">variant</span>&lt;<span class="keyword">int</span>, <span class="keyword">long</span>, <span class="keyword">double</span>, <span class="namespace">std</span>::<span class="type">string</span>&gt;;
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span>... <span class="param-tmpl">Ts</span>&gt;
+<span class="keyword">struct</span> <span class="type">overloaded</span> : <span class="param-tmpl">Ts</span>... { <span class="keyword">using</span> <span class="param-tmpl">Ts</span>::<span class="keyword">operator</span>()...; };
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span>... <span class="param-tmpl">Ts</span>&gt;
+<span class="func">overloaded</span>(<span class="param-tmpl">Ts</span>...) -&gt; <span class="type">overloaded</span>&lt;<span class="param-tmpl">Ts</span>...&gt;;
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">concept</span> <span class="concept">Opaque</span> = <span class="keyword">requires</span>(<span class="param-tmpl">T</span> <span class="param">x</span>)
+{
+	{*<span class="param">x</span>} -&gt; <span class="keyword">typename</span> <span class="param-tmpl">T</span>::<span class="type">inner</span>; <span class="com-single">// the expression *x must be valid</span>
+	<span class="com-single">                           // AND the type T::inner must be valid</span>
+	<span class="com-single">                           // AND the result of *x must be convertible to T::inner</span>
+};
+
+<span class="keyword">template</span> &lt;<span class="concept">Callable</span> <span class="param-tmpl">C</span>, <span class="keyword">typename</span>... <span class="param-tmpl">Args</span>&gt; <span class="keyword">constexpr</span>
+<span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="func">execute</span>(<span class="param-tmpl">C</span>&amp;&amp; <span class="param">func</span>, <span class="param-tmpl">Args</span>&amp;&amp;... <span class="param">args</span>) <span class="com-single">// constrained C++20 function template</span>
+{
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func">forward</span>&lt;<span class="param-tmpl">C</span>&gt;(<span class="param">func</span>)(<span class="namespace">std</span>::<span class="func">forward</span>&lt;<span class="param-tmpl">Args</span>&gt;(<span class="param">args</span>)...);
+}
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">Tuple</span>, <span class="namespace">std</span>::<span class="type">size_t</span>... <span class="param-tmpl">Is</span>&gt; <span class="keyword">constexpr</span>
+<span class="keyword">bool</span> <span class="func">are_sorted_impl</span>(<span class="param-tmpl">Tuple</span>&amp;&amp; <span class="param">tuple</span>, <span class="namespace">std</span>::<span class="type">index_sequence</span>&lt;<span class="param-tmpl">Is</span>...&gt;)
+{
+	<span class="keyword">return</span> !((<span class="namespace">std</span>::<span class="func">get</span>&lt;<span class="param-tmpl">Is</span> + <span class="lit-num">1</span>&gt;(<span class="namespace">std</span>::<span class="func">forward</span>&lt;<span class="param-tmpl">Tuple</span>&gt;(<span class="param">tuple</span>)) &lt; <span class="namespace">std</span>::<span class="func">get</span>&lt;<span class="param-tmpl">Is</span>&gt;(<span class="namespace">std</span>::<span class="func">forward</span>&lt;<span class="param-tmpl">Tuple</span>&gt;(<span class="param">tuple</span>))) &amp;&amp; ...);
+}
+
+<span class="keyword">template</span> &lt;<span class="concept">LessThanComparable</span>... <span class="param-tmpl">Args</span>&gt; <span class="keyword">constexpr</span>
+<span class="keyword">bool</span> <span class="func">are_sorted</span>(<span class="param-tmpl">Args</span>&amp;&amp;... <span class="param">args</span>)
+{
+	<span class="keyword">if</span> <span class="keyword">constexpr</span> (<span class="keyword">sizeof</span>...(<span class="param-tmpl">Args</span>) &lt;= <span class="lit-num">1</span>u)
+		<span class="keyword">return</span> <span class="keyword">true</span>;
+	<span class="keyword">else</span> <span class="com-single-dox">///</span> <span class="com-tag-dox">@note</span> <span class="com-single-dox">else needed to discard template instantiation of index sequence with sizeof...(T) - 1 with [T = 0]</span>
+		<span class="keyword">return</span> <span class="func">are_sorted_impl</span>(<span class="namespace">std</span>::<span class="func">forward_as_tuple</span>(<span class="namespace">std</span>::<span class="func">forward</span>&lt;<span class="param-tmpl">Args</span>&gt;(<span class="param">args</span>)...), <span class="namespace">std</span>::<span class="type">make_index_sequence</span>&lt;<span class="keyword">sizeof</span>...(<span class="param-tmpl">Args</span>) - <span class="lit-num">1</span>&gt;{});
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="namespace">std</span>::<span class="type">vector</span>&lt;<span class="type">var_t</span>&gt; <span class="var-local">vec</span> = {<span class="lit-num">10</span>, <span class="lit-num">15</span>l, <span class="num">1.5</span>, <span class="lit-str">"hello"</span>};
+
+	<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; <span class="var-local">v</span> : <span class="var-local">vec</span>)
+	{
+		<span class="com-single">// void visitor, only called for side-effects</span>
+		<span class="namespace">std</span>::<span class="func">visit</span>([](<span class="keyword">auto</span>&amp;&amp; <span class="param">arg</span>) { <span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="param">arg</span>; }, <span class="var-local">v</span>);
+
+		<span class="com-single">// value-returning visitor; a common idiom is to return another variant</span>
+		<span class="var-local">v</span> = <span class="namespace">std</span>::<span class="func">visit</span>([](<span class="keyword">auto</span>&amp;&amp; <span class="param">arg</span>) -&gt; <span class="type">var_t</span> { <span class="keyword">return</span> <span class="param">arg</span> + <span class="param">arg</span>; }, <span class="var-local">v</span>);
+
+		<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">" after doubling is "</span>;
+
+		<span class="com-single">// type-matching visitor: can also be a class with 4 overloaded operator()s</span>
+		<span class="namespace">std</span>::<span class="func">visit</span>([](<span class="keyword">auto</span>&amp;&amp; <span class="param">arg</span>)
+		{
+			<span class="keyword">using</span> <span class="type">T</span> = <span class="namespace">std</span>::<span class="type">decay_t</span>&lt;<span class="keyword">decltype</span>(<span class="param">arg</span>)&gt;;
+
+			<span class="keyword">if</span> <span class="keyword">constexpr</span> (<span class="namespace">std</span>::<span class="type">is_same_v</span>&lt;<span class="type">T</span>, <span class="keyword">int</span>&gt;)
+				<span class="namespace">std</span>::<span class="namespace">fmt</span>::<span class="func">print</span>(<span class="lit-str">"int with value {}<span class="esc-seq">\n</span>"</span>, <span class="param">arg</span>);
+			<span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">constexpr</span> (<span class="namespace">std</span>::<span class="type">is_same_v</span>&lt;<span class="type">T</span>, <span class="keyword">long</span>&gt;)
+				<span class="namespace">std</span>::<span class="namespace">fmt</span>::<span class="func">print</span>(<span class="lit-str">"long with value {}<span class="esc-seq">\n</span>"</span>, <span class="param">arg</span>);
+			<span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">constexpr</span> (<span class="namespace">std</span>::<span class="type">is_same_v</span>&lt;<span class="type">T</span>, <span class="keyword">double</span>&gt;)
+				<span class="namespace">std</span>::<span class="namespace">fmt</span>::<span class="func">print</span>(<span class="lit-str">"double with value {}<span class="esc-seq">\n</span>"</span>, <span class="param">arg</span>);
+			<span class="keyword">else</span> <span class="keyword">if</span> <span class="keyword">constexpr</span> (<span class="namespace">std</span>::<span class="type">is_same_v</span>&lt;<span class="type">T</span>, <span class="namespace">std</span>::<span class="type">string</span>&gt;)
+				<span class="namespace">std</span>::<span class="namespace">fmt</span>::<span class="func">print</span>(<span class="lit-str">"std::string with value '{}'<span class="esc-seq">\n</span>"</span>, <span class="param">arg</span>);
+			<span class="keyword">else</span>
+				<span class="keyword">static_assert</span>(<span class="type">always_false</span>&lt;<span class="type">T</span>&gt;::<span class="var-local">value</span>, <span class="lit-str">"non-exhaustive visitor!"</span>);
+		}, <span class="var-local">v</span>);
+	}
+
+	<span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; <span class="var-local">v</span> : <span class="var-local">vec</span>)
+	{
+		<span class="namespace">std</span>::<span class="func">visit</span>(<span class="type">overloaded</span> {
+			[](<span class="keyword">auto</span> <span class="param">arg</span>) { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="param">arg</span> <span class="oo">&lt;&lt;</span> <span class="lit-chr">' '</span>; },
+			[](<span class="keyword">double</span> <span class="param">arg</span>) { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">fixed</span> <span class="oo">&lt;&lt;</span> <span class="param">arg</span> <span class="oo">&lt;&lt;</span> <span class="lit-chr">' '</span>; },
+			[](<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">string</span>&amp; <span class="param">arg</span>) { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="namespace">std</span>::<span class="func">quoted</span>(<span class="param">arg</span>) <span class="oo">&lt;&lt;</span> <span class="lit-chr">' '</span>; }
+		}, <span class="var-local">v</span>);
+	}
+}
+</pre></td>
+</tr></tbody></table></section><section id="clangd-based-highlight"><h4>Clangd-based highlight</h4>
+<p>Uses clangd to colorize the code. No color file required, but the code must be compilable.</p>
+<p>Clangd-based highlight is run when no colorizarion file is given. There is one additional option to enable specific subhighlights for printf family of functions.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;utility&gt;</span>
+
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="macro">EMPTY</span>
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="macro">PRINT</span>(<span class="pp-macro-param">x</span>) \
+	<span class="pp-macro-body">std</span><span class="pp-macro-body">::</span><span class="pp-macro-body">cout</span> <span class="pp-macro-body">&lt;&lt;</span> <span class="pp-hash">#</span><span class="pp-macro-param">x</span> <span class="lit-str">" = "</span> <span class="pp-macro-body">&lt;&lt;</span> <span class="pp-macro-body">(</span><span class="pp-macro-param">x</span><span class="pp-macro-body">)</span> <span class="pp-macro-body">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>
+
+<span class="disabled-code"><span class="pp-hash">#</span><span class="pp-directive">ifndef</span> <span class="pp-macro">EMPTY</span></span>
+<span class="disabled-code"><span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="pp-macro">BUG</span></span>
+<span class="disabled-code"><span class="pp-hash">#</span><span class="pp-directive">error</span> <span class="pp-other">Misconfigured build!</span></span>
+<span class="disabled-code"><span class="pp-hash">#</span><span class="pp-directive">endif</span></span>
+
+<span class="com-single">// some comment
+</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">struct</span> <span class="type-class">test</span>
+{
+	<span class="com-multi-dox">/**
+	 * <span class="com-tag-dox">@brief</span> reset an object of type T
+	 * <span class="com-tag-dox">@param</span> value the object
+	 * <span class="com-tag-dox">@return</span> void
+	 */</span>
+	<span class="keyword">void</span> <span class="func-member">reset</span>(<span class="param-tmpl">T</span>&amp; <span class="param">value</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>(<span class="keyword">noexcept</span>(<span class="param-tmpl">T</span>{}))
+	{
+		<span class="com-single">// <span class="com-tag-todo">TODO</span> make a version with T()
+</span>		<span class="param">value</span> = <span class="macro">EMPTY</span> <span class="param-tmpl">T</span>{};
+	}
+
+	<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">U</span> = <span class="param-tmpl">T</span>&gt;
+	<span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="func-member">func</span>(<span class="param-tmpl">U</span>&amp;&amp; <span class="param">object</span>) <span class="keyword">const</span> <span class="keyword">noexcept</span>(<span class="keyword">noexcept</span>(<span class="namespace">std</span>::<span class="func-free">declval</span>&lt;<span class="param-tmpl">U</span>&amp;&amp;&gt;().<span class="dep-name">func</span>()))
+	{
+		<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func-free">forward</span>&lt;<span class="param-tmpl">U</span>&gt;(<span class="param">object</span>).<span class="dep-name">func</span>();
+	}
+};
+
+[[<span class="unknown">nodiscard</span>]] <span class="keyword">long</span> <span class="keyword">long</span> <span class="func-free">factorial</span>(<span class="keyword">long</span> <span class="keyword">long</span> <span class="param">n</span>)
+{
+	<span class="keyword">if</span> (<span class="param">n</span> &lt; <span class="lit-num">2</span>)
+		<span class="keyword">return</span> <span class="lit-num">1</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">n</span> * <span class="func-free">factorial</span>(<span class="param">n</span> - <span class="lit-num">1</span>);
+}
+
+<span class="pp-hash">#</span><span class="pp-directive">define</span> <span class="macro">X</span>(<span class="pp-macro-param">g</span>, ...)
+<span class="keyword">auto</span> <span class="var-global">global</span> = <span class="com-multi">/* not so multiline comment */</span> <span class="lit-num">123.456</span><span class="lit-suf">l</span>;
+<span class="pp-hash">#</span> <span class="com-single-dox">/// lone hash shouldn't be a problem
+
+</span><span class="keyword">namespace</span> <span class="namespace">anything</span> { <span class="keyword">enum</span> <span class="keyword">class</span> <span class="type-enum">something</span> { <span class="enum">one</span>, <span class="enum">two</span>, <span class="enum">three</span> }; }
+
+<span class="keyword">auto</span> <span class="func-free">main</span>() -&gt; <span class="keyword">int</span>
+{
+	<span class="type-class">test</span>&lt;<span class="type">decltype</span>(<span class="var-global">global</span>)&gt;{}.<span class="func-member">reset</span>(<span class="param-out">global</span>);
+	<span class="keyword">auto</span> <span class="var-local">str_lit</span> = <span class="lit-pre">R</span><span class="lit-str">"</span><span class="lit-str-raw-delim">test</span><span class="lit-str-raw-delim">(</span><span class="lit-str">raw\nstring\nliteral</span><span class="lit-str-raw-delim">)</span><span class="lit-str-raw-delim">test</span><span class="lit-str">"</span>;
+	<span class="macro">PRINT</span>(<span class="var-local">str_lit</span>);
+	<span class="keyword">const</span> <span class="keyword">auto</span>&amp; <span class="var-local">fmt</span> = <span class="lit-pre">L</span><span class="lit-str">"pointer = <span class="fmt-seq">%p</span>, length = <span class="fmt-seq">%zu</span>, string = <span class="fmt-seq">%s</span>"</span>;
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"sizeof(fmt) = "</span> &lt;&lt; <span class="keyword">sizeof</span>(<span class="var-local">fmt</span>) &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table></section></section><section id="custom-ansi-highlight"><h3>Custom ANSI highlight</h3>
+<p>Support through <code class="docutils literal">rest_highlighter</code> plugin. Path is mandatory.</p>
+<p><code class="docutils literal">notes/working.md</code> at the root of the repository describes how to generate text files with ANSI highlight from colorful terminal output.</p>
+<pre class="code ansi">In file included from <span class="ansi1">/usr/include/c++/8/algorithm:62</span>,
+                 from <span class="ansi1">main.cpp:1</span>:
+/usr/include/c++/8/bits/stl_algo.h: In instantiation of ‘<span class="ansi1">void std::__sort(_RandomAccessIterator, _RandomAccessIterator, _Compare) [with _RandomAccessIterator = std::_List_iterator&lt;int&gt;; _Compare = __gnu_cxx::__ops::_Iter_less_iter]</span>’:
+<span class="ansi1">/usr/include/c++/8/bits/stl_algo.h:4834:18:</span>   required from ‘<span class="ansi1">void std::sort(_RAIter, _RAIter) [with _RAIter = std::_List_iterator&lt;int&gt;]</span>’
+<span class="ansi1">main.cpp:7:30:</span>   required from here
+<span class="ansi1">/usr/include/c++/8/bits/stl_algo.h:1969:22:</span> <span class="ansi1 ansi31">error: </span>no match for ‘<span class="ansi1">operator-</span>’ (operand types are ‘<span class="ansi1">std::_List_iterator&lt;int&gt;</span>’ and ‘<span class="ansi1">std::_List_iterator&lt;int&gt;</span>’)
+     std::__lg(<span class="ansi1 ansi31">__last - __first</span>) * 2,
+               <span class="ansi1 ansi31">~~~~~~~^~~~~~~~~</span>
+In file included from <span class="ansi1">/usr/include/c++/8/bits/stl_algobase.h:67</span>,
+                 from <span class="ansi1">/usr/include/c++/8/algorithm:61</span>,
+                 from <span class="ansi1">main.cpp:1</span>:
+<span class="ansi1">/usr/include/c++/8/bits/stl_iterator.h:392:5:</span> <span class="ansi1 ansi36">note: </span>candidate: ‘<span class="ansi1">template&lt;class _IteratorL, class _IteratorR&gt; constexpr decltype ((__y.base() - __x.base())) std::operator-(const std::reverse_iterator&lt;_Iterator&gt;&amp;, const std::reverse_iterator&lt;_IteratorR&gt;&amp;)</span>’
+     <span class="ansi1 ansi36">operator</span>-(const reverse_iterator&lt;_IteratorL&gt;&amp; __x,
+     <span class="ansi1 ansi36">^~~~~~~~</span>
+<span class="ansi1">/usr/include/c++/8/bits/stl_iterator.h:392:5:</span> <span class="ansi1 ansi36">note: </span>  template argument deduction/substitution failed:
+In file included from <span class="ansi1">/usr/include/c++/8/algorithm:62</span>,
+                 from <span class="ansi1">main.cpp:1</span>:
+<span class="ansi1">/usr/include/c++/8/bits/stl_algo.h:1969:22:</span> <span class="ansi1 ansi36">note: </span>  ‘<span class="ansi1">std::_List_iterator&lt;int&gt;</span>’ is not derived from ‘<span class="ansi1">const std::reverse_iterator&lt;_Iterator&gt;</span>’
+     std::__lg(<span class="ansi1 ansi36">__last - __first</span>) * 2,
+               <span class="ansi1 ansi36">~~~~~~~^~~~~~~~~</span>
+In file included from <span class="ansi1">/usr/include/c++/8/bits/stl_algobase.h:67</span>,
+                 from <span class="ansi1">/usr/include/c++/8/algorithm:61</span>,
+                 from <span class="ansi1">main.cpp:1</span>:
+<span class="ansi1">/usr/include/c++/8/bits/stl_iterator.h:1188:5:</span> <span class="ansi1 ansi36">note: </span>candidate: ‘<span class="ansi1">template&lt;class _IteratorL, class _IteratorR&gt; constexpr decltype ((__x.base() - __y.base())) std::operator-(const std::move_iterator&lt;_IteratorL&gt;&amp;, const std::move_iterator&lt;_IteratorR&gt;&amp;)</span>’
+     <span class="ansi1 ansi36">operator</span>-(const move_iterator&lt;_IteratorL&gt;&amp; __x,
+     <span class="ansi1 ansi36">^~~~~~~~</span>
+<span class="ansi1">/usr/include/c++/8/bits/stl_iterator.h:1188:5:</span> <span class="ansi1 ansi36">note: </span>  template argument deduction/substitution failed:
+In file included from <span class="ansi1">/usr/include/c++/8/algorithm:62</span>,
+                 from <span class="ansi1">main.cpp:1</span>:
+<span class="ansi1">/usr/include/c++/8/bits/stl_algo.h:1969:22:</span> <span class="ansi1 ansi36">note: </span>  ‘<span class="ansi1">std::_List_iterator&lt;int&gt;</span>’ is not derived from ‘<span class="ansi1">const std::move_iterator&lt;_IteratorL&gt;</span>’
+     std::__lg(<span class="ansi1 ansi36">__last - __first</span>) * 2,
+               <span class="ansi1 ansi36">~~~~~~~^~~~~~~~~</span>
+</pre>
+<pre class="code ansi"><span class="ansi1">main.cpp:</span> In function ‘<span class="ansi1">int func(int&amp;)</span>’:
+<span class="ansi1">main.cpp:7:1:</span> <span class="ansi1 ansi35">warning: </span>no return statement in function returning non-void [<span class="ansi1 ansi35">-Wreturn-type</span>]
+ <span class="ansi1 ansi35">}</span>
+ <span class="ansi1 ansi35">^</span>
+<span class="ansi1">main.cpp:3:15:</span> <span class="ansi1 ansi35">warning: </span>unused parameter ‘<span class="ansi1">x</span>’ [<span class="ansi1 ansi35">-Wunused-parameter</span>]
+ int func(<span class="ansi1 ansi35">int&amp; x</span>)
+          <span class="ansi1 ansi35">~~~~~^</span>
+<span class="ansi1">main.cpp:</span> In function ‘<span class="ansi1">int main()</span>’:
+<span class="ansi1">main.cpp:12:25:</span> <span class="ansi1 ansi31">error: </span>‘<span class="ansi1">x</span>’ was not declared in this scope
+  std::cout &lt;&lt; "x = " &lt;&lt; <span class="ansi1 ansi31">x</span> &lt;&lt; "\n";
+                         <span class="ansi1 ansi31">^</span>
+<span class="ansi1">main.cpp:13:7:</span> <span class="ansi1 ansi31">error: </span>cannot bind non-const lvalue reference of type ‘<span class="ansi1">int&amp;</span>’ to an rvalue of type ‘<span class="ansi1">int</span>’
+  func(<span class="ansi1 ansi31">123</span>);
+       <span class="ansi1 ansi31">^~~</span>
+<span class="ansi1">main.cpp:3:5:</span> <span class="ansi1 ansi36">note: </span>  initializing argument 1 of ‘<span class="ansi1">int func(int&amp;)</span>’
+ int <span class="ansi1 ansi36">func</span>(int&amp; x)
+     <span class="ansi1 ansi36">^~~~</span>
+</pre></section></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

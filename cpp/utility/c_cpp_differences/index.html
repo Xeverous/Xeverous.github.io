@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - differences between C and C++</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../">HOME</a></li>
+				<li><a href="../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../tutorials/beginner/">beginner</a></li>
+						<li><a href="../../tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../cpp_myths/">C++ myths</a></li>
+						<li><a href="../glossary/">glossary</a></li>
+						<li><a href="../">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../about/">about</a></li>
+						<li><a href="../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../">HOME</a></li>
+				<li class="button"><a href="../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../">utility</a></li>
+							<span>/</span>
+						<li>differences between C and C++</li>
+					</ol></nav><div class="content">
+				<h1>differences between C and C++</h1>				<p>Below is a (hopefully complete) list of differences between C and C++.</p>
+<p>I do not list features that are only in one language, only stuff that exists in both but has different meaning.</p>
+<section id="keywords"><h2>Keywords</h2>
+<ul class="simple">
+<li><p>C++ has no <code class="code custom-cpp"><span class="keyword">restrict</span></code> keyword. There were some attempts to bring it but it's already complicated in C. In C++ due to language complexity it could very easily become a source of bug-generating optimizations if used incorrectly. Every major compiler offers <code class="code custom-cpp"><span class="keyword">__restrict</span></code> extension though.</p></li>
+<li><p>C++ has no meaning for <code class="code custom-cpp"><span class="keyword">register</span></code>, the keyword remains reserved.</p></li>
+<li>
+<p>C++11 has changed the meaning of <code class="code custom-cpp"><span class="keyword">auto</span></code> from storage specifier to a type specifier.</p>
+<ul>
+<li><p>In C, <code class="code custom-cpp"><span class="keyword">auto</span></code> is a hint for the compiler (now generally ignored, similarly to <code class="code custom-cpp"><span class="keyword">inline</span></code>).</p></li>
+<li><p>In C++11 and later, <code class="code custom-cpp"><span class="keyword">auto</span></code> is the keyword for type inference, like <code class="code custom-cpp"><span class="keyword">var</span></code> and <code class="code custom-cpp"><span class="keyword">let</span></code> in other languages.</p></li>
+</ul>
+</li>
+</ul></section><section id="character-literals"><h2>Character literals</h2>
+<p>In C, character literals like <code class="code custom-cpp"><span class="lit-chr">'a'</span></code> have type <code class="code custom-cpp"><span class="keyword">int</span></code>. In C++ they have type <code class="code custom-cpp"><span class="keyword">char</span></code>. Both languages support character literal prefixes and for prefixes allowed in both languages they have the same resulting type.</p>
+</section><section id="string-literals"><h2>String literals</h2>
+<p>C allows to assign string literals to non-const pointers:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">char</span>* <span class="var-local">str</span> = <span class="lit-str">"abc"</span>; <span class="com-single">// valid C, invalid C++</span>
+</pre></td>
+</tr></tbody></table>
+<p>Attempting to modify such string is undefined behaviour.</p>
+</section><section id="arrays"><h2>Arrays</h2>
+<p>Both languages allow to initialize non-const character array with a string literal:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">char</span> <span class="var-local">arr</span>[] = <span class="lit-str">"abc"</span>;
+</pre></td>
+</tr></tbody></table>
+<p>There is no undefined behaviour when modifying such array - the array is simply a modifiable copy of the literal.</p>
+<p>In C, character array of size one less than the size of the string literal may be initialized from a string literal; the resulting array is not null-terminated. This is not allowed in C++.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// C: ok, arr = { 'a', 'b', 'c' }</span>
+<span class="com-single">// C++: error: initializer (const char[4]) too long</span>
+<span class="keyword">char</span> <span class="var-local">arr</span>[<span class="lit-num">3</span>] = <span class="lit-str">"abc"</span>;
+</pre></td>
+</tr></tbody></table>
+<p>In C++, references and pointers to arrays of unknown bound can be formed, but cannot be initialized or assigned from arrays and pointers to arrays of known bound.</p>
+<p>In C, pointers to arrays of unknown bound are compatible with pointers to arrays of known bound and are thus convertible and assignable in both directions.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">extern</span> <span class="keyword">int</span> <span class="var-local">a1</span>[];
+<span class="keyword">int</span> (&amp;<span class="var-local">r1</span>)[] = <span class="var-local">a1</span>;  <span class="com-single">// ok (C++ only code)</span>
+<span class="keyword">int</span> (*<span class="var-local">p1</span>)[] = &amp;<span class="var-local">a1</span>; <span class="com-single">// ok in C, ok in C++</span>
+<span class="keyword">int</span> (*<span class="var-local">q</span>)[<span class="lit-num">2</span>] = &amp;<span class="var-local">a1</span>; <span class="com-single">// ok in C, error in C++</span>
+
+<span class="keyword">int</span> <span class="var-local">a2</span>[] = {<span class="lit-num">1</span>, <span class="lit-num">2</span>, <span class="lit-num">3</span>};
+<span class="keyword">int</span> (&amp;<span class="var-local">r2</span>)[] = <span class="var-local">a2</span>;  <span class="com-single">// error (C++ only code)</span>
+<span class="keyword">int</span> (*<span class="var-local">p2</span>)[] = &amp;<span class="var-local">a2</span>; <span class="com-single">// ok in C, error in C++</span>
+</pre></td>
+</tr></tbody></table></section><section id="loops"><h2>Loops</h2>
+<ul class="simple">
+<li><p>In C, the scope of loop <em>statement</em> is nested within the scope of <em>init-statement</em>.</p></li>
+<li><p>In C++, the scope of <em>init-statement</em> and the scope of loop <em>statement</em> is one and the same.</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">for</span> (<span class="keyword">int</span> <span class="var-local">i</span> = <span class="lit-num">0</span>; <span class="var-local">i</span> &lt; <span class="var-local">n</span>; ++<span class="var-local">i</span>)
+{
+	<span class="com-single">// C: well-defined (name shadowing)</span>
+	<span class="com-single">// C++: ill-formed (redefinition of i)</span>
+	<span class="keyword">long</span> <span class="var-local">i</span> = <span class="lit-num">1</span>;
+}
+</pre></td>
+</tr></tbody></table></section><section id="type-definitions-and-usage"><h2>Type definitions and usage</h2>
+<p>C requires to prefix every non-built-in type name with a keyword that describes what it is.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">foo</span> { <span class="keyword">int</span> <span class="var-member">x</span>; };
+<span class="keyword">void</span> <span class="func">func1</span>(<span class="keyword">struct</span> <span class="type">foo</span>* <span class="param">f</span>);
+
+<span class="keyword">enum</span> <span class="type">some_enum</span> { <span class="enum">e1</span>, <span class="enum">e2</span> };
+<span class="keyword">void</span> <span class="func">func2</span>(<span class="keyword">enum</span> <span class="type">some_enun</span> <span class="param">e</span>);
+</pre></td>
+</tr></tbody></table>
+<p>It's possible to create an alias to avoid this requirement. A strong convention is to use exactly the same name:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">foo</span> { <span class="keyword">int</span> <span class="var-member">x</span>; };
+<span class="keyword">typedef</span> <span class="keyword">struct</span> <span class="type">foo</span> <span class="type">foo</span>;
+<span class="keyword">void</span> <span class="func">func1</span>(<span class="type">foo</span>* <span class="param">f</span>);
+
+<span class="keyword">enum</span> <span class="type">some_enum</span> { <span class="enum">e1</span>, <span class="enum">e2</span> };
+<span class="keyword">typedef</span> <span class="keyword">enum</span> <span class="type">some_enum</span> <span class="type">some_enum</span>;
+<span class="keyword">void</span> <span class="func">func2</span>(<span class="type">some_enum</span> <span class="param">e</span>);
+</pre></td>
+</tr></tbody></table>
+<p>A lot of code combines the type definition and an alias into one statement:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">typedef</span> <span class="keyword">struct</span> { <span class="keyword">int</span> <span class="var-member">x</span>; } <span class="type">foo</span>;
+<span class="keyword">typedef</span> <span class="keyword">enum</span> { <span class="enum">e1</span>, <span class="enum">e2</span> } <span class="type">some_enum</span>;
+</pre></td>
+</tr></tbody></table>
+<p>All of the above is allowed in C++ (for backwards compatibility) but not required.</p>
+<p>A corner case where it is required are name clashes:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;sys/types.h&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;sys/stat.h&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;unistd.h&gt;</span>
+
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cerrno&gt;</span>
+
+<span class="keyword">int</span> <span class="func">file_size</span>(<span class="keyword">const</span> <span class="keyword">char</span>* <span class="param">path</span>, <span class="type">off_t</span>&amp; <span class="param">size</span>)
+{
+	<span class="keyword">struct</span> <span class="type">stat</span> <span class="var-local">statbuf</span>; <span class="com-single">// "struct" to use the type</span>
+	<span class="keyword">if</span> (<span class="func">stat</span>(<span class="param">path</span>, &amp;<span class="var-local">statbuf</span>) != <span class="lit-num">0</span>) <span class="com-single">// use the function</span>
+		<span class="keyword">return</span> <span class="macro">errno</span>;
+
+	<span class="param">size</span> = <span class="var-local">statbuf</span>.<span class="var-local">st_size</span>;
+	<span class="keyword">return</span> <span class="lit-num">0</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Obviously using the same name for a type and a function is bad practice.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>The <code class="code custom-cpp"><span class="keyword">typedef</span> <span class="keyword">struct</span></code> practice is not universally accepted in C, there are projects which are against it (most notably the Linux kernel).</p>
+</aside></section><section id="empty-types"><h2>Empty types</h2>
+<p>C does not allow empty types.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">empty</span> {}; <span class="com-single">// invalid C, valid C++</span>
+</pre></td>
+</tr></tbody></table>
+<p>Empty types in C++ are commonly used in tag dispatching and other tricks that leverage strong typing - usually found in templates. Empty types are also a subject for <em>empty base optimization</em>.</p>
+</section><section id="empty-parameter-lists"><h2>Empty parameter lists</h2>
+<p>In C, a function declaration with no expression between parenthesis declares a function with unspecified amount of arguments (known as a function without prototype). Calling such function with arguments that mismatch function definition results in undefined behavior. In C++ there is no such problem.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// C  : declaration of a function with unspecified amount and types of arguments</span>
+<span class="com-single">// C++: declaration of a function that takes 0 arguments</span>
+<span class="keyword">void</span> <span class="func">func</span>();
+
+<span class="com-single">// C  : declaration of a function that takes 0 arguments</span>
+<span class="com-single">// C++: declaration of a function that takes 0 arguments, just ugly (kept for backwards compatibility)</span>
+<span class="keyword">void</span> <span class="func">func</span>(<span class="keyword">void</span>);
+</pre></td>
+</tr></tbody></table></section><section id="missing-return"><h2>Missing return</h2>
+<p>In both languages it is valid to have a function with non-void return that does not return on some control flow paths.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="func">func</span>(<span class="keyword">int</span> <span class="param">a</span>, <span class="keyword">int</span> <span class="param">b</span>, <span class="keyword">int</span> <span class="param">n</span>)
+{
+	<span class="keyword">if</span> (<span class="param">n</span> &gt; <span class="lit-num">0</span>)
+		<span class="keyword">return</span> <span class="param">a</span> / <span class="param">b</span>;
+	<span class="keyword">if</span> (<span class="param">n</span> &lt; <span class="lit-num">0</span>)
+		<span class="keyword">return</span> <span class="param">b</span> / <span class="param">a</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>However:</p>
+<ul class="simple">
+<li><p>In C it is UB to read the value returned from such function if it reached non-return path.</p></li>
+<li><p>In C++ it is UB to just reach the non-return path when executing the function (the stricter requirement is an effect of return value optimation which C does not have).</p></li>
+</ul>
+<p>Writing such functions is obviously discouraged in both languages, all major compilers generate a warning.</p>
+</section><section id="addresses-of-standard-library-functions"><h2>Addresses of standard library functions</h2>
+<p>C explicitly allows to take adresses of standard library functions (with exceptions).</p>
+<p>C++ explicitly disallows to take addresses of standard library functions (with exceptions). One of the reasons is that C++ allows or requires multiple overloads for many functions, many of which can be implemented through templates and can change with standard library updates. Workaround: make a wrapper around standard library function and use the address of the wrapper.</p>
+</section><section id="main-function"><h2>Main function</h2>
+<p>C++ forbids any use of the main function. This includes calling it and taking its address.</p>
+</section><section id="unions"><h2>Unions</h2>
+<p>C allows unions for type punning.</p>
+<p>C++ has constructors and destructors which complicate the situation. Unions allows only to access last assigned member and any other access is undefined behaviour.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// valid C, UB in C++</span>
+<span class="keyword">union</span> {
+	<span class="keyword">int</span> <span class="var-member">n</span>;
+	<span class="keyword">char</span> <span class="var-member">bytes</span>[<span class="lit-num">4</span>];
+} <span class="var-local">packet</span>;
+
+<span class="var-local">packet</span>.<span class="var-local">n</span> = <span class="lit-num">1</span>;
+<span class="keyword">if</span> (<span class="var-local">packet</span>.<span class="var-local">bytes</span>[<span class="lit-num">0</span>] == <span class="lit-num">1</span>) <span class="com-single">// accessing other member</span>
+	<span class="com-single">// ...</span>
+</pre></td>
+</tr></tbody></table>
+<p>All major C++ compilers document that such behavior is not UB in their implementation and permit it for type punning (there are other, standard-compliant ways to do it though). C++ committee is aware of the problem that this part of the standard is a grey area; from what I know there is some work undergoing to permit such code if the union members are <em>trivial</em> types.</p>
+</section><section id="aliasing"><h2>Aliasing</h2>
+<ul class="simple">
+<li><p>In both languages any (potentially cv-qualified) <code class="code custom-cpp"><span class="keyword">void</span>*</code> may alias.</p></li>
+<li><p>In C, (potentially cv-qualified) <code class="code custom-cpp"><span class="keyword">signed</span></code>/<code class="code custom-cpp"><span class="keyword">unsigned</span></code>/unspecified <code class="code custom-cpp"><span class="keyword">char</span>*</code> may alias.</p></li>
+<li><p>In C++, only (potentially cv-qualified) <code class="code custom-cpp"><span class="keyword">unsigned</span></code>/unspecified <code class="code custom-cpp"><span class="keyword">char</span>*</code> may alias.</p></li>
+</ul>
+<p>Want to know more? Read the article about strict aliasing TOWRITE.</p>
+</section><section id="linkage-rules"><h2>Linkage rules</h2>
+<p>Names in the global scope that are <code class="code custom-cpp"><span class="keyword">const</span></code> and not <code class="code custom-cpp"><span class="keyword">extern</span></code> have external linkage in C but internal linkage in C++.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">int</span> <span class="var-global">n</span> = <span class="lit-num">1</span>;
+<span class="com-single">// C  : n can     be referred in other translation units</span>
+<span class="com-single">// C++: n can not be referred in other translation units (requires extern)</span>
+</pre></td>
+</tr></tbody></table>
+<!-- TODO inline differences --></section><section id="expressions"><h2>Expressions</h2>
+<p>From:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.cppreference.com/w/c/language/operator_precedence">https://en.cppreference.com/w/c/language/operator_precedence</a></p></li>
+<li><p><a class="reference external" href="https://en.cppreference.com/w/cpp/language/operator_precedence">https://en.cppreference.com/w/cpp/language/operator_precedence</a></p></li>
+</ul>
+<p>In C++, the conditional operator has the same precedence as assignment operators, and prefix ++ and -- and assignment operators don't have the restrictions about their operands.</p>
+<p>In C, the ternary conditional operator has higher precedence than assignment operators. Therefore, the expression <code class="docutils literal">e = a &lt; d ? a++ : a = d</code>, which is parsed in C++ as <code class="docutils literal">e = ((a &lt; d) ? <span class="pre">(a++)</span> : (a = d))</code>, will fail to compile in C due to grammatical or semantic constraints in C.</p>
+<!-- TOWRITE convertions -->
+<!-- T** to const T* const convertion (valid in C++, invalid in C) -->
+<!-- https://stackoverflow.com/questions/48560778/intermediate-pointers-in-cast-must-be-const-qualified-why/ -->
+<!-- https://stackoverflow.com/a/29553017 -->
+<!-- http://c-faq.com/ansi/constmismatch.html -->
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

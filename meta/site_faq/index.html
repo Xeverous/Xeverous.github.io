@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - site FAQ</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../">HOME</a></li>
+				<li><a href="../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../cpp/tutorials/beginner/">beginner</a></li>
+						<li><a href="../../cpp/tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../cpp/tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../cpp/stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../cpp/utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../cpp/utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../cpp/utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../cpp/utility/glossary/">glossary</a></li>
+						<li><a href="../../cpp/utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../about/">about</a></li>
+						<li><a href=".">website FAQ</a></li>
+						<li><a href="../markdown_test/">Markdown test page</a></li>
+						<li><a href="../rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../">HOME</a></li>
+				<li class="button"><a href="../../index">INDEX</a></li>
+				<li class="button"><a href="../../faq">FAQ</a></li>
+				<li class="button"><a href="../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../">meta</a></li>
+							<span>/</span>
+						<li>site FAQ</li>
+					</ol></nav><div class="content">
+				<h1>site FAQ</h1>				<h3>Site content</h3>
+<h4>Why tutorials are build over feature X, Y, Z but not incrementally over consecutive C++ standards?</h4>
+<p>This not a good idea. If you play any online game - do you learn it how it is at the given moment or read patch notes for every update since the beginning? It's good to know what things have been introduced in what order, but it doesn't do well in terms of learning. A lot of features can be mixed together, so the order of presentation matters, not the chronological order of their introduction.</p>
+<p>It's better to study a complete feature in one go than to jump back to it periodically because there was a language update. It makes searching hard (unstructured lessons) and requires jumping between features when learning which may be confusing and counter-productive. Plus you are not going to remember when everything was exactly introduced anyway.</p>
+<p>However, newer features are explicitly marked and most chapters about certain features do go upfront from the start to the latest changes. Where possible, I did go from the past to newer stuff, where not I focused more on the best order to understand things with least struggle.</p>
+<h4>Why is not the C++ tutorial written in the order of low level to high level features? Why is <code>std::string</code> so early and pointers so late?</h4>
+<p><strong>There is a huge bias, especially in "teachers" that you need to learn C before C++. It is horribly wrong and does more harm than good.</strong> The fact that 99% of C is valid C++ is irrelevant. 99% of C is really bad C++. Both languages have vastly different conventions and even some features have usage/syntax differences. <strong>A lot of C habits need to be unlearned when moving from C to C++.</strong></p>
+<p>C++ was built mostly on 2 languages: C and Simula. C brought the syntax and low-level features while Simula brought type safety and high-level features. But no one mentions you need to learn Simula before C++. Also, no one mentions you need to learn C before C#. Or to learn anything before Python, which hides a ton of things.</p>
+<p>People are writing website scripts in JavaScript, making fun with Python modules without even knowing what are and how to use pointers. <strong>You do not need to learn pointers and all the complicated stuff before using any of the high-level features of any programming language.</strong></p>
+<p><strong>Placing pointers at the start of the tutorial results in a big wall for beginners: a lot to remember, a hard to debug problems, a lot of confusion and frustration. And all of this in a language that was designed to abstract away this details into simpler, easier to understand code.</strong> Even in the book "the C programming language", pointers arrive as late as at the half of the book.</p>
+<p>A more thorough explanation can be found in <a href="https://www.youtube.com/watch?v=YnWhqhNdYyk">Kate Gregory's talk - "Stop teaching C"</a>.</p>
+<h3>Site creation</h3>
+<h4>What was the hardest part of writing the content?</h4>
+<p><strong>1. Deciding whether X amount of text for an explanation of ABC is enough. Deciding between simple explanations and technically correct statements.</strong> I might write 2X but will it not overwhelm the reader? Is more, simpler text always better? Some readers may find 0.5X to be enough (and more text to be redundant or boring) while some may find 2X + examples to be necessary to understand the thing. What about corner cases? More text = more confusion or better explanation? I think I may spend to much time on text-meta and think too deeply about each site user.</p>
+<p>Regardless of text, I'm sure more examples are always a good idea. They don't distract the user much and each gives a chance to look how something is used.</p>
+<p>Sometimes I struggle with creating examples - especially for design patterns. And it's better not to provide bad examples.</p>
+<p><strong>2. The order of presented features. Circular dependencies.</strong> Multiple ones are very often mixed together and they don't offer much alone. Sometimes there are like 3 things, and I struggle to find a way to showcase them because A needs B, B needs C and C needs A.</p>
+<p>It was easy with lambdas - they were build on top of ordinary functions and further lambda features were mostly going upwards in depth, not adding a lot of complexity - this is why lambda expression chapter is pretty straightforward, then adding more about mutability and generic programming.</p>
+<p>It was hard with templates and pointers. Both by their nature are hard to grasp, and even short examples use a lot of features. Many features were added as syntax sugar or more complex versions of existing ones. The depth comes from mixing complex features, not from diving deeper into one. Some examples are overly trivial and may not represent well real use cases but at least they don't overwhelm the reader - at first stages it's more important to understand how it works, not what are applications of it.</p>
+<p>Still, as with first point - I find that more examples are always better.</p>
+<h4>What was the motivation to create the site?</h4>
+<p><strong>A vast majority of online content about C++ is garbage (and by garbage I do not mean outdated). Not only websites - there are many bad books too!!! Nothing has really motivated me so strong as the amount of trash tier content.</strong> So many sites copy-paste average C or "C without C-only features" and claim it to be C++ "because we added a class", "because it compiles as C++":</p>
+<ul>
+<li>cprogramming (ironically most of their C++ is C)</li>
+<li>geeksforgeeks (take any exercise, C and C++ solutions are often the same code or have marginal differences)</li>
+<li>code project (countless beginner level mistakes in most articles)</li>
+</ul>
+<p>A unique exception is thisPointer.com. It has some good idiomatic STL examples.</p>
+<p>learncpp.com is regarded as one of the best sites for learning C++. Site is good but it still has many mistakes. Still, I rate it #1 after mine which hopefully will be #0 for you.</p>
+<p>There is a C++ language tutorial on cplusplus.com. It is not bad, assuming we read it in 2003. Most content on the site is just outdated. Tutorial is pretty fast and compact, but:</p>
+<ul>
+<li>does not give any reasoning about desicions - readers do not learn, they just follow recomemndations with no understanding</li>
+<li>many features lack recommendation - reader can remember them, but has no idea what's their purpose and when to use them</li>
+<li>even for old C++98/03, the site does not mention many features</li>
+<li>some features are not presented in very convenient order</li>
+<li>the site does not seem to be maintained</li>
+</ul>
+<p>Initially, I wanted to contribute to learncpp.com, but <a href="https://www.learncpp.com/site-news/report-an-issue/comment-page-2/#comment-310505">Alex said</a> some of my points are on the todo list and prefers to have only own articles.</p>
+<p>There are few other very good sites:</p>
+<ul>
+<li>
+<a href="https://www.fluentcpp.com/">Fluent C++</a> - by Jonathan Boccara</li>
+<li>
+<a href="https://herbsutter.com/">Sutter's Mill</a> - by Herb Sutter, known for <a href="https://herbsutter.com/gotw/">Guru of the week</a>
+</li>
+</ul>
+<p>...but since they are more blog-oriented for periodic news and posts, I disregarded them from being "C++ tutorial sites" and planned to build own guide based on plain markdown repository. I wanted a structured, step-by-step guide, not random blog posts about certain problems - 90% of C++ problems are already solved by Stack Overflow but it is not structured in any way for incremental learning.</p>
+<p>Soon then, I realized GitHub has opened GitHub Pages and allowed for free static website hosting.</p>
+<p>Other consequences</p>
+<ul>
+<li>I learn one of countless web frameworks.</li>
+<li>I learn HTML5 and CSS3.</li>
+<li>I will consolidate my skills and knowledge (and even use the site myself).</li>
+<li>The site is a great point for my CV (resume).</li>
+</ul>
+<h4>What is used to build this website? Why these tools?</h4>
+<p>I started with <a href="https://jekyllrb.com/">Jekyll</a> (static site generator using Ruby language and Liquid template engine) because GitHub just recommended it. I realized quite fast that this was not the framework for me - it did not support non-blog sites well and had significantly limited customizability. After watching its tutorials, where a person explains how does a for loop work it was clear for me that I am not the target audience. The fact that Jekyll documentation is not very thorough and I have no Ruby skills did not help either. And argh, the incremental build was still an experimental feature - scripting languages are already slow - imagine that in an addition you needed to wait for a full rescan and rebuild after every change.</p>
+<p>There are tons frameworks, just see <a href="https://www.staticgen.com/">the list of static site generators</a>. But:</p>
+<ul>
+<li>A vast majority of these frameworks are only suited for blogs. That is, you just throw all posts in 1 directory and the framework renders a timeline, RSS feeds etc. for you. No way to reorder posts, no way to make framework extensions and sometimes even no or limited ways of customizing HTML and CSS.</li>
+<li>The majority of remaining frameworks are dedicated to generate documentation. Again, not for my needs.</li>
+</ul>
+<p>Only few frameworks covered my needs:</p>
+<ul>
+<li>The ability to put articles in any order, including hierarchical structure.</li>
+<li>The ability to fully customize HTML and CSS templates. No assumptions, no unremoveable parts.</li>
+<li>No forced JavaScript. No user-side HTML generation.</li>
+<li>No forced frontend frameworks (Bootstrap and similar).</li>
+<li>
+<strong>Ability to extend generation mechanism, e.g. custom templates or extensions to Markdown / Restructured Text format.</strong> Bold, italic and fenced code blocks are not enough for me.</li>
+<li>Ability to store some data (binary assets or configuration files) that can be used during generation.</li>
+</ul>
+<p>After filteting all undesired frameworks, I was left only with 3 to choose from:</p>
+<ul>
+<li><a href="https://gohugo.io/">Hugo</a></li>
+<li><a href="https://getstatik.com/">Statik</a></li>
+<li><a href="https://www.getnikola.com/">Nikola</a></li>
+</ul>
+<p>Hugo is by far the most popular across these (as far as GitHub stars tell) and supports all what I need but ... it requires a lot of initial setup and learning. Also, I would need to learn Go in order to satisfy my large customization needs.</p>
+<p>Statik is an interesting choice. Its ability to have custom ORM and data model (for each page) really shines, I have not seen such thing in any other framework. You can find informative table on its homepage. If you have needs to generate pages in specific layout from complex, relational data - I would definitely recommend Statik.</p>
+<p>Nikola is just a bunch of plugins. They really advertise as such on their homepage. It is really just a build command which triggers certain plugins in certain order. There are lots of built-in plugins but the fact that you can extend/swap/remove anything from any build step opens huge customization possibilities.</p>
+<p>I had to resign from Statik, because it does not support Markdown (or other text format) extensions. And I really really wanted to invoke custom templates from my pages. I was left with Hugo and Nikola. Nikola won because Python.</p>
+<h4>Who is behind the project?</h4>
+<p>The whole website is a hobby-made open-source project, so far by one person only. No company/organization is involved.</p>
+<ul>
+<li>
+<a href="https://www.reddit.com/user/Xeverous/">/u/Xeverous</a> on reddit</li>
+<li>
+<a href="https://github.com/Xeverous">Xeverous</a> on GitHub.</li>
+</ul>
+<p>See project description on https://github.com/Xeverous/the_website.</p>
+<h4>Can I post on this site?</h4>
+<p>Yes, just <a href="https://github.com/Xeverous/the_website/issues">open an issue</a> or make a pull request.</p>
+<p>I do not have any strict rules regarding content, but would generally accept anything on topic. In terms of writing itself - the tutorials are mine so I will have the final word on everything (you can always discuss and criticize my wording) but if you want to write your own article - write however you want - just like I have the final word for any of my posts, you have for yours. I will not go in your way of writing, unless you violate some obvious rules like no abusive content, spam, harassment etc.</p>
+<p>Note: you have the freedom to choose different license for your articles.</p>
+<h4>Can I help with the website?</h4>
+<p>Yes, and not necessarily by adding content. You can propose anything related to the website build system. I am pretty sure there is a lot of place for improvement. HTML and CSS are not my primary skills. There is also a bunch of Python code that could probably be simplified.</p>
+<h4>Why is the content free? Would not selling books or online courses be better for you?</h4>
+<p>This is a question that can not be answered in 1 sentence, especially to people who ask this with a very strong incentive on money. I have met enough narrow-minded people, constantly approaching my work with attitude like "Why are you working on this?", "Why are you doing something for free?", "Why are you contributing to open source instead of making money from wiriting game bots?".</p>
+<p>The answer is hard to grasp and I am not a person that could easily explain this without person-to-person contact so I will suggest instead to:</p>
+<ul>
+<li>Read some interviews with Larry Wales, a co-founder of (non-profit) Wikipedia. He gives a really good and thought-provoking answers on various questions.</li>
+<li>Read <a href="https://www.gnu.org/philosophy/philosophy.en.html">Philosophy of the GNU Project</a>
+</li>
+</ul>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

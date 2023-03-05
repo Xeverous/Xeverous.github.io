@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - C++ myths</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../">HOME</a></li>
+				<li><a href="../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../tutorials/beginner/">beginner</a></li>
+						<li><a href="../../tutorials/accelerated/">accelerated</a></li>
+						<li><a href="../../tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../cpp_faq/">C++ FAQ</a></li>
+						<li><a href=".">C++ myths</a></li>
+						<li><a href="../glossary/">glossary</a></li>
+						<li><a href="../">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../about/">about</a></li>
+						<li><a href="../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../">HOME</a></li>
+				<li class="button"><a href="../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../">utility</a></li>
+							<span>/</span>
+						<li>C++ myths</li>
+					</ol></nav><div class="content">
+				<h1>C++ myths</h1>				<p>A collection of common misconceptions about C++.</p>
+<section id="c-requires-manual-memory-management"><h2>"C++ requires manual memory management"</h2>
+<p>This is simply false. Proper C++ code sticks to the <a class="reference external" href="https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization">RAII</a> idiom where:</p>
+<ul class="simple">
+<li><p>constructor acquires the resource</p></li>
+<li><p>destructor releases the resource</p></li>
+<li><p>(optional) move constructor/assignment operator <em>move</em> the resource between objects (a <em>move</em> can never fail)</p></li>
+<li><p>(optional) copy constructor/assignment operator initializes a new object with the same state and a separate resource</p></li>
+</ul>
+<p>Once a resource has been encapsulated inside a RAII class (in other words, the class implements <em>rule of 5</em>), there is no more need for any work - a containing class does not need to care about stored object special member function (<em>rule of 0</em>). Objects can be safely manipulated and the resource will never leak.</p>
+<p>Extra notes:</p>
+<ul class="simple">
+<li><p>C++ compilers have special rule that allows them to optimize redundant object copies <strong>even if their special member functions have side effects</strong> - what is guaranteed is that every constructed object sooner or later will be destroyed.</p></li>
+<li><p>Resource does not have to be memory. It can be anything that requires acquisition and cleanup.</p></li>
+<li><p>Even though C++11 added language support for move operations, the RAII idiom was possible to be used much earlier.</p></li>
+</ul></section><section id="c-is-faster-than-c"><h2>"C is faster than C++"</h2>
+<p>It is not. Both languages should compile to equally fast (and often the same) machine code.</p>
+<p>The myth appears to be true due to a wrong assumption that going lower level brings better performance because you have more power.</p>
+<p>This often can be reverse - correctly done high-level abstractions are better for performance because compilers have more information about the code. Take for example sort algorithm APIs:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// C</span>
+<span class="keyword">void</span> <span class="func">qsort</span>(
+	<span class="keyword">void</span>* <span class="param">ptr</span>,
+	<span class="type">size_t</span> <span class="param">count</span>,
+	<span class="type">size_t</span> <span class="param">size</span>,
+	<span class="keyword">int</span> (*<span class="param">comp</span>)(<span class="keyword">const</span> <span class="keyword">void</span>*, <span class="keyword">const</span> <span class="keyword">void</span>*));
+
+<span class="com-single">// C++</span>
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">RandomAccessIterator</span>, <span class="keyword">typename</span> <span class="param-tmpl">BinaryPredicate</span>&gt;
+<span class="keyword">constexpr</span> <span class="keyword">void</span> <span class="namespace">std</span>::<span class="func">sort</span>(
+	<span class="param-tmpl">RandomAccessIterator</span> <span class="param">first</span>,
+	<span class="param-tmpl">RandomAccessIterator</span> <span class="param">last</span>,
+	<span class="param-tmpl">BinaryPredicate</span> <span class="param">func</span>);
+</pre></td>
+</tr></tbody></table>
+<p>The C version takes a pointer to the data, count of elements and size (in bytes) of each element. The algorithm swaps elements depending on the result of the provided comparison function.</p>
+<p>The C++ version takes 2 iterators (pointers are the simplest iterators) and accepts any function object that implements <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">()</span></code> which compares 2 elements provided by dereferencing iterators.</p>
+<p>It turns out that the C++ version is much better optimized. Why?</p>
+<ul class="simple">
+<li><p>C version uses function pointer. It is unknown what will be put here so it's an optimization barrier. Compiler must insert function call. It can not be inlined.</p></li>
+<li><p>Comparisons are usually very short and C++ template takes advantage of this and inlines practically every closure coming from lambda expressions or other comparators. This avoids large overhead of calling a function for a very simple operation.</p></li>
+<li><p>C version loses type information. By treating everything as <code class="code custom-cpp"><span class="keyword">void</span>*</code>, it limits any type to trivially copyable block of bytes. C++ sort implementation supports any sequence which offers random access to elements.</p></li>
+</ul>
+<p>It can be said that is example is cherry-picked bad design from C standard library but ... you just can't write a performant sort abstraction in C. It simply does not have enough features to cope with the sorted object requirements and provide enough information for the compiler to optimize the code.</p>
+<p>A lot of C++ code can easily get equivalent C code. But the C++ code will contain RAII classes while the C code will contain manual resource management every time there is a need for it. The first one will provide much more information to the compiler about the expected behavior, while the second will contain a lot of places to make a leak and/or a crash.</p>
+<p>Not every C++ thing is faster than the equivalent thing from C and not every thing from C should be abandoned in C++. What is often overlooked in discussions - performance is never a necessity in every part of the program and so in the places where top performance is not required projects prefer more convenient abstractions which are slower but much easier to maintain.</p>
+<p>Badly written C tends to crash. Badly written C++ tends to run slowly. This might also cause a bias towards C because C++ performance bugs are harder to identify than C crash bugs.</p>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-const-span-span-class-keyword-char-span-code-is-faster-than-code-class-code-custom-cpp-span-class-namespace-std-span-span-class-type-string-span-code"><h2>"<code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">char</span>*</code> is faster than <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code>"</h2>
+<p>The entire comparison is flawed:</p>
+<ul class="simple">
+<li><p>The first one is used for compile time strings which contents never change.</p></li>
+<li><p>The second one is used for dynamically allocated strings which contents are run-time dependent.</p></li>
+</ul>
+<p>For honest comparison, one should do:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">char</span>*</code> vs <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string_view</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">char</span>*</code> + <code class="code custom-cpp"><span class="func">malloc</span>()</code> + <code class="code custom-cpp"><span class="func">free</span>()</code> vs <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string</span></code></p></li>
+</ul>
+<p>And in both of these comparisons both approaches are pretty much even, although there are slight differences in required operations due to what information is stored - most notably, the C abstraction does not store string length.</p>
+<ul class="simple">
+<li><p>merging 2 <code class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">char</span>*</code> strings requires 1 call to the allocator and 2 calls to <code class="code custom-cpp"><span class="func">strlen</span></code> (which has O(n) complexity)</p></li>
+<li><p>merging 2 <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string_view</span></code> strings requires 1 call to the allocator and 2 calls to <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">string_view</span>::<span class="func">size</span></code> (which has O(1) complexity)</p></li>
+</ul>
+<p>As a result, C++ implementations occupy slightly more memory but their cached string length helps to reduce string length computations.</p>
+<p>Also, C++ string class implementations use SSO (short string optimization) (a specific case of SBO - small buffer optimization) which helps string class avoid unnecessary allocations when the internal in-class buffer (made of member variables) is big enough. It certainly is possible in C too but I doubt it is very often used in C due to a lack of support for good abstraction.</p>
+<p>More on SSO:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring">https://stackoverflow.com/questions/10315041/meaning-of-acronym-sso-in-the-context-of-stdstring</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/21694302/what-are-the-mechanics-of-short-string-optimization-in-libc">https://stackoverflow.com/questions/21694302/what-are-the-mechanics-of-short-string-optimization-in-libc</a></p></li>
+</ul></section><section id="c-compilers-transform-c-code-to-c-and-then-compile-it"><h2>"C++ compilers transform C++ code to C and then compile it"</h2>
+<p>This was true like ... 30 years ago. It is no doubt that all of major compilers reuse their implementation for both C and C++ but by no means C++ is translated to C and then compiled. Newer standards of C++ provide so much useful information to the compiler that translating C++ to C would be a huge waste of various optimization opportunities. The real situation is that modern compilers transform both C and C++ code to an internal intermediate form that is then used to generate optimal machine code for the target hardware. The intermediate form is more or less a simple abstraction of reads, writes and computations.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

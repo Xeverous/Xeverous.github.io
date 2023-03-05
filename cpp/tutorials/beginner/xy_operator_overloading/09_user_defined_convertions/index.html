@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 09 - user defined convertions</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xy - operator overloading</a></li>
+							<span>/</span>
+						<li>09 - user defined convertions</li>
+					</ol></nav><div class="content">
+				<h1>09 - user defined convertions</h1>				<p>It's possible to define custom convertions by overloading <code class="code custom-cpp"><span class="keyword">operator</span> <span class="param-tmpl">T</span></code>. The operator must be a member function that takes 0 arguments.</p>
+<p>By default, the convertion is implicit. Since C++11 <code class="code custom-cpp"><span class="keyword">explicit</span></code> can be used to disallow implicit convertions - using it is strongly recommended.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// all code inside fraction class</span>
+
+<span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="keyword">float</span>() <span class="keyword">const</span>
+{
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">float</span>&gt;(<span class="func">numerator</span>()) / <span class="func">denominator</span>();
+}
+
+<span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="keyword">double</span>() <span class="keyword">const</span>
+{
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">double</span>&gt;(<span class="func">numerator</span>()) / <span class="func">denominator</span>();
+}
+
+<span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="keyword">long</span> <span class="keyword">double</span>() <span class="keyword">const</span>
+{
+	<span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;<span class="keyword">long</span> <span class="keyword">double</span>&gt;(<span class="func">numerator</span>()) / <span class="func">denominator</span>();
+}
+
+<span class="keyword">explicit</span> <span class="keyword">operator</span> <span class="keyword">bool</span>() <span class="keyword">const</span>
+{
+	<span class="keyword">return</span> <span class="func">numerator</span>() != <span class="lit-num">0</span>;
+}
+
+<span class="com-single">// not needed in C++11 and later</span>
+<span class="keyword">bool</span> <span class="keyword">operator</span><span class="func">!</span>() <span class="keyword">const</span>
+{
+	<span class="keyword">return</span> !<span class="keyword">operator</span> <span class="keyword">bool</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<p><code class="code custom-cpp"><span class="keyword">operator</span><span class="func">!</span></code> must be a member function that takes 0 arguments. It has no restrictions on the return type although there is very little point in a type different than <code class="code custom-cpp"><span class="keyword">bool</span></code>. Since C++11 <code class="docutils literal">!</code> performs <em>contextual convertion</em> to <code class="code custom-cpp"><span class="keyword">bool</span></code> so overloading <code class="code custom-cpp"><span class="keyword">operator</span> <span class="keyword">bool</span></code> is enough - expressions like <code class="code custom-cpp"><span class="keyword">if</span> (<span class="oo">!</span><span class="var-local">obj</span>)</code> where <code class="docutils literal">!</code> is not overloaded will be treated as <code class="code custom-cpp"><span class="keyword">if</span> (!<span class="keyword">static_cast</span>&lt;<span class="keyword">bool</span>&gt;(<span class="var-local">obj</span>))</code>.</p>
+<p>Example usage:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">void</span> <span class="func">fd</span>(<span class="keyword">double</span>);
+<span class="keyword">void</span> <span class="func">fb</span>(<span class="keyword">bool</span>);
+<span class="type">fraction</span> <span class="var-local">fr</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>);
+
+<span class="keyword">double</span> <span class="var-local">d1</span> = <span class="var-local">fr</span>; <span class="com-single">// error if "explicit" is used</span>
+<span class="keyword">double</span> <span class="var-local">d2</span> = <span class="keyword">static_cast</span>&lt;<span class="keyword">double</span>&gt;(<span class="var-local">fr</span>); <span class="com-single">// ok</span>
+<span class="func">fd</span>(<span class="var-local">fr</span>); <span class="com-single">// error if "explicit" is used</span>
+<span class="func">fd</span>(<span class="keyword">static_cast</span>&lt;<span class="keyword">double</span>&gt;(<span class="var-local">fr</span>)); <span class="com-single">// ok</span>
+
+<span class="keyword">bool</span> <span class="var-local">is_non_zero1</span> = <span class="var-local">fr</span>; <span class="com-single">// error if "explicit" is used</span>
+<span class="keyword">bool</span> <span class="var-local">is_non_zero2</span> = <span class="keyword">static_cast</span>&lt;<span class="keyword">bool</span>&gt;(<span class="var-local">fr</span>); <span class="com-single">// ok</span>
+<span class="func">fb</span>(<span class="var-local">fr</span>); <span class="com-single">// error if "explicit" is used</span>
+<span class="func">fb</span>(<span class="keyword">static_cast</span>&lt;<span class="keyword">bool</span>&gt;(<span class="var-local">fr</span>)); <span class="com-single">// ok</span>
+
+<span class="com-single">// always ok, "if" acts as an explicit convertion to bool</span>
+<span class="keyword">if</span> (<span class="var-local">fr</span>) {}
+
+<span class="com-single">// C++ &lt;= 98: ok even if only operator bool is overloaded (convertion is implicit)</span>
+<span class="com-single">// C++ &gt;= 11: ok even if only explicit operator bool is overloaded (! applies contextual convertion)</span>
+<span class="keyword">if</span> (!<span class="var-local">fr</span>) {}
+</pre></td>
+</tr></tbody></table>
+<section id="trivia"><h2>Trivia</h2>
+<p>The <code class="code custom-cpp"><span class="keyword">explicit</span></code> convertion feature has been added after it has been realized that user-defined implicit convertions are hardly ever useful. Expressions like <code class="code custom-cpp"><span class="keyword">if</span> (<span class="var-local">a</span> == <span class="var-local">b</span>)</code> where <code class="code custom-cpp"><span class="var-local">a</span></code> and <code class="code custom-cpp"><span class="var-local">b</span></code> are objects of different types would compile - the compiler would implicitly convert both objects to <code class="code custom-cpp"><span class="keyword">bool</span></code> and then compare them.</p>
+<p>To solve this (in era before C++11), there was a <a class="reference external" href="https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Safe_bool">safe bool</a> idiom. A class did not overload convertion to <code class="code custom-cpp"><span class="keyword">bool</span></code>, but to a member function pointer or a member data pointer, which themselves are convertible to <code class="code custom-cpp"><span class="keyword">bool</span></code>. Then it added some template overloads of <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">==</span></code> and <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">!=</span></code> which call empty member function to cause compilation errors on specific (unwanted) comparisons. In short, it was a pretty complex idiom to implement correctly, only to prevent certain unwanted implicit convertions to <code class="code custom-cpp"><span class="keyword">bool</span></code>.</p>
+<p>After C++11 introduced <code class="code custom-cpp"><span class="keyword">explicit</span></code> for user-defined convertions, the safe bool idiom is now obsolete.</p>
+</section><section id="recommendation"><h2>Recommendation</h2>
+<p>Make user-defined convertions <code class="code custom-cpp"><span class="keyword">explicit</span></code>, especially convertions to <code class="code custom-cpp"><span class="keyword">bool</span></code>.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

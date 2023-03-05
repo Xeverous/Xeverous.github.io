@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 09 - virtual inheritance</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xz - polymorphism</a></li>
+							<span>/</span>
+						<li>09 - virtual inheritance</li>
+					</ol></nav><div class="content">
+				<h1>09 - virtual inheritance</h1>				<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This lesson is optional. It discusses most complex inheritance scenarios, all of which never or hardly ever appear in production code.</p>
+</aside><p>A class can have multiple parent classes. Sometimes this can lead to inheriting from the same parent type multiple times.</p>
+<section id="the-diamond-problem"><h2>The diamond problem</h2>
+<p>The diamond problem occurs when the same parent class appears multiple times in the hierarchy.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">animal</span> { <span class="com-multi">/* functionality common for all animals... */</span> };
+
+<span class="keyword">class</span> <span class="type">mammal</span>: <span class="keyword">public</span> <span class="type">animal</span> { <span class="com-multi">/* functionality common for all mammals... */</span> };
+<span class="keyword">class</span> <span class="type">flying</span>: <span class="keyword">public</span> <span class="type">animal</span> { <span class="com-multi">/* functionality common for all flying creatures... */</span> };
+
+<span class="com-single">// bat indirectly inherits animal twice</span>
+<span class="keyword">class</span> <span class="type">bat</span>: <span class="keyword">public</span> <span class="type">mammal</span>, <span class="keyword">public</span> <span class="type">flying</span> { <span class="com-multi">/* ... */</span> };
+</pre></td>
+</tr></tbody></table>
+<p>The problem is named <em>diamond</em> because the hierarchy graph looks like a diamond:</p>
+<div class="code"><pre class="code text"><a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-1" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-1" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-1"></a>    animal
+<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-2" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-2" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-2"></a>    /    \
+<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-3" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-3" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-3"></a>   /      \
+<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-4" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-4" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-4"></a>mammal   flying
+<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-5" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-5" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-5"></a>   \      /
+<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-6" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-6" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-6"></a>    \    /
+<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-7" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-7" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-7"></a>     bat
+</pre></div>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>For simplicity and consistency with majorty of other examples on the internet that describe the diamond problem, the rest of the article will use class names <code class="code custom-cpp"><span class="type">A</span></code> (base of all), <code class="code custom-cpp"><span class="type">B</span></code>, <code class="code custom-cpp"><span class="type">C</span></code> and <code class="code custom-cpp"><span class="type">D</span></code> (the most derived).</p>
+<p>Additionally, <code class="code custom-cpp"><span class="keyword">class</span></code> has been replaced with <code class="code custom-cpp"><span class="keyword">struct</span></code> (which is against the convention) to shorten code in examples.</p>
+</aside><p>Logically (considering graph theory behind inheritance) there is no problem for such relation but for programming, the essence lies in problems that arise when deciding how such code should work.</p>
+<section id="problem-1-multiple-overrides-at-the-same-level"><h3>Problem 1: multiple overrides at the same level</h3>
+<p>If <code class="code custom-cpp"><span class="type">A</span></code> has a virtual function that is overriden in <code class="code custom-cpp"><span class="type">B</span></code> and <code class="code custom-cpp"><span class="type">C</span></code>, and <code class="code custom-cpp"><span class="type">D</span></code> does not override it - which implementation should be used? So far "down-most overrider" won, but now there are 2 overriders at the same level in the hierarchy.</p>
+</section><section id="problem-2-duplication-of-base-type-state"><h3>Problem 2: duplication of base type state</h3>
+<p>If <code class="code custom-cpp"><span class="type">B</span></code> contains state (data members) inherited from <code class="code custom-cpp"><span class="type">A</span></code> and <code class="code custom-cpp"><span class="type">C</span></code> also contains state inherited from <code class="code custom-cpp"><span class="type">A</span></code>, should the <code class="code custom-cpp"><span class="type">D</span></code> class contain 2 copies of <code class="code custom-cpp"><span class="type">A</span></code> state?</p>
+<p>Having 2 copies of <code class="code custom-cpp"><span class="type">A</span></code> state seems a natural consequence of the fact that inheritance accumulates (sums up) the state from all classes involved. But in practice, we don't want <code class="code custom-cpp"><span class="type">D</span></code>s to have duplicates of their base-level information (<code class="code custom-cpp"><span class="type">bat</span></code> with 2 <code class="code custom-cpp"><span class="type">animal</span></code> states makes no sense).</p>
+<p>If there should be only one copy of <code class="code custom-cpp"><span class="type">A</span></code> state within <code class="code custom-cpp"><span class="type">D</span></code>, how and where it should be stored? So far inheritance simply extended object representation in memory by appending any additional data. But if data of <code class="code custom-cpp"><span class="type">A</span></code> needs to appear only once, object representation of <code class="code custom-cpp"><span class="type">D</span></code> can not be made of <code class="code custom-cpp"><span class="type">B</span></code> and <code class="code custom-cpp"><span class="type">C</span></code> sticked together.</p>
+<hr class="docutils">
+<p><strong>Problem 1</strong> is solved in many languages by a simple requirement that if multiple overriders are present at the same level, the current class must override the function.</p>
+<p><strong>Problem 2</strong> is "solved" in many languages by simply forbidding multiple <em>implementation inheritance</em>. In such case, besides <em>vptr</em>, all data members come from 1 line of inheritance which means no problems with object representation in memory - any derived class just appends its data.</p>
+<p>Now, in C++; C++ obviously being <em>C++</em>, would not go for a simple solution like forbidding a feature just because it can be misused or because its implementation is complex. Many C++ features already can be misused/abused in a variety of ways (it's nothing new) and the language already deals with complex memory-level stuff like padding, size and alignment. So it's not strictly about complexity - it's more about pragmatism. Would the feature even have any practical value?</p>
+<p>The answer is: yes, it would. And interestingly, <strong>there are actually 2 solutions</strong>.</p>
+</section></section><section id="multiple-inheritance"><h2>Multiple inheritance</h2>
+<p>By default, inheritance uses a simple "accumulation mechanism" which means that each derived class is simply a sum of all of its members and members of its parent classes.</p>
+<p>Surprisingly, there are no overriding requirements on <code class="code custom-cpp"><span class="type">D</span></code>:</p>
+<ul class="simple">
+<li><p>If <code class="code custom-cpp"><span class="type">D</span></code> overrides a function from <code class="code custom-cpp"><span class="type">A</span></code>, the situation is clear as <code class="code custom-cpp"><span class="type">D</span></code> is clearly the down-most overrider.</p></li>
+<li>
+<p>If <code class="code custom-cpp"><span class="type">D</span></code> does not override the function and leaves 2 overrides from <code class="code custom-cpp"><span class="type">B</span></code> and <code class="code custom-cpp"><span class="type">C</span></code> on equal hierarchy level:</p>
+<ul>
+<li><p>The function <strong>can not</strong> be called on the object through a reference/pointer to <code class="code custom-cpp"><span class="type">D</span></code> (ambiguous call).</p></li>
+<li><p>The function <strong>can</strong> be called on the object through a reference/pointer to a different type in the hierarchy.</p></li>
+</ul>
+</li>
+</ul>
+<p>Weird, isn't it? The function can not be called in the context of <code class="code custom-cpp"><span class="type">D</span></code> but can be when some parent type is used?</p>
+<ul class="simple">
+<li><p>Aren't these rules just inconsistent? Why bases but not derived?</p></li>
+<li><p>Isn't the restriction easily bypassed by casting a pointer/reference upwards?</p></li>
+<li><p>What actually happens when the function is called through some base type? There are still 2 overriders at the same level.</p></li>
+</ul>
+<p>Seems like nonsense, right? Here is the thing: <strong>there will be 2 subobjects of type</strong> <code class="code custom-cpp"><span class="type">A</span></code> <strong>within</strong> <code class="code custom-cpp"><span class="type">D</span></code>. This means that the graph which looks this way:</p>
+<div class="code"><pre class="code text"><a id="rest_code_20218291d5ef4d08b318e556ea779491-1" name="rest_code_20218291d5ef4d08b318e556ea779491-1" href="#rest_code_20218291d5ef4d08b318e556ea779491-1"></a>  A
+<a id="rest_code_20218291d5ef4d08b318e556ea779491-2" name="rest_code_20218291d5ef4d08b318e556ea779491-2" href="#rest_code_20218291d5ef4d08b318e556ea779491-2"></a> / \
+<a id="rest_code_20218291d5ef4d08b318e556ea779491-3" name="rest_code_20218291d5ef4d08b318e556ea779491-3" href="#rest_code_20218291d5ef4d08b318e556ea779491-3"></a>B   C
+<a id="rest_code_20218291d5ef4d08b318e556ea779491-4" name="rest_code_20218291d5ef4d08b318e556ea779491-4" href="#rest_code_20218291d5ef4d08b318e556ea779491-4"></a> \ /
+<a id="rest_code_20218291d5ef4d08b318e556ea779491-5" name="rest_code_20218291d5ef4d08b318e556ea779491-5" href="#rest_code_20218291d5ef4d08b318e556ea779491-5"></a>  D
+</pre></div>
+<p>actually works like this:</p>
+<div class="code"><pre class="code text"><a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-1" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-1" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-1"></a>A   A
+<a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-2" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-2" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-2"></a>|   |
+<a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-3" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-3" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-3"></a>B   C
+<a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-4" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-4" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-4"></a> \ /
+<a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-5" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-5" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-5"></a>  D
+</pre></div>
+<p><strong>Multiple, different references/pointers to</strong> <code class="code custom-cpp"><span class="type">A</span></code> <strong>are possible</strong>. Yes, you can obtain 2 different <code class="code custom-cpp"><span class="type">A</span></code> objects from an object of type  <code class="code custom-cpp"><span class="type">D</span></code>.</p>
+<p>There are 2 different "inheritance lines". This explains why it's possible to call the function through some base type reference - it will either be:</p>
+<ul class="simple">
+<li><p>a reference to <code class="code custom-cpp"><span class="type">A</span></code> that is a subobject of <code class="code custom-cpp"><span class="type">B</span></code></p></li>
+<li><p>a reference to <code class="code custom-cpp"><span class="type">A</span></code> that is a subobject of <code class="code custom-cpp"><span class="type">C</span></code></p></li>
+</ul>
+<p>Because there are 2 objects of type <code class="code custom-cpp"><span class="type">A</span></code> within <code class="code custom-cpp"><span class="type">D</span></code>, it's formally named as <em>ambiguous base class</em>. Casts to ambiguous types (have different semantics / work differently / ???).</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">struct</span> <span class="type">A</span>    { <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>()  { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"A::f<span class="esc-seq">\n</span>"</span>; } };
+<span class="keyword">struct</span> <span class="type">B</span>: <span class="type">A</span> { <span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"B::f<span class="esc-seq">\n</span>"</span>; } };
+<span class="keyword">struct</span> <span class="type">C</span>: <span class="type">A</span> { <span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"C::f<span class="esc-seq">\n</span>"</span>; } };
+<span class="keyword">struct</span> <span class="type">D</span>: <span class="type">B</span>, <span class="type">C</span> {};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">D</span> <span class="var-local">d</span>;
+
+	<span class="com-single">// error: D::f is ambiguous</span>
+	<span class="com-single">// d.f();</span>
+
+	<span class="com-single">// error: A is an ambiguous base of D</span>
+	<span class="com-single">// (there are 2 A objects within D, this cast is unclear)</span>
+	<span class="com-single">// A&amp; ra = d;</span>
+
+	<span class="com-single">// solution: add an intermediate cast</span>
+	<span class="com-single">// this informs the compiler which graph edge to follow</span>
+	<span class="com-single">// cast from D to B/C is not ambiguous</span>
+	<span class="com-single">// cast from B/C to A is not ambiguous</span>
+	<span class="type">A</span>&amp; <span class="var-local">rab</span> = <span class="keyword">static_cast</span>&lt;<span class="type">B</span>&amp;&gt;(<span class="var-local">d</span>);
+	<span class="type">A</span>&amp; <span class="var-local">rac</span> = <span class="keyword">static_cast</span>&lt;<span class="type">C</span>&amp;&gt;(<span class="var-local">d</span>);
+
+	<span class="com-single">// 2 distinct A objects, each with different overrider</span>
+	<span class="var-local">rab</span>.<span class="func">f</span>();
+	<span class="var-local">rac</span>.<span class="func">f</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<div class="code"><pre class="code text"><a id="rest_code_166afef5492a47cc9ccf16c5be356d7a-1" name="rest_code_166afef5492a47cc9ccf16c5be356d7a-1" href="#rest_code_166afef5492a47cc9ccf16c5be356d7a-1"></a>B::f
+<a id="rest_code_166afef5492a47cc9ccf16c5be356d7a-2" name="rest_code_166afef5492a47cc9ccf16c5be356d7a-2" href="#rest_code_166afef5492a47cc9ccf16c5be356d7a-2"></a>C::f
+</pre></div>
+<p>Analogical rules follow every other member (not just functions): if there is an ambiguity which one should be used (there are 2 subobjects of type <code class="code custom-cpp"><span class="type">A</span></code> within <code class="code custom-cpp"><span class="type">D</span></code>), references (or pointers) must be cast upwards through a parent type which is not ambiguous.</p>
+</section><section id="virtual-inheritance"><h2>Virtual inheritance</h2>
+<p>Adding <code class="code custom-cpp"><span class="keyword">virtual</span></code> keyword when inheriting causes the compiler to deduplicate any (ambiguous) bases that have <code class="code custom-cpp"><span class="keyword">virtual</span></code> specified. The final object representation contains exactly 1 instance of <code class="code custom-cpp"><span class="keyword">virtual</span></code> base.</p>
+<p>Classes which have conflicting same-level final overriders from <code class="code custom-cpp"><span class="keyword">virtual</span></code> bases are required to override them again. Casts to <code class="code custom-cpp"><span class="keyword">virtual</span></code> bases classes are not ambiguous since there is only 1 object of the virtualized type.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">struct</span> <span class="type">A</span>            { <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>()  { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"A::f<span class="esc-seq">\n</span>"</span>; } };
+<span class="keyword">struct</span> <span class="type">B</span>: <span class="keyword">virtual</span> <span class="type">A</span> { <span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"B::f<span class="esc-seq">\n</span>"</span>; } };
+<span class="keyword">struct</span> <span class="type">C</span>: <span class="keyword">virtual</span> <span class="type">A</span> { <span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"C::f<span class="esc-seq">\n</span>"</span>; } };
+<span class="keyword">struct</span> <span class="type">D</span>: <span class="type">B</span>, <span class="type">C</span>
+{
+	<span class="com-single">// this is required, otherwise the program is ill-formed</span>
+	<span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"D::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">D</span> <span class="var-local">d</span>;
+
+	<span class="var-local">d</span>.<span class="func">f</span>(); <span class="com-single">// ok</span>
+
+	<span class="com-single">// ok, there is only 1 A within D</span>
+	<span class="com-single">// the cast is not ambiguous</span>
+	<span class="type">A</span>&amp; <span class="var-local">ra</span> = <span class="var-local">d</span>;
+	<span class="var-local">ra</span>.<span class="func">f</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<p>Virtual inheritance fixes the problem of duplicate information (which usually is undesired) but it comes with its costs.</p>
+<p>Because the base is <code class="code custom-cpp"><span class="keyword">virtual</span></code>, it can not be a subobject of both <code class="code custom-cpp"><span class="type">B</span></code> and <code class="code custom-cpp"><span class="type">C</span></code>. There can be only 1 <code class="code custom-cpp"><span class="type">A</span></code> within <code class="code custom-cpp"><span class="type">D</span></code>. Since 2 classes must share the same subobject, they need to know where it is inside the final object (<code class="code custom-cpp"><span class="type">D</span></code> or something derived from it). For this reason, <strong>each inheritance hierarchy that inherits virtually adds another vptr to the final class</strong>.</p>
+<p>To illustrate, here are the layouts of the types based on the information obtained with <code class="docutils literal">clang++ <span class="pre">-cc1</span> <span class="pre">-emit-llvm</span> <span class="pre">-fdump-record-layouts</span></code> (the output contained much more information but this is not the place of the tutorial to discuss padding and alignment, only order of the data):</p>
+<div class="code"><pre class="code text"><a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-1" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-1" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-1"></a>A:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-2" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-2" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-2"></a>- vtable pointer for A
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-3" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-3" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-3"></a>- non-static data members of A
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-4" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-4" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-4"></a>
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-5" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-5" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-5"></a>B:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-6" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-6" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-6"></a>- vtable pointer for B
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-7" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-7" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-7"></a>- non-static data members of B
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-8" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-8" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-8"></a>- A:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-9" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-9" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-9"></a>  - vtable pointer for A
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-10" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-10" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-10"></a>  - non-static data members of A
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-11" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-11" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-11"></a>
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-12" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-12" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-12"></a>C:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-13" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-13" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-13"></a>- vtable pointer for C
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-14" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-14" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-14"></a>- non-static data members of C
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-15" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-15" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-15"></a>- A:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-16" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-16" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-16"></a>  - vtable pointer for A
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-17" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-17" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-17"></a>  - non-static data members of A
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-18" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-18" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-18"></a>
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-19" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-19" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-19"></a>D:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-20" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-20" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-20"></a>- B:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-21" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-21" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-21"></a>  - vtable pointer for B
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-22" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-22" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-22"></a>  - non-static data members of B
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-23" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-23" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-23"></a>- C:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-24" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-24" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-24"></a>  - vtable pointer for C
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-25" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-25" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-25"></a>  - non-static data members of C
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-26" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-26" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-26"></a>- non-static data members of D
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-27" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-27" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-27"></a>- A:
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-28" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-28" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-28"></a>  - vtable pointer for A
+<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-29" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-29" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-29"></a>  - non-static data members of A
+</pre></div>
+<!--  -->
+<blockquote>
+<p>No vtable pointer for <code class="code custom-cpp"><span class="type">D</span></code>?</p>
+</blockquote>
+<p>I think vtable pointer for <code class="code custom-cpp"><span class="type">B</span></code> will actually function for both <code class="code custom-cpp"><span class="type">B</span></code> and <code class="code custom-cpp"><span class="type">D</span></code>. After all, <code class="code custom-cpp"><span class="type">D</span></code> overrides <code class="code custom-cpp"><span class="type">B</span></code>'s functions and so far every class had its vtable pointer at the start. Multiple vptrs are present only to support casting so that pointers/references to base types can also expect vptr at the beginning of what memory they refer.</p>
+<p>The shared state of <code class="code custom-cpp"><span class="type">A</span></code> is placed at the end of any type that inherits virtually from it. The offsets can be different for different dynamic types:</p>
+<ul class="simple">
+<li><p>In <code class="code custom-cpp"><span class="type">B</span></code>, the state of <code class="code custom-cpp"><span class="type">A</span></code> immediately follows the state of <code class="code custom-cpp"><span class="type">B</span></code>.</p></li>
+<li><p>In <code class="code custom-cpp"><span class="type">D</span></code>, there is the state of <code class="code custom-cpp"><span class="type">C</span></code> and <code class="code custom-cpp"><span class="type">D</span></code> before the state of <code class="code custom-cpp"><span class="type">A</span></code>.</p></li>
+</ul>
+<p>Layouts are no longer subsets or supersets, each class can have its own specific order of vtable pointers and state of other classes (though some pattern can be observed). This also means that casts require additional overhead of checking the offsets (they are stored in vtables). For example, converting a pointer/reference from <code class="code custom-cpp"><span class="type">B</span></code> to <code class="code custom-cpp"><span class="type">A</span></code> requires different adjustment when the actual (<em>dynamic type</em>) of the object is <code class="code custom-cpp"><span class="type">B</span></code> and when it is <code class="code custom-cpp"><span class="type">D</span></code>. The distance between data of <code class="code custom-cpp"><span class="type">A</span></code> and data of <code class="code custom-cpp"><span class="type">B</span></code> is not the same for all types.</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> will fail (null pointer/exception) when the destination type is ambiguous (checked at runtime)</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">static_cast</span></code> downcast: cast is <em>ill-formed</em> if input type is ambiguous or is a virtual base of or base of virtual base of destination type (there is no way to perform the cast only with compile time information)</p></li>
+</ul>
+<p>Apart from complex object layout and casts with runtime overhead there is one more thing: <em>constructors</em>. How should the constructor of <code class="code custom-cpp"><span class="type">A</span></code> be called when <code class="code custom-cpp"><span class="type">B</span></code> and <code class="code custom-cpp"><span class="type">C</span></code> specify different initialization for <code class="code custom-cpp"><span class="type">A</span></code>?</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">A</span>
+{
+	<span class="func">A</span>(<span class="keyword">char</span> <span class="param">a</span> = <span class="lit-chr">'a'</span>): <span class="var-member">a</span>(<span class="param">a</span>) {}
+	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"A::f<span class="esc-seq">\n</span>"</span>; }
+
+	<span class="keyword">char</span> <span class="var-member">a</span>;
+};
+
+<span class="keyword">struct</span> <span class="type">B</span>: <span class="keyword">virtual</span> <span class="type">A</span>
+{
+	<span class="func">B</span>(): <span class="type">A</span>(<span class="lit-chr">'b'</span>) {}
+	<span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"B::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">struct</span> <span class="type">C</span>: <span class="keyword">virtual</span> <span class="type">A</span>
+{
+	<span class="func">C</span>(): <span class="type">A</span>(<span class="lit-chr">'c'</span>) {}
+	<span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"C::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">struct</span> <span class="type">D</span>: <span class="type">B</span>, <span class="type">C</span>
+{
+	<span class="com-single">// How is A initialized in D::D???</span>
+};
+</pre></td>
+</tr></tbody></table>
+<p>There are 2 different initializations specified for <code class="code custom-cpp"><span class="type">A</span></code> but there is only 1 <code class="code custom-cpp"><span class="type">A</span></code> subobject within objects of type <code class="code custom-cpp"><span class="type">D</span></code>.</p>
+<p>The solution is that <strong>initialization (constructor calls) of virtual bases behave similarly to virtual functions and have to be overriden</strong>:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">D</span>: <span class="type">B</span>, <span class="type">C</span>
+{
+	<span class="func">D</span>(): <span class="type">A</span>(<span class="lit-chr">'d'</span>), <span class="type">B</span>(), <span class="type">C</span>() {}
+};
+</pre></td>
+</tr></tbody></table>
+<p>Note that normally this is not possible: a class, in its <em>member init list</em>, can only call constructors of its direct parent classes. In the case of <code class="code custom-cpp"><span class="keyword">virtual</span></code> inheritance, calling constructors of indirect virtual parents is not only allowed but actually required.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>C++ standard library streams are implemented using virtual inheritance. Inheritance diagram on <a class="reference external" href="https://en.cppreference.com/w/cpp/io">https://en.cppreference.com/w/cpp/io</a>.</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_ostream</span></code> inherits virtually from <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_ios</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_istream</span></code> inherits virtually from <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_ios</span></code></p></li>
+</ul>
+<p>Thus, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_iostream</span></code> (and its derived types) have only one subobject of type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">basic_ios</span></code>.</p>
+</aside><aside class="admonition note"><p class="admonition-title">note</p>
+<p>Further examples are very extreme, I doubt such code has any practical value (it's supported mainly for technical correctness and consistency). Nonetheless I present them for the curious and just for fun.</p>
+</aside><section id="extra-example-extended-diamond"><h3>Extra example - extended diamond</h3>
+<p>In this hierarchy <code class="code custom-cpp"><span class="type">B</span></code> inherits virtually from <code class="code custom-cpp"><span class="type">A</span></code>.</p>
+<div class="code"><pre class="code text"><a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-1" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-1" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-1"></a>  A
+<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-2" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-2" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-2"></a> / \
+<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-3" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-3" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-3"></a>B   B
+<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-4" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-4" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-4"></a>|   |
+<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-5" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-5" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-5"></a>C   D
+<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-6" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-6" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-6"></a> \ /
+<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-7" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-7" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-7"></a>  E
+</pre></div>
+<p>The most interesting thing is that <code class="code custom-cpp"><span class="type">E</span></code> contains 2 <code class="code custom-cpp"><span class="type">B</span></code> subobjects that share 1 <code class="code custom-cpp"><span class="type">A</span></code> subobject. Casts from <code class="code custom-cpp"><span class="type">A</span></code> to <code class="code custom-cpp"><span class="type">B</span></code> are ambiguous and their ambiguity can not be detected at compile time (<code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> will fail, <code class="code custom-cpp"><span class="keyword">static_cast</span></code> will be <em>ill-formed</em> as it does not allow converting from <code class="code custom-cpp"><span class="keyword">virtual</span></code> bases). Pointers/references to <code class="code custom-cpp"><span class="type">A</span></code> would have to be converted to refer to <code class="code custom-cpp"><span class="type">C</span></code> or <code class="code custom-cpp"><span class="type">D</span></code> first before being converted to <code class="code custom-cpp"><span class="type">B</span></code>.</p>
+<p>This is the layout:</p>
+<div class="code"><pre class="code text"><a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-1" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-1" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-1"></a>A:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-2" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-2" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-2"></a>- vtable pointer for A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-3" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-3" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-3"></a>- non-static data members of A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-4" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-4" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-4"></a>
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-5" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-5" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-5"></a>B:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-6" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-6" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-6"></a>- vtable pointer for B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-7" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-7" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-7"></a>- non-static data members of B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-8" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-8" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-8"></a>- A:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-9" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-9" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-9"></a>  - vtable pointer for A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-10" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-10" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-10"></a>  - non-static data members of A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-11" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-11" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-11"></a>
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-12" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-12" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-12"></a>C:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-13" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-13" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-13"></a>- B:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-14" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-14" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-14"></a>  - vtable pointer for B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-15" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-15" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-15"></a>  - non-static data members of B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-16" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-16" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-16"></a>- non-static data members of C
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-17" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-17" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-17"></a>- A:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-18" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-18" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-18"></a>  - vtable pointer for A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-19" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-19" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-19"></a>  - non-static data members of A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-20" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-20" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-20"></a>
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-21" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-21" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-21"></a>D:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-22" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-22" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-22"></a>- B:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-23" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-23" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-23"></a>  - vtable pointer for B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-24" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-24" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-24"></a>  - non-static data members of B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-25" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-25" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-25"></a>- non-static data members of D
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-26" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-26" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-26"></a>- A:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-27" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-27" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-27"></a>  - vtable pointer for A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-28" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-28" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-28"></a>  - non-static data members of A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-29" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-29" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-29"></a>
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-30" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-30" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-30"></a>E:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-31" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-31" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-31"></a>- C:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-32" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-32" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-32"></a>  - B:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-33" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-33" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-33"></a>    - vtable pointer for B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-34" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-34" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-34"></a>    - non-static data members of B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-35" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-35" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-35"></a>  - non-static data members of C
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-36" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-36" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-36"></a>- D:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-37" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-37" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-37"></a>  - B:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-38" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-38" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-38"></a>    - vtable pointer for B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-39" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-39" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-39"></a>    - non-static data members of B
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-40" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-40" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-40"></a>  - non-static data members of D
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-41" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-41" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-41"></a>- non-static data members of E
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-42" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-42" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-42"></a>- A:
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-43" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-43" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-43"></a>  - vtable pointer for A
+<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-44" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-44" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-44"></a>  - non-static data members of A
+</pre></div>
+</section><section id="extra-example-mixed-inheritance"><h3>Extra example - mixed inheritance</h3>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="type">A</span></code> is virtually inherited by <code class="code custom-cpp"><span class="type">B</span></code> and <code class="code custom-cpp"><span class="type">C</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="type">A</span></code> is inherited by <code class="code custom-cpp"><span class="type">D</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="type">C</span></code> is virtually inherited by <code class="code custom-cpp"><span class="type">E</span></code> and <code class="code custom-cpp"><span class="type">F</span></code></p></li>
+</ul>
+<p>If the same base is inherited virtually and non-virtually, the final object contains 1 base of this type (from <code class="code custom-cpp"><span class="keyword">virtual</span></code> inheritance) + 1 non-virtual base for each non-virtual inheritance. That is, only <code class="code custom-cpp"><span class="keyword">virtual</span></code> bases are deduplicated.</p>
+<div class="code"><pre class="code text"><a id="rest_code_150350f3eb23407dba9c6f77b3952c97-1" name="rest_code_150350f3eb23407dba9c6f77b3952c97-1" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-1"></a>  A     A
+<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-2" name="rest_code_150350f3eb23407dba9c6f77b3952c97-2" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-2"></a> / \    |
+<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-3" name="rest_code_150350f3eb23407dba9c6f77b3952c97-3" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-3"></a>B   C   D
+<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-4" name="rest_code_150350f3eb23407dba9c6f77b3952c97-4" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-4"></a> \ / \ /
+<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-5" name="rest_code_150350f3eb23407dba9c6f77b3952c97-5" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-5"></a>  E   F
+<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-6" name="rest_code_150350f3eb23407dba9c6f77b3952c97-6" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-6"></a>   \ /
+<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-7" name="rest_code_150350f3eb23407dba9c6f77b3952c97-7" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-7"></a>    G
+</pre></div>
+<div class="code"><pre class="code text"><a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-1" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-1" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-1"></a>A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-2" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-2" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-2"></a>- vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-3" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-3" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-3"></a>- non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-4" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-4" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-4"></a>
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-5" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-5" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-5"></a>B:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-6" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-6" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-6"></a>- vtable pointer for B
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-7" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-7" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-7"></a>- non-static data members of B
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-8" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-8" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-8"></a>- A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-9" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-9" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-9"></a>  - vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-10" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-10" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-10"></a>  - non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-11" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-11" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-11"></a>
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-12" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-12" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-12"></a>C:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-13" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-13" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-13"></a>- vtable pointer for C
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-14" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-14" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-14"></a>- non-static data members of C
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-15" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-15" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-15"></a>- A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-16" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-16" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-16"></a>  - vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-17" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-17" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-17"></a>  - non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-18" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-18" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-18"></a>
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-19" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-19" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-19"></a>D:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-20" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-20" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-20"></a>- A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-21" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-21" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-21"></a>  - vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-22" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-22" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-22"></a>  - non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-23" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-23" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-23"></a>- non-static data members of D
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-24" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-24" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-24"></a>
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-25" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-25" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-25"></a>E:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-26" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-26" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-26"></a>- B:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-27" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-27" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-27"></a>  - vtable pointer for B
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-28" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-28" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-28"></a>  - non-static data members of B
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-29" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-29" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-29"></a>- non-static data members of E
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-30" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-30" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-30"></a>- A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-31" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-31" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-31"></a>  - vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-32" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-32" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-32"></a>  - non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-33" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-33" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-33"></a>- C:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-34" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-34" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-34"></a>  - vtable pointer for C
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-35" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-35" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-35"></a>  - non-static data members of C
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-36" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-36" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-36"></a>
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-37" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-37" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-37"></a>F:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-38" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-38" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-38"></a>- D:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-39" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-39" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-39"></a>  - A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-40" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-40" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-40"></a>    - vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-41" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-41" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-41"></a>    - non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-42" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-42" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-42"></a>  - non-static data members of D
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-43" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-43" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-43"></a>- non-static data members of F
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-44" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-44" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-44"></a>- A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-45" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-45" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-45"></a>  - vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-46" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-46" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-46"></a>  - non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-47" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-47" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-47"></a>- C:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-48" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-48" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-48"></a>  - vtable pointer for C
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-49" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-49" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-49"></a>  - non-static data members of C
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-50" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-50" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-50"></a>
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-51" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-51" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-51"></a>G:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-52" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-52" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-52"></a>- E:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-53" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-53" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-53"></a>  - B:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-54" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-54" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-54"></a>    - vtable pointer for B
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-55" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-55" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-55"></a>    - non-static data members of B
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-56" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-56" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-56"></a>  - non-static data members of E
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-57" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-57" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-57"></a>- F:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-58" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-58" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-58"></a>  - D:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-59" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-59" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-59"></a>    - A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-60" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-60" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-60"></a>      - vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-61" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-61" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-61"></a>      - non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-62" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-62" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-62"></a>    - non-static data members of D
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-63" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-63" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-63"></a>  - non-static data members of F
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-64" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-64" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-64"></a>- non-static data members of G
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-65" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-65" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-65"></a>- A:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-66" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-66" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-66"></a>  - vtable pointer for A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-67" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-67" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-67"></a>  - non-static data members of A
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-68" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-68" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-68"></a>- C:
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-69" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-69" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-69"></a>  - vtable pointer for C
+<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-70" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-70" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-70"></a>  - non-static data members of C
+</pre></div>
+<hr class="docutils">
+<p>Additional resources:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Multiple_inheritance">https://en.wikipedia.org/wiki/Multiple_inheritance</a></p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Virtual_inheritance">https://en.wikipedia.org/wiki/Virtual_inheritance</a></p></li>
+</ul></section></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

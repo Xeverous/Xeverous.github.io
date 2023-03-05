@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 11 - member types</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xx - classes</a></li>
+							<span>/</span>
+						<li>11 - member types</li>
+					</ol></nav><div class="content">
+				<h1>11 - member types</h1>				<p>A class apart from data and function members, can also contain member types.</p>
+<section id="non-class-member-types"><h2>Non-class member types</h2>
+<p>This just follows same conventions as <code class="code custom-cpp"><span class="keyword">static</span></code> members - they act as free entities but are defined within class namespace.</p>
+<p>I haven't seen a lot of member enumerations, but member type aliases can be very useful to reduce code duplication, increase flexibility and shorten the code:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">config</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">using</span> <span class="type">container_type</span> = <span class="namespace">std</span>::<span class="type">unordered_map</span>&lt;<span class="namespace">std</span>::<span class="type">string</span>, <span class="namespace">boost</span>::<span class="namespace">container</span>::<span class="type">small_vector</span>&lt;<span class="keyword">long</span>&gt;&gt;;
+
+	<span class="keyword">void</span> <span class="func">revert</span>()
+	{
+		<span class="var-member">curr</span> <span class="oo">=</span> <span class="var-member">prev</span>;
+	}
+
+	<span class="keyword">void</span> <span class="func">commit</span>()
+	{
+		<span class="func">save_on_disk</span>();
+		<span class="var-member">prev</span> <span class="oo">=</span> <span class="var-member">curr</span>;
+	}
+
+	      <span class="type">container_type</span>&amp; <span class="func">current</span>()       { <span class="keyword">return</span> <span class="var-member">curr</span>; }
+	<span class="keyword">const</span> <span class="type">container_type</span>&amp; <span class="func">current</span>() <span class="keyword">const</span> { <span class="keyword">return</span> <span class="var-member">curr</span>; }
+
+<span class="keyword">private</span>:
+	<span class="func">save_on_disk</span>();
+
+	<span class="type">container_type</span> <span class="var-member">curr</span>;
+	<span class="type">container_type</span> <span class="var-member">prev</span>;
+};
+</pre></td>
+</tr></tbody></table>
+<p>Any code outside the class can use <code class="code custom-cpp"><span class="type">config</span>::<span class="type">container_type</span></code>. Apart from being shorter, if the class implementation changes (different data structure) any code outside is automatically adjusted. Since most containers share similar functionality (C++ has strong conventions for names and types in member functions of containers), there is a high chance no edits will be required where data is extracted/inserted/iterated on.</p>
+</section><section id="nested-classes"><h2>Nested classes</h2>
+<p>It's possible to define a class (<code class="code custom-cpp"><span class="keyword">class</span></code> or <code class="code custom-cpp"><span class="keyword">struct</span></code>) or <code class="code custom-cpp"><span class="keyword">union</span></code> within another class. Such types do not have any additional requirements, objects of both outer and inner can exist independently. Intuitively, they follow analogical namespace rules for declarations and definitions:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">struct</span> <span class="type">foo</span>
+{
+	<span class="keyword">struct</span> <span class="type">bar</span>
+	{
+		<span class="keyword">void</span> <span class="func">f1</span>() {}
+		<span class="keyword">void</span> <span class="func">f2</span>();
+	};
+
+	<span class="keyword">struct</span> <span class="type">baz</span>; <span class="com-single">// forward declaration</span>
+};
+
+<span class="keyword">struct</span> <span class="type">foo</span>::<span class="type">baz</span>
+{
+	<span class="keyword">void</span> <span class="func">g1</span>() {}
+	<span class="keyword">void</span> <span class="func">g2</span>();
+};
+
+<span class="keyword">void</span> <span class="type">foo</span>::<span class="type">bar</span>::<span class="func">f2</span>() {}
+<span class="keyword">void</span> <span class="type">foo</span>::<span class="type">baz</span>::<span class="func">g2</span>() {}
+</pre></td>
+</tr></tbody></table></section><section id="access-specifiers"><h2>Access specifiers</h2>
+<p>Member types are affected by <em>access specifiers</em> but have an additional permission: because they are members, just like any member they also have the access to all other members of the enclosing class:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">outer</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">class</span> <span class="type">inner</span>
+	{
+		<span class="keyword">void</span> <span class="func">f</span>(<span class="type">outer</span>&amp; <span class="param">o</span>)
+		{
+			<span class="param">o</span>.<span class="func">f</span>(); <span class="com-single">// ok: inner is a member of outer so it can refer to non-public outer members</span>
+		}
+	};
+
+<span class="keyword">private</span>:
+	<span class="keyword">void</span> <span class="func">f</span>() {}
+};
+</pre></td>
+</tr></tbody></table>
+<p>Because types and functions can have different access, it's also possible to create situations like this:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">outer</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">struct</span> <span class="type">inner</span>
+	{
+		<span class="keyword">void</span> <span class="func">g</span>() {}
+	};
+
+<span class="keyword">public</span>:
+	<span class="keyword">static</span> <span class="type">inner</span> <span class="func">f</span>() { <span class="keyword">return</span> <span class="type">inner</span>{}; }
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">outer</span>::<span class="problem">inner</span> <span class="var-local">n1</span> = <span class="type">outer</span>::<span class="func">f</span>(); <span class="com-single">// error: outer::inner is private</span>
+	<span class="keyword">auto</span> <span class="var-local">n2</span> = <span class="type">outer</span>::<span class="func">f</span>(); <span class="com-single">// ok</span>
+	<span class="var-local">n2</span>.<span class="func">g</span>();               <span class="com-single">// ok</span>
+	<span class="type">outer</span>::<span class="func">f</span>().<span class="func">g</span>();       <span class="com-single">// ok</span>
+
+	<span class="keyword">using</span> <span class="type">inner</span> = <span class="keyword">decltype</span>(<span class="type">outer</span>::<span class="func">f</span>()); <span class="com-single">// create a type alias from the type of expression</span>
+	<span class="type">inner</span>{}.<span class="func">g</span>(); <span class="com-single">// ok</span>
+}
+</pre></td>
+</tr></tbody></table>
+<p>Obviously don't write such code.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>If a <code class="code custom-cpp"><span class="keyword">public</span></code> function returns an object of a member type (just like in the first example), make that type <code class="code custom-cpp"><span class="keyword">public</span></code> too.</p>
+</aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

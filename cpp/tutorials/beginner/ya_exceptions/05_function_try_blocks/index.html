@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 05 - function-try-blocks</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">ya - exceptions</a></li>
+							<span>/</span>
+						<li>05 - function-try-blocks</li>
+					</ol></nav><div class="content">
+				<h1>05 - function-try-blocks</h1>				<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This lesson is optional.</p>
+</aside><p>A hardly-ever used feature (as of writing this, I have never seen it in production code) are <em>function-try-blocks</em>. The feature lets embed entire function body in exception-handling code:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;cmath&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+<span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func-free">func</span>(<span class="namespace">std</span>::<span class="type-class">string</span> <span class="param">number</span>) <span class="keyword">try</span>
+{
+	<span class="com-single">// may throw std::invalid_argument and std::out_of_range
+</span>	<span class="keyword">int</span> <span class="var-local">n</span> = <span class="namespace">std</span>::<span class="func-free">stoi</span>(<span class="param">number</span>);
+
+	<span class="keyword">if</span> (<span class="var-local">n</span> &lt; <span class="lit-num">0</span>)
+		<span class="keyword">throw</span> <span class="namespace">std</span>::<span class="type-class">runtime_error</span>(<span class="lit-str">"value should be non-negative"</span>);
+
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="func-free">sqrt</span>(<span class="var-local">n</span>);
+}
+<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">runtime_error</span>&amp; <span class="var-local">e</span>)
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="lit-str">"error: "</span> &lt;&lt; <span class="var-local">e</span>.<span class="func-virtual">what</span>() &lt;&lt; <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="keyword">return</span> <span class="lit-num">0</span>;
+}
+<span class="keyword">catch</span> (...)
+{
+	<span class="keyword">return</span> <span class="lit-num">0</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>The feature is mostly just syntax sugar, however it is worth to mention that:</p>
+<ul class="simple">
+<li><p>Function parameters live in both <code class="code custom-cpp"><span class="keyword">try</span></code> and <code class="code custom-cpp"><span class="keyword">catch</span></code> blocks. Parameters are constructed and destroyed before and after function call.</p></li>
+<li><p>Exceptions thrown by constructors (and destructors) of function parameters are not being caught. They are thrown at the call site, before (or after) the function is called.</p></li>
+<li><p>For the main function and thread top-level functions, function-try-blocks do not catch exceptions thrown by constructors (and destructors) of <code class="code custom-cpp"><span class="keyword">static</span></code> and <code class="code custom-cpp"><span class="keyword">thread_local</span></code> global objects.</p></li>
+</ul>
+<p>In each <code class="code custom-cpp"><span class="keyword">catch</span></code> block you should do one of two things:</p>
+<ul class="simple">
+<li><p>place a return statement (if the function returns non-void)</p></li>
+<li><p>rethrow (<code class="code custom-cpp"><span class="keyword">throw</span>;</code>) or throw a different exception</p></li>
+</ul>
+<p>Otherwise control reaches end of the function and since there is no return value neither an exception, <code class="code custom-cpp"><span class="keyword">return</span>;</code> is assumed which is undefined behaviour for functions returning non-void.</p>
+<section id="special-member-functions"><h2>Special member functions</h2>
+<p>A special use-case of this feature are constructors and destructors. The block begings before member initializer list which means derived classes can catch exceptions caused by base class constructors and member object constructors.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;stdexcept&gt;</span>
+
+<span class="keyword">class</span> <span class="type-class">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="type-class">base</span>(<span class="keyword">int</span> <span class="param">x</span>)
+	{
+		<span class="keyword">if</span> (<span class="param">x</span> &lt; <span class="lit-num">0</span>)
+			<span class="keyword">throw</span> <span class="namespace">std</span>::<span class="type-class">runtime_error</span>(<span class="lit-str">"x can not be negative"</span>);
+	}
+};
+
+<span class="keyword">class</span> <span class="type-class">derived</span> : <span class="keyword">public</span> <span class="type-class">base</span>
+{
+<span class="keyword">public</span>:
+	<span class="type-class">derived</span>(<span class="keyword">int</span> <span class="param">x</span>) <span class="keyword">try</span> : <span class="type-class">base</span>(<span class="param">x</span>)
+	{
+		<span class="com-single">// ctor body
+</span>	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">exception</span>&amp; <span class="com-multi">/* e */</span>)
+	{
+		<span class="com-single">// ...
+</span>	}
+	<span class="keyword">catch</span> (...)
+	{
+		<span class="com-single">// ...
+</span>	}
+};
+</pre></td>
+</tr></tbody></table>
+<p>Constructor failures cause the object to be thought as not constructed, therefore respective destructors are not being run.</p>
+<p>Like in previous case, arguments have scope that cover both <code class="code custom-cpp"><span class="keyword">try</span></code> and <code class="code custom-cpp"><span class="keyword">catch</span></code> blocks, however non-static members (including members of parent classes) are destroyed upon entering any <code class="code custom-cpp"><span class="keyword">catch</span></code> block and thus are no longer safe to access (compiler might allow such code but it's undefined behaviour).</p>
+<p>For constructors, return statements are not allowed in <code class="code custom-cpp"><span class="keyword">catch</span></code> blocks. Every <code class="code custom-cpp"><span class="keyword">catch</span></code> must terminate by throwing an exception. If no exception is thrown, rethrow (<code class="code custom-cpp"><span class="keyword">throw</span>;</code>) is implicitly assumed.</p>
+<p>For destructors, rethrow is also implicitly assumed but <code class="code custom-cpp"><span class="keyword">return</span>;</code> statements are allowed.</p>
+<blockquote>
+<p>How about delegating constructors?</p>
+</blockquote>
+<p>From cppreference: <em>If the function-try-block is on a delegating constructor, which called a non-delegating constructor that completed successfully, but then the body of the delegating constructor throws, the destructor of this object will be completed before any catch clauses of the function-try-block are entered.</em></p>
+</section><section id="applications"><h2>Applications</h2>
+<p>The main purposes of function-try-blocks are:</p>
+<ul class="simple">
+<li><p>(for constructors) responding to an exception thrown from the member initializer list by logging and rethrowing</p></li>
+<li><p>modifying the exception object and rethrowing</p></li>
+<li><p>throwing a different exception instead</p></li>
+<li><p>terminating the program</p></li>
+</ul></section><section id="recommendation"><h2>Recommendation</h2>
+<p>This feature is hardly-ever used. The most typical usage would be to catch member/base class initialization failures in the deried class and (one of):</p>
+<ul class="simple">
+<li><p>modifying the exception object (e.g. adding more context information) and rethrowing</p></li>
+<li><p>throwing a different exception instead</p></li>
+</ul>
+<p>In the most unpleasant scenario, the feature could be used to safely deal with throwing destructors of parent/member objects.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

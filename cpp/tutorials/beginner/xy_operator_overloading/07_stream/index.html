@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 07 - stream operators</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xy - operator overloading</a></li>
+							<span>/</span>
+						<li>07 - stream operators</li>
+					</ol></nav><div class="content">
+				<h1>07 - stream operators</h1>				<p><code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&lt;&lt;</span></code> and <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&gt;&gt;</span></code> are officially named <em>bitwise shift operators</em> but you might also encounter the name <em>stream insertion/extraction operators</em>. At this point you should be very accustomed to using <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cin</span></code> with these operators.</p>
+<p>In other words, these operators have 2 common usage patterns:</p>
+<ul class="simple">
+<li><p>bit shift operations (multiplication/division by powers of 2)</p></li>
+<li><p>reading or writing data to a stream</p></li>
+</ul>
+<p>In this lesson you will learn how to write operator overloads that work with standard library streams.</p>
+<section id="operator-chaining"><h2>Operator chaining</h2>
+<p>Streams allow <em>operator chaining</em> - you can use <code class="docutils literal">&lt;&lt;</code> and <code class="docutils literal">&gt;&gt;</code> multiple times in one statement. This feature is powered by the return type having the same overloaded operator. To illustrate:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="x">x</span> = <span class="lit-num">1</span> + <span class="lit-num">2</span> + <span class="lit-num">3</span> + <span class="lit-num">4</span>;
+<span class="keyword">int</span> <span class="y">y</span> = ((<span class="lit-num">1</span> + <span class="lit-num">2</span>) + <span class="lit-num">3</span>) + <span class="lit-num">4</span>; <span class="com-single">// equivalent</span>
+<span class="keyword">int</span> <span class="y">y</span> = <span class="keyword">operator</span><span class="func">+</span>(<span class="keyword">operator</span><span class="func">+</span>(<span class="keyword">operator</span><span class="func">+</span>(<span class="lit-num">1</span>, <span class="lit-num">2</span>), <span class="lit-num">3</span>), <span class="lit-num">4</span>); <span class="com-single">// pseudo-code</span>
+
+<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">1</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">2</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">3</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">4</span>;
+(((<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-num">1</span>) <span class="oo">&lt;&lt;</span> <span class="lit-num">2</span>) <span class="oo">&lt;&lt;</span> <span class="lit-num">3</span>) <span class="oo">&lt;&lt;</span> <span class="lit-num">4</span>; <span class="com-single">// equivalent</span>
+<span class="keyword">operator</span><span class="func">&lt;&lt;</span>(<span class="keyword">operator</span><span class="func">&lt;&lt;</span>(<span class="keyword">operator</span><span class="func">&lt;&lt;</span>(<span class="keyword">operator</span><span class="func">&lt;&lt;</span>(<span class="namespace">std</span>::<span class="var-global">cout</span>, <span class="lit-num">1</span>), <span class="lit-num">2</span>), <span class="lit-num">3</span>), <span class="lit-num">4</span>); <span class="com-single">// equivalent</span>
+</pre></td>
+</tr></tbody></table>
+<p>Simply put, the trick is to return a reference to the stream. Then, the same operation can be repeated.</p>
+</section><section id="canonical-implementation"><h2>Canonical implementation</h2>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code> is a global object of type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ostream</span></code></p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cin</span></code> is a global object of type <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">istream</span></code></p></li>
+</ul>
+<p>Standard library file streams (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ofstream</span></code>, <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ifstream</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">fstream</span></code>) and string stream (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">stringstream</span></code>) have types <em>derived</em> from types mentioned above, so operator overloads also work with them.</p>
+</aside><table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ostream</span>&amp; <span class="keyword">operator</span><span class="func">&lt;&lt;</span>(<span class="namespace">std</span>::<span class="type">ostream</span>&amp; <span class="param">os</span>, <span class="type">fraction</span> <span class="param">fr</span>)
+{
+	<span class="keyword">return</span> <span class="param">os</span> <span class="oo">&lt;&lt;</span> <span class="param">fr</span>.<span class="func">numerator</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"/"</span> <span class="oo">&lt;&lt;</span> <span class="param">fr</span>.<span class="func">denominator</span>();
+}
+
+<span class="namespace">std</span>::<span class="type">istream</span>&amp; <span class="keyword">operator</span><span class="func">&gt;&gt;</span>(<span class="namespace">std</span>::<span class="type">istream</span>&amp; <span class="param">is</span>, <span class="type">fraction</span>&amp; <span class="param">fr</span>)
+{
+	<span class="com-single">// implementations can vary a lot</span>
+	<span class="com-single">// this one works with the output overload but does no error handling</span>
+	<span class="keyword">int</span> <span class="var-local">value</span> = <span class="lit-num">0</span>;
+	<span class="param">is</span> <span class="oo">&gt;&gt;</span> <span class="var-local">value</span>;
+	<span class="param">fr</span>.<span class="func">numerator</span>(<span class="var-local">value</span>);
+	<span class="param">is</span>.<span class="func">ignore</span>(); <span class="com-single">// ignores next character</span>
+	<span class="param">is</span> <span class="oo">&gt;&gt;</span> <span class="var-local">value</span>;
+	<span class="param">fr</span>.<span class="func">denominator</span>(<span class="var-local">value</span>);
+	<span class="keyword">return</span> <span class="param">is</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>Standard argument passing recommendations apply:</p>
+<ul class="simple">
+<li><p>In both operators stream is taken by non-const reference because any work on the stream changes its state.</p></li>
+<li><p>Stream insertion only reads the data so should it should take the object by value or by const reference (here: by value because <code class="code custom-cpp"><span class="type">fraction</span></code> type is cheap to copy).</p></li>
+<li><p>Stream extraction stores the result in the object so the object must be passed by non-const reference.</p></li>
+</ul>
+<p>Example with string stream:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="namespace">std</span>::<span class="type">stringstream</span> <span class="var-local">ss</span>(<span class="lit-str">"1/2 3/4"</span>); <span class="com-single">// requires &lt;sstream&gt;</span>
+<span class="type">fraction</span> <span class="var-local">fr1</span>;
+<span class="type">fraction</span> <span class="var-local">fr2</span>;
+<span class="var-local">ss</span> <span class="oo">&gt;&gt;</span> <span class="var-local">fr1</span> <span class="oo">&gt;&gt;</span> <span class="var-local">fr2</span>;
+<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">fr1</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">" "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">fr2</span>;
+</pre></td>
+</tr></tbody></table>
+<!--  --><blockquote>
+<p>How about <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&lt;&lt;=</span></code> and <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&gt;&gt;=</span></code>?</p>
+</blockquote>
+<p>Their implementation should follow the same guidelines as other compound assignment operators but these operators only make sense when <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&lt;&lt;</span></code> and <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">&gt;&gt;</span></code> are implemented to perform mathematical operations. If you implement stream insertion/extraction, these operators should be left unimplemented.</p>
+</section><section id="exercise"><h2>Exercise</h2>
+<p>What's wrong with the implementation below?</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ostream</span>&amp; <span class="keyword">operator</span><span class="func">&lt;&lt;</span>(<span class="namespace">std</span>::<span class="type">ostream</span>&amp; <span class="param">os</span>, <span class="type">fraction</span> <span class="param">fr</span>)
+{
+	<span class="keyword">return</span> <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="param">fr</span>.<span class="func">numerator</span>() <span class="oo">&lt;&lt;</span> <span class="lit-str">"/"</span> <span class="oo">&lt;&lt;</span> <span class="param">fr</span>.<span class="func">denominator</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<div class="docutils container">
+<details><summary>Answer</summary><div class="docutils container">
+<p>The function does not use the stream provided as an argument. Instead, it always inserts data to <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cout</span></code>. This is a bug because someone might want to output a fraction to a different stream. Even worse that this function will also return a reference to the wrong stream object.</p>
+</div>
+</details>
+</div>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

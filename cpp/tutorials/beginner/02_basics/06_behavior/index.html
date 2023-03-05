@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 06 - behavior</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">02 - basics</a></li>
+							<span>/</span>
+						<li>06 - behavior</li>
+					</ol></nav><div class="content">
+				<h1>06 - behavior</h1>				<p>During some experiments, you might have made something like this:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">int</span> <span class="var-local">x</span>; <span class="com-single">// uninitialized</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"x = "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>; <span class="com-single">// what will be printed?</span>
+}
+</pre></td>
+</tr></tbody></table>
+<p>The variable has not been initialized. Compilers try to translate the source code as best as they can to optimal hardware instructions while following language specifications but because of C++ nature (full-spectrum programming language with no lower-level mechanisms hidden underneath) situations like this can happen.</p>
+<p>This is an example of <strong>undefined behavior</strong>. It's unknown what will actually happen. Intuitively, the compiler will allocate memory for the variable, attempt to read it and send received bytes to operating system's standard output. What will these bytes contain? No idea. Most likely some garbage that was left after previous program which happened to use the same block of memory. The program above might print a different value every time it's run. Basically, C++ specification does not define what happens with reads of uninitialized memory so there are no guarantees on the execution of this program.</p>
+<p>If you try to compile this program, you might get a warning from the compiler about the use of an uninitialized object. Because compilers optimize code during many transformation steps from source code to machine code, programs containing undefined behavior might be deformed even further, amplifying problems. This is a very simple case but as the code gets larger and more complex, it gets really hard to predict and search for potential errors. Many optimizations transform machine code based on the assumption that the program has no bugs - if they didn't there would be no sense in optimizing malfunctioning code.</p>
+<p>As a result, any C or C++ program containing undefined behavior can exhibit one or more of the following:</p>
+<ul class="simple">
+<li><p>unpredictable random crashes</p></li>
+<li><p>crashes under certain scenarios</p></li>
+<li><p>program freezes or slows down significantly</p></li>
+<li><p>program continues but does not behave as expected</p></li>
+<li><p>program works correctly (or at least seems to)</p></li>
+<li><p>program doesn't build or doesn't start</p></li>
+</ul>
+<p>Basically, there are no limits on what can happen. For this reason, <strong>you should always try to make your programs free of undefined behavior</strong>.</p>
+<section id="other-behaviors"><h2>Other behaviors</h2>
+<p>C++ specification defines few more terms that describe different levels of guarantees, but <strong>only undefined behavior is the dangerous one</strong>. Others just let the programmer rely more or less on certain things.</p>
+<section id="unspecified-behaviour"><h3>Unspecified behaviour</h3>
+<p>Behaviour that varies between implementations (mostly between compilers) but the conforming implementation is not required to document it.</p>
+<p>This covers situations in which there is no single good answer. There are multiple valid solutions, you just don't know which one is used by the given implementation as it can depend on a lot of factors including applied optimizations, hardware characteristics and operating system decisions.</p>
+<p>Example - in the expression <code class="code custom-cpp"><span class="lit-num">2</span> * <span class="lit-num">3</span> + <span class="lit-num">4</span> * <span class="lit-num">5</span></code> it's <em>unspecified</em> which multiplication is done first. As long as specification and mathematical laws are concerned, the only guarantee is that the addition will be done last. But since both multiplications are independent, there is no obligation for the compiler to write machine code that performs them in certain order.</p>
+<p>Similarly, in the expression <code class="code custom-cpp"><span class="func">foo</span>(<span class="func">bar</span>(), <span class="func">baz</span>())</code> it's <em>unspecified</em> which of <code class="code custom-cpp"><span class="func">bar</span></code> and <code class="code custom-cpp"><span class="func">baz</span></code> is called first. By analyzing parentheses (<code class="docutils literal">()</code>) we can clearly see that the function <code class="code custom-cpp"><span class="func">foo</span></code> requires results of 2 other functions as its input. But these 2 functions have no determined order - the compiler is free to decide. The code should not rely on specific order between <code class="code custom-cpp"><span class="func">bar</span></code> and <code class="code custom-cpp"><span class="func">baz</span></code> - it's <em>unspecified</em>.</p>
+<p>Unspecified behavior is mostly useful for optimizations because it allows some freedom for the compiler - usually being able to replace and/or reorder some machine instructions.</p>
+</section><section id="implementation-defined-behaviour"><h3>Implementation-defined behaviour</h3>
+<p>Behaviour that varies between implementations (mostly between compilers) and the conforming implementation must document it.</p>
+<p>Example: how many bytes <code class="code custom-cpp"><span class="keyword">int</span></code> (and other types) occupy in memory.</p>
+<p>This is mostly stuff which C++ standard can not precisely specify (as each hardware and system varies), but any compiler wishing to support C++ needs to make a consistent and documented decision.</p>
+<p>A subset of implementation-defined behavior is <em>locale-specific behavior</em>, which is related to <em>locales</em>, a concept of settings related to time zone and language. A function outputting current date/time is a good example - everyone understands what it means but how exactly numbers and punctuation are used depends on the local language.</p>
+</section><section id="well-defined-behaviour"><h3>Well-defined behaviour</h3>
+<p>The highest level of guarantees, usually very precisely specified in the specification giving very little or no space for compilers to do it differently.</p>
+<p>Best examples are all kinds of logical and arithmetic operations - math is everywhere the same.</p>
+</section></section><section id="behavior-vs-diagnostics"><h2>Behavior vs diagnostics</h2>
+<p>There is one more concept related to behavior - diagnostics. C++ specification places requirements regarding certain errors - if they happen a conforming implementation is obliged to output an error (diagnostic message) <strong>and reject compiling the program even if it could proceed</strong>.</p>
+<p>Such programs are called <strong>ill-formed</strong> and fall in one of two categories:</p>
+<ul class="simple">
+<li><p>ill-formed, diagnostic required</p></li>
+<li><p>ill-formed, no diagnostic required</p></li>
+</ul>
+<p>For example, the <code class="code custom-cpp"><span class="keyword">short</span> <span class="keyword">long</span></code> type is ill-formed with diagnostic required. Even if the compiler could attach some meaning to it, the C++ standard forbids doing so to prevent accidental spread of incompatible and questionable code.</p>
+<p>Some situations with ill-formed programs do not require diagnostic, usually because it's really hard to detect such problems and the standard does not want to force compilers into doing impossible or very costly analysis. In reality, compilers often do provide diagnostics even if not required, which increases overall safety but at the same time does not bind them in case situation changes (e.g. because new hardware works differently).</p>
+<!-- TODO as-if rule when? -->
+</section><section id="exercise"><h2>Exercise</h2>
+<p>What can happen when executing a program with undefined behavior?</p>
+<div class="docutils container">
+<details><summary>Answer</summary><div class="docutils container">
+<p>Absolutely anything.</p>
+</div>
+</details>
+</div>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

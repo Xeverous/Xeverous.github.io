@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 02 - comments</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">02 - basics</a></li>
+							<span>/</span>
+						<li>02 - comments</li>
+					</ol></nav><div class="content">
+				<h1>02 - comments</h1>				<p>C++ supports 2 different ways of writing comments:</p>
+<ul class="simple">
+<li><p>Single-line - they start with <code class="docutils literal">//</code> and span until end of line.</p></li>
+<li><p>Multi-line: they start with <code class="docutils literal">/*</code> and span until <code class="docutils literal">*/</code>. Both of these can be on the same line, so multi-line comments can also be used as very short comments, mixed with code on the same line.</p></li>
+</ul>
+<p>The C++ ancestor, C, originally supported only multi-line comments. In 1999 standard (referred to as C99) it adopted single-line comments from C++. Thus:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">/*</code> <code class="docutils literal">*/</code> are sometimes referred to as "C-style comments"</p></li>
+<li><p><code class="docutils literal">//</code> are sometimes referred to as "C++-style commnents"</p></li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// this is a single-line comment</span>
+<span class="com-multi">/* this is a</span>
+<span class="com-multi">multi-line comment */</span>
+<span class="com-multi">/* this multi-line comment... */</span> <span class="com-single">// ...is followed by a single-line comment</span>
+<span class="com-multi">/* this multi-line comment</span>
+<span class="com-multi">contains a single-line comment: // here</span>
+<span class="com-multi">and is treated as one multi-line comment */</span>
+</pre></td>
+</tr></tbody></table>
+<p>Multi-line comments can be used to disable multiple lines of code at once. Just wrap the code in them and the code will no longer be considered code but a comment. You can also notice that multi-line comments can contain single-line comments - in other words, multi-line comments can "eat" any other text between their start and end tokens.</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>Multi-line comments can not be nested. Some compilers may emit a warning if they encounter multiple <code class="docutils literal">/*</code> without <code class="docutils literal">*/</code> between.</p>
+</aside><p>If you try to nest such comments (e.g. <code class="code custom-cpp"><span class="com-multi">/* /* ... */</span> <span class="problem">*/</span></code>):</p>
+<ul class="simple">
+<li><p>the first <code class="docutils literal">/*</code> will begin multi-line comment</p></li>
+<li><p>the second <code class="docutils literal">/*</code> will be already a part of the comment text and be ignored</p></li>
+<li><p>the first <code class="docutils literal">*/</code> will end multi-line comment</p></li>
+<li><p>the second <code class="docutils literal">*/</code> will likely be a syntax error</p></li>
+</ul>
+<section id="backslash-at-the-end-of-line"><h2>Backslash at the end of line</h2>
+<p>Watch out for accidental <code class="docutils literal">\</code> at the end of a line. It extends it to the next one, even in the case of single-line comments:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// text... \</span>
+<span class="com-single">this text is also a part of the comment</span>
+</pre></td>
+</tr></tbody></table>
+<p>It's advised to just write 2 comments instead (or 1 multi-line):</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// text...</span>
+<span class="com-single">// text...</span>
+</pre></td>
+</tr></tbody></table></section><section id="documentation-comments"><h2>Documentation comments</h2>
+<p>Some tools may automatically help writing pretty comments like this:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-multi-dox">/**</span>
+<span class="com-multi-dox"> *</span> <span class="com-tag-dox">@brief</span> <span class="com-multi-dox">some short description</span>
+<span class="com-multi-dox"> *</span> <span class="com-tag-dox">@param</span> <span class="com-multi-dox">x parameter x descritption</span>
+<span class="com-multi-dox"> *</span> <span class="com-tag-dox">@param</span> <span class="com-multi-dox">y parameter y descritption</span>
+<span class="com-multi-dox"> *</span> <span class="com-tag-dox">@return</span> <span class="com-multi-dox">result description</span>
+<span class="com-multi-dox"> *</span>
+<span class="com-multi-dox"> *</span> <span class="com-tag-dox">@details</span> <span class="com-multi-dox">long description, usually</span>
+<span class="com-multi-dox"> * describing preconditions and error cases</span>
+<span class="com-multi-dox"> */</span>
+</pre></td>
+</tr></tbody></table>
+<p>By convention, multi-line comments beginning with <code class="docutils literal">/**</code> and single-line comments beginning with <code class="docutils literal">///</code> are comments for code-analyzing tools. Compilers ignore text inside comments, but some tools expect certain syntax inside them - e.g. tags denoted with <code class="docutils literal">@</code> are searched by documentation tools like <a class="reference external" href="https://www.doxygen.nl/index.html">Doxygen</a> which generate documentation from code. Some IDEs may also display help boxes by relying on these tags.</p>
+</section><section id="the-purpose-of-comments"><h2>The purpose of comments</h2>
+<p>In ordinary code the main purpose of comments is documentation and explaining <strong>why</strong> something is done, not <strong>how</strong>. Very often there are many ways to do certain task. The code describes <em>how</em> to do this task. But <em>why</em> this particular way? This should be written in the comment.</p>
+<p>Example, bad:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">if</span> (<span class="var-local">bargain_percent</span> &gt;= <span class="lit-num">100</span>)
+	<span class="var-local">price</span> = <span class="lit-num">0</span>; <span class="com-single">// set price to 0 when bargain exceeds 100%</span>
+<span class="keyword">else</span>
+	<span class="var-local">price</span> = <span class="var-local">price</span> - <span class="var-local">price</span> * <span class="var-local">bargain_percent</span> / <span class="lit-num">100</span>;
+</pre></td>
+</tr></tbody></table>
+<p>Example, good:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">if</span> (<span class="var-local">bargain_percent</span> &gt;= <span class="lit-num">100</span>)
+	<span class="var-local">price</span> = <span class="lit-num">0</span>; <span class="com-single">// prevent price reduction below 0</span>
+<span class="keyword">else</span>
+	<span class="var-local">price</span> = <span class="var-local">price</span> - <span class="var-local">price</span> * <span class="var-local">bargain_percent</span> / <span class="lit-num">100</span>;
+</pre></td>
+</tr></tbody></table>
+<p>In the example above the comment should not explain math (reducing amount by percents is pretty straightforward) but why there is a special case for bargains exceeding 100% - in such cases the player could abuse the game by reducing price to negative numbers, potentially ending up earning money while buying the item.</p>
+<p>In professional code comments should not explain code as we should assume the reader is already familiar with the language. It's more important to document <em>why</em> a specific block of code exists and <em>why</em> a particular solution was choosen. Once you start making bigger projects or work with other people you will realize how unlikely it is that someone will remember all of "the obvious things" in the program that has multiple thousand lines of code.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>When writing comments, document <em>why</em>, not <em>how</em>.</p>
+</aside><p>In the tutorial this rule will obviously be violated as the goal here is to teach you programming. Very likely you will also make some notes with explanatory comments. Just be aware that in the actual job the purpose of comments is much different.</p>
+</section><section id="formatting"><h2>Formatting</h2>
+<p>A battle almost as old as deciding which side toiler paper should go on is code formatting, especially braces (<code class="docutils literal">{}</code>).</p>
+<p>Below I present 2 most common formatting styles found in C and any other language based on C's grammar (such as C++, Java, JavaScript, C#):</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// Allman</span>
+<span class="keyword">if</span> (<span class="var-local">condition</span>)
+{
+	<span class="func">do_this</span>();
+}
+<span class="keyword">else</span>
+{
+	<span class="func">do_that</span>();
+}
+
+<span class="com-single">// K&amp;R - Stroustrup variant</span>
+<span class="keyword">if</span> (<span class="var-local">condition</span>) {
+	<span class="func">do_this</span>();
+}
+<span class="keyword">else</span> { <span class="com-single">// some variants would write "} else {"</span>
+	<span class="func">do_that</span>();
+}
+</pre></td>
+</tr></tbody></table>
+<p>A much larger list can be found on <a class="reference external" href="https://en.wikipedia.org/wiki/Indentation_style">https://en.wikipedia.org/wiki/Indentation_style</a>.</p>
+<p>For beginners, Allman will usually be better as with it it's easier to reason about indented code. K&amp;R main advantage is more concise code, allowing to fit more on fewer lines. Not every brace in K&amp;R is placed on the same line - function-opening brace is placed on the next. IDEs may also feature automatic code formatting tools.</p>
+<p>A different issue is maximum allowed line length. There is no technical limit, but most people break long lines once they become too long - vertical scrolling is fine but hardly anyone likes horizontal scrolling. Sticking to a line length limit lets people open multiple editors side by side. Recommendations vary. In the past it was 80, partially due to technical reasons but now it's not rare to find projects with maximum 120 or 150 characters in line.</p>
+<p>If you happen to split a line, it's recommended to align the code (similarly how you can find aligned comments in the tutorial lessons) and place the operator on the next line - if expression like <code class="code custom-cpp"><span class="lit-num">2</span> * <span class="lit-num">3</span> + <span class="lit-num">4</span> * <span class="lit-num">5</span></code> is split over <code class="docutils literal">+</code>, the <code class="docutils literal">+</code> character should be first on the next line, not last on the previous line (this increases readability).</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Pick a style you prefer and use it consistently.</p>
+</aside><p>A well-formatted program is easier to understand. This is hilariously explained in <a class="reference external" href="https://www.youtube.com/watch?v=P2lxGnbDkDI">CppCon 2018: James McNellis "The Shape of a Program"</a>.</p>
+<p>The presentation mentions some simple refactorings (e.g. extracting <code class="code custom-cpp"><span class="keyword">if</span></code> statements to unindent nested code) which will be covered in detail in later lessons. There are many simple code transformations you can apply to reduce code complexity; some IDEs even detect such cases and propose automatic refactorings.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

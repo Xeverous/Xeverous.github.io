@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - introduction</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">03 - control flow</a></li>
+							<span>/</span>
+						<li>01 - introduction</li>
+					</ol></nav><div class="content">
+				<h1>01 - introduction</h1>				<p>I'm pretty sure you have encountered flowcharts like the one below, probably countless times.</p>
+<img alt="lamp flowchart" src="https://upload.wikimedia.org/wikipedia/commons/9/91/LampFlowchart.svg"><p>The core thing that makes them dynamic are blocks which ask for an aswer. Depending on it, a different path should be followed. Some of flowcharts may even form loops (arrow points to some previosly visited block) so that you traverse the same path multiple times (each time doing something slightly different) untill the condition no longer holds and then move forward (to yet unvisited blocks).</p>
+<p>Similarly, one of key aspects of computer programs is the ability do something <em>depending</em> on something else. It seems to be so obvious yet this chapter has multiple lessons. Is this really that hard?</p>
+<section id="why-control-flow-is-not-just-jumps"><h2>Why control flow is not just jumps</h2>
+<p>In the machine code, we can differentiate 4 types of instructions:</p>
+<ul class="simple">
+<li><p>reads</p></li>
+<li><p>writes</p></li>
+<li><p>computations</p></li>
+<li><p>jumps</p></li>
+</ul>
+<p>All that the processor is doing is simply executing instructions one after another and occasionally jumping to a different instruction than the next if some condition has been satisfied.</p>
+<p>The same thing could be also done in programming - but - imagine a 10000+ line program containing thousands of instructions and hundreds of statements like "if x is 0, jump to line ...". Humans get lost at roughly 7 (+/-2) things<a class="footnote-reference brackets" href="#footnote-1" id="footnote-reference-1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> they need to focus on. Such program would be orders of magnitude more complex than any human could ever grasp, yet today we have programs containing millions of lines of code and they are still developed further.</p>
+<p>When first high-level programming languages appeared (reminder: low-level means 1:1 transformation of source code to machine code) the abstraction for a jump was very simple: <code class="code custom-cpp"><span class="keyword">goto</span></code> keyword or something similar. You just wrote a condition and if it was true, the program would jump to a specified line or label.</p>
+<p>As you may guess, it was extremely easy to get lost within such program. After just few <code class="code custom-cpp"><span class="keyword">goto</span></code> statements, it was almost impossible to add any new functionality without breaking behavior of existing functionality. There was clearly a need for something more, something that could abstract program's control flow structure so that programmers don't get lost in a web of jump statements. While purely imperative approach is very good for constructing hardware (because it's extremely easy to execute) it's extremely hard to write a sequence of statements (some containing conditional jumps) without getting lost.</p>
+</section><section id="structured-programming"><h2>Structured programming</h2>
+<p>Programs you have seen so far were either exclusively or mostly imperative. They simply had a list of statements that were executed in order of their appearance.</p>
+<p>Continuing to write programs in such style with the addition of jump statements will change their understandability from trivial to unimaginable. Thus, I won't showcase how to use <code class="code custom-cpp"><span class="keyword">goto</span></code> in C++ as it's almost inherently harmful. It's so harmful that:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">goto</span></code> is pretty much never used in C++, almost universally hated<a class="footnote-reference brackets" href="#footnote-2" id="footnote-reference-2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a> and presented as a source of problems.</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">goto</span></code> is used in C only with specific control flow patterns. Such patterns are very common in C++ too but they can be done without <code class="code custom-cpp"><span class="keyword">goto</span></code> - in C++ the compiler can do automatically what needs to be done manually with <code class="code custom-cpp"><span class="keyword">goto</span></code> in C.</p></li>
+<li><p>Majority of newer programming languages do not have <code class="code custom-cpp"><span class="keyword">goto</span></code> and thus never allow <em>unstructured control flow</em>.</p></li>
+</ul>
+<p>So what's the deal with structured programming? It's all about having some framework that improves program clarity and maintability by usage of <em>structured control flow statements</em>.</p>
+</section><section id="theorem"><h2>Theorem</h2>
+<p>The <em>structured program theorem</em><a class="footnote-reference brackets" href="#footnote-3" id="footnote-reference-3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>, also called the <em>Böhm–Jacopini theorem</em> states that a program can compute any computable function if it combines subprograms in just three specific ways:</p>
+<ul class="simple">
+<li><p>sequence: executing subprograms (statements) in order of their appearance</p></li>
+<li><p>selection: executing 1 of 2 subprograms based on a boolean value</p></li>
+<li><p>iteration: repeated execution of a subprogram as long as a boolean value is true</p></li>
+</ul>
+<p>For vast majority of programming languages:</p>
+<ul class="simple">
+<li><p>The first point doesn't require any explanation, it's just the simplest form of imperative code.</p></li>
+<li><p>The second point is represented as <em>conditional statements</em>.</p></li>
+<li><p>The third point is represented as <em>loops</em>.</p></li>
+</ul>
+<p>Apart from these, C++ also contains one more structured form of control flow - exceptions. However, <strong>exceptions are intended exclusively for error handling</strong> and thus they won't be showcased in this chapter.</p>
+<p>If you feel overwhelmed by this theory - just move on to the next lesson. For many it's easier to see actual examples than to read theoretical lecture.</p>
+<p>TODO scope</p>
+<hr class="docutils">
+<aside class="footnote-list brackets"><aside class="footnote brackets" id="footnote-1" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-1">1</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two">https://en.wikipedia.org/wiki/The_Magical_Number_Seven,_Plus_or_Minus_Two</a></p>
+</aside><aside class="footnote brackets" id="footnote-2" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-2">2</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Goto#Criticism">https://en.wikipedia.org/wiki/Goto#Criticism</a></p>
+</aside><aside class="footnote brackets" id="footnote-3" role="note"><span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#footnote-reference-3">3</a><span class="fn-bracket">]</span></span>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Structured_program_theorem">https://en.wikipedia.org/wiki/Structured_program_theorem</a></p>
+</aside></aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

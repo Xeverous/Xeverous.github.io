@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 08 - multiple inheritance</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xz - polymorphism</a></li>
+							<span>/</span>
+						<li>08 - multiple inheritance</li>
+					</ol></nav><div class="content">
+				<h1>08 - multiple inheritance</h1>				<p>Being able to inherit multiple times doesn't seem complicated. A class simply reuses code from multiple other classes. But practice has shown that multiple inheritance can be very easily overused and lead to strongly coupled, hard to maintain code.</p>
+<section id="duplicate-function-name"><h2>Duplicate function name</h2>
+<p>In such case there is no problem although technically there are 2 chains of virtual functions here.</p>
+<p>Overriding is not required in <code class="code custom-cpp"><span class="type">derived</span></code> but if not done then calls through <code class="code custom-cpp"><span class="type">derived</span></code> are ambiguous and thus <em>ill-formed</em>. If <code class="code custom-cpp"><span class="type">derived</span></code> does override, it overrides 2 functions from different virtual function chains.</p>
+<p>Try the example below with and without commented function in <code class="code custom-cpp"><span class="type">derived</span></code>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">class</span> <span class="type">base1</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"base1::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">base2</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">f</span>() { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"base2::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">class</span> <span class="type">derived</span>: <span class="keyword">public</span> <span class="type">base1</span>, <span class="keyword">public</span> <span class="type">base2</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">void</span> <span class="func">f</span>() <span class="keyword">override</span> { <span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"derived::f<span class="esc-seq">\n</span>"</span>; }
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">derived</span> <span class="var-local">d</span>;
+	<span class="type">base1</span>&amp; <span class="var-local">r1</span> = <span class="var-local">d</span>;
+	<span class="type">base2</span>&amp; <span class="var-local">r2</span> = <span class="var-local">d</span>;
+	<span class="var-local">r1</span>.<span class="func">f</span>();
+	<span class="var-local">r2</span>.<span class="func">f</span>();
+}
+</pre></td>
+</tr></tbody></table></section><section id="interface-vs-implementation"><h2>Interface vs implementation</h2>
+<p>Compared to other programming languages, inheritance in C++ allows much more. There are no constraints other than these which come from logic in mathematics - e.g. a loop within inheritance is not possible (in code there is even no way to express that due to ODR).</p>
+<p>Many other languages impose specific limitations: there are separate <code class="code custom-cpp"><span class="keyword">class</span></code> and <code class="code custom-cpp"><span class="keyword">interface</span></code> keywords:</p>
+<ul class="simple">
+<li><p>an <code class="code custom-cpp"><span class="keyword">interface</span></code> offers reduced functionality of an abstract class: it can not have data members, all functions must be virtual or (in some languages) all functions must be pure virtual</p></li>
+<li><p>a <code class="code custom-cpp"><span class="keyword">class</span></code> can inherit from many <code class="code custom-cpp"><span class="keyword">interface</span></code>s but only from 1 other <code class="code custom-cpp"><span class="keyword">class</span></code></p></li>
+</ul>
+<p>This creates a framework where a class can inherit data and non-virtual functions only from 1 parent. Inheriting from an <code class="code custom-cpp"><span class="keyword">interface</span></code> is called <em>interface inheritance</em> and inheriting from a <code class="code custom-cpp"><span class="keyword">class</span></code> is called <em>implementation inheritance</em>. In Java this is further signified by the syntax <code class="code custom-cpp"><span class="keyword">class</span> <span class="spec">identifier</span> <span class="keyword">implements</span> <span class="spec">identifier</span></code> (<em>interface inheritance</em>) and <code class="code custom-cpp"><span class="keyword">class</span> <span class="spec">identifier</span> <span class="keyword">extends</span> <span class="spec">identifier</span></code> (<em>implementation inheritance</em>).</p>
+<p>Why impose such limitation? Practice has shown that reasonable data-member-multiple-inheritance is very rare. It simply doesn't make sense in vast majorty of cases and leads to unmaintainable code.</p>
+<ul class="simple">
+<li><p><em>Implementing</em> an interface? Sure - the type agrees to perform certain things (in <em>design by contract</em> terminology the interface definition is the contract).</p></li>
+<li><p><em>Implementing</em> multiple interfaces? Not a problem, a class can satisfy multiple "contracts" (interfaces).</p></li>
+<li><p><em>Extending</em> an existing class? Sure, seems very natural. Just a class that offers additional functionality.</p></li>
+<li><p><em>Extending</em> multiple classes at once? This seems weird. You can <em>act</em> as multiple, different things but you can't <em>be</em> multiple, different things.</p></li>
+</ul>
+<p>Another good example are games. Games almost always have huge amount of interactions. After all, by design players are expected to use these interactions to their advantage as much as possible. Various entities within a game can implement different abilities/functionalities (dealing damage, healing, changing statistics of other entities) - specifications of these functionalities would be <em>interfaces</em>. But an entity (NPC, enemy, item, interactable terrain object) can at most extend other entity (upgraded item), it can not <em>be</em> multiple entities at once.</p>
+<p>Interface classes allow to write code that specifies certain expectations of behavior of a class and a class can implement multiple such specifications. Because interface classes do not carry any data with them (other than vtable pointers), there are no concerns about breaking invariants within derived types. Code that relies on these expectations does not need to know what data members are present - only the set of functions that can be called.</p>
+<p>Example interface class:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">logger</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">enum</span> <span class="keyword">class</span> <span class="type">severity</span> { <span class="enum">info</span>, <span class="enum">warning</span>, <span class="enum">error</span> };
+
+	<span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">message</span>(<span class="type">severity</span> <span class="param">s</span>, <span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">string</span>&amp; <span class="param">text</span>) = <span class="lit-num">0</span>;
+
+	<span class="keyword">void</span> <span class="func">info</span>(<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">string</span>&amp; <span class="param">text</span>) { <span class="func">message</span>(<span class="type">severity</span>::<span class="enum">info</span>, <span class="param">text</span>); }
+	<span class="keyword">void</span> <span class="func">warning</span>(<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">string</span>&amp; <span class="param">text</span>) { <span class="func">message</span>(<span class="type">severity</span>::<span class="enum">warning</span>, <span class="param">text</span>); }
+	<span class="keyword">void</span> <span class="func">error</span>(<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type">string</span>&amp; <span class="param">text</span>) { <span class="func">message</span>(<span class="type">severity</span>::<span class="enum">error</span>, <span class="param">text</span>); }
+};
+</pre></td>
+</tr></tbody></table>
+<p>Each derived class can implement logging very differently: standard output, output to file, over network, ignoring all calls (a "null logger" could be useful for some unit tests and benchmarking main code). Code that calls the logger doesn't care how it's done exactly - it only cares that it sends information to the logger.</p>
+<p>In many cases when there seems to be a need for multiple implementation inheritance, <em>composition</em> should be used instead. Still there are situations (very rare) where the best way to solve the problem is to use multiple implementation inheritance.</p>
+</section><section id="conventions"><h2>Conventions</h2>
+<p>Even though C++ has no <code class="code custom-cpp"><span class="keyword">interface</span></code> keyword, the term <em>interface</em> or <em>interface class</em> can still be found being used in the comunity. For C++ it simply means a class with no non-static data members and all or most functions being virtual or pure virtual (non-virtual functions can be extra overloads for default parameters functionality).</p>
+<p>In some other languages there are conventions for class names based on their purpose:</p>
+<ul class="simple">
+<li><p>non-interface class: <code class="docutils literal">Foo</code>, <code class="docutils literal">CFoo</code></p></li>
+<li><p>interface class: <code class="docutils literal">FooInterface</code>, <code class="docutils literal">IFoo</code></p></li>
+<li><p>exception: <code class="docutils literal">EFoo</code>, <code class="docutils literal">FooException</code></p></li>
+</ul>
+<p>There are no such conventions in C++ (see names in <a class="reference external" href="https://en.cppreference.com/w/cpp/error/exception">the hierarchy of standard exception types</a>) though some frameworks do use it (e.g. Unreal Engine).</p>
+</section><section id="design-patterns"><h2>Design patterns</h2>
+<p>If all of this still sounds unclear to you - don't worry. It will come with practice. I encourage you to look into <em>design patterns</em> after you finish this chapter (or later, after full C++ tutorial) - they showcase how and why specific approaches of using inheritance, access control, and (pure) virtual functions create (or not create) high-quality code. <em>Design patterns</em> are basically well-known specific combinations of OOP features that practice has proven to be working well. A lot of OOP code follows these patterns or mixes them together.</p>
+<!-- TOINCLUDE (in design patterns main page) -->
+<p>Knowing design patterns will:</p>
+<ul class="simple">
+<li><p>let you write well-known implementations with best possible tradeoffs of a solution to a particular problem</p></li>
+<li><p>write code that is easy to understand and maintain for others</p></li>
+<li><p>help you quickly understand unfamiliar code</p></li>
+</ul>
+<hr class="docutils">
+<p>More info:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/995255/why-is-multiple-inheritance-not-allowed-in-java-or-c">https://stackoverflow.com/questions/995255/why-is-multiple-inheritance-not-allowed-in-java-or-c</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/406081/why-should-i-avoid-multiple-inheritance-in-c">https://stackoverflow.com/questions/406081/why-should-i-avoid-multiple-inheritance-in-c</a></p></li>
+<li><p><a class="reference external" href="https://stackoverflow.com/questions/225929/what-is-the-exact-problem-with-multiple-inheritance">https://stackoverflow.com/questions/225929/what-is-the-exact-problem-with-multiple-inheritance</a></p></li>
+<li><p><a class="reference external" href="https://docs.microsoft.com/en-us/archive/blogs/csharpfaq/why-doesnt-c-support-multiple-inheritance">https://docs.microsoft.com/en-us/archive/blogs/csharpfaq/why-doesnt-c-support-multiple-inheritance</a></p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

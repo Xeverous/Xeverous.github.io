@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 12 - friends</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">xx - classes</a></li>
+							<span>/</span>
+						<li>12 - friends</li>
+					</ol></nav><div class="content">
+				<h1>12 - friends</h1>				<aside class="admonition note"><p class="admonition-title">note</p>
+<p>This lesson presents a feature which is useful only in certain niches, particularly some operator overloads. You can skip this lesson and come back here when you actually need to use it.</p>
+</aside><p><code class="code custom-cpp"><span class="keyword">friend</span></code>s allow to ignore <em>access specifiers</em>.</p>
+<p><em>Friend declarations</em> are not themselves affected by <em>access specifiers</em>  so it doesn't matter where they are put.</p>
+<section id="friend-functions"><h2>Friend functions</h2>
+<p>A class can <code class="code custom-cpp"><span class="keyword">friend</span></code> a non-member function. This function will have access to <code class="code custom-cpp"><span class="keyword">private</span></code> and <code class="code custom-cpp"><span class="keyword">protected</span></code> members.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">class</span> <span class="type">foo</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">x</span> = <span class="lit-num">1</span>;
+
+	<span class="com-single">// this is not a member function but a friend function declaration</span>
+	<span class="keyword">friend</span> <span class="keyword">void</span> <span class="func">func</span>(<span class="type">foo</span> <span class="param">f</span>);
+};
+
+<span class="keyword">void</span> <span class="func">func</span>(<span class="type">foo</span> <span class="param">f</span>) <span class="com-single">// friends can access private and protected members</span>
+{
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"f.x = "</span> <span class="oo">&lt;&lt;</span> <span class="param">f</span>.<span class="var-member">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">foo</span> <span class="var-local">f</span>;
+	<span class="func">func</span>(<span class="var-local">f</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<p><code class="code custom-cpp"><span class="keyword">friend</span></code> function definition can also be placed directly within the class. In such case it's implicitly <code class="code custom-cpp"><span class="keyword">inline</span></code>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">class</span> <span class="type">foo</span>
+{
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="var-member">x</span> = <span class="lit-num">1</span>;
+
+	<span class="keyword">friend</span> <span class="keyword">void</span> <span class="func">func</span>(<span class="type">foo</span> <span class="param">f</span>) <span class="com-single">// implicitly inline</span>
+	{
+		<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"f.x = "</span> <span class="oo">&lt;&lt;</span> <span class="param">f</span>.<span class="var-member">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	}
+};
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="type">foo</span> <span class="var-local">f</span>;
+	<span class="func">func</span>(<span class="var-local">f</span>);
+}
+</pre></td>
+</tr></tbody></table>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="keyword">friend</span></code> function definitions inside class are only allowed if the class is defined non-locally - it won't work for class defined locally in a function.</p>
+</aside></section><section id="friend-classes"><h2>Friend classes</h2>
+<p>A class can <code class="code custom-cpp"><span class="keyword">friend</span></code> another class. Friended class (and it's functions) will have access to <code class="code custom-cpp"><span class="keyword">private</span></code> and <code class="code custom-cpp"><span class="keyword">protected</span></code> members. This works only in 1 direction.</p>
+<p>There are 3 syntax possibilities here:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">friend</span> <span class="spec">simple-type-specifier</span>;</code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">friend</span> <span class="spec">typename-specifier</span>;</code></p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">friend</span> <span class="spec">elaborated-class-specifier</span>;</code></p></li>
+</ul>
+<p>The reasoning for limited syntax is simple: <code class="code custom-cpp"><span class="keyword">friend</span></code> declarations care only about the type name alone, code like <code class="code custom-cpp"><span class="keyword">friend</span> <span class="keyword">const</span> <span class="type">foo</span>&amp;;</code> makes no additional sense by introduction of qualifiers. Thus, only a subset of syntax have been allowed instead of something like <code class="code custom-cpp"><span class="spec">decl-specifier-seq</span></code>.</p>
+<p>Enough technicalities, now what's the real impact of it? As far as average C++ programmer would be concerned, there are 2 different usages:</p>
+<ul class="simple">
+<li>
+<p><code class="code custom-cpp"><span class="keyword">friend</span> <span class="spec">identifier</span>;</code> (from first 2)</p>
+<ul>
+<li><p><code class="code custom-cpp"><span class="spec">identifier</span></code> must already exist.</p></li>
+<li><p>if <code class="code custom-cpp"><span class="spec">identifier</span></code> does not name a <code class="code custom-cpp"><span class="keyword">class</span></code>, <code class="code custom-cpp"><span class="keyword">struct</span></code> or <code class="code custom-cpp"><span class="keyword">union</span></code>, it's not an error but the statement is ignored instead</p></li>
+</ul>
+</li>
+<li>
+<p><code class="code custom-cpp"><span class="keyword">friend</span> <span class="keyword">class</span> <span class="spec">identifier</span>;</code> (from <code class="code custom-cpp"><span class="spec">elaborated-class-specifier</span></code>) (the <code class="code custom-cpp"><span class="keyword">class</span></code> can also be <code class="code custom-cpp"><span class="keyword">struct</span></code> and <code class="code custom-cpp"><span class="keyword">union</span></code>)</p>
+<ul>
+<li><p>if there is no type named <code class="code custom-cpp"><span class="spec">identifier</span></code>, it additionally acts as a forward declaration</p></li>
+</ul>
+</li>
+</ul>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">using</span> <span class="type">int_t</span> = <span class="keyword">int</span>;
+<span class="keyword">class</span> <span class="type">quux</span> {};
+<span class="keyword">class</span> <span class="type">bar</span> {};
+
+<span class="keyword">class</span> <span class="type">foo</span>
+{
+<span class="keyword">private</span>: <span class="com-single">// friend declarations are not affected by access specifiers so it doesn't matter which keyword is here</span>
+	<span class="keyword">friend</span> <span class="type">int_t</span>; <span class="com-single">// ok: the type exists but is not a class - statement ignored</span>
+	<span class="keyword">friend</span> <span class="problem">fp_t</span>;  <span class="com-single">// error: type fp_t does not exist</span>
+	<span class="keyword">friend</span> <span class="type">quux</span>;  <span class="com-single">// ok: quux can access private and protected members of foo</span>
+	<span class="keyword">friend</span> <span class="keyword">class</span> <span class="type">bar</span>; <span class="com-single">// ok: bar can access private and protected members of foo</span>
+	<span class="keyword">friend</span> <span class="keyword">class</span> <span class="type">baz</span>; <span class="com-single">// as above + also forward declares class baz</span>
+
+	<span class="keyword">friend</span> <span class="keyword">class</span> <span class="type">bzz</span> <span class="problem">{}</span>; <span class="com-single">// error: friended class definition inside enclosing class not allowed</span>
+};
+</pre></td>
+</tr></tbody></table>
+<!-- I get that :cch:`elaborated-class-specifier$$$0spec` allows to combine friend declaration with type forward declaration. But why in the first case when the :cch:`identifier$$$spec` names something different the statement is ignored instead of raising an error? --><p>I don't know the exact reason, but I guess it's similar why <code class="docutils literal">.</code> is allowed for <code class="code custom-cpp"><span class="keyword">static</span></code> members: it allows some templates to work out-of-the-box. Otherwise they would have the burdern of checking if the type is (not) a class and then providing different definitions to support both cases.</p>
+</section><section id="friend-members"><h2>Friend members</h2>
+<p>A class can also <code class="code custom-cpp"><span class="keyword">friend</span></code> specific members of other classes, provided they themselves are accessible.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">class</span> <span class="type">foo</span>
+{
+<span class="keyword">public</span>:
+	<span class="keyword">struct</span> <span class="type">quux</span> { <span class="com-multi">/* ... */</span> };
+	<span class="keyword">int</span> <span class="func">pub</span>() <span class="keyword">const</span>;
+<span class="keyword">private</span>:
+	<span class="keyword">int</span> <span class="func">priv</span>() <span class="keyword">const</span>;
+};
+
+<span class="keyword">class</span> <span class="type">bar</span>
+{
+	<span class="com-single">// foo's default constructor (implicitly defined) can access all bar's members</span>
+	<span class="keyword">friend</span> <span class="type">foo</span>::<span class="func">foo</span>();
+
+	<span class="keyword">friend</span> <span class="type">foo</span>::<span class="type">quux</span>; <span class="com-single">// ok: all code of foo::quux can access all bar's members</span>
+
+	<span class="keyword">friend</span> <span class="keyword">int</span> <span class="type">foo</span>::<span class="func">pub</span>() <span class="keyword">const</span>;  <span class="com-single">// ok: foo::pub can access all bar's members</span>
+	<span class="keyword">friend</span> <span class="keyword">int</span> <span class="type">foo</span>::<span class="problem">priv</span>() <span class="keyword">const</span>; <span class="com-single">// error: foo::priv is private (not accessible in this context)</span>
+};
+</pre></td>
+</tr></tbody></table></section><section id="other-rules"><h2>Other rules</h2>
+<ul class="simple">
+<li><p>Friendship is a one-way relation: if <code class="code custom-cpp"><span class="type">foo</span></code> friends <code class="code custom-cpp"><span class="type">bar</span></code>, <code class="code custom-cpp"><span class="type">bar</span></code> can access all members of <code class="code custom-cpp"><span class="type">foo</span></code> but not vice versa.</p></li>
+<li><p>Friendship is not transitive: a friend of your friend is not your friend.</p></li>
+<li>
+<p>Friendship is not inherited (child classes (<em>derived types</em>) explained in inheritance chapter):</p>
+<ul>
+<li><p>your friend's children are not your friends</p></li>
+<li><p>your's children do not friend your friends</p></li>
+</ul>
+</li>
+</ul>
+<p>In short, friendship is a one-way relation that does not propagate.</p>
+</section><section id="recommendation"><h2>Recommendation</h2>
+<p>Friends defeat the purpose of encapsulation and can be used to break class invariants. Be very cautious with their usage.</p>
+<ul class="simple">
+<li><p>If two classes friend each other, they probably should be rewritten as one class or their public/non-public code is badly designed.</p></li>
+<li><p>If one class friends a lot of other code, it probably has insufficient public interface.</p></li>
+</ul>
+<p><strong>Do not friend anything from the standard library!</strong> Each implementation can be different and contain multiple layers of internal code - since friendship is not transitive and does not propagate there are no guarantees whether the implementation of particular standard library entity will be able to use non-public members.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>The only widely accepted place of using friends is <em>operator overloading</em>.</p>
+</aside></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

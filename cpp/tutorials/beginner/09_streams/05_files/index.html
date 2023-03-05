@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 05 - files</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">09 - streams</a></li>
+							<span>/</span>
+						<li>05 - files</li>
+					</ol></nav><div class="content">
+				<h1>05 - files</h1>				<p>Reading and writing files doesn't differ much from using other streams - the core difference is initialization.</p>
+<!-- TODO - missing initialization example (ctor and .open) - this lesson needs examples -->
+<section id="file-streams"><h2>File streams</h2>
+<p>File streams are an extension of already presented streams, they have few more functions specifically for dealing with files.</p>
+<p>There are 3 main types (all defined in <code class="code custom-cpp"><span class="pp-header">&lt;fstream&gt;</span></code>):</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ifstream</span></code> - input file stream</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ofstream</span></code> - output file stream</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">fstream</span></code> - file stream supporting both input and output</p></li>
+</ul>
+<p>Generally you should use one of the first 2 as situations where the same file is both read and written are very rare.</p>
+</section><section id="opening-a-file"><h2>Opening a file</h2>
+<p>2 things must be provided: <em>path</em> and <em>mode</em>.</p>
+<p>How exactly a path is interpreted depends on the platform and its file system - C++ standard library will pass it unmodified to the underlying system interface. Generally:</p>
+<ul class="simple">
+<li><p>If an absolute path is given (e.g. <code class="docutils literal">/etc/ssh/shh_config</code>) the file will be searched at this exact location.</p></li>
+<li><p>If a relative path is given (e.g. <code class="docutils literal">ssh_config</code> or <code class="docutils literal">ssh/shh_config</code> - basically any path without root (root is <code class="docutils literal">/</code> on unix systems, drive letter with <code class="docutils literal">:</code> on Windows)) a file will be searched at the location that is combined from executable's <em>working directory</em> and the given path.</p></li>
+</ul>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Working directory may not be the same as the directory where the executable is placed (though it often is). If the program is launched from a terminal, the working directory is usually a part of the shell's prompt (on many shells it can be changed by the <code class="docutils literal">cd</code> command and can also be checked by the <code class="docutils literal">pwd</code> command). If the program is launched from a graphical interface, typical implementation sets working directory to the same where executable is.</p>
+</aside><p>The mode further specifies behavior</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios_base</span>::<span class="var-global">app</span></code> (only for output streams) - any data will be appended at the end of the file</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios_base</span>::<span class="var-global">trunc</span></code> (only for output streams) - truncate the file (as if the file was removed and recreated)</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios_base</span>::<span class="var-global">ate</span></code> (only for input streams) - seek to the end of file after opening (as if entire file has already been read)</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios_base</span>::<span class="var-global">bin</span></code> - open the file in <em>binary mode</em> (default is textual)</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios_base</span>::<span class="var-global">in</span></code> - open the file for reading, added automatically for input streams (but not added for streams that support both directions)</p></li>
+<li><p><code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios_base</span>::<span class="var-global">out</span></code> - open the file for writing, added automatically for output streams (but not added for streams that support both directions)</p></li>
+</ul>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p>Just like with state flags, you can also write <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">ios</span>::<span class="var-global">bin</span></code> and such as a shortcut.</p>
+</aside><ul class="simple">
+<li><p>Append flag is commonly used for logging and other diary-like files which are expected to grow over time as the application logs more information (similar to <code class="docutils literal">&gt;&gt;</code> redirection in many shells).</p></li>
+<li><p>Truncate flag is commonly used for files that are expected to be refreshed and rewritten every time the application is relaunched (similar to <code class="docutils literal">&gt;</code> redirection in many shells).</p></li>
+<li><p>Binary mode is used when the file contains binary data (not text) to avoid any automatic convertion and when the convertion of textual data is undesirable.</p></li>
+<li><p>Other flags are hardly ever used.</p></li>
+</ul>
+<p>We can say that file streams have a "cursor" mechanism (formally called input and output positions). These positions specify at which offset read or write operation happens (2-directional streams will have 2 cursors) (the <strong>app**end and **ate</strong> flags modify their initial value). The position can be checked and changed using various functions which names start with <code class="docutils literal">tell</code> and <code class="docutils literal">seek</code>. Because standard library streams have many complex layers and I have never seen these functions used directly in production code, I don't see any value in presenting them.</p>
+</section><section id="binary-mode"><h2>Binary mode</h2>
+<p>There are 2 modes in which a C++ stream can operate on a file:</p>
+<ul class="simple">
+<li><p>binary - data is read and written exactly as given (in terms of bytes)</p></li>
+<li>
+<p>text - some characters are changed to accomodate for platform-specific conventions of textual files:</p>
+<ul>
+<li><p>Windows: outputting <code class="docutils literal">\n</code> actually outputs <code class="docutils literal">\r\n</code>, reading <code class="docutils literal">\r\n</code> actually reads <code class="docutils literal">\n</code></p></li>
+<li><p>some other minor details listed on <a class="reference external" href="https://en.cppreference.com/w/cpp/io/c/FILE#Binary_and_text_modes">https://en.cppreference.com/w/cpp/io/c/FILE#Binary_and_text_modes</a></p></li>
+</ul>
+</li>
+</ul>
+<aside class="admonition warning"><p class="admonition-title">warning</p>
+<p>Do not confuse modes with formatted and unformatted I/O. They are 2 separate things that work independently.</p>
+</aside><aside class="admonition note"><p class="admonition-title">note</p>
+<p>If you are reading or writing files which content (values of subsequent bytes) do not represent text in any encoding (e.g. sound, image) always use binary mode. Otherwise binary data (e.g. color of pixels) could be understood as specific characters and get unwanted convertion such as LF to/from CRLF on Windows. Binary files should be always read and written as exactly the same sequence of bytes. All automatic convertions in textual mode are made only for handling of text, applying them to binary data will simply modify it in undesirable ways.</p>
+</aside></section><section id="file-to-string"><h2>File to string</h2>
+<p>A common need is to read entire file into one string object for later processing. There are tons of ways to do this in C++ and there has been somewhat a hot debate what is most idiomatic or most performant. In addition to this, specific applications should not actually read entire file into one object (imagine multi-gigabyte database) but read specific chunks and process them as more data is put into the buffer of limited size - such approach reduces memory usage and allows for concurrent disk operations and data processing.</p>
+<p>Still, for majority of applications the benefits of concurrent reading/writing/processing (and any other performance improvements) are not worth the trouble caused by complication - majority of programs read small files (megabytes at best) or files which need to be read entirely anyway (images, sounds, models and other files for games and simulatory applications).</p>
+<p>For these reasons, here is a couple of functions that can be used to read entire file contents to 1 array-like object:</p>
+<p>TODO paste function implementations from notes</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - rationale</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">appendix</a></li>
+							<span>/</span>
+						<li>rationale</li>
+					</ol></nav><div class="content">
+				<h1>rationale</h1>				<p>Below is a list of arguments and explanations why certain things in the beginner C++ tutorial are the way they are.</p>
+<section id="common-mistakes"><h2>Common mistakes</h2>
+<p>It's astonishing for me how many tutorials on the web do not post common mistakes and misunderstandings. The value by posting antiexamples is as good as for regular examples - the reader gets additional help in understanding the concept and often it may save a lot of (quite frustrating) time due to already knowing a common mistake.</p>
+</section><section id="q-a-style"><h2>Q&amp;A style</h2>
+<p>Majority of Q&amp;A are actually fake. Only some of them have been experienced by me when explaining something to others. But the style often lets me demonstrate how to ask questions (many are much more detailed and technically correct than an average student would state them) and create a feeling of a real class, as if some student did ask such question. Many of the questions predict what would be asked, some readers may be very satisfied by the feeling of a teacher that predicted what the student would want to ask for (but could not formulate the thought).</p>
+<p>I do say rhetorical and non-rhetorical questions in real conversations too. This + technically-rich vocabulary + the way I structure my content (I pay huge attention how it's written, often rereading and rewriting paragraphs multiple times) are probably the primary features identifying my unique prose.</p>
+</section><section id="order-of-lessons"><h2>Order of lessons</h2>
+<p>You might not experience how hard it is unless you actually try it. Imagine a combination of 2 features (each with 3 subcases) which lead to 9 possible situations.</p>
+<ul class="simple">
+<li><p>Explain in order: A1, B1, C1, A2, B2, C2, A3, B3, C3 - someone can complain that 3 is explained very late.</p></li>
+<li><p>Explain in order: A1, A2, A3, B1, B2, B3, C1, C2, C3 - someone can complain that C is explained very late.</p></li>
+<li><p>Explain in order: A1, B2, C3, then make more examples of rarer cases - someone can complain that the material is unordered.</p></li>
+</ul>
+<p>Good material needs not only to have as few cross-dependencies as possible but also be relatively structured so that the reader can come back for a refresh on a specific topic. Thus, some chapters (especially preprocessor content - variadic macros and X macros) have lessons which explicitly state that the reader does not need to read it now, only later if desired - the lesson is placed where it is only to be able to be found easier. This approach is much better than finishing the tutorial with the last chapter that contains unordered articles about random things not covered earlier.</p>
+<section id="specifics"><h3>Specifics</h3>
+<p>Many are quite obvious:</p>
+<ul class="simple">
+<li><p>arrays should be after loops and other control flow statements</p></li>
+<li><p>classes should be after functions (simple <code class="code custom-cpp"><span class="keyword">struct</span></code>s can be showcased early)</p></li>
+</ul>
+<p>But many others not so much - many topics can be explained in a wide range of places, each with different tradeoffs.</p>
+<ul class="simple">
+<li><p>Preprocessor: in theory, this chapter could be at the beginning because the preprocessor works before the compiler. On the other hand, explaining preprocessor is very boring, adds no significant abilities to the reader and without some minimal knowledge, it's impossible to give good examples and explain header/source files. For this reason, preprocessor is placed after functions, structs and enums so that it's possible to explain function-like macros (based on knowledge about functions) and the header/source model (based on ODR knowledge).</p></li>
+</ul></section></section><section id="oop-content"><h2>OOP content</h2>
+<section id="fraction-class"><h3>Fraction class</h3>
+<p>This class appears across a large span of lessons and by far it's the best class I have found to demonstrate various OOP principles in C++:</p>
+<ul class="simple">
+<li><p>The class represents a very simple mechanism. It should be well-known to any reader. At the same time it has 2 fields and is not a forced example like a class wrapping a single integer or a string.</p></li>
+<li><p>The class has very reasonable default state (0/1, simplest fraction form of zero).</p></li>
+<li><p>The class has an invariant (denominator can not be 0) - this greatly demonstrates purpose of classes.</p></li>
+<li><p>It can contain a non-brainded setter (due to invariant), non-brainded getter (approx =&gt; convertion to double, then division) and an action (simplification which uses GCD).</p></li>
+<li><p>It represents a mathematical concept and thus is a very good example to present operator overloading on, including mathematical operations and explicit convertions (to floating-point types) in addition to commonly overloaded comparison. Even better, most overloaded operators have perfectly matching difficulty level - they aren't 1-line functions but also don't span tens of lines and don't require huge knowledge.</p></li>
+<li><p>Constructor can be easily overloaded or use default paramaters.</p></li>
+<li><p>The class is easily printable and testable.</p></li>
+</ul>
+<p>Basically, the class can be used to demonstrate many OOP principles and features that come before polymorphism.</p>
+</section><section id="no-shape-classes"><h3>No shape classes</h3>
+<p>This is a common yet very bad example for teaching OOP. "Every square is also a rectangle" - sure, I get it but when it comes to the code, <strong>neither is an extension of the other</strong> - the square is a corner case of the rectangle (which is a corner case of a quadrangle) and is much better explained with imperative/functional approach (optimization example for specific input data) than OOP. Additionally, if you implement it the OOP way there is a tendency to put some "common" data into the base class, only to realize that semantics and/or amount of variables in derived types can not be an extension of the base (square would be derived from rectangle but it needs less data members).</p>
+<p>And if you implement it the reverse way (rectangle inherits square), derived types violate Liskov Substitution Principle because algorithms working on the base type no longer work on derived ones.</p>
+</section></section><section id="pointers"><h2>Pointers</h2>
+<p>These are very late in the tutorial. And this is intentional. They aren't inherently bad but they are inherently complex.</p>
+<p>Reasons listed in <a class="reference external" href="https://www.youtube.com/watch?v=YnWhqhNdYyk">Kate Gregory - Stop teaching C</a> talk:</p>
+<ul class="simple">
+<li><p>At early states, beginners are still learning to remember the syntax. Pointers have significant syntax complexity.</p></li>
+<li><p>Pointers require significant leap in thinking, something which is better done later when people know more how the language works underneath. Otherwise they won't get the idea and you will end up with them treating it as vodoo randomly inserting <code class="docutils literal">*</code> and <code class="docutils literal">&amp;</code> into code until compiler agrees.</p></li>
+<li><p>You can go as far as explaining polymorphism without use of pointers.</p></li>
+<li><p>Pointers are major cause of frustration, yet you don't really use them often in modern C++. High risk + low reward.</p></li>
+</ul>
+<p>Other reasons:</p>
+<ul class="simple">
+<li><p>It's a teaching trap: thinking that you need to explain underlying mechanisms before explaining higher level concepts. Python proves you don't need to understand pointers in order to write code, yet so many "teachers" insist on teaching C as a prerequisite to C++ (as if you needed to learn latin before english). People use many devices every day (dishwasher, microwave, fridge, ...) without understanding in detail how they work - they just need to understand the interface (buttons).</p></li>
+<li><p>K&amp;R book "The C programming language" has pointers at half of the book. And it's just C. With C++ we can push them even later.</p></li>
+</ul></section><section id="naming-style"><h2>Naming style</h2>
+<p>A lot of C++ code found on the internet uses camelCase or CamelCase style. This is against the convention and likely a bias from other languages, in which these styles are used. C++, just like C uses purely lowercase_name_style and it's also the recommended name by Core Guidelines.</p>
+<p>Extra reasons to use this style:</p>
+<ul class="simple">
+<li><p>it's consistent with C++: the standard library and even keywords (e.g. <code class="code custom-cpp"><span class="keyword">static_cast</span></code>) are lowercase</p></li>
+<li><p><code class="docutils literal">ExportAsXml</code> or <code class="docutils literal">ExportAsXML</code>? <code class="docutils literal">export_as_xml</code> has no such problem</p></li>
+<li><p>there is a study which concludes that 3+ word names written as camelCase or PascalCase are significantly harder to read than snake_case names[citation needed]</p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 01 - basics</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../../beginner/">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">templates</a></li>
+							<span>/</span>
+							<li><a href="../">01 - functions</a></li>
+							<span>/</span>
+						<li>01 - basics</li>
+					</ol></nav><div class="content">
+				<h1>01 - basics</h1>				<section id="the-need-for-abstraction"><h2>The need for abstraction</h2>
+<p>Suppose you have a min function:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="func-free">min</span>(<span class="keyword">int</span> <span class="param">x</span>, <span class="keyword">int</span> <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> &lt; <span class="param">x</span>)
+		<span class="keyword">return</span> <span class="param">y</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">x</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<!--  --><blockquote>
+<p>Why this specific order? Why <code class="code custom-cpp"><span class="var-local">y</span> &lt; <span class="var-local">x</span></code> and not <code class="code custom-cpp"><span class="var-local">x</span> &lt; <span class="var-local">y</span></code>?</p>
+</blockquote>
+<p>Because for the minimum function, we want to always return the first argument if values compare equal (this has no difference for integers but objects like case-insensitive strings may compare equal while not being identical). The reasons for this touch the topic of iteration, ranges and algorithms that are out of scope of this tutorial.</p>
+<p>Now suppose you want to have the same function, but for doubles and strings:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+
+<span class="keyword">double</span> <span class="func-free">min</span>(<span class="keyword">double</span> <span class="param">x</span>, <span class="keyword">double</span> <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> &lt; <span class="param">x</span>)
+		<span class="keyword">return</span> <span class="param">y</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">x</span>;
+}
+
+<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">string</span>&amp; <span class="func-free">min</span>(<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">string</span>&amp; <span class="param">x</span>, <span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">string</span>&amp; <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> &lt; <span class="param">x</span>)
+		<span class="keyword">return</span> <span class="param">y</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">x</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>You can easily overload it, but you notice that the code is almost identical, only <strong>types</strong> have changed. Everything else is duplicated and we know that code duplication is one of the worst sins in programming. It would be very nice to have an abstraction that allows to use the same code with arbitrary types. Templates exist for this purpose.</p>
+</section><section id="creating-templates"><h2>Creating templates</h2>
+<p>Templates aren't immediately-compileable-code but stencils for compileable code. To make entity a template, it has to have at least one template parameter.</p>
+<p>The predominant way to add template parameters to an entity is to prepend the entity with a <code class="code custom-cpp"><span class="keyword">template</span></code> signature with specified template parameters. Then replace occurences of desired types/values within the entity definition with template parameters.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="func-free">min</span>(<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">x</span>, <span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> &lt; <span class="param">x</span>)
+		<span class="keyword">return</span> <span class="param">y</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">x</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>This code is very close to the simplest overload of <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">min</span></code> function template.</p>
+<p>The template signature works just like a function signature with minor differences:</p>
+<ul class="simple">
+<li><p>it is written using <code class="docutils literal">&lt;&gt;</code> instead of <code class="docutils literal">()</code></p></li>
+<li><p>it gives names to template parameters instead of function parameters</p></li>
+</ul>
+<p>Just like with function parameters, there can be multiple template parameters and they may have defaults. More on these later.</p>
+<p>There are also other features that can be used inside the <code class="code custom-cpp"><span class="keyword">template</span></code> signature but they will be explained much later in the tutorial.</p>
+<section id="code-class-code-custom-cpp-span-class-keyword-class-span-code-vs-code-class-code-custom-cpp-span-class-keyword-typename-span-code"><h3>
+<code class="code custom-cpp"><span class="keyword">class</span></code> vs <code class="code custom-cpp"><span class="keyword">typename</span></code>
+</h3>
+<p>The example above used <code class="code custom-cpp"><span class="keyword">typename</span></code> keyword to parametrize a function on the type. Sometimes you might see <code class="code custom-cpp"><span class="keyword">class</span></code> used instead. Initially, there was no <code class="code custom-cpp"><span class="keyword">typename</span></code> keyword and <code class="code custom-cpp"><span class="keyword">class</span></code> was used to introduce template type parameters. C++ is reluctant in adding keywords because every new keyword is a breaking change for code that uses identical identifier to name its own entities.</p>
+<p>Because <code class="code custom-cpp"><span class="keyword">class</span></code> created some confusion (template parameters do not have to be classes - they can be any type), <code class="code custom-cpp"><span class="keyword">typename</span></code> was added later. Ironically:</p>
+<ul class="simple">
+<li><p><code class="code custom-cpp"><span class="keyword">typename</span></code> has got a second meaning too (in other context)</p></li>
+<li><p><code class="code custom-cpp"><span class="keyword">typename</span></code> was not formally allowed in templates of templates due to a simple mistake in the standard - compilers already knew of this mistake and accepted the keyword in all contexts, even before it was corrected in C++17</p></li>
+</ul>
+<p>My recommendation is to use the intended keyword <code class="code custom-cpp"><span class="keyword">typename</span></code>. It avoids the confusion that only classes can be used within templates.</p>
+</section><section id="naming-convention"><h3>Naming convention</h3>
+<p>The name of the alias doesn't really matter, but it's a very strong convention to use T and consecutive letters (U, V, W, ...) for arbitrary type aliases. It probably originated from the word "type" or "template".</p>
+<p>Longer (more descriptive) template names traditionally have been written using <code class="docutils literal">PascalCase</code> style. They were names of <em>concepts</em> which specified syntaxical and semantic requirements for the given type. Initially, it was only an idea to increase code readability but soon the work started to formalize these expectations and provide a compile time mechanism for verifying them.</p>
+<p>Concepts were a long-awaited feature that was initially planned to arrive in C++11 but due to many obstacles they were merged into the language in C++20. During (and before) this period, while concepts weren't yet a part of the language, the specification was already being formed which let programmers use very descriptive names. Some examples:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">UnaryPredicate</code> - a type capable of being called (e.g. a class with overloaded <code class="code custom-cpp"><span class="keyword">operator</span><span class="func">()</span></code>) with 1 argument that returns an object of type <code class="code custom-cpp"><span class="keyword">bool</span></code></p></li>
+<li><p><code class="docutils literal">RandomAccessIterator</code>- a type capable of iteration in both directions supporting arbitrary-length jumps (valid to use with dereference, increment, decrement, addition and subtraction)</p></li>
+</ul>
+<p>When C++20 came with concepts defined in the standard library, they came with the standard <code class="docutils literal">snake_case</code> name style.</p>
+<p>My recommendation is thus:</p>
+<ul class="simple">
+<li><p>use T and consecutive letters for template type parameters with no constraints</p></li>
+<li><p>use <code class="docutils literal">PascalCase</code> name style for informal concept names or for code without C++20 concepts</p></li>
+<li><p>use <code class="docutils literal">snake_case</code> for naming concepts as this is the style they are defined with in the standard library</p></li>
+</ul>
+<p>Actual usage of concepts will be presented later. You still have to learn a lot of fundamentals about templates.</p>
+<blockquote>
+<p>Is there a concept name that would match the example minimum function?</p>
+</blockquote>
+<p>Yes: <code class="docutils literal">LessThanComparable</code>.</p>
+</section></section><section id="passing-arguments"><h2>Passing arguments</h2>
+<p>This is tricky as both by value and by reference have their tradeoffs (not just performance) and exactly one approach must be choosen. The topic deserves a lesson of its own so for now the examples will simply follow standard library design without delving too deep into details.</p>
+</section><section id="returning-in-function-templates"><h2>Returning in function templates</h2>
+<p>Again, a topic worthy of its own lesson. But to touch what is important: you should never return a reference to a local variable. This holds true for function templates too.</p>
+<p>In the example above, because the parameters are passed by const reference we can return them back - their lifetime is larger than the function body. <strong>Except when it's not</strong>:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">template</span> &lt;<span class="keyword">typename</span> <span class="param-tmpl">T</span>&gt;
+<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="func-free">min</span>(<span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">x</span>, <span class="keyword">const</span> <span class="param-tmpl">T</span>&amp; <span class="param">y</span>)
+{
+	<span class="keyword">if</span> (<span class="param">y</span> &lt; <span class="param">x</span>)
+		<span class="keyword">return</span> <span class="param">y</span>;
+	<span class="keyword">else</span>
+		<span class="keyword">return</span> <span class="param">x</span>;
+}
+
+<span class="keyword">int</span> <span class="func-free">main</span>()
+{
+	<span class="com-single">// const reference extends the lifetime of a temporary
+</span>	<span class="com-single">// but this happens only when the temporary is immediately bound
+</span>	<span class="com-single">// in this case the object created by 2 + 3 is dead after the statement
+</span>	<span class="com-single">// const int&amp; result = min(6, 2 + 3); // undefined behavior: dangling reference
+</span>	<span class="namespace">std</span>::<span class="var-global">cout</span> &lt;&lt; <span class="func-free">min</span>(<span class="lit-num">6</span>, <span class="lit-num">2</span> + <span class="lit-num">3</span>); <span class="com-single">// ok
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>Unfortunately there is no easy way to deal with it. If the function returns by value, it can incur unnecessary copy when both arguments are already existing objects. More overloads could be written with different argument qualifiers but they have their own problems too (too complex to present for now).</p>
+<p>The implementation will be left as is (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">min</span></code> and <code class="code custom-cpp"><span class="namespace">std</span>::<span class="func">max</span></code> have the same problem). The problem occurs only if argument is a temporary object and the result is captured by reference. We will place the blame on language design and those who don't read documentation when using the function.</p>
+<p>Both topics (passing arguments and returning) will be covered in their own lessons.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

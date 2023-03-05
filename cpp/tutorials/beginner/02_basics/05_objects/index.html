@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 05 - objects</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">02 - basics</a></li>
+							<span>/</span>
+						<li>05 - objects</li>
+					</ol></nav><div class="content">
+				<h1>05 - objects</h1>				<p>You already know basic types in C++. Time to create some <em>objects</em>.</p>
+<section id="what-is-an-object"><h2>What is an object?</h2>
+<p>It's hard to give a simple and consise definition of an object that doesn't just go by listing every C++ language rule attached to it, so to put it simply: <strong>objects are data in memory</strong>.</p>
+<p>Every object has:</p>
+<ul class="simple">
+<li><p><em>lifetime</em> (when associated memory can be used)</p></li>
+<li><p>type (how the bit pattern should be interpreted)</p></li>
+<li><p>value (actual bit pattern in memory)</p></li>
+<li><p>(optionally) a name (identifier)</p></li>
+<li><p>some memory-related properties (address, size, alignment, storage duration) that won't be interesting for now</p></li>
+</ul>
+<p>Note that most of these are purely an abstraction on which the programming language is built. Hardware only performs computations, read and write operations and doesn't know about types - it only sees data as different memory cells, each being one byte.</p>
+<p>The name is optional because:</p>
+<ul class="simple">
+<li><p>In some cases temporary (unnamed) objects may be created as a part of evaluation of expressions - e.g. in <code class="code custom-cpp"><span class="lit-num">2</span> * <span class="lit-num">3</span> + <span class="lit-num">4</span></code> an unnamed integer object with value <code class="code custom-cpp"><span class="lit-num">6</span></code> may temporarily appear in memory.</p></li>
+<li><p>In some cases objects can be referred using indirect mechanisms such as <em>pointers</em> and <em>references</em>. This is especially true for any data that has variable size (e.g. an array).</p></li>
+</ul>
+<p>Don't think that an <em>object</em> (some data in memory with certain properties) means the same as a <em>variable</em> (named modifiable entity in code):</p>
+<ul class="simple">
+<li><p>When using indirect mechanisms such as references and pointers, it's possible to have 2 variables (e.g. 2 references) that refer to the same object in memory.</p></li>
+<li><p>When using variable-size objects such as arrays, it's possible to have multiple objects that are accessed through the same variable.</p></li>
+</ul>
+<p>Of couse we are still pretty far from indirect mechanisms, for now all of the code will have 1:1 variable-object relation.</p>
+<p>If you are curious for the formal difference:</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>A <em>variable</em> is an <em>object</em> or a <em>reference</em> that is not a <em>non-static data member</em>, that is introduced by a <em>declaration</em>.</p>
+</aside></section><section id="creating-objects"><h2>Creating objects</h2>
+<p>Before using an object, you must first specify what type it will be.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="problem">x</span>;             <span class="com-single">// error: it is unknown what x actually is</span>
+<span class="keyword">int</span> <span class="var-local">x</span>;         <span class="com-single">// ok: definition of an object named "x" of type int</span>
+<span class="keyword">long</span> <span class="keyword">double</span> <span class="var-local">y</span>; <span class="com-single">// ok: definition of an object named "y" of type long double</span>
+</pre></td>
+</tr></tbody></table>
+<p>At this point, the compiler will determine any other properties (especially memory-related ones) automatically. Such statements are called variable <em>definitions</em>, though many mistakenly named them <em>declarations</em>.</p>
+<p>It's possible to define multiple objects at once:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">x</span>, <span class="var-local">y</span>, <span class="var-local">z</span>; <span class="com-single">// 3 objects of type int</span>
+</pre></td>
+</tr></tbody></table>
+<p>...but <strong>such practice is very discouraged</strong>. For historical reasons (mostly backwards compatibility), C++ adopted C grammar which while generally brilliant, has some peculiarities and most of them lie in <em>decl-specifier-seq</em> subgrammar, which is used for declarations. Thinking of object declaration syntax as "type followed by name" is fundamentally wrong with how C/C++ grammar works and for this reason:</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Declare only 1 entity per statement.</p>
+</aside><p>This is a very common C++ teaching mistake - please point it out by giving link to this article TODO. While I understand the need for mental shortcuts, "type followed by name" is only trapping beginners in incorrect thinking. We wish it worked this way, but it doesn't.</p>
+<p>To further prove the argument, take a look at this:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// x has type int*[2]</span>
+<span class="com-single">// y has type int</span>
+<span class="com-single">// z has type int*</span>
+<span class="com-single">// p has type int (*)(float)</span>
+<span class="keyword">int</span>* <span class="var-local">x</span>[<span class="lit-num">2</span>], <span class="var-local">y</span>, *<span class="var-local">z</span>, (*<span class="var-local">p</span>)(<span class="keyword">float</span>);
+</pre></td>
+</tr></tbody></table>
+<p>In this specific example, only <code class="code custom-cpp"><span class="keyword">int</span></code> is "picked up" for every object and any other type modifiers seem to be in random places. People don't want to deal with such unintuitive rules - they are only maintained for backwards compatibilty.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Always declare each variable in a separate statement. Never declare mutliple variables in one.</p>
+</aside><!--  --><blockquote>
+<p>Can't these syntax rules be changed?</p>
+</blockquote>
+<p>C++ is a very history-rich language (40+ years) and it also takes backwards compatibility very seriously. C++ inherited a lot from C, including some of its grammar design flaws. Still, it wouldn't be in a place it is today if the language did not appear as an alternative to then very fast growing C. Many of past problems did get "fixed" in C++11 <strong>without breaking backwards compatibility</strong> by adding more alternative subgrammars. This of course spawned a lot of corner cases so if you want some laugh, watch the 7min talk <a class="reference external" href="https://www.youtube.com/watch?v=tsG95Y-C14k">CppCon 2018: Timur Doumler "Can I has grammar?"</a>.</p>
+<p>Don't be intimitated by the C declaration grammar. Majority of C++ code uses types which are very easy to read. The ones that aren't easily readable have multiple ways to workaround it such as type name aliases. Vast majority of code will look as if "type followed by name" was true.</p>
+</section><section id="assignment"><h2>Assignment</h2>
+<p>After an object has been created, we can start using it. One of the simplest operations you can perform is assignment:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;iostream&gt;</span>
+
+<span class="keyword">int</span> <span class="func">main</span>()
+{
+	<span class="keyword">int</span> <span class="var-local">x</span>; <span class="com-single">// definition of an object</span>
+	<span class="var-local">x</span> = <span class="lit-num">1</span>; <span class="com-single">// assignment</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+	<span class="var-local">x</span> = <span class="lit-num">2</span>; <span class="com-single">// another assignment</span>
+	<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+}
+</pre></td>
+</tr></tbody></table>
+<p>You can observe that statements are executed from top to bottom and <code class="code custom-cpp"><span class="var-local">x</span></code>'s value is changed.</p>
+</section><section id="initialization"><h2>Initialization</h2>
+<p>If an object definition is combined with giving it a value, it's called <strong>initialization</strong>.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">1</span>;
+</pre></td>
+</tr></tbody></table>
+<p>It looks just like a shortcut version of previous code (AKA <em>syntax sugar</em>) but <strong>initialization is fundamentally different from assignment</strong>:</p>
+<ul class="simple">
+<li><p>an object can be assigned any time after its creation</p></li>
+<li><p>initialization can happen only once: when the object is created</p></li>
+</ul>
+<p>Right now there is no visible difference but it will be very important later. Even though both assignment and initialization use <code class="docutils literal">=</code>, they are technically very different operations.</p>
+<aside class="admonition tip"><p class="admonition-title">tip</p>
+<p>Always initialize variables upon their creation.</p>
+</aside><p>There is nothing wrong in assignment, however the first ever value than an object will hold should be given through initialization. Reasoning is pretty simple:</p>
+<!-- Sometimes only initialization will be possible - such is the case of :cch:`const` objects. They can be initialized, but never assigned. -->
+<ul class="simple">
+<li>
+<p>Initialization offers more than the assignment:</p>
+<ul>
+<li><p>Sometimes initialization will be more optimal than creation + assignment.</p></li>
+<li><p>Sometimes initialization will be required.</p></li>
+</ul>
+</li>
+<li><p>If you create an object, but can't give any value to initialize it with, you very likely don't need the object. In such case, the object creation should be postponed (done later in the code) to the moment it's actually needed.</p></li>
+</ul>
+<!--  --><blockquote>
+<p>If initialization is so important, why objects aren't intialized automatically by the compiler?</p>
+</blockquote>
+<p>In some programming languages (usually ones which operate on higher abstraction level) they actually are, but C++ (and its ancestor - C) have always fundamentally followed the rule that you don't pay for what you don't use and if something is not absolutely necessary, it shouldn't be done - at least automatically. The performance penalty of "dead writes" (e.g. initializing an object with some value but never reading it before future assignment) is getting lower, but it's still not zero and C++ doesn't like forcing things that are not required. A lot of people advocate for a reversed default though, where initialization would be opt-out, not opt-in as in vast majority of cases the programer wants to be warned about missed initialization and the need for optimizing to the point of removing single write instructions is very rare.</p>
+<p>Other reasons include backwards compatibility and the inability to provide good defaults. For any numeric type, zero is a very good choice. For <code class="code custom-cpp"><span class="keyword">bool</span></code> it's <code class="code custom-cpp"><span class="keyword">false</span></code> because it is represented by bit 0. But for a lot of types there is no good default and their bit representation made full of 0s may have no valid interpretation.</p>
+<section id="syntax"><h3>Syntax</h3>
+<p>Initialization can be performed in multiple ways:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">1</span>;   <span class="com-single">// copy initialization</span>
+<span class="keyword">int</span> <span class="var-local">x</span>(<span class="lit-num">1</span>);    <span class="com-single">// direct initialization</span>
+<span class="keyword">int</span> <span class="var-local">x</span>{<span class="lit-num">1</span>};    <span class="com-single">// direct list initialization</span>
+<span class="keyword">int</span> <span class="var-local">x</span> = {<span class="lit-num">1</span>}; <span class="com-single">// copy list initialization</span>
+<span class="keyword">int</span> <span class="var-local">x</span>{};     <span class="com-single">// value initialization</span>
+</pre></td>
+</tr></tbody></table>
+<p>Each of these works somewhat differently. There are even more than in the example, but they can not be used for built-in types like <code class="code custom-cpp"><span class="keyword">int</span></code>.</p>
+<p>For now, we will stick to copy initialization as <code class="docutils literal">=</code> is definitely the easiest and most intuitive syntax to remember. We will come back to different ways of initialization once you gain more knowledge about the type system in C++.</p>
+</section></section><section id="code-class-code-custom-cpp-span-class-keyword-const-span-code"><h2><code class="code custom-cpp"><span class="keyword">const</span></code></h2>
+<p><code class="code custom-cpp"><span class="keyword">const</span></code> can be aplied to any type, which adds some restrictions:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="com-single">// const objects must be initialized</span>
+<span class="keyword">const</span> <span class="keyword">int</span> <span class="var-local">x</span>; <span class="com-single">// error: constant not initialized</span>
+
+<span class="com-single">// const objects can not be assigned to</span>
+<span class="keyword">const</span> <span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">10</span>;
+<span class="var-local">x</span> = <span class="lit-num">5</span>; <span class="com-single">// error: x is const</span>
+
+<span class="com-single">// const may be initialized from non-const:</span>
+<span class="keyword">int</span> <span class="var-local">a</span> = <span class="lit-num">10</span>;
+<span class="keyword">const</span> <span class="keyword">int</span> <span class="var-local">b</span> = <span class="var-local">a</span>; <span class="com-single">// ok</span>
+</pre></td>
+</tr></tbody></table>
+<p>The keyword is simple yet very useful but at this stage you likely wouldn't believe how much programming errors it prevents and how much it improves code readability for others.</p>
+<p>For simple types, 2 positions of the keyword are accepted:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">const</span> <span class="keyword">int</span> <span class="var-local">a</span> = <span class="lit-num">1</span>; <span class="com-single">// so called "west const"</span>
+<span class="keyword">int</span> <span class="keyword">const</span> <span class="var-local">b</span> = <span class="lit-num">2</span>; <span class="com-single">// so called "east const"</span>
+</pre></td>
+</tr></tbody></table>
+<p>Technically, <strong>const applies to what is on its left, unless there is nothing - then it applies to what is on its right</strong>. There are lots of people advocating for both, mainly because:</p>
+<ul class="simple">
+<li><p>East <code class="code custom-cpp"><span class="keyword">const</span></code> is more in-line with underlying grammar rules - this is the more noticeable the more complex type is. But since majority of types are simple (1-3 tokens), they can rely on the "unless there is nothing - then it applies to what is on its right" rule.</p></li>
+<li><p>West <code class="code custom-cpp"><span class="keyword">const</span></code> is more in-line with English grammar and general expecation of the public. It's also how the keyword works in other programming languages.</p></li>
+</ul>
+<p>In other words, for strictly technical reasons, east <code class="code custom-cpp"><span class="keyword">const</span></code> should be used. But because it's known that declaration part of the C/C++ grammar is unintuitive, many recommend west <code class="code custom-cpp"><span class="keyword">const</span></code> - it feels more natural and in majority of cases it's possible to do so.</p>
+<p>The west vs east <code class="code custom-cpp"><span class="keyword">const</span></code> debate is C++'s equivalent of the "on which side the toiler paper should be" debate. Community likes to make fun of it, it's most prominently visible on CppCon materials, such as <cite>Jon Kalb: "This is Why We Can’t Have Nice Things" &lt;https://www.youtube.com/watch?v=fv--IKZFVO8&gt;</cite>.</p>
+<p><a class="reference external" href="https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#Rl-const">Core Guidelines NL.26</a> recommend west version although the recommendation itself isn't very strong.</p>
+<p>I have tried both conventions in different projects and personally I prefer the west version, even if the code I write is quite complex and even if I'm often forced to use the east version for technical (grammatical) reasons.</p>
+</section><section id="code-class-code-custom-cpp-span-class-keyword-constexpr-span-code"><h2><code class="code custom-cpp"><span class="keyword">constexpr</span></code></h2>
+<p><code class="code custom-cpp"><span class="keyword">constexpr</span></code> is a leveraged version of <code class="code custom-cpp"><span class="keyword">const</span></code>. The additional requirement is that the value must be computable at compile time.</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">constexpr</span> <span class="keyword">long</span> <span class="var-local">cppstd</span> = <span class="macro">__cplusplus</span>; <span class="com-single">// this magic macro is a number in the form "YYYYMM"</span>
+<span class="keyword">constexpr</span> <span class="keyword">long</span> <span class="var-local">year</span> = <span class="var-local">cppstd</span> / <span class="lit-num">100</span>;  <span class="com-single">// remove MM part</span>
+<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"Year of the used C++ standard: "</span> <span class="oo">&lt;&lt;</span> <span class="var-local">year</span> <span class="oo">&lt;&lt;</span> <span class="lit-str">"<span class="esc-seq">\n</span>"</span>;
+</pre></td>
+</tr></tbody></table>
+<p>If possible, it's recommended to use <code class="code custom-cpp"><span class="keyword">constexpr</span></code> over <code class="code custom-cpp"><span class="keyword">const</span></code> as it opens few more language features; features which require compile time data. The features are specified to require <em>constant expressions</em>.</p>
+<p>It's possible to write <code class="code custom-cpp"><span class="keyword">constexpr</span> <span class="keyword">const</span> <span class="spec">...</span></code> but it's redundant: for object definitions, <code class="code custom-cpp"><span class="keyword">constexpr</span></code> already implies <code class="code custom-cpp"><span class="keyword">const</span></code>.</p>
+<aside class="admonition note"><p class="admonition-title">note</p>
+<p><code class="code custom-cpp"><span class="keyword">constexpr</span></code> was introduced in C++11 but <em>constant expressions</em> are almost as old as the entire language - they are required in many fundamental features.</p>
+<p>To support manipulation of constant expressions, C++ extended rules governing <code class="code custom-cpp"><span class="keyword">const</span></code>. <code class="code custom-cpp"><span class="keyword">const</span></code> objects in C can never be used as constant expressions (they must be literals) but in C++ they can - details are complicated but roughly speaking they are classified as constant expressions if their value is computable at compile time.</p>
+<p>Details aren't really worth learning for now, just use <code class="code custom-cpp"><span class="keyword">constexpr</span></code> but don't be surprised if you see pre-C++11 code that uses <code class="code custom-cpp"><span class="keyword">const</span></code> as if it was <code class="code custom-cpp"><span class="keyword">constexpr</span></code>.</p>
+</aside></section><section id="recommendations"><h2>Recommendations</h2>
+<ul class="simple">
+<li><p>define 1 variable per statement</p></li>
+<li><p>use <code class="code custom-cpp"><span class="keyword">const</span></code> for objects that once initialized, should not be changed</p></li>
+<li><p>use <code class="code custom-cpp"><span class="keyword">constexpr</span></code> for objects which values are computable at compile time</p></li>
+</ul></section><section id="exercise"><h2>Exercise</h2>
+<p>Is the following code valid?</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">5</span>;
+<span class="var-local">x</span> = <span class="var-local">x</span> * <span class="lit-num">2</span>;
+<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span>;
+</pre></td>
+</tr></tbody></table>
+<div class="docutils container">
+<details><summary>Answer</summary><div class="docutils container">
+<p>Yes. Assignments work by evaluating expression on the right before the result is stored in an object. There are no problems if the expression refers to the same object.</p>
+</div>
+</details>
+</div>
+<p>Is the following code valid?</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="keyword">int</span> <span class="var-local">x</span> = <span class="lit-num">2</span> * <span class="var-local">x</span>;
+<span class="namespace">std</span>::<span class="var-global">cout</span> <span class="oo">&lt;&lt;</span> <span class="var-local">x</span>;
+</pre></td>
+</tr></tbody></table>
+<div class="docutils container">
+<details><summary>Answer</summary><div class="docutils container">
+<p>Technically yes (this will compile) but contains <em>undefined behavior</em>. <code class="code custom-cpp"><span class="var-local">x</span></code> here is used (on the right side) before it's initialized. It's not possible to correctly initialize an object with a value that depends on it.</p>
+</div>
+</details>
+</div>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

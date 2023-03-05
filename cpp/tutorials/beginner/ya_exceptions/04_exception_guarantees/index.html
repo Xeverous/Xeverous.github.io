@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 04 - exception guarantees</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">ya - exceptions</a></li>
+							<span>/</span>
+						<li>04 - exception guarantees</li>
+					</ol></nav><div class="content">
+				<h1>04 - exception guarantees</h1>				<p>Functions can be marked as <code class="code custom-cpp"><span class="keyword">noexcept</span></code> to inform they will never throw. However, functions which potentially throw can still offer some guarantees. There is no syntax for it - it's simply documentation about function postconditions. Exception safety of standard library functions is documented on cppreference on a per-function basis.</p>
+<p>4 levels of safety exist, each higher one being a superset of previous guarantees.</p>
+<section id="nothrow-exception-guarantee"><h2>Nothrow exception guarantee</h2>
+<p>The highest level of all - the function simply never throws. Such functions are typically marked <code class="code custom-cpp"><span class="keyword">noexcept</span></code> but there are some exceptions (pun intended):</p>
+<ul class="simple">
+<li><p>Destructors are implicitly <code class="code custom-cpp"><span class="keyword">noexcept</span></code>, there is no need to mark them as such</p></li>
+<li><p>C++ standard library functions imported from the C standard library (C has no exceptions).</p></li>
+</ul>
+<p>Note that it's still possible to break some C functions - some of them take function pointers as arguments. Make sure that callbacks given to C interfaces do not throw.</p>
+</section><section id="strong-exception-guarantee"><h2>Strong exception guarantee</h2>
+<p>A function can throw, but if it throws the state of the program is rolled back to the state just before the function call. This approach is very common in the whole IT and of particular importance in networking and databases - each operation either succeeds or fails with rollback behavior. There is no partial success. A slightly outdated database is better than the one with inconsistent or corrupted information.</p>
+<p>Many operations which do not inherently give strong guarantees can be made as such by performing a temporary copy. Edits on the copy can fail, but the state of the program remains unaffected. If edits succeed, the copy is swapped with the original object (swaps are <code class="code custom-cpp"><span class="keyword">noexcept</span></code>) and the now-copy-of-old-state object is destroyed. Standard library containers take advantage of <code class="code custom-cpp"><span class="keyword">noexcept</span></code> member functions when implementing their copy and move operations. If stored objects do not have <code class="code custom-cpp"><span class="keyword">noexcept</span></code> copy and move operations, containers switch implementation to perform additional copies (reduced performance) in order to guard against possible failures.</p>
+<p>Because providing strong exception guarantee is sometimes a safety/performance tradeoff, it has to be decided on a case-by-case basis.</p>
+</section><section id="basic-exception-guarantee"><h2>Basic exception guarantee</h2>
+<p>A function can throw and if it throws the program remains in a valid but unspecified state (same guarantee as for <em>moved-from objects</em>). Data loss may occur but no resource leaks or memory corruption.</p>
+<!-- TODO IIRC there is a container which drops all data in case of some operation failure (strong guarantee not possible to implement) - find it and give example -->
+</section><section id="no-exception-guarantee"><h2>No exception guarantee</h2>
+<p>Basically undefined behavior when an exception occurs. Don't use exceptions in such places or if you have to - guard exception-unsafe code by cathing or terminating the program (termination is better than undefined behavior).</p>
+<p>Example: once I was implementing a callback for data download performed by the <a class="reference external" href="https://curl.se/">curl library</a>., specifically for <a class="reference external" href="https://curl.se/libcurl/c/CURLOPT_WRITEFUNCTION.html">WRITEFUNCTION option from the easy interface</a>. The code looked as follows:</p>
+<table class="codetable"><tbody><tr>
+<td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+</pre></div></td>
+<td class="code"><pre class="code custom-cpp"><span class="pp-hash">#</span><span class="pp-directive">include</span> <span class="pp-header">&lt;string&gt;</span>
+
+<span class="keyword">struct</span> <span class="type-class">request_result</span>
+{
+	<span class="namespace">std</span>::<span class="type-class">string</span> <span class="var-member">data</span> = {};
+	<span class="keyword">bool</span> <span class="var-member">is_error</span> = <span class="keyword">false</span>;
+};
+
+<span class="com-single">// This function is mine and libcurl calls it multiple times during the download.
+</span><span class="com-single">// The received data is passed as an array of bytes: the classic "pointer + size" convention.
+</span><span class="com-single">// nmemb is the size, the unused parameter is always 1 to match C standard library fwrite function.
+</span><span class="com-single">// userdata parameter is mine too, it is set earlier in https://curl.se/libcurl/c/CURLOPT_WRITEDATA.html
+</span><span class="namespace">std</span>::<span class="type">size_t</span> <span class="func-free">write_callback</span>(<span class="keyword">char</span>* <span class="param">data</span>, <span class="namespace">std</span>::<span class="type">size_t</span> <span class="com-multi">/* size */</span>, <span class="namespace">std</span>::<span class="type">size_t</span> <span class="param">nmemb</span>, <span class="keyword">void</span>* <span class="param">userdata</span>) <span class="keyword">noexcept</span>
+{
+	<span class="com-single">// I have given an address of the request_result struct earlier, now I obtain it back.
+</span>	<span class="com-single">// curl uses void* because it doesn't understand external types but can take any address.
+</span>	<span class="keyword">auto</span>&amp; <span class="var-local">result</span> = *<span class="keyword">reinterpret_cast</span>&lt;<span class="type-class">request_result</span>*&gt;(<span class="param">userdata</span>);
+
+	<span class="keyword">try</span> {
+		<span class="var-local">result</span>.<span class="var-member">data</span>.<span class="func-member">append</span>(<span class="param">data</span>, <span class="param">nmemb</span>); <span class="com-single">// may throw on allocation failure
+</span>		<span class="keyword">return</span> <span class="param">nmemb</span>; <span class="com-single">// return number of bytes accepted
+</span>	}
+	<span class="keyword">catch</span> (<span class="keyword">const</span> <span class="namespace">std</span>::<span class="type-class">exception</span>&amp; <span class="var-local">e</span>) {
+		<span class="var-local">result</span>.<span class="var-member">is_error</span> = <span class="keyword">true</span>;
+		<span class="var-local">result</span>.<span class="var-member">data</span> = <span class="var-local">e</span>.<span class="func-virtual">what</span>();
+	}
+	<span class="keyword">catch</span> (...) {
+		<span class="var-local">result</span>.<span class="var-member">is_error</span> = <span class="keyword">true</span>;
+		<span class="var-local">result</span>.<span class="var-member">data</span> = <span class="lit-str">"(unknown error)"</span>;
+	}
+
+	<span class="com-single">// If control flow gets here, it means that result.data threw an exception.
+</span>	<span class="com-single">// This means memory allocation failed and I want to stop the transfer.
+</span>	<span class="keyword">return</span> <span class="lit-num">0</span>; <span class="com-single">// error: accepted 0 bytes
+</span>}
+</pre></td>
+</tr></tbody></table>
+<p>The library is written in C but the callback function can be written in C++. libcurl will simply call it when needed. I have given the address of this function earlier, when setting up the transfer options. Obviously libcurl isn't prepared for the case where its C code calls a C++ function that in turn throws an exception. The exception would have to go through unprepared C code, likely resulting in undefined behavior because C code isn't compiled with support for exceptions.</p>
+<p>To prevent this, I simply wrap the risky operation in the <code class="code custom-cpp"><span class="keyword">try</span></code> block and immediately handle any possible exception. I can not exit this callback by exception, so I have written it to simply <code class="code custom-cpp"><span class="keyword">return</span> <span class="lit-num">0</span>;</code> which informs libcurl I couldn't accept even 1 byte (this will cancel the download).</p>
+</section><section id="recommendations"><h2>Recommendations</h2>
+<p>Aim for the highest level of exception guarantees when writing your own code. This means that you will usually end up with basic and strong guarantee.</p>
+</section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

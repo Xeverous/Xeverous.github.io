@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - 03 - identifiers</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../../../atom.xml">
+<!-- CSS --><link rel="stylesheet" href="../../../../../assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="../../../../../assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href="../../../../../">HOME</a></li>
+				<li><a href="../../../../../index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="../../">beginner</a></li>
+						<li><a href="../../../accelerated/">accelerated</a></li>
+						<li><a href="../../../templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="../../../../stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="../../../../utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="../../../../utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="../../../../utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="../../../../utility/glossary/">glossary</a></li>
+						<li><a href="../../../../utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="../../../../../about/">about</a></li>
+						<li><a href="../../../../../meta/site_faq/">website FAQ</a></li>
+						<li><a href="../../../../../meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="../../../../../meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href="../../../../../">HOME</a></li>
+				<li class="button"><a href="../../../../../index">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq">FAQ</a></li>
+				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+				<nav class="breadcrumb"><ol>
+<li><a href="../../../../../index">index</a></li>
+						<span>/</span>
+							<li><a href="../../../../">C++</a></li>
+							<span>/</span>
+							<li><a href="../../../">tutorials</a></li>
+							<span>/</span>
+							<li><a href="../../">beginner</a></li>
+							<span>/</span>
+							<li><a href="../">02 - basics</a></li>
+							<span>/</span>
+						<li>03 - identifiers</li>
+					</ol></nav><div class="content">
+				<h1>03 - identifiers</h1>				<p>One particular advantage of today's programming languages is that they allow to abstract where certain values are placed in memory. Instead of using machine's registers or memory cell names, we can name variables as we like and use these names. This significantly simplifies reading code; the actual memory placement is decided by the compiler (if two variables are used at the same time they will obviously get different memory locations).</p>
+<p>Everything than can be later referred to through its name has an <strong>identifier</strong>. It's the name of the entity. Variables and functions will be simplest kinds of entities you will use right now.</p>
+<p>Identifiers can consist of:</p>
+<ul class="simple">
+<li><p>lowercase letters (latin: <code class="docutils literal">a</code> - <code class="docutils literal">z</code>)</p></li>
+<li><p>uppercase letters (latin: <code class="docutils literal">A</code> - <code class="docutils literal">Z</code>)</p></li>
+<li><p>underscore symbol (<code class="docutils literal">_</code>)</p></li>
+<li><p>digits (<code class="docutils literal">0</code> - <code class="docutils literal">9</code>), except digit as first character</p></li>
+</ul>
+<p>...and many more possible characters from unicode - their rules are quite complex but if english and latin alphabet are not your native, you should be fairly sure what in your native writing system can be considered a letter and what a whitespace character. Just be aware that pretty much all code is written using latin alphabet only; if any other writing system appears it's usually exclusively inside comments (that is, no code uses non-latin identifiers).</p>
+<aside class="admonition definition"><p class="admonition-title">definition</p>
+<p>All identifiers in C++ are case-sensitive. They must always be written exactly the same.</p>
+</aside><p>Example valid identifiers:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">func</code></p></li>
+<li><p><code class="docutils literal">x1</code></p></li>
+<li><p><code class="docutils literal">x2</code></p></li>
+<li><p><code class="docutils literal">y</code></p></li>
+<li><p><code class="docutils literal">foo_bar</code></p></li>
+<li><p><code class="docutils literal">a_b_c_d_e_f</code></p></li>
+<li><p><code class="docutils literal">XABCDX</code></p></li>
+<li><p><code class="docutils literal">WeIrD_nAmE</code></p></li>
+</ul>
+<p>Example invalid identifiers:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">if</code> - this is a language <em>keyword</em></p></li>
+<li><p><code class="docutils literal">1x</code> - identifiers can not start with a digit</p></li>
+<li><p><code class="docutils literal">x@y</code> - many symbols (including <code class="docutils literal">@</code>) can not be used inside identifers</p></li>
+</ul>
+<p>Additionally, the C++ standard reserves following names (you should not use them):</p>
+<ul class="simple">
+<li><p><code class="docutils literal">_X*</code> - anything beginning with an underscore followed by an uppercase letter.</p></li>
+<li><p>Global <code class="docutils literal">_*</code> - anything beginning with an underscore, placed at <em>file/namespace scope</em> (more on scopes later).</p></li>
+<li><p><code class="docutils literal">*__*</code> - anything containing 2 consecutive underscores.</p></li>
+<li><p><a class="reference external" href="https://en.cppreference.com/w/cpp/keyword">Keywords</a>.</p></li>
+</ul>
+<section id="keywords-1"><h2>Keywords</h2>
+<p>Keywords are identifiers which have special meaning, e.g. <code class="code custom-cpp"><span class="keyword">if</span></code>, <code class="code custom-cpp"><span class="keyword">else</span></code>, <code class="code custom-cpp"><span class="keyword">const</span></code>. They are a part of the language grammar and can not be used to name entities. As you go through the tutorial, you will learn C++ keywords over time. If you accidentally write one while naming something, your code editor should differentiate it. Obviously you won't immediately remember all keywords - just be aware that there is a chance you might need to come up with a different name for a variable if you clash with a keyword.</p>
+</section><section id="name-conflicts"><h2>Name conflicts</h2>
+<p>In many situations it's possible to use the same identifier for different entities. They usually will be distinguished by syntax or scope. Unless otherwise noted, it's generally advised to avoid giving different things identical identifiers. Depending on the situation, the rules for distinguishing can be pretty complex.</p>
+</section><section id="styles"><h2>Styles</h2>
+<p>As identifiers can not contain whitespace characters, few core naming styles have been established, these conventions are broadly used in the entire IT, not just programming.</p>
+<ul class="simple">
+<li><p><code class="docutils literal">lowercase_name_style</code> (sometimes referred to as snake case)</p></li>
+<li><p><code class="docutils literal">UPPERCASE_NAME_STYLE</code></p></li>
+<li><p><code class="docutils literal">PascalCaseNameStyle</code> (commonly referred to as upper camel case)</p></li>
+<li><p><code class="docutils literal">camelCaseNameStyle</code> (commonly referred to as lower camel case)</p></li>
+</ul>
+<p>Generally, it's bad to mix these styles - any of the following names are against convention:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">Account_Manager</code></p></li>
+<li><p><code class="docutils literal">Accountmanager</code></p></li>
+<li><p><code class="docutils literal">PrintHTTPDocument</code></p></li>
+<li><p><code class="docutils literal">print_HTTP_document</code></p></li>
+</ul>
+<p>correct names:</p>
+<ul class="simple">
+<li><p><code class="docutils literal">account_manager</code></p></li>
+<li><p><code class="docutils literal">AccountManager</code></p></li>
+<li><p><code class="docutils literal">accountManager</code></p></li>
+<li><p><code class="docutils literal">print_http_document</code></p></li>
+<li><p><code class="docutils literal">PrintHttpDocument</code></p></li>
+<li><p><code class="docutils literal">printHttpDocument</code></p></li>
+</ul>
+<p>C++ (following C convention) uses <code class="docutils literal">UPPERCASE_NAME_STYLE</code> for <em>macros</em> and <code class="docutils literal">lowercase_name_style</code> for almost everything else. All tutorial content on this website uses relevant styles - just simply follow them.</p>
+</section><section id="conventions"><h2>Conventions</h2>
+<p>Apart from underscore style, C++ also has a lot of conventions regarding variables with certain purpose. For example, if you are iterating over multiple elements, a variable containing the index of the current element will very often be named <code class="docutils literal">i</code>. If a function is supposed to create an object from (usually multiple) smaller objects, it's name will typically begin with <code class="docutils literal">make_</code>. Throughout the tutorial, you will find many examples featuring idiomatic code and they will very often present commonly used identifiers.</p>
+<p>All of conventional identifiers have been described in <a class="reference external" href="../../../../utility/naming">naming article</a>. But don't try to memorize them now - you will start to remember them with no effort once you start writing code.</p>
+</section><section id="identifiers-in-examples"><h2>Identifiers in examples</h2>
+<p>You may often encouner specific names such as <code class="docutils literal">foo</code>, <code class="docutils literal">bar</code> and <code class="docutils literal">quux</code>. These do not have any attached meaning, they serve the same purpose as the name "John Doe" etc.</p>
+<p>More about these and their history:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Metasyntactic_variable">https://en.wikipedia.org/wiki/Metasyntactic_variable</a></p></li>
+<li><p><a class="reference external" href="https://datatracker.ietf.org/doc/html/rfc3092">RFC 3092</a></p></li>
+</ul></section><section id="recommendations"><h2>Recommendations</h2>
+<ul class="simple">
+<li><p>A variable name should clearly specify what is refers to. Something like <code class="docutils literal">mana</code> might be ambiguous but <code class="docutils literal">current_mana</code> and <code class="docutils literal">maximum_mana</code> will not.</p></li>
+<li><p>The more broadly something is used, the longer name it should have. Most variables are used in small contexts so anything that gets reused across lots of code should be clearly identifiable and searchable.</p></li>
+<li><p>If you need to write a comment to describe a variable's name, you have choosen a bad name.</p></li>
+<li><p>Variables and types represent data. They should be named using nouns. Functions represent actions. They should be named using verbs.</p></li>
+<li><p>Be consistent. If you like to write <code class="docutils literal">temperature</code> as <code class="docutils literal">temp</code> do it either always or never.</p></li>
+<li><p>Avoid using shortcuts, unless they are related to the project. It's hard to specify a clear border here as the topic is very subjective. Many projects include a glossary with explanations on shortcuts that appear in their documentation and code.</p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Enable responsiveness on mobile devices--><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>modern C++ by Xeverous - home</title>
+<link rel="icon" href="favicon.png">
+<!-- RSS --><link rel="alternate" type="application/rss+xml" title="RSS" href="atom.xml">
+<!-- CSS --><link rel="stylesheet" href="assets/css/styles.css">
+<!-- JS --><script type="text/javascript" src="assets/js/app.js" defer></script><!-- maybe later
+	<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [['$','$'], ['\\(','\\)']]
+    },
+    showMathMenu: false,
+    menuSettings: {
+      zoom: "None",
+      collapsible: false,
+      autocollapse: false,
+      explorer: false
+    }
+  });
+        </script>
+	<script type="text/javascript" async
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML"
+		async></script>
+	-->
+</head>
+<body>
+	<div class="layout">
+ <nav class="sidebar"><ul>
+<li class="sidebar-section">
+			<ul>
+<li><a href=".">HOME</a></li>
+				<li><a href="index">INDEX</a></li>
+			</ul>
+</li>
+
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ tutorials</h4>
+				<p class="sidebar-section-description">Learn C++ from begin() to the end() (and beyond) or use knowledge and experience gained in other languages in the accelerated tutorial.</p>
+
+				<ul>
+<li><a href="cpp/tutorials/beginner/">beginner</a></li>
+						<li><a href="cpp/tutorials/accelerated/">accelerated</a></li>
+						<li><a href="cpp/tutorials/templates/">templates</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ how-to</h4>
+				<p class="sidebar-section-description">Common and specific tasks explained.</p>
+
+				<ul>
+<li><a href="cpp/stdlib/">standard library components</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">C++ utilities</h4>
+				<p class="sidebar-section-description">Various metarials with concentrated information.</p>
+
+				<ul>
+<li><a href="cpp/utility/cheatsheets/">C++ cheatsheets</a></li>
+						<li><a href="cpp/utility/cpp_faq/">C++ FAQ</a></li>
+						<li><a href="cpp/utility/cpp_myths/">C++ myths</a></li>
+						<li><a href="cpp/utility/glossary/">glossary</a></li>
+						<li><a href="cpp/utility/">(all articles)</a></li>
+				</ul>
+</li>
+			<li class="sidebar-section">
+				<h4 class="sidebar-section-title">misc / meta</h4>
+				<p class="sidebar-section-description">About this website and its authors.</p>
+
+				<ul>
+<li><a href="about/">about</a></li>
+						<li><a href="meta/site_faq/">website FAQ</a></li>
+						<li><a href="meta/markdown_test/">Markdown test page</a></li>
+						<li><a href="meta/rest_test/">reStructuredText test page</a></li>
+				</ul>
+</li>
+	</ul></nav><nav class="topbar"><ul class="menu">
+<li class="button"><a href=".">HOME</a></li>
+				<li class="button"><a href="index">INDEX</a></li>
+				<li class="button"><a href="faq">FAQ</a></li>
+				<li class="button"><a href="about">ABOUT</a></li>
+				<li class="button menu-button">
+					<div class="menu-icon">
+						<div class="bar1"></div>
+						<div class="bar2"></div>
+						<div class="bar3"></div>
+					</div>
+				</li>
+			</ul></nav><div class="main container">
+			<div class="content">
+				<h1>home</h1>				<p>Welcome to my website, a project where I post various C++-related materials and organize them in a way that allows incremental learning.</p>
+<p>The goal of this project is to create a website that new and existing C++ users can learn from, something similar to what other languages already have. Contrary to other learning material available online:</p>
+<ul class="simple">
+<li><p>This website is completely free.</p></li>
+<li><p>This website is an open-source project where people can contribute (though I still reserve the final decision about every change to myself).</p></li>
+<li><p>This website aims to have additional stuff like: common mistakes, FAQ-style content, deeper understanding of the language philosophy (e.g. why C++ has no <code class="code custom-cpp"><span class="keyword">finally</span></code> keyword) and trivia (exercises not so much because for this I think there are already tons of materials online).</p></li>
+</ul>
+<p>This project is incomplete. It is under continuous improvement and thus you may find missing/unfinished lessons, gaps in numbering, TODOs and other markings that I <code class="docutils literal">grep</code> for when working on the project. As I'm not a web developer (and prefer vanilla to huge frameworks), various aspects of web tech (mostly CSS) may be inkorekt and some content may be pǝʇʇɐɯɹoɟ ʎlpɐq.</p>
+<p>Current goals for the content:</p>
+<ul class="simple">
+<li><p>beginner C++ tutorial (from start up to classes, inheritance, polymorphism, operator overloading and exceptions) - mostly complete</p></li>
+<li><p>accelerated C++ tutorial (for people who already know another language and understand various programming concepts - this tutorial will be more of an analogy and examples than explaining stuff and will have significantly different layout/order of lessons; can also be used as a refresher of already obtained C++ knowledge) - barely started</p></li>
+<li><p>advanced C++ tutorial (pointers, dynamic allocation, placement-new, alignment, padding and other low-level topics) - not started yet</p></li>
+<li><p>C++ templates tutorial (probably first free online tutorial with all the template knowledge) - has first few lessons</p></li>
+</ul>
+<!--  --><blockquote>
+<p>Wait what, why pointers so late?</p>
+</blockquote>
+<p>Because they should be. One of the biggest mistakes in teaching C++ is starting with teaching C and/or hard to understand mechanisms such as pointers. Often while students still struggle to write syntaxically correct code, "teachers" introduce one of the hardest parts of the language for no reason other than "[...] is built on pointers so you should learn them first before you are allowed to use [...] from the standard library".</p>
+<p>This couldn't be more wrong. Few year old kids understand how to use various household devices before even starting any education in math and physics. The same "teachers" may also teach Python on another class without even touching topics such as data structures and garbage collection (or that the reference implementation is in C). Why should we be forced to go the painful bottom-up way when learning C++?</p>
+<p>The famous "The C programming language" book has pointers somewhere in the middle. With C++ they can be pushed even later. Watch <a class="reference external" href="https://www.youtube.com/watch?v=YnWhqhNdYyk">Kate Gregory - Stop teaching C</a> CppCon talk to know more about common C++ teaching mistakes. The order of lessons in the beginner C++ tutorial was heavily influenced by this talk.</p>
+<blockquote>
+<p>Concurrency?</p>
+</blockquote>
+<p>No plans for it as of now. I would have to learn it first :). It would also be rather hard for me to accept contributions with content I do not understand yet.</p>
+<blockquote>
+<p>How can I help?</p>
+</blockquote>
+<ul>
+<li><p>The biggest amount of work by far is ordering of lessons and finding good examples. Writing articles (when materials are already prepared) is relatively easy. By <em>good examples</em> I mean stuff like the <code class="code custom-cpp"><span class="type">fraction</span></code> class that can be found in the first OOP chapter in the beginner tutorial. The class is so good that I use it to explain numerous features across multiple lessons. See the <cite>rationale article &lt;link://filename/pages/cpp/tutorials/beginner/appendix/rationale.rst&gt;</cite> which explains why it's so good in detail.</p></li>
+<li><p>CSS: whatever you can improve. Please don't make PRs importing thousand-lines-long Bootstrap or other frameworks - such changes will be rejected.</p></li>
+<li><p>non-tutorial articles: if you have a topic that is C++ related or generally useful in the programming world (e.g. explaining Unicode, software licensing, an idea for a cheatsheet) you are encouraged to contribute. As of writing this, all the content is mine but I can easily add author information to pages with separate articles.</p></li>
+<li>
+<p>Whatever else: just open an issue. Link to the repo at the bottom of every page.</p>
+<p>How is this website built?</p>
+</li>
+</ul>
+<p>To describe the process in detail would require a separate article (as well as the history of evolution of this project build process) but (if you have never written a static (backend-less) website):</p>
+<ul class="simple">
+<li><p>Articles are written in a text file format (not markdown!) that supports various forms of formatting enrichment. The format of choice is reStructuredText due to 1) actually having a standard specification (unlike Markdown which renders differently depending on the implementation) 2) supporting Python extensions that can go as far as introducing custom format keywords and output generation steps.</p></li>
+<li><p>Each article is processed through a set of parsers/plugins that convert it to HTML. After this stage each file contains a HTML subtree of the final page.</p></li>
+<li><p>Page parts are processed though a HTML templating program (here: Jinja2 - a part of Django framework) that allows to conveniently deduplicate HTML code and give some overall structure for generated pages by embedding Python code in HTML template files.</p></li>
+<li><p>Non-article files (CSS, JS and potentially other data) is copied as-is to the output directory.</p></li>
+<li><p>Everything is tied together by the Nikola framework (one among many such frameworks) that has been <strong>heavily customized</strong> and <em>augmented by plugins</em> so that I can do stuff like <code class="code custom-cpp"><span class="keyword">this</span></code> or <code class="code custom-cpp"><span class="func">that</span></code> or <code class="code custom-cpp"><span class="var-local">that</span></code>.</p></li>
+</ul>
+<p>See <a class="reference external" href="meta/rest_test">reStructuredText test page</a> for what the build process is currently capable of.</p>
+<section id="news"><h2>News</h2>
+<ul class="simple">
+<li><p>2023.03.05: Initial release of a functioning website (beginner C++ mostly complete and others barely started).</p></li>
+<li><p>2021.06.04: <a class="reference external" href="https://www.reddit.com/r/cpp/comments/ns4hl5/what_do_you_think_of_learning_c_through_online">First reddit post</a> that announces the project.</p></li>
+</ul></section>
+</div>
+ 		<footer class="footer"><div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">
+						<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png"></a>
+					<br>
+					All non-code content licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>, unless stated otherwise.
+				</div>
+				<div class="footer-flex-item">
+					All code content (monospaced font) licensed under <a rel="license" href="https://creativecommons.org/publicdomain/zero/1.0/">Creative Commons Zero License</a>, unless stated otherwise.
+				</div>
+			</div>
+			<div class="footer-item footer-item-container">
+				<div class="footer-flex-item">
+					Generated using heavily customized <a href="https://getnikola.com">Nikola</a> static site generator.
+				</div>
+				<div class="footer-flex-item">
+					<a href="https://github.com/Xeverous/the_website">website repository and issue tracker</a>
+				</div>
+			</div>
+		</footer>
+</div>
+	</div>
+</body>
+</html>

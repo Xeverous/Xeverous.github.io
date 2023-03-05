@@ -200,15 +200,15 @@
 }
 </pre></td>
 </tr></tbody></table>
-<div class="code"><pre class="code text"><a id="rest_code_874a5684562248d7a999abdf83ea99c6-1" name="rest_code_874a5684562248d7a999abdf83ea99c6-1" href="#rest_code_874a5684562248d7a999abdf83ea99c6-1"></a>f1.s = 1
-<a id="rest_code_874a5684562248d7a999abdf83ea99c6-2" name="rest_code_874a5684562248d7a999abdf83ea99c6-2" href="#rest_code_874a5684562248d7a999abdf83ea99c6-2"></a>f2.s = 1
-<a id="rest_code_874a5684562248d7a999abdf83ea99c6-3" name="rest_code_874a5684562248d7a999abdf83ea99c6-3" href="#rest_code_874a5684562248d7a999abdf83ea99c6-3"></a>f1.s = 2
-<a id="rest_code_874a5684562248d7a999abdf83ea99c6-4" name="rest_code_874a5684562248d7a999abdf83ea99c6-4" href="#rest_code_874a5684562248d7a999abdf83ea99c6-4"></a>f2.s = 2
-<a id="rest_code_874a5684562248d7a999abdf83ea99c6-5" name="rest_code_874a5684562248d7a999abdf83ea99c6-5" href="#rest_code_874a5684562248d7a999abdf83ea99c6-5"></a>address of f1.s = 0x600eb8
-<a id="rest_code_874a5684562248d7a999abdf83ea99c6-6" name="rest_code_874a5684562248d7a999abdf83ea99c6-6" href="#rest_code_874a5684562248d7a999abdf83ea99c6-6"></a>address of f2.s = 0x600eb8
-<a id="rest_code_874a5684562248d7a999abdf83ea99c6-7" name="rest_code_874a5684562248d7a999abdf83ea99c6-7" href="#rest_code_874a5684562248d7a999abdf83ea99c6-7"></a>sizeof(int) = 4
-<a id="rest_code_874a5684562248d7a999abdf83ea99c6-8" name="rest_code_874a5684562248d7a999abdf83ea99c6-8" href="#rest_code_874a5684562248d7a999abdf83ea99c6-8"></a>sizeof(foo) = 4
-<a id="rest_code_874a5684562248d7a999abdf83ea99c6-9" name="rest_code_874a5684562248d7a999abdf83ea99c6-9" href="#rest_code_874a5684562248d7a999abdf83ea99c6-9"></a>foo::s = 3
+<div class="code"><pre class="code text"><a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-1" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-1" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-1"></a>f1.s = 1
+<a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-2" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-2" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-2"></a>f2.s = 1
+<a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-3" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-3" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-3"></a>f1.s = 2
+<a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-4" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-4" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-4"></a>f2.s = 2
+<a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-5" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-5" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-5"></a>address of f1.s = 0x600eb8
+<a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-6" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-6" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-6"></a>address of f2.s = 0x600eb8
+<a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-7" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-7" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-7"></a>sizeof(int) = 4
+<a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-8" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-8" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-8"></a>sizeof(foo) = 4
+<a id="rest_code_356a509d04934cc2ac826ce1b8df67d7-9" name="rest_code_356a509d04934cc2ac826ce1b8df67d7-9" href="#rest_code_356a509d04934cc2ac826ce1b8df67d7-9"></a>foo::s = 3
 </pre></div>
 <p>Because <code class="code custom-cpp"><span class="keyword">static</span></code> member objects are global it's recommended to refer to them through the class name, not specific objects. The syntax which uses <code class="docutils literal">.</code> helps in some situations (e.g. templates which don't know on what type they operate) but can be misleading.</p>
 <section id="in-practice"><h2>In practice</h2>

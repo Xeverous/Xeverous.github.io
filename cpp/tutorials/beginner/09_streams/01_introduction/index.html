@@ -277,26 +277,26 @@
 </pre></td>
 </tr></tbody></table>
 <p>Below examples for the Bash shell, though they are compatible with many other shells too:</p>
-<div class="code"><pre class="code text"><a id="rest_code_3634f34cbaae42a8994d3950f89a837f-1" name="rest_code_3634f34cbaae42a8994d3950f89a837f-1" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-1"></a># redirect stdout to null device
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-2" name="rest_code_3634f34cbaae42a8994d3950f89a837f-2" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-2"></a>$ ./program 1&gt;/dev/null
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-3" name="rest_code_3634f34cbaae42a8994d3950f89a837f-3" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-3"></a>error message
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-4" name="rest_code_3634f34cbaae42a8994d3950f89a837f-4" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-4"></a># redirect stderr to null device (will display only output)
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-5" name="rest_code_3634f34cbaae42a8994d3950f89a837f-5" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-5"></a>$ ./program 2&gt;/dev/null
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-6" name="rest_code_3634f34cbaae42a8994d3950f89a837f-6" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-6"></a>info message
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-7" name="rest_code_3634f34cbaae42a8994d3950f89a837f-7" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-7"></a># redirect stderr to a file (output on screen, errors in file)
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-8" name="rest_code_3634f34cbaae42a8994d3950f89a837f-8" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-8"></a>$ ./program 2&gt;errors.txt
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-9" name="rest_code_3634f34cbaae42a8994d3950f89a837f-9" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-9"></a>info message
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-10" name="rest_code_3634f34cbaae42a8994d3950f89a837f-10" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-10"></a>$ cat errors.txt
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-11" name="rest_code_3634f34cbaae42a8994d3950f89a837f-11" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-11"></a>error message
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-12" name="rest_code_3634f34cbaae42a8994d3950f89a837f-12" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-12"></a># redirect stdin to stdout and then both to a file
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-13" name="rest_code_3634f34cbaae42a8994d3950f89a837f-13" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-13"></a>$ ./program &gt; file.txt 2&gt;&amp;1
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-14" name="rest_code_3634f34cbaae42a8994d3950f89a837f-14" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-14"></a>$ cat file.txt
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-15" name="rest_code_3634f34cbaae42a8994d3950f89a837f-15" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-15"></a>info message
-<a id="rest_code_3634f34cbaae42a8994d3950f89a837f-16" name="rest_code_3634f34cbaae42a8994d3950f89a837f-16" href="#rest_code_3634f34cbaae42a8994d3950f89a837f-16"></a>error message
+<div class="code"><pre class="code text"><a id="rest_code_927e114946da46f6a932a32aa902e8b3-1" name="rest_code_927e114946da46f6a932a32aa902e8b3-1" href="#rest_code_927e114946da46f6a932a32aa902e8b3-1"></a># redirect stdout to null device
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-2" name="rest_code_927e114946da46f6a932a32aa902e8b3-2" href="#rest_code_927e114946da46f6a932a32aa902e8b3-2"></a>$ ./program 1&gt;/dev/null
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-3" name="rest_code_927e114946da46f6a932a32aa902e8b3-3" href="#rest_code_927e114946da46f6a932a32aa902e8b3-3"></a>error message
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-4" name="rest_code_927e114946da46f6a932a32aa902e8b3-4" href="#rest_code_927e114946da46f6a932a32aa902e8b3-4"></a># redirect stderr to null device (will display only output)
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-5" name="rest_code_927e114946da46f6a932a32aa902e8b3-5" href="#rest_code_927e114946da46f6a932a32aa902e8b3-5"></a>$ ./program 2&gt;/dev/null
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-6" name="rest_code_927e114946da46f6a932a32aa902e8b3-6" href="#rest_code_927e114946da46f6a932a32aa902e8b3-6"></a>info message
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-7" name="rest_code_927e114946da46f6a932a32aa902e8b3-7" href="#rest_code_927e114946da46f6a932a32aa902e8b3-7"></a># redirect stderr to a file (output on screen, errors in file)
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-8" name="rest_code_927e114946da46f6a932a32aa902e8b3-8" href="#rest_code_927e114946da46f6a932a32aa902e8b3-8"></a>$ ./program 2&gt;errors.txt
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-9" name="rest_code_927e114946da46f6a932a32aa902e8b3-9" href="#rest_code_927e114946da46f6a932a32aa902e8b3-9"></a>info message
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-10" name="rest_code_927e114946da46f6a932a32aa902e8b3-10" href="#rest_code_927e114946da46f6a932a32aa902e8b3-10"></a>$ cat errors.txt
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-11" name="rest_code_927e114946da46f6a932a32aa902e8b3-11" href="#rest_code_927e114946da46f6a932a32aa902e8b3-11"></a>error message
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-12" name="rest_code_927e114946da46f6a932a32aa902e8b3-12" href="#rest_code_927e114946da46f6a932a32aa902e8b3-12"></a># redirect stdin to stdout and then both to a file
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-13" name="rest_code_927e114946da46f6a932a32aa902e8b3-13" href="#rest_code_927e114946da46f6a932a32aa902e8b3-13"></a>$ ./program &gt; file.txt 2&gt;&amp;1
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-14" name="rest_code_927e114946da46f6a932a32aa902e8b3-14" href="#rest_code_927e114946da46f6a932a32aa902e8b3-14"></a>$ cat file.txt
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-15" name="rest_code_927e114946da46f6a932a32aa902e8b3-15" href="#rest_code_927e114946da46f6a932a32aa902e8b3-15"></a>info message
+<a id="rest_code_927e114946da46f6a932a32aa902e8b3-16" name="rest_code_927e114946da46f6a932a32aa902e8b3-16" href="#rest_code_927e114946da46f6a932a32aa902e8b3-16"></a>error message
 </pre></div>
 <p>See <a class="reference external" href="https://stackoverflow.com/questions/818255/in-the-shell-what-does-21-mean">https://stackoverflow.com/questions/818255/in-the-shell-what-does-21-mean</a> for more examples and explanation.</p>
 <p>It's also possible to redirect input:</p>
-<div class="code"><pre class="code text"><a id="rest_code_7aca2a34b9154d8490855be4912149ef-1" name="rest_code_7aca2a34b9154d8490855be4912149ef-1" href="#rest_code_7aca2a34b9154d8490855be4912149ef-1"></a>$ ./program &lt; input.txt
+<div class="code"><pre class="code text"><a id="rest_code_bfc6c7bc63b6443dbfb013b1361ae59e-1" name="rest_code_bfc6c7bc63b6443dbfb013b1361ae59e-1" href="#rest_code_bfc6c7bc63b6443dbfb013b1361ae59e-1"></a>$ ./program &lt; input.txt
 </pre></div>
 <p>in such case the program will not wait for keyboard input - <code class="code custom-cpp"><span class="namespace">std</span>::<span class="var-global">cin</span></code> will eat data from the file and go into failure state upon reaching end of file. This is very useful for testing programs for school/university assignments as it allows to you fully automate program's input.</p>
 </section><section id="buffering"><h2>Buffering</h2>

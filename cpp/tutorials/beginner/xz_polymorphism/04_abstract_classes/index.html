@@ -357,7 +357,7 @@
 }
 </pre></td>
 </tr></tbody></table>
-<div class="code"><pre class="code text"><a id="rest_code_bdb065612c1c4c5cae913ffc71e54536-1" name="rest_code_bdb065612c1c4c5cae913ffc71e54536-1" href="#rest_code_bdb065612c1c4c5cae913ffc71e54536-1"></a>B::f
+<div class="code"><pre class="code text"><a id="rest_code_0905071a181e4a3d936b6ee192fbacb1-1" name="rest_code_0905071a181e4a3d936b6ee192fbacb1-1" href="#rest_code_0905071a181e4a3d936b6ee192fbacb1-1"></a>B::f
 </pre></div>
 <p>Inside the body of <code class="code custom-cpp"><span class="type">B</span>::<span class="func">B</span></code>, it's unknown whether the constructor is run to initialize an object of type <code class="code custom-cpp"><span class="type">B</span></code> or as a part of initialization of an object which type inherits from <code class="code custom-cpp"><span class="type">B</span></code>. Since the constructor can not assume what is the actual (<em>dynamic</em>) type of the constructed object (and even if it could, that part is still uninitialized), virtual call considers overriders only to the level of class <code class="code custom-cpp"><span class="type">B</span></code>.</p>
 <p>What if there are no overriders at the level of currently running constructor (that is, function remains pure virtual)? Well, nothing good:</p>

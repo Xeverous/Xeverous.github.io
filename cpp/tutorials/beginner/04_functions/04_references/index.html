@@ -149,9 +149,9 @@
 </pre></td>
 </tr></tbody></table>
 <p>Surprisingly, the program prints:</p>
-<div class="code"><pre class="code text"><a id="rest_code_890eba48219c41b1ad75ffab85b2eeee-1" name="rest_code_890eba48219c41b1ad75ffab85b2eeee-1" href="#rest_code_890eba48219c41b1ad75ffab85b2eeee-1"></a>x before function call: 10
-<a id="rest_code_890eba48219c41b1ad75ffab85b2eeee-2" name="rest_code_890eba48219c41b1ad75ffab85b2eeee-2" href="#rest_code_890eba48219c41b1ad75ffab85b2eeee-2"></a>x inside function: 20
-<a id="rest_code_890eba48219c41b1ad75ffab85b2eeee-3" name="rest_code_890eba48219c41b1ad75ffab85b2eeee-3" href="#rest_code_890eba48219c41b1ad75ffab85b2eeee-3"></a>x after function call: 10
+<div class="code"><pre class="code text"><a id="rest_code_223aa231fbbc4b3d83df9dc909b360a1-1" name="rest_code_223aa231fbbc4b3d83df9dc909b360a1-1" href="#rest_code_223aa231fbbc4b3d83df9dc909b360a1-1"></a>x before function call: 10
+<a id="rest_code_223aa231fbbc4b3d83df9dc909b360a1-2" name="rest_code_223aa231fbbc4b3d83df9dc909b360a1-2" href="#rest_code_223aa231fbbc4b3d83df9dc909b360a1-2"></a>x inside function: 20
+<a id="rest_code_223aa231fbbc4b3d83df9dc909b360a1-3" name="rest_code_223aa231fbbc4b3d83df9dc909b360a1-3" href="#rest_code_223aa231fbbc4b3d83df9dc909b360a1-3"></a>x after function call: 10
 </pre></div>
 <p>The reason for this behavior is that functions do not work directly on objects provided as arguments. They work on their copies. Each frame on the call stack is a new set of objects. Only the return value is transferred to the previous frame.</p>
 <blockquote>
@@ -325,9 +325,9 @@
 </pre></td>
 </tr></tbody></table>
 <p>Now the function works on the same object:</p>
-<div class="code"><pre class="code text"><a id="rest_code_57f91898fb9046e39e0be5b2a67dae96-1" name="rest_code_57f91898fb9046e39e0be5b2a67dae96-1" href="#rest_code_57f91898fb9046e39e0be5b2a67dae96-1"></a>x before function call: 10
-<a id="rest_code_57f91898fb9046e39e0be5b2a67dae96-2" name="rest_code_57f91898fb9046e39e0be5b2a67dae96-2" href="#rest_code_57f91898fb9046e39e0be5b2a67dae96-2"></a>x inside function: 20
-<a id="rest_code_57f91898fb9046e39e0be5b2a67dae96-3" name="rest_code_57f91898fb9046e39e0be5b2a67dae96-3" href="#rest_code_57f91898fb9046e39e0be5b2a67dae96-3"></a>x after function call: 20
+<div class="code"><pre class="code text"><a id="rest_code_ef1ba42adf094ef0a90a83640a9bc893-1" name="rest_code_ef1ba42adf094ef0a90a83640a9bc893-1" href="#rest_code_ef1ba42adf094ef0a90a83640a9bc893-1"></a>x before function call: 10
+<a id="rest_code_ef1ba42adf094ef0a90a83640a9bc893-2" name="rest_code_ef1ba42adf094ef0a90a83640a9bc893-2" href="#rest_code_ef1ba42adf094ef0a90a83640a9bc893-2"></a>x inside function: 20
+<a id="rest_code_ef1ba42adf094ef0a90a83640a9bc893-3" name="rest_code_ef1ba42adf094ef0a90a83640a9bc893-3" href="#rest_code_ef1ba42adf094ef0a90a83640a9bc893-3"></a>x after function call: 20
 </pre></div>
 </section><section id="reference-binding-in-detail"><h2>Reference binding in detail</h2>
 <p>Creation of a reference does not create new objects. Instead, a reference is bound to an already existing object (which is done by copying its memory address, not contents). You can not bind non-const lvalue references to temporary objects (<em>rvalues</em>):</p>

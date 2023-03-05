@@ -205,10 +205,10 @@
 }
 </pre></td>
 </tr></tbody></table>
-<div class="code"><pre class="code text"><a id="rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-1" name="rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-1" href="#rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-1"></a>0x7ffdc1562d04
-<a id="rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-2" name="rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-2" href="#rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-2"></a>0x7ffdc1562d04
-<a id="rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-3" name="rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-3" href="#rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-3"></a>0x7ffdc1562d08
-<a id="rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-4" name="rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-4" href="#rest_code_c42bfe7b2544413ead4febf8a6bf6fdb-4"></a>0x7ffdc1562d0c
+<div class="code"><pre class="code text"><a id="rest_code_3db6d5849d944094b58a6ae351a64c2f-1" name="rest_code_3db6d5849d944094b58a6ae351a64c2f-1" href="#rest_code_3db6d5849d944094b58a6ae351a64c2f-1"></a>0x7ffdc1562d04
+<a id="rest_code_3db6d5849d944094b58a6ae351a64c2f-2" name="rest_code_3db6d5849d944094b58a6ae351a64c2f-2" href="#rest_code_3db6d5849d944094b58a6ae351a64c2f-2"></a>0x7ffdc1562d04
+<a id="rest_code_3db6d5849d944094b58a6ae351a64c2f-3" name="rest_code_3db6d5849d944094b58a6ae351a64c2f-3" href="#rest_code_3db6d5849d944094b58a6ae351a64c2f-3"></a>0x7ffdc1562d08
+<a id="rest_code_3db6d5849d944094b58a6ae351a64c2f-4" name="rest_code_3db6d5849d944094b58a6ae351a64c2f-4" href="#rest_code_3db6d5849d944094b58a6ae351a64c2f-4"></a>0x7ffdc1562d0c
 </pre></div>
 <p>Standard streams print memory addresses using base 16 (extra 6 digits are denoted with a-f) but you can clearly see that the address of the first array element is the same as the address of the array. Obviously if you run the same program the output may be different but <strong>first 2 lines will always be identical</strong>. This lack of difference is the reason for 0 based numbering - during <em>pointer arithmetics</em> (which are far from this lesson) the index is used to calculate memory address of specific object and if it wasn't 0-based indexing, the math would simply not work.</p>
 <aside class="admonition error"><p class="admonition-title">error</p>

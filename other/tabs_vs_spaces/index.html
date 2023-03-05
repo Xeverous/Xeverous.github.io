@@ -135,46 +135,46 @@
 </ul></section><section id="mistakes"><h2>mistakes</h2>
 <section id="misunderstanding-tab-stops"><h3>misunderstanding tab stops</h3>
 <p>A common misconception is that tabs have fixed width, equal to L. This is false. Tabs have width <em>up to L</em> - tabs stop at multiplies of L, called <em>tab stops</em>. Example with L set to 8:</p>
-<div class="code"><pre class="code text"><a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-1" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-1" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-1"></a>-------&gt;-------&gt;Y
-<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-2" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-2" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-2"></a>-------&gt;XXXX---&gt;Y
-<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-3" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-3" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-3"></a>abc----&gt;X------&gt;Y
-<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-4" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-4" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-4"></a>abcd---&gt;X------&gt;Y
-<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-5" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-5" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-5"></a>abcde--&gt;X------&gt;Y
-<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-6" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-6" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-6"></a>abcdef-&gt;X------&gt;Y
-<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-7" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-7" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-7"></a>abcdefg&gt;X------&gt;Y
-<a id="rest_code_5f4083f989d74f50ad4e73349ecd15cc-8" name="rest_code_5f4083f989d74f50ad4e73349ecd15cc-8" href="#rest_code_5f4083f989d74f50ad4e73349ecd15cc-8"></a>abcdefgh-------&gt;X-------&gt;Y
+<div class="code"><pre class="code text"><a id="rest_code_a87b211194a34967b8c0e948213f7a9b-1" name="rest_code_a87b211194a34967b8c0e948213f7a9b-1" href="#rest_code_a87b211194a34967b8c0e948213f7a9b-1"></a>-------&gt;-------&gt;Y
+<a id="rest_code_a87b211194a34967b8c0e948213f7a9b-2" name="rest_code_a87b211194a34967b8c0e948213f7a9b-2" href="#rest_code_a87b211194a34967b8c0e948213f7a9b-2"></a>-------&gt;XXXX---&gt;Y
+<a id="rest_code_a87b211194a34967b8c0e948213f7a9b-3" name="rest_code_a87b211194a34967b8c0e948213f7a9b-3" href="#rest_code_a87b211194a34967b8c0e948213f7a9b-3"></a>abc----&gt;X------&gt;Y
+<a id="rest_code_a87b211194a34967b8c0e948213f7a9b-4" name="rest_code_a87b211194a34967b8c0e948213f7a9b-4" href="#rest_code_a87b211194a34967b8c0e948213f7a9b-4"></a>abcd---&gt;X------&gt;Y
+<a id="rest_code_a87b211194a34967b8c0e948213f7a9b-5" name="rest_code_a87b211194a34967b8c0e948213f7a9b-5" href="#rest_code_a87b211194a34967b8c0e948213f7a9b-5"></a>abcde--&gt;X------&gt;Y
+<a id="rest_code_a87b211194a34967b8c0e948213f7a9b-6" name="rest_code_a87b211194a34967b8c0e948213f7a9b-6" href="#rest_code_a87b211194a34967b8c0e948213f7a9b-6"></a>abcdef-&gt;X------&gt;Y
+<a id="rest_code_a87b211194a34967b8c0e948213f7a9b-7" name="rest_code_a87b211194a34967b8c0e948213f7a9b-7" href="#rest_code_a87b211194a34967b8c0e948213f7a9b-7"></a>abcdefg&gt;X------&gt;Y
+<a id="rest_code_a87b211194a34967b8c0e948213f7a9b-8" name="rest_code_a87b211194a34967b8c0e948213f7a9b-8" href="#rest_code_a87b211194a34967b8c0e948213f7a9b-8"></a>abcdefgh-------&gt;X-------&gt;Y
 </pre></div>
 <p>In the first line, tabs do have length equal to L. But in other lines, they are truncated by the presence of other characters. Once the length of them reaches L (which is the case of <code class="docutils literal">abcdefgh</code>), they "push" next tab character to the next tab stop.</p>
 </section><section id="using-tabs-elsewhere-than-line-start"><h3>using tabs elsewhere than line start</h3>
 <p>Tabs, if used, should be present only at the beginning of the line. Once any other character has been used, tabs should never appear. The following example showcases that you can not consistently use tabs for alignment:</p>
-<div class="code"><pre class="code text"><a id="rest_code_56ac8dda1d0342aba7a461a48621e333-1" name="rest_code_56ac8dda1d0342aba7a461a48621e333-1" href="#rest_code_56ac8dda1d0342aba7a461a48621e333-1"></a>---&gt;fn(x+1,&gt;y,-&gt;z);
-<a id="rest_code_56ac8dda1d0342aba7a461a48621e333-2" name="rest_code_56ac8dda1d0342aba7a461a48621e333-2" href="#rest_code_56ac8dda1d0342aba7a461a48621e333-2"></a>---&gt;fn(x,--&gt;y+1,z);
-<a id="rest_code_56ac8dda1d0342aba7a461a48621e333-3" name="rest_code_56ac8dda1d0342aba7a461a48621e333-3" href="#rest_code_56ac8dda1d0342aba7a461a48621e333-3"></a>---&gt;fn(x,--&gt;y,-&gt;z+1);
+<div class="code"><pre class="code text"><a id="rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-1" name="rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-1" href="#rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-1"></a>---&gt;fn(x+1,&gt;y,-&gt;z);
+<a id="rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-2" name="rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-2" href="#rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-2"></a>---&gt;fn(x,--&gt;y+1,z);
+<a id="rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-3" name="rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-3" href="#rest_code_ebdf593eb78a4fc0b65fa26111e97f1f-3"></a>---&gt;fn(x,--&gt;y,-&gt;z+1);
 </pre></div>
 <p>It looks even worse if L is changed to 8:</p>
-<div class="code"><pre class="code text"><a id="rest_code_d442a47db9cf4bc18aca5fcddbb22738-1" name="rest_code_d442a47db9cf4bc18aca5fcddbb22738-1" href="#rest_code_d442a47db9cf4bc18aca5fcddbb22738-1"></a>-------&gt;fn(x+1,&gt;y,-----&gt;z);
-<a id="rest_code_d442a47db9cf4bc18aca5fcddbb22738-2" name="rest_code_d442a47db9cf4bc18aca5fcddbb22738-2" href="#rest_code_d442a47db9cf4bc18aca5fcddbb22738-2"></a>-------&gt;fn(x,--&gt;y+1,z);
-<a id="rest_code_d442a47db9cf4bc18aca5fcddbb22738-3" name="rest_code_d442a47db9cf4bc18aca5fcddbb22738-3" href="#rest_code_d442a47db9cf4bc18aca5fcddbb22738-3"></a>-------&gt;fn(x,--&gt;y,-----&gt;z+1);
+<div class="code"><pre class="code text"><a id="rest_code_1174935e2ac84436b64758714dee8345-1" name="rest_code_1174935e2ac84436b64758714dee8345-1" href="#rest_code_1174935e2ac84436b64758714dee8345-1"></a>-------&gt;fn(x+1,&gt;y,-----&gt;z);
+<a id="rest_code_1174935e2ac84436b64758714dee8345-2" name="rest_code_1174935e2ac84436b64758714dee8345-2" href="#rest_code_1174935e2ac84436b64758714dee8345-2"></a>-------&gt;fn(x,--&gt;y+1,z);
+<a id="rest_code_1174935e2ac84436b64758714dee8345-3" name="rest_code_1174935e2ac84436b64758714dee8345-3" href="#rest_code_1174935e2ac84436b64758714dee8345-3"></a>-------&gt;fn(x,--&gt;y,-----&gt;z+1);
 </pre></div>
 </section><section id="assuming-tab-length"><h3>assuming tab length</h3>
 <p>This is another mistake. <strong>Tabs do not have predefined length and you should not write code assuming any.</strong> Example:</p>
-<div class="code"><pre class="code text"><a id="rest_code_1428e04f64304eb1a1d867f81cfdfcda-1" name="rest_code_1428e04f64304eb1a1d867f81cfdfcda-1" href="#rest_code_1428e04f64304eb1a1d867f81cfdfcda-1"></a>-------&gt;long_function_call(arg1, arg2,
-<a id="rest_code_1428e04f64304eb1a1d867f81cfdfcda-2" name="rest_code_1428e04f64304eb1a1d867f81cfdfcda-2" href="#rest_code_1428e04f64304eb1a1d867f81cfdfcda-2"></a>-------&gt;-------&gt;-------&gt;...arg3, arg4,
-<a id="rest_code_1428e04f64304eb1a1d867f81cfdfcda-3" name="rest_code_1428e04f64304eb1a1d867f81cfdfcda-3" href="#rest_code_1428e04f64304eb1a1d867f81cfdfcda-3"></a>-------&gt;-------&gt;-------&gt;...arg5, arg6);
+<div class="code"><pre class="code text"><a id="rest_code_78f06a981ef64be0af10b75112847b19-1" name="rest_code_78f06a981ef64be0af10b75112847b19-1" href="#rest_code_78f06a981ef64be0af10b75112847b19-1"></a>-------&gt;long_function_call(arg1, arg2,
+<a id="rest_code_78f06a981ef64be0af10b75112847b19-2" name="rest_code_78f06a981ef64be0af10b75112847b19-2" href="#rest_code_78f06a981ef64be0af10b75112847b19-2"></a>-------&gt;-------&gt;-------&gt;...arg3, arg4,
+<a id="rest_code_78f06a981ef64be0af10b75112847b19-3" name="rest_code_78f06a981ef64be0af10b75112847b19-3" href="#rest_code_78f06a981ef64be0af10b75112847b19-3"></a>-------&gt;-------&gt;-------&gt;...arg5, arg6);
 </pre></div>
 <p>The code above assumes L is 8, which makes the same code badly formatted if someone has L set to 4:</p>
-<div class="code"><pre class="code text"><a id="rest_code_d79b20010bcb4f9099f959a0732d9230-1" name="rest_code_d79b20010bcb4f9099f959a0732d9230-1" href="#rest_code_d79b20010bcb4f9099f959a0732d9230-1"></a>---&gt;long_function_call(arg1, arg2,
-<a id="rest_code_d79b20010bcb4f9099f959a0732d9230-2" name="rest_code_d79b20010bcb4f9099f959a0732d9230-2" href="#rest_code_d79b20010bcb4f9099f959a0732d9230-2"></a>---&gt;---&gt;---&gt;...arg3, arg4,
-<a id="rest_code_d79b20010bcb4f9099f959a0732d9230-3" name="rest_code_d79b20010bcb4f9099f959a0732d9230-3" href="#rest_code_d79b20010bcb4f9099f959a0732d9230-3"></a>---&gt;---&gt;---&gt;...arg5, arg6);
+<div class="code"><pre class="code text"><a id="rest_code_1bcfacd7df7849b4aaebce64b5521355-1" name="rest_code_1bcfacd7df7849b4aaebce64b5521355-1" href="#rest_code_1bcfacd7df7849b4aaebce64b5521355-1"></a>---&gt;long_function_call(arg1, arg2,
+<a id="rest_code_1bcfacd7df7849b4aaebce64b5521355-2" name="rest_code_1bcfacd7df7849b4aaebce64b5521355-2" href="#rest_code_1bcfacd7df7849b4aaebce64b5521355-2"></a>---&gt;---&gt;---&gt;...arg3, arg4,
+<a id="rest_code_1bcfacd7df7849b4aaebce64b5521355-3" name="rest_code_1bcfacd7df7849b4aaebce64b5521355-3" href="#rest_code_1bcfacd7df7849b4aaebce64b5521355-3"></a>---&gt;---&gt;---&gt;...arg5, arg6);
 </pre></div>
 <p>Some people use this as an argument towards using spaces - wrong. This is not valid argument, because this is simply incorrect usage of tabs. The correct use is as follows (you can see it works regardless of L):</p>
-<div class="code"><pre class="code text"><a id="rest_code_311b1a127d874f39ae5662d1b50df410-1" name="rest_code_311b1a127d874f39ae5662d1b50df410-1" href="#rest_code_311b1a127d874f39ae5662d1b50df410-1"></a>---&gt;long_function_call(arg1, arg2,
-<a id="rest_code_311b1a127d874f39ae5662d1b50df410-2" name="rest_code_311b1a127d874f39ae5662d1b50df410-2" href="#rest_code_311b1a127d874f39ae5662d1b50df410-2"></a>---&gt;...................arg3, arg4,
-<a id="rest_code_311b1a127d874f39ae5662d1b50df410-3" name="rest_code_311b1a127d874f39ae5662d1b50df410-3" href="#rest_code_311b1a127d874f39ae5662d1b50df410-3"></a>---&gt;...................arg5, arg6);
-<a id="rest_code_311b1a127d874f39ae5662d1b50df410-4" name="rest_code_311b1a127d874f39ae5662d1b50df410-4" href="#rest_code_311b1a127d874f39ae5662d1b50df410-4"></a>
-<a id="rest_code_311b1a127d874f39ae5662d1b50df410-5" name="rest_code_311b1a127d874f39ae5662d1b50df410-5" href="#rest_code_311b1a127d874f39ae5662d1b50df410-5"></a>-------&gt;long_function_call(arg1, arg2,
-<a id="rest_code_311b1a127d874f39ae5662d1b50df410-6" name="rest_code_311b1a127d874f39ae5662d1b50df410-6" href="#rest_code_311b1a127d874f39ae5662d1b50df410-6"></a>-------&gt;...................arg3, arg4,
-<a id="rest_code_311b1a127d874f39ae5662d1b50df410-7" name="rest_code_311b1a127d874f39ae5662d1b50df410-7" href="#rest_code_311b1a127d874f39ae5662d1b50df410-7"></a>-------&gt;...................arg5, arg6);
+<div class="code"><pre class="code text"><a id="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-1" name="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-1" href="#rest_code_8ccf435ba1c44c59b55228ba4afc53a5-1"></a>---&gt;long_function_call(arg1, arg2,
+<a id="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-2" name="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-2" href="#rest_code_8ccf435ba1c44c59b55228ba4afc53a5-2"></a>---&gt;...................arg3, arg4,
+<a id="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-3" name="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-3" href="#rest_code_8ccf435ba1c44c59b55228ba4afc53a5-3"></a>---&gt;...................arg5, arg6);
+<a id="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-4" name="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-4" href="#rest_code_8ccf435ba1c44c59b55228ba4afc53a5-4"></a>
+<a id="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-5" name="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-5" href="#rest_code_8ccf435ba1c44c59b55228ba4afc53a5-5"></a>-------&gt;long_function_call(arg1, arg2,
+<a id="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-6" name="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-6" href="#rest_code_8ccf435ba1c44c59b55228ba4afc53a5-6"></a>-------&gt;...................arg3, arg4,
+<a id="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-7" name="rest_code_8ccf435ba1c44c59b55228ba4afc53a5-7" href="#rest_code_8ccf435ba1c44c59b55228ba4afc53a5-7"></a>-------&gt;...................arg5, arg6);
 </pre></div>
 <p><strong>Tabs are used for indent, spaces for alignment:</strong></p>
 <ul class="simple">
@@ -182,12 +182,12 @@
 <li><p>Spaces align function arguments, because we want further arguments to be shifted specific number of characters. There is no indent due to scope, we simply align characters using fixed-length whitespace character (space).</p></li>
 </ul></section><section id="mixing-styles"><h3>mixing styles</h3>
 <p>Any mixed style will fall into assumption of L. Example:</p>
-<div class="code"><pre class="code text"><a id="rest_code_dc1a77ff826a41c7837a500a8f46e077-1" name="rest_code_dc1a77ff826a41c7837a500a8f46e077-1" href="#rest_code_dc1a77ff826a41c7837a500a8f46e077-1"></a>---&gt;func();
-<a id="rest_code_dc1a77ff826a41c7837a500a8f46e077-2" name="rest_code_dc1a77ff826a41c7837a500a8f46e077-2" href="#rest_code_dc1a77ff826a41c7837a500a8f46e077-2"></a>....func();
+<div class="code"><pre class="code text"><a id="rest_code_4f1a8f7d7eed46f88dcb9d8f03690c89-1" name="rest_code_4f1a8f7d7eed46f88dcb9d8f03690c89-1" href="#rest_code_4f1a8f7d7eed46f88dcb9d8f03690c89-1"></a>---&gt;func();
+<a id="rest_code_4f1a8f7d7eed46f88dcb9d8f03690c89-2" name="rest_code_4f1a8f7d7eed46f88dcb9d8f03690c89-2" href="#rest_code_4f1a8f7d7eed46f88dcb9d8f03690c89-2"></a>....func();
 </pre></div>
 <p>After changing L to 8:</p>
-<div class="code"><pre class="code text"><a id="rest_code_45371aaee5e44f41947b91fef80f0656-1" name="rest_code_45371aaee5e44f41947b91fef80f0656-1" href="#rest_code_45371aaee5e44f41947b91fef80f0656-1"></a>-------&gt;func();
-<a id="rest_code_45371aaee5e44f41947b91fef80f0656-2" name="rest_code_45371aaee5e44f41947b91fef80f0656-2" href="#rest_code_45371aaee5e44f41947b91fef80f0656-2"></a>....func();
+<div class="code"><pre class="code text"><a id="rest_code_77f2fa68c04c4c32a9f13874ad86c2ba-1" name="rest_code_77f2fa68c04c4c32a9f13874ad86c2ba-1" href="#rest_code_77f2fa68c04c4c32a9f13874ad86c2ba-1"></a>-------&gt;func();
+<a id="rest_code_77f2fa68c04c4c32a9f13874ad86c2ba-2" name="rest_code_77f2fa68c04c4c32a9f13874ad86c2ba-2" href="#rest_code_77f2fa68c04c4c32a9f13874ad86c2ba-2"></a>....func();
 </pre></div>
 <p>This is bad - code on the same scope has different visible indentiation.</p>
 </section></section><section id="summary"><h2>summary</h2>

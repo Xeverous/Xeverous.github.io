@@ -226,25 +226,25 @@
 </pre></td>
 </tr></tbody></table>
 <p>Output:</p>
-<div class="code"><pre class="code text"><a id="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-1" name="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-1" href="#rest_code_cc781b7fd4254ed082bd00ee1b75feaa-1"></a>program start
-<a id="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-2" name="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-2" href="#rest_code_cc781b7fd4254ed082bd00ee1b75feaa-2"></a>beginning execution
-<a id="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-3" name="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-3" href="#rest_code_cc781b7fd4254ed082bd00ee1b75feaa-3"></a>run starts
-<a id="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-4" name="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-4" href="#rest_code_cc781b7fd4254ed082bd00ee1b75feaa-4"></a>foo starts
-<a id="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-5" name="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-5" href="#rest_code_cc781b7fd4254ed082bd00ee1b75feaa-5"></a>foo1
-<a id="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-6" name="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-6" href="#rest_code_cc781b7fd4254ed082bd00ee1b75feaa-6"></a>caught exception with message: foo2() failed
-<a id="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-7" name="rest_code_cc781b7fd4254ed082bd00ee1b75feaa-7" href="#rest_code_cc781b7fd4254ed082bd00ee1b75feaa-7"></a>program end
+<div class="code"><pre class="code text"><a id="rest_code_7b6e9e2836c543d5a64411b273d88ff6-1" name="rest_code_7b6e9e2836c543d5a64411b273d88ff6-1" href="#rest_code_7b6e9e2836c543d5a64411b273d88ff6-1"></a>program start
+<a id="rest_code_7b6e9e2836c543d5a64411b273d88ff6-2" name="rest_code_7b6e9e2836c543d5a64411b273d88ff6-2" href="#rest_code_7b6e9e2836c543d5a64411b273d88ff6-2"></a>beginning execution
+<a id="rest_code_7b6e9e2836c543d5a64411b273d88ff6-3" name="rest_code_7b6e9e2836c543d5a64411b273d88ff6-3" href="#rest_code_7b6e9e2836c543d5a64411b273d88ff6-3"></a>run starts
+<a id="rest_code_7b6e9e2836c543d5a64411b273d88ff6-4" name="rest_code_7b6e9e2836c543d5a64411b273d88ff6-4" href="#rest_code_7b6e9e2836c543d5a64411b273d88ff6-4"></a>foo starts
+<a id="rest_code_7b6e9e2836c543d5a64411b273d88ff6-5" name="rest_code_7b6e9e2836c543d5a64411b273d88ff6-5" href="#rest_code_7b6e9e2836c543d5a64411b273d88ff6-5"></a>foo1
+<a id="rest_code_7b6e9e2836c543d5a64411b273d88ff6-6" name="rest_code_7b6e9e2836c543d5a64411b273d88ff6-6" href="#rest_code_7b6e9e2836c543d5a64411b273d88ff6-6"></a>caught exception with message: foo2() failed
+<a id="rest_code_7b6e9e2836c543d5a64411b273d88ff6-7" name="rest_code_7b6e9e2836c543d5a64411b273d88ff6-7" href="#rest_code_7b6e9e2836c543d5a64411b273d88ff6-7"></a>program end
 </pre></div>
 <p>This is a quite verbose example, but it should demonstrate clearly what happens with control flow when an exception is thrown. A significant portion of the program was not executed. As soon as an exception was thrown, it immediately exited its scope untill (at a more shallow place of the function call stack) a handler (matching <code class="code custom-cpp"><span class="keyword">catch</span></code> block) was found. Note that the handler wasn't a perfect match - the exception object type (<code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">runtime_error</span></code>) is derived from <code class="code custom-cpp"><span class="namespace">std</span>::<span class="type">exception</span></code>. More details on catching in later lessons.</p>
-<div class="code"><pre class="code text"><a id="rest_code_50e67274fd9645aa9badaf58c3712de8-1" name="rest_code_50e67274fd9645aa9badaf58c3712de8-1" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-1"></a>main()
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-2" name="rest_code_50e67274fd9645aa9badaf58c3712de8-2" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-2"></a>    try                                  /|\
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-3" name="rest_code_50e67274fd9645aa9badaf58c3712de8-3" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-3"></a>        run()                             |
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-4" name="rest_code_50e67274fd9645aa9badaf58c3712de8-4" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-4"></a>            foo()                         |  stack unwinding
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-5" name="rest_code_50e67274fd9645aa9badaf58c3712de8-5" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-5"></a>                foo1()                    |
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-6" name="rest_code_50e67274fd9645aa9badaf58c3712de8-6" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-6"></a>                foo2() &lt;-- exception here |
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-7" name="rest_code_50e67274fd9645aa9badaf58c3712de8-7" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-7"></a>            bar()
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-8" name="rest_code_50e67274fd9645aa9badaf58c3712de8-8" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-8"></a>                bar1()
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-9" name="rest_code_50e67274fd9645aa9badaf58c3712de8-9" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-9"></a>                bar2()
-<a id="rest_code_50e67274fd9645aa9badaf58c3712de8-10" name="rest_code_50e67274fd9645aa9badaf58c3712de8-10" href="#rest_code_50e67274fd9645aa9badaf58c3712de8-10"></a>    catch
+<div class="code"><pre class="code text"><a id="rest_code_845b0c2e8448464ca056f78d63a5b914-1" name="rest_code_845b0c2e8448464ca056f78d63a5b914-1" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-1"></a>main()
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-2" name="rest_code_845b0c2e8448464ca056f78d63a5b914-2" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-2"></a>    try                                  /|\
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-3" name="rest_code_845b0c2e8448464ca056f78d63a5b914-3" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-3"></a>        run()                             |
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-4" name="rest_code_845b0c2e8448464ca056f78d63a5b914-4" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-4"></a>            foo()                         |  stack unwinding
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-5" name="rest_code_845b0c2e8448464ca056f78d63a5b914-5" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-5"></a>                foo1()                    |
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-6" name="rest_code_845b0c2e8448464ca056f78d63a5b914-6" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-6"></a>                foo2() &lt;-- exception here |
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-7" name="rest_code_845b0c2e8448464ca056f78d63a5b914-7" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-7"></a>            bar()
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-8" name="rest_code_845b0c2e8448464ca056f78d63a5b914-8" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-8"></a>                bar1()
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-9" name="rest_code_845b0c2e8448464ca056f78d63a5b914-9" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-9"></a>                bar2()
+<a id="rest_code_845b0c2e8448464ca056f78d63a5b914-10" name="rest_code_845b0c2e8448464ca056f78d63a5b914-10" href="#rest_code_845b0c2e8448464ca056f78d63a5b914-10"></a>    catch
 </pre></div>
 <p>If you are unsure about the process, play with the example above by moving the <code class="code custom-cpp"><span class="keyword">throw</span></code> statement into different functions and observe program output. Compare results with the output of the program with the <code class="code custom-cpp"><span class="keyword">throw</span></code> statement commented out.</p>
 </section><section id="stack-unwinding"><h2>Stack unwinding</h2>

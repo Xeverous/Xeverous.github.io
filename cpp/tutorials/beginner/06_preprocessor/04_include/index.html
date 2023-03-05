@@ -271,28 +271,28 @@
 <p>There are 2 conventions how a C++ project files should be laid out:</p>
 <section id="separate"><h3>Separate</h3>
 <p>2 same directory trees, one containing headers and one sources.</p>
-<div class="code"><pre class="code text"><a id="rest_code_7a87d12768b64d71a782780011254c9c-1" name="rest_code_7a87d12768b64d71a782780011254c9c-1" href="#rest_code_7a87d12768b64d71a782780011254c9c-1"></a>&lt;root&gt;/
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-2" name="rest_code_7a87d12768b64d71a782780011254c9c-2" href="#rest_code_7a87d12768b64d71a782780011254c9c-2"></a>    include/
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-3" name="rest_code_7a87d12768b64d71a782780011254c9c-3" href="#rest_code_7a87d12768b64d71a782780011254c9c-3"></a>        cat/
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-4" name="rest_code_7a87d12768b64d71a782780011254c9c-4" href="#rest_code_7a87d12768b64d71a782780011254c9c-4"></a>            sounds/
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-5" name="rest_code_7a87d12768b64d71a782780011254c9c-5" href="#rest_code_7a87d12768b64d71a782780011254c9c-5"></a>                meow.hpp
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-6" name="rest_code_7a87d12768b64d71a782780011254c9c-6" href="#rest_code_7a87d12768b64d71a782780011254c9c-6"></a>                purr.hpp
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-7" name="rest_code_7a87d12768b64d71a782780011254c9c-7" href="#rest_code_7a87d12768b64d71a782780011254c9c-7"></a>    src/
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-8" name="rest_code_7a87d12768b64d71a782780011254c9c-8" href="#rest_code_7a87d12768b64d71a782780011254c9c-8"></a>        cat/
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-9" name="rest_code_7a87d12768b64d71a782780011254c9c-9" href="#rest_code_7a87d12768b64d71a782780011254c9c-9"></a>            sounds/
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-10" name="rest_code_7a87d12768b64d71a782780011254c9c-10" href="#rest_code_7a87d12768b64d71a782780011254c9c-10"></a>                meow.cpp
-<a id="rest_code_7a87d12768b64d71a782780011254c9c-11" name="rest_code_7a87d12768b64d71a782780011254c9c-11" href="#rest_code_7a87d12768b64d71a782780011254c9c-11"></a>                purr.cpp
+<div class="code"><pre class="code text"><a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-1" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-1" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-1"></a>&lt;root&gt;/
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-2" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-2" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-2"></a>    include/
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-3" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-3" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-3"></a>        cat/
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-4" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-4" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-4"></a>            sounds/
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-5" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-5" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-5"></a>                meow.hpp
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-6" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-6" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-6"></a>                purr.hpp
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-7" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-7" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-7"></a>    src/
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-8" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-8" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-8"></a>        cat/
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-9" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-9" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-9"></a>            sounds/
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-10" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-10" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-10"></a>                meow.cpp
+<a id="rest_code_c0f1088ea4a44314a8f6aa211e91238d-11" name="rest_code_c0f1088ea4a44314a8f6aa211e91238d-11" href="#rest_code_c0f1088ea4a44314a8f6aa211e91238d-11"></a>                purr.cpp
 </pre></div>
 </section><section id="merged"><h3>Merged</h3>
 <p>1 directory tree, containing headers and sources next to each other.</p>
-<div class="code"><pre class="code text"><a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-1" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-1" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-1"></a>&lt;root&gt;/
-<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-2" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-2" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-2"></a>    src/
-<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-3" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-3" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-3"></a>        cat/
-<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-4" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-4" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-4"></a>            sounds/
-<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-5" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-5" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-5"></a>                meow.cpp
-<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-6" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-6" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-6"></a>                meow.hpp
-<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-7" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-7" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-7"></a>                purr.cpp
-<a id="rest_code_2e91922a87614eb1867d2d07dd4c9a16-8" name="rest_code_2e91922a87614eb1867d2d07dd4c9a16-8" href="#rest_code_2e91922a87614eb1867d2d07dd4c9a16-8"></a>                purr.hpp
+<div class="code"><pre class="code text"><a id="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-1" name="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-1" href="#rest_code_e33625f9f5e542fe86400d3ea9b5aff6-1"></a>&lt;root&gt;/
+<a id="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-2" name="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-2" href="#rest_code_e33625f9f5e542fe86400d3ea9b5aff6-2"></a>    src/
+<a id="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-3" name="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-3" href="#rest_code_e33625f9f5e542fe86400d3ea9b5aff6-3"></a>        cat/
+<a id="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-4" name="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-4" href="#rest_code_e33625f9f5e542fe86400d3ea9b5aff6-4"></a>            sounds/
+<a id="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-5" name="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-5" href="#rest_code_e33625f9f5e542fe86400d3ea9b5aff6-5"></a>                meow.cpp
+<a id="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-6" name="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-6" href="#rest_code_e33625f9f5e542fe86400d3ea9b5aff6-6"></a>                meow.hpp
+<a id="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-7" name="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-7" href="#rest_code_e33625f9f5e542fe86400d3ea9b5aff6-7"></a>                purr.cpp
+<a id="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-8" name="rest_code_e33625f9f5e542fe86400d3ea9b5aff6-8" href="#rest_code_e33625f9f5e542fe86400d3ea9b5aff6-8"></a>                purr.hpp
 </pre></div>
 <p>There are no particulary strong advantages/disadvantages in any of these but it's worth to mention that:</p>
 <ul class="simple">

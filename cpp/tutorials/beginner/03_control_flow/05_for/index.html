@@ -240,11 +240,11 @@
 <p>Then you still need to write <code class="docutils literal">;</code>. The simplest (infinite) loop is then <code class="code custom-cpp"><span class="keyword">for</span> (;;)</code>. In such case (no loop control variable needed) you should use <code class="code custom-cpp"><span class="keyword">while</span></code>.</p>
 </section><section id="nested-loops"><h2>Nested loops</h2>
 <p>Nested <code class="code custom-cpp"><span class="keyword">for</span></code> loops are very common when dealing with any multidimentional data. Suppose you would like to have such output:</p>
-<div class="code"><pre class="code text"><a id="rest_code_7b2f115658bc47409a0a66293f5ad08d-1" name="rest_code_7b2f115658bc47409a0a66293f5ad08d-1" href="#rest_code_7b2f115658bc47409a0a66293f5ad08d-1"></a>1
-<a id="rest_code_7b2f115658bc47409a0a66293f5ad08d-2" name="rest_code_7b2f115658bc47409a0a66293f5ad08d-2" href="#rest_code_7b2f115658bc47409a0a66293f5ad08d-2"></a>1 2
-<a id="rest_code_7b2f115658bc47409a0a66293f5ad08d-3" name="rest_code_7b2f115658bc47409a0a66293f5ad08d-3" href="#rest_code_7b2f115658bc47409a0a66293f5ad08d-3"></a>1 2 3
-<a id="rest_code_7b2f115658bc47409a0a66293f5ad08d-4" name="rest_code_7b2f115658bc47409a0a66293f5ad08d-4" href="#rest_code_7b2f115658bc47409a0a66293f5ad08d-4"></a>1 2 3 4
-<a id="rest_code_7b2f115658bc47409a0a66293f5ad08d-5" name="rest_code_7b2f115658bc47409a0a66293f5ad08d-5" href="#rest_code_7b2f115658bc47409a0a66293f5ad08d-5"></a>1 2 3 4 5
+<div class="code"><pre class="code text"><a id="rest_code_2fd805d776dc446da23bb69d1b73a024-1" name="rest_code_2fd805d776dc446da23bb69d1b73a024-1" href="#rest_code_2fd805d776dc446da23bb69d1b73a024-1"></a>1
+<a id="rest_code_2fd805d776dc446da23bb69d1b73a024-2" name="rest_code_2fd805d776dc446da23bb69d1b73a024-2" href="#rest_code_2fd805d776dc446da23bb69d1b73a024-2"></a>1 2
+<a id="rest_code_2fd805d776dc446da23bb69d1b73a024-3" name="rest_code_2fd805d776dc446da23bb69d1b73a024-3" href="#rest_code_2fd805d776dc446da23bb69d1b73a024-3"></a>1 2 3
+<a id="rest_code_2fd805d776dc446da23bb69d1b73a024-4" name="rest_code_2fd805d776dc446da23bb69d1b73a024-4" href="#rest_code_2fd805d776dc446da23bb69d1b73a024-4"></a>1 2 3 4
+<a id="rest_code_2fd805d776dc446da23bb69d1b73a024-5" name="rest_code_2fd805d776dc446da23bb69d1b73a024-5" href="#rest_code_2fd805d776dc446da23bb69d1b73a024-5"></a>1 2 3 4 5
 </pre></div>
 <p>To print each line, you could think of something based on this:</p>
 <table class="codetable"><tbody><tr>
@@ -305,33 +305,33 @@
 <p>Note when the line break is placed - it's only inside the first loop. When dealing with nested loops it's important to think what actions need to be done at which level.</p>
 </section><section id="exercise"><h2>Exercise</h2>
 <p>Write programs that print these (each can have multiple solutions):</p>
-<div class="code"><pre class="code text"><a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-1" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-1" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-1"></a> 0  1  2  3  4  5  6  7  8  9
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-2" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-2" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-2"></a>10 11 12 13 14 15 16 17 18 19
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-3" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-3" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-3"></a>20 21 22 23 24 25 26 27 28 29
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-4" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-4" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-4"></a>30 31 32 33 34 35 36 37 38 39
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-5" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-5" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-5"></a>40 41 42 43 44 45 46 47 48 49
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-6" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-6" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-6"></a>50 51 52 53 54 55 56 57 58 59
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-7" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-7" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-7"></a>60 61 62 63 64 65 66 67 68 69
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-8" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-8" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-8"></a>70 71 72 73 74 75 76 77 78 79
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-9" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-9" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-9"></a>80 81 82 83 84 85 86 87 88 89
-<a id="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-10" name="rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-10" href="#rest_code_49740b95e5ba4ec0ab14e21ae8d0bd89-10"></a>90 91 92 93 94 95 96 97 98 99
+<div class="code"><pre class="code text"><a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-1" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-1" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-1"></a> 0  1  2  3  4  5  6  7  8  9
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-2" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-2" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-2"></a>10 11 12 13 14 15 16 17 18 19
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-3" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-3" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-3"></a>20 21 22 23 24 25 26 27 28 29
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-4" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-4" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-4"></a>30 31 32 33 34 35 36 37 38 39
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-5" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-5" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-5"></a>40 41 42 43 44 45 46 47 48 49
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-6" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-6" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-6"></a>50 51 52 53 54 55 56 57 58 59
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-7" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-7" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-7"></a>60 61 62 63 64 65 66 67 68 69
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-8" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-8" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-8"></a>70 71 72 73 74 75 76 77 78 79
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-9" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-9" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-9"></a>80 81 82 83 84 85 86 87 88 89
+<a id="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-10" name="rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-10" href="#rest_code_224ca2d4a0bb4e2e9bd4c4d93bd06eeb-10"></a>90 91 92 93 94 95 96 97 98 99
 </pre></div>
-<div class="code"><pre class="code text"><a id="rest_code_7e22ec8deb214430bc470f8285440458-1" name="rest_code_7e22ec8deb214430bc470f8285440458-1" href="#rest_code_7e22ec8deb214430bc470f8285440458-1"></a>        5
-<a id="rest_code_7e22ec8deb214430bc470f8285440458-2" name="rest_code_7e22ec8deb214430bc470f8285440458-2" href="#rest_code_7e22ec8deb214430bc470f8285440458-2"></a>      4 5
-<a id="rest_code_7e22ec8deb214430bc470f8285440458-3" name="rest_code_7e22ec8deb214430bc470f8285440458-3" href="#rest_code_7e22ec8deb214430bc470f8285440458-3"></a>    3 4 5
-<a id="rest_code_7e22ec8deb214430bc470f8285440458-4" name="rest_code_7e22ec8deb214430bc470f8285440458-4" href="#rest_code_7e22ec8deb214430bc470f8285440458-4"></a>  2 3 4 5
-<a id="rest_code_7e22ec8deb214430bc470f8285440458-5" name="rest_code_7e22ec8deb214430bc470f8285440458-5" href="#rest_code_7e22ec8deb214430bc470f8285440458-5"></a>1 2 3 4 5
+<div class="code"><pre class="code text"><a id="rest_code_0d91604261894feea481b67e1062141d-1" name="rest_code_0d91604261894feea481b67e1062141d-1" href="#rest_code_0d91604261894feea481b67e1062141d-1"></a>        5
+<a id="rest_code_0d91604261894feea481b67e1062141d-2" name="rest_code_0d91604261894feea481b67e1062141d-2" href="#rest_code_0d91604261894feea481b67e1062141d-2"></a>      4 5
+<a id="rest_code_0d91604261894feea481b67e1062141d-3" name="rest_code_0d91604261894feea481b67e1062141d-3" href="#rest_code_0d91604261894feea481b67e1062141d-3"></a>    3 4 5
+<a id="rest_code_0d91604261894feea481b67e1062141d-4" name="rest_code_0d91604261894feea481b67e1062141d-4" href="#rest_code_0d91604261894feea481b67e1062141d-4"></a>  2 3 4 5
+<a id="rest_code_0d91604261894feea481b67e1062141d-5" name="rest_code_0d91604261894feea481b67e1062141d-5" href="#rest_code_0d91604261894feea481b67e1062141d-5"></a>1 2 3 4 5
 </pre></div>
-<div class="code"><pre class="code text"><a id="rest_code_4f4e769861db4df1b7634b219d367223-1" name="rest_code_4f4e769861db4df1b7634b219d367223-1" href="#rest_code_4f4e769861db4df1b7634b219d367223-1"></a> 1  2  3  4  5  6  7  8  9 10
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-2" name="rest_code_4f4e769861db4df1b7634b219d367223-2" href="#rest_code_4f4e769861db4df1b7634b219d367223-2"></a> 2  4  6  8 10 12 14 16 18 20
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-3" name="rest_code_4f4e769861db4df1b7634b219d367223-3" href="#rest_code_4f4e769861db4df1b7634b219d367223-3"></a> 3  6  9 12 15 18 21 24 27 30
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-4" name="rest_code_4f4e769861db4df1b7634b219d367223-4" href="#rest_code_4f4e769861db4df1b7634b219d367223-4"></a> 4  8 12 16 20 24 28 32 36 40
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-5" name="rest_code_4f4e769861db4df1b7634b219d367223-5" href="#rest_code_4f4e769861db4df1b7634b219d367223-5"></a> 5 10 15 20 25 30 35 40 45 50
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-6" name="rest_code_4f4e769861db4df1b7634b219d367223-6" href="#rest_code_4f4e769861db4df1b7634b219d367223-6"></a> 6 12 18 24 30 36 42 48 54 60
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-7" name="rest_code_4f4e769861db4df1b7634b219d367223-7" href="#rest_code_4f4e769861db4df1b7634b219d367223-7"></a> 7 14 21 28 35 42 49 56 63 70
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-8" name="rest_code_4f4e769861db4df1b7634b219d367223-8" href="#rest_code_4f4e769861db4df1b7634b219d367223-8"></a> 8 16 24 32 40 48 56 64 72 80
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-9" name="rest_code_4f4e769861db4df1b7634b219d367223-9" href="#rest_code_4f4e769861db4df1b7634b219d367223-9"></a> 9 18 27 36 45 54 63 72 81 90
-<a id="rest_code_4f4e769861db4df1b7634b219d367223-10" name="rest_code_4f4e769861db4df1b7634b219d367223-10" href="#rest_code_4f4e769861db4df1b7634b219d367223-10"></a>10 20 30 40 50 60 70 80 90 100
+<div class="code"><pre class="code text"><a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-1" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-1" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-1"></a> 1  2  3  4  5  6  7  8  9 10
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-2" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-2" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-2"></a> 2  4  6  8 10 12 14 16 18 20
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-3" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-3" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-3"></a> 3  6  9 12 15 18 21 24 27 30
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-4" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-4" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-4"></a> 4  8 12 16 20 24 28 32 36 40
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-5" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-5" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-5"></a> 5 10 15 20 25 30 35 40 45 50
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-6" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-6" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-6"></a> 6 12 18 24 30 36 42 48 54 60
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-7" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-7" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-7"></a> 7 14 21 28 35 42 49 56 63 70
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-8" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-8" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-8"></a> 8 16 24 32 40 48 56 64 72 80
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-9" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-9" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-9"></a> 9 18 27 36 45 54 63 72 81 90
+<a id="rest_code_f4aa5c8353394ad980486da56b9cf1d6-10" name="rest_code_f4aa5c8353394ad980486da56b9cf1d6-10" href="#rest_code_f4aa5c8353394ad980486da56b9cf1d6-10"></a>10 20 30 40 50 60 70 80 90 100
 </pre></div>
 <!-- TODO unlock fizzbuzz article? -->
 <!-- TODO post idiomatic solutions -->

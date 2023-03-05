@@ -128,13 +128,13 @@
 </pre></td>
 </tr></tbody></table>
 <p>The problem is named <em>diamond</em> because the hierarchy graph looks like a diamond:</p>
-<div class="code"><pre class="code text"><a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-1" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-1" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-1"></a>    animal
-<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-2" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-2" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-2"></a>    /    \
-<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-3" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-3" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-3"></a>   /      \
-<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-4" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-4" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-4"></a>mammal   flying
-<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-5" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-5" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-5"></a>   \      /
-<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-6" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-6" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-6"></a>    \    /
-<a id="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-7" name="rest_code_f6de1604c4bd414ebcae740deb5e3d9c-7" href="#rest_code_f6de1604c4bd414ebcae740deb5e3d9c-7"></a>     bat
+<div class="code"><pre class="code text"><a id="rest_code_41e0644712134ac0ae242ef953cb85ee-1" name="rest_code_41e0644712134ac0ae242ef953cb85ee-1" href="#rest_code_41e0644712134ac0ae242ef953cb85ee-1"></a>    animal
+<a id="rest_code_41e0644712134ac0ae242ef953cb85ee-2" name="rest_code_41e0644712134ac0ae242ef953cb85ee-2" href="#rest_code_41e0644712134ac0ae242ef953cb85ee-2"></a>    /    \
+<a id="rest_code_41e0644712134ac0ae242ef953cb85ee-3" name="rest_code_41e0644712134ac0ae242ef953cb85ee-3" href="#rest_code_41e0644712134ac0ae242ef953cb85ee-3"></a>   /      \
+<a id="rest_code_41e0644712134ac0ae242ef953cb85ee-4" name="rest_code_41e0644712134ac0ae242ef953cb85ee-4" href="#rest_code_41e0644712134ac0ae242ef953cb85ee-4"></a>mammal   flying
+<a id="rest_code_41e0644712134ac0ae242ef953cb85ee-5" name="rest_code_41e0644712134ac0ae242ef953cb85ee-5" href="#rest_code_41e0644712134ac0ae242ef953cb85ee-5"></a>   \      /
+<a id="rest_code_41e0644712134ac0ae242ef953cb85ee-6" name="rest_code_41e0644712134ac0ae242ef953cb85ee-6" href="#rest_code_41e0644712134ac0ae242ef953cb85ee-6"></a>    \    /
+<a id="rest_code_41e0644712134ac0ae242ef953cb85ee-7" name="rest_code_41e0644712134ac0ae242ef953cb85ee-7" href="#rest_code_41e0644712134ac0ae242ef953cb85ee-7"></a>     bat
 </pre></div>
 <aside class="admonition note"><p class="admonition-title">note</p>
 <p>For simplicity and consistency with majorty of other examples on the internet that describe the diamond problem, the rest of the article will use class names <code class="code custom-cpp"><span class="type">A</span></code> (base of all), <code class="code custom-cpp"><span class="type">B</span></code>, <code class="code custom-cpp"><span class="type">C</span></code> and <code class="code custom-cpp"><span class="type">D</span></code> (the most derived).</p>
@@ -171,18 +171,18 @@
 <li><p>What actually happens when the function is called through some base type? There are still 2 overriders at the same level.</p></li>
 </ul>
 <p>Seems like nonsense, right? Here is the thing: <strong>there will be 2 subobjects of type</strong> <code class="code custom-cpp"><span class="type">A</span></code> <strong>within</strong> <code class="code custom-cpp"><span class="type">D</span></code>. This means that the graph which looks this way:</p>
-<div class="code"><pre class="code text"><a id="rest_code_20218291d5ef4d08b318e556ea779491-1" name="rest_code_20218291d5ef4d08b318e556ea779491-1" href="#rest_code_20218291d5ef4d08b318e556ea779491-1"></a>  A
-<a id="rest_code_20218291d5ef4d08b318e556ea779491-2" name="rest_code_20218291d5ef4d08b318e556ea779491-2" href="#rest_code_20218291d5ef4d08b318e556ea779491-2"></a> / \
-<a id="rest_code_20218291d5ef4d08b318e556ea779491-3" name="rest_code_20218291d5ef4d08b318e556ea779491-3" href="#rest_code_20218291d5ef4d08b318e556ea779491-3"></a>B   C
-<a id="rest_code_20218291d5ef4d08b318e556ea779491-4" name="rest_code_20218291d5ef4d08b318e556ea779491-4" href="#rest_code_20218291d5ef4d08b318e556ea779491-4"></a> \ /
-<a id="rest_code_20218291d5ef4d08b318e556ea779491-5" name="rest_code_20218291d5ef4d08b318e556ea779491-5" href="#rest_code_20218291d5ef4d08b318e556ea779491-5"></a>  D
+<div class="code"><pre class="code text"><a id="rest_code_e890044e978a4680b48d6f23ce671a26-1" name="rest_code_e890044e978a4680b48d6f23ce671a26-1" href="#rest_code_e890044e978a4680b48d6f23ce671a26-1"></a>  A
+<a id="rest_code_e890044e978a4680b48d6f23ce671a26-2" name="rest_code_e890044e978a4680b48d6f23ce671a26-2" href="#rest_code_e890044e978a4680b48d6f23ce671a26-2"></a> / \
+<a id="rest_code_e890044e978a4680b48d6f23ce671a26-3" name="rest_code_e890044e978a4680b48d6f23ce671a26-3" href="#rest_code_e890044e978a4680b48d6f23ce671a26-3"></a>B   C
+<a id="rest_code_e890044e978a4680b48d6f23ce671a26-4" name="rest_code_e890044e978a4680b48d6f23ce671a26-4" href="#rest_code_e890044e978a4680b48d6f23ce671a26-4"></a> \ /
+<a id="rest_code_e890044e978a4680b48d6f23ce671a26-5" name="rest_code_e890044e978a4680b48d6f23ce671a26-5" href="#rest_code_e890044e978a4680b48d6f23ce671a26-5"></a>  D
 </pre></div>
 <p>actually works like this:</p>
-<div class="code"><pre class="code text"><a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-1" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-1" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-1"></a>A   A
-<a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-2" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-2" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-2"></a>|   |
-<a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-3" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-3" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-3"></a>B   C
-<a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-4" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-4" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-4"></a> \ /
-<a id="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-5" name="rest_code_fcdd1526b6df42eaa999f7492fe6f64f-5" href="#rest_code_fcdd1526b6df42eaa999f7492fe6f64f-5"></a>  D
+<div class="code"><pre class="code text"><a id="rest_code_3c14a948e0554015ac6731f947526d37-1" name="rest_code_3c14a948e0554015ac6731f947526d37-1" href="#rest_code_3c14a948e0554015ac6731f947526d37-1"></a>A   A
+<a id="rest_code_3c14a948e0554015ac6731f947526d37-2" name="rest_code_3c14a948e0554015ac6731f947526d37-2" href="#rest_code_3c14a948e0554015ac6731f947526d37-2"></a>|   |
+<a id="rest_code_3c14a948e0554015ac6731f947526d37-3" name="rest_code_3c14a948e0554015ac6731f947526d37-3" href="#rest_code_3c14a948e0554015ac6731f947526d37-3"></a>B   C
+<a id="rest_code_3c14a948e0554015ac6731f947526d37-4" name="rest_code_3c14a948e0554015ac6731f947526d37-4" href="#rest_code_3c14a948e0554015ac6731f947526d37-4"></a> \ /
+<a id="rest_code_3c14a948e0554015ac6731f947526d37-5" name="rest_code_3c14a948e0554015ac6731f947526d37-5" href="#rest_code_3c14a948e0554015ac6731f947526d37-5"></a>  D
 </pre></div>
 <p><strong>Multiple, different references/pointers to</strong> <code class="code custom-cpp"><span class="type">A</span></code> <strong>are possible</strong>. Yes, you can obtain 2 different <code class="code custom-cpp"><span class="type">A</span></code> objects from an object of type  <code class="code custom-cpp"><span class="type">D</span></code>.</p>
 <p>There are 2 different "inheritance lines". This explains why it's possible to call the function through some base type reference - it will either be:</p>
@@ -253,8 +253,8 @@
 }
 </pre></td>
 </tr></tbody></table>
-<div class="code"><pre class="code text"><a id="rest_code_166afef5492a47cc9ccf16c5be356d7a-1" name="rest_code_166afef5492a47cc9ccf16c5be356d7a-1" href="#rest_code_166afef5492a47cc9ccf16c5be356d7a-1"></a>B::f
-<a id="rest_code_166afef5492a47cc9ccf16c5be356d7a-2" name="rest_code_166afef5492a47cc9ccf16c5be356d7a-2" href="#rest_code_166afef5492a47cc9ccf16c5be356d7a-2"></a>C::f
+<div class="code"><pre class="code text"><a id="rest_code_a0bdce806af040208fe440207507ee2b-1" name="rest_code_a0bdce806af040208fe440207507ee2b-1" href="#rest_code_a0bdce806af040208fe440207507ee2b-1"></a>B::f
+<a id="rest_code_a0bdce806af040208fe440207507ee2b-2" name="rest_code_a0bdce806af040208fe440207507ee2b-2" href="#rest_code_a0bdce806af040208fe440207507ee2b-2"></a>C::f
 </pre></div>
 <p>Analogical rules follow every other member (not just functions): if there is an ambiguity which one should be used (there are 2 subobjects of type <code class="code custom-cpp"><span class="type">A</span></code> within <code class="code custom-cpp"><span class="type">D</span></code>), references (or pointers) must be cast upwards through a parent type which is not ambiguous.</p>
 </section><section id="virtual-inheritance"><h2>Virtual inheritance</h2>
@@ -311,35 +311,35 @@
 <p>Virtual inheritance fixes the problem of duplicate information (which usually is undesired) but it comes with its costs.</p>
 <p>Because the base is <code class="code custom-cpp"><span class="keyword">virtual</span></code>, it can not be a subobject of both <code class="code custom-cpp"><span class="type">B</span></code> and <code class="code custom-cpp"><span class="type">C</span></code>. There can be only 1 <code class="code custom-cpp"><span class="type">A</span></code> within <code class="code custom-cpp"><span class="type">D</span></code>. Since 2 classes must share the same subobject, they need to know where it is inside the final object (<code class="code custom-cpp"><span class="type">D</span></code> or something derived from it). For this reason, <strong>each inheritance hierarchy that inherits virtually adds another vptr to the final class</strong>.</p>
 <p>To illustrate, here are the layouts of the types based on the information obtained with <code class="docutils literal">clang++ <span class="pre">-cc1</span> <span class="pre">-emit-llvm</span> <span class="pre">-fdump-record-layouts</span></code> (the output contained much more information but this is not the place of the tutorial to discuss padding and alignment, only order of the data):</p>
-<div class="code"><pre class="code text"><a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-1" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-1" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-1"></a>A:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-2" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-2" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-2"></a>- vtable pointer for A
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-3" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-3" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-3"></a>- non-static data members of A
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-4" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-4" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-4"></a>
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-5" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-5" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-5"></a>B:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-6" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-6" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-6"></a>- vtable pointer for B
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-7" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-7" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-7"></a>- non-static data members of B
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-8" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-8" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-8"></a>- A:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-9" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-9" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-9"></a>  - vtable pointer for A
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-10" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-10" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-10"></a>  - non-static data members of A
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-11" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-11" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-11"></a>
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-12" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-12" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-12"></a>C:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-13" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-13" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-13"></a>- vtable pointer for C
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-14" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-14" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-14"></a>- non-static data members of C
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-15" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-15" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-15"></a>- A:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-16" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-16" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-16"></a>  - vtable pointer for A
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-17" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-17" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-17"></a>  - non-static data members of A
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-18" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-18" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-18"></a>
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-19" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-19" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-19"></a>D:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-20" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-20" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-20"></a>- B:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-21" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-21" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-21"></a>  - vtable pointer for B
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-22" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-22" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-22"></a>  - non-static data members of B
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-23" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-23" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-23"></a>- C:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-24" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-24" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-24"></a>  - vtable pointer for C
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-25" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-25" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-25"></a>  - non-static data members of C
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-26" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-26" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-26"></a>- non-static data members of D
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-27" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-27" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-27"></a>- A:
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-28" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-28" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-28"></a>  - vtable pointer for A
-<a id="rest_code_6a4f99c3c9884eda8812e3c168447eb6-29" name="rest_code_6a4f99c3c9884eda8812e3c168447eb6-29" href="#rest_code_6a4f99c3c9884eda8812e3c168447eb6-29"></a>  - non-static data members of A
+<div class="code"><pre class="code text"><a id="rest_code_6f89e5933c504411abafde300859e336-1" name="rest_code_6f89e5933c504411abafde300859e336-1" href="#rest_code_6f89e5933c504411abafde300859e336-1"></a>A:
+<a id="rest_code_6f89e5933c504411abafde300859e336-2" name="rest_code_6f89e5933c504411abafde300859e336-2" href="#rest_code_6f89e5933c504411abafde300859e336-2"></a>- vtable pointer for A
+<a id="rest_code_6f89e5933c504411abafde300859e336-3" name="rest_code_6f89e5933c504411abafde300859e336-3" href="#rest_code_6f89e5933c504411abafde300859e336-3"></a>- non-static data members of A
+<a id="rest_code_6f89e5933c504411abafde300859e336-4" name="rest_code_6f89e5933c504411abafde300859e336-4" href="#rest_code_6f89e5933c504411abafde300859e336-4"></a>
+<a id="rest_code_6f89e5933c504411abafde300859e336-5" name="rest_code_6f89e5933c504411abafde300859e336-5" href="#rest_code_6f89e5933c504411abafde300859e336-5"></a>B:
+<a id="rest_code_6f89e5933c504411abafde300859e336-6" name="rest_code_6f89e5933c504411abafde300859e336-6" href="#rest_code_6f89e5933c504411abafde300859e336-6"></a>- vtable pointer for B
+<a id="rest_code_6f89e5933c504411abafde300859e336-7" name="rest_code_6f89e5933c504411abafde300859e336-7" href="#rest_code_6f89e5933c504411abafde300859e336-7"></a>- non-static data members of B
+<a id="rest_code_6f89e5933c504411abafde300859e336-8" name="rest_code_6f89e5933c504411abafde300859e336-8" href="#rest_code_6f89e5933c504411abafde300859e336-8"></a>- A:
+<a id="rest_code_6f89e5933c504411abafde300859e336-9" name="rest_code_6f89e5933c504411abafde300859e336-9" href="#rest_code_6f89e5933c504411abafde300859e336-9"></a>  - vtable pointer for A
+<a id="rest_code_6f89e5933c504411abafde300859e336-10" name="rest_code_6f89e5933c504411abafde300859e336-10" href="#rest_code_6f89e5933c504411abafde300859e336-10"></a>  - non-static data members of A
+<a id="rest_code_6f89e5933c504411abafde300859e336-11" name="rest_code_6f89e5933c504411abafde300859e336-11" href="#rest_code_6f89e5933c504411abafde300859e336-11"></a>
+<a id="rest_code_6f89e5933c504411abafde300859e336-12" name="rest_code_6f89e5933c504411abafde300859e336-12" href="#rest_code_6f89e5933c504411abafde300859e336-12"></a>C:
+<a id="rest_code_6f89e5933c504411abafde300859e336-13" name="rest_code_6f89e5933c504411abafde300859e336-13" href="#rest_code_6f89e5933c504411abafde300859e336-13"></a>- vtable pointer for C
+<a id="rest_code_6f89e5933c504411abafde300859e336-14" name="rest_code_6f89e5933c504411abafde300859e336-14" href="#rest_code_6f89e5933c504411abafde300859e336-14"></a>- non-static data members of C
+<a id="rest_code_6f89e5933c504411abafde300859e336-15" name="rest_code_6f89e5933c504411abafde300859e336-15" href="#rest_code_6f89e5933c504411abafde300859e336-15"></a>- A:
+<a id="rest_code_6f89e5933c504411abafde300859e336-16" name="rest_code_6f89e5933c504411abafde300859e336-16" href="#rest_code_6f89e5933c504411abafde300859e336-16"></a>  - vtable pointer for A
+<a id="rest_code_6f89e5933c504411abafde300859e336-17" name="rest_code_6f89e5933c504411abafde300859e336-17" href="#rest_code_6f89e5933c504411abafde300859e336-17"></a>  - non-static data members of A
+<a id="rest_code_6f89e5933c504411abafde300859e336-18" name="rest_code_6f89e5933c504411abafde300859e336-18" href="#rest_code_6f89e5933c504411abafde300859e336-18"></a>
+<a id="rest_code_6f89e5933c504411abafde300859e336-19" name="rest_code_6f89e5933c504411abafde300859e336-19" href="#rest_code_6f89e5933c504411abafde300859e336-19"></a>D:
+<a id="rest_code_6f89e5933c504411abafde300859e336-20" name="rest_code_6f89e5933c504411abafde300859e336-20" href="#rest_code_6f89e5933c504411abafde300859e336-20"></a>- B:
+<a id="rest_code_6f89e5933c504411abafde300859e336-21" name="rest_code_6f89e5933c504411abafde300859e336-21" href="#rest_code_6f89e5933c504411abafde300859e336-21"></a>  - vtable pointer for B
+<a id="rest_code_6f89e5933c504411abafde300859e336-22" name="rest_code_6f89e5933c504411abafde300859e336-22" href="#rest_code_6f89e5933c504411abafde300859e336-22"></a>  - non-static data members of B
+<a id="rest_code_6f89e5933c504411abafde300859e336-23" name="rest_code_6f89e5933c504411abafde300859e336-23" href="#rest_code_6f89e5933c504411abafde300859e336-23"></a>- C:
+<a id="rest_code_6f89e5933c504411abafde300859e336-24" name="rest_code_6f89e5933c504411abafde300859e336-24" href="#rest_code_6f89e5933c504411abafde300859e336-24"></a>  - vtable pointer for C
+<a id="rest_code_6f89e5933c504411abafde300859e336-25" name="rest_code_6f89e5933c504411abafde300859e336-25" href="#rest_code_6f89e5933c504411abafde300859e336-25"></a>  - non-static data members of C
+<a id="rest_code_6f89e5933c504411abafde300859e336-26" name="rest_code_6f89e5933c504411abafde300859e336-26" href="#rest_code_6f89e5933c504411abafde300859e336-26"></a>- non-static data members of D
+<a id="rest_code_6f89e5933c504411abafde300859e336-27" name="rest_code_6f89e5933c504411abafde300859e336-27" href="#rest_code_6f89e5933c504411abafde300859e336-27"></a>- A:
+<a id="rest_code_6f89e5933c504411abafde300859e336-28" name="rest_code_6f89e5933c504411abafde300859e336-28" href="#rest_code_6f89e5933c504411abafde300859e336-28"></a>  - vtable pointer for A
+<a id="rest_code_6f89e5933c504411abafde300859e336-29" name="rest_code_6f89e5933c504411abafde300859e336-29" href="#rest_code_6f89e5933c504411abafde300859e336-29"></a>  - non-static data members of A
 </pre></div>
 <!--  -->
 <blockquote>
@@ -435,60 +435,60 @@
 <p>Further examples are very extreme, I doubt such code has any practical value (it's supported mainly for technical correctness and consistency). Nonetheless I present them for the curious and just for fun.</p>
 </aside><section id="extra-example-extended-diamond"><h3>Extra example - extended diamond</h3>
 <p>In this hierarchy <code class="code custom-cpp"><span class="type">B</span></code> inherits virtually from <code class="code custom-cpp"><span class="type">A</span></code>.</p>
-<div class="code"><pre class="code text"><a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-1" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-1" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-1"></a>  A
-<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-2" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-2" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-2"></a> / \
-<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-3" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-3" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-3"></a>B   B
-<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-4" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-4" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-4"></a>|   |
-<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-5" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-5" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-5"></a>C   D
-<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-6" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-6" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-6"></a> \ /
-<a id="rest_code_7dde881fec32413e87ddcba0d5e4da4c-7" name="rest_code_7dde881fec32413e87ddcba0d5e4da4c-7" href="#rest_code_7dde881fec32413e87ddcba0d5e4da4c-7"></a>  E
+<div class="code"><pre class="code text"><a id="rest_code_de54b3291d1c435298587c52248cd75b-1" name="rest_code_de54b3291d1c435298587c52248cd75b-1" href="#rest_code_de54b3291d1c435298587c52248cd75b-1"></a>  A
+<a id="rest_code_de54b3291d1c435298587c52248cd75b-2" name="rest_code_de54b3291d1c435298587c52248cd75b-2" href="#rest_code_de54b3291d1c435298587c52248cd75b-2"></a> / \
+<a id="rest_code_de54b3291d1c435298587c52248cd75b-3" name="rest_code_de54b3291d1c435298587c52248cd75b-3" href="#rest_code_de54b3291d1c435298587c52248cd75b-3"></a>B   B
+<a id="rest_code_de54b3291d1c435298587c52248cd75b-4" name="rest_code_de54b3291d1c435298587c52248cd75b-4" href="#rest_code_de54b3291d1c435298587c52248cd75b-4"></a>|   |
+<a id="rest_code_de54b3291d1c435298587c52248cd75b-5" name="rest_code_de54b3291d1c435298587c52248cd75b-5" href="#rest_code_de54b3291d1c435298587c52248cd75b-5"></a>C   D
+<a id="rest_code_de54b3291d1c435298587c52248cd75b-6" name="rest_code_de54b3291d1c435298587c52248cd75b-6" href="#rest_code_de54b3291d1c435298587c52248cd75b-6"></a> \ /
+<a id="rest_code_de54b3291d1c435298587c52248cd75b-7" name="rest_code_de54b3291d1c435298587c52248cd75b-7" href="#rest_code_de54b3291d1c435298587c52248cd75b-7"></a>  E
 </pre></div>
 <p>The most interesting thing is that <code class="code custom-cpp"><span class="type">E</span></code> contains 2 <code class="code custom-cpp"><span class="type">B</span></code> subobjects that share 1 <code class="code custom-cpp"><span class="type">A</span></code> subobject. Casts from <code class="code custom-cpp"><span class="type">A</span></code> to <code class="code custom-cpp"><span class="type">B</span></code> are ambiguous and their ambiguity can not be detected at compile time (<code class="code custom-cpp"><span class="keyword">dynamic_cast</span></code> will fail, <code class="code custom-cpp"><span class="keyword">static_cast</span></code> will be <em>ill-formed</em> as it does not allow converting from <code class="code custom-cpp"><span class="keyword">virtual</span></code> bases). Pointers/references to <code class="code custom-cpp"><span class="type">A</span></code> would have to be converted to refer to <code class="code custom-cpp"><span class="type">C</span></code> or <code class="code custom-cpp"><span class="type">D</span></code> first before being converted to <code class="code custom-cpp"><span class="type">B</span></code>.</p>
 <p>This is the layout:</p>
-<div class="code"><pre class="code text"><a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-1" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-1" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-1"></a>A:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-2" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-2" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-2"></a>- vtable pointer for A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-3" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-3" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-3"></a>- non-static data members of A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-4" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-4" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-4"></a>
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-5" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-5" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-5"></a>B:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-6" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-6" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-6"></a>- vtable pointer for B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-7" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-7" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-7"></a>- non-static data members of B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-8" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-8" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-8"></a>- A:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-9" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-9" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-9"></a>  - vtable pointer for A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-10" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-10" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-10"></a>  - non-static data members of A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-11" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-11" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-11"></a>
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-12" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-12" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-12"></a>C:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-13" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-13" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-13"></a>- B:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-14" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-14" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-14"></a>  - vtable pointer for B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-15" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-15" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-15"></a>  - non-static data members of B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-16" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-16" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-16"></a>- non-static data members of C
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-17" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-17" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-17"></a>- A:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-18" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-18" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-18"></a>  - vtable pointer for A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-19" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-19" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-19"></a>  - non-static data members of A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-20" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-20" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-20"></a>
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-21" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-21" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-21"></a>D:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-22" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-22" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-22"></a>- B:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-23" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-23" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-23"></a>  - vtable pointer for B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-24" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-24" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-24"></a>  - non-static data members of B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-25" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-25" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-25"></a>- non-static data members of D
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-26" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-26" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-26"></a>- A:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-27" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-27" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-27"></a>  - vtable pointer for A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-28" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-28" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-28"></a>  - non-static data members of A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-29" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-29" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-29"></a>
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-30" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-30" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-30"></a>E:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-31" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-31" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-31"></a>- C:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-32" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-32" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-32"></a>  - B:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-33" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-33" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-33"></a>    - vtable pointer for B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-34" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-34" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-34"></a>    - non-static data members of B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-35" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-35" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-35"></a>  - non-static data members of C
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-36" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-36" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-36"></a>- D:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-37" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-37" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-37"></a>  - B:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-38" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-38" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-38"></a>    - vtable pointer for B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-39" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-39" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-39"></a>    - non-static data members of B
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-40" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-40" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-40"></a>  - non-static data members of D
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-41" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-41" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-41"></a>- non-static data members of E
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-42" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-42" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-42"></a>- A:
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-43" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-43" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-43"></a>  - vtable pointer for A
-<a id="rest_code_6eafea5efd384a6d91b56957fc0d6188-44" name="rest_code_6eafea5efd384a6d91b56957fc0d6188-44" href="#rest_code_6eafea5efd384a6d91b56957fc0d6188-44"></a>  - non-static data members of A
+<div class="code"><pre class="code text"><a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-1" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-1" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-1"></a>A:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-2" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-2" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-2"></a>- vtable pointer for A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-3" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-3" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-3"></a>- non-static data members of A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-4" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-4" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-4"></a>
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-5" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-5" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-5"></a>B:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-6" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-6" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-6"></a>- vtable pointer for B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-7" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-7" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-7"></a>- non-static data members of B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-8" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-8" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-8"></a>- A:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-9" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-9" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-9"></a>  - vtable pointer for A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-10" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-10" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-10"></a>  - non-static data members of A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-11" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-11" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-11"></a>
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-12" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-12" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-12"></a>C:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-13" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-13" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-13"></a>- B:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-14" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-14" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-14"></a>  - vtable pointer for B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-15" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-15" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-15"></a>  - non-static data members of B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-16" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-16" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-16"></a>- non-static data members of C
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-17" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-17" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-17"></a>- A:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-18" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-18" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-18"></a>  - vtable pointer for A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-19" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-19" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-19"></a>  - non-static data members of A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-20" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-20" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-20"></a>
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-21" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-21" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-21"></a>D:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-22" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-22" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-22"></a>- B:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-23" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-23" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-23"></a>  - vtable pointer for B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-24" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-24" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-24"></a>  - non-static data members of B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-25" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-25" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-25"></a>- non-static data members of D
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-26" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-26" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-26"></a>- A:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-27" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-27" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-27"></a>  - vtable pointer for A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-28" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-28" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-28"></a>  - non-static data members of A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-29" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-29" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-29"></a>
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-30" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-30" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-30"></a>E:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-31" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-31" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-31"></a>- C:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-32" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-32" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-32"></a>  - B:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-33" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-33" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-33"></a>    - vtable pointer for B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-34" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-34" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-34"></a>    - non-static data members of B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-35" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-35" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-35"></a>  - non-static data members of C
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-36" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-36" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-36"></a>- D:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-37" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-37" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-37"></a>  - B:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-38" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-38" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-38"></a>    - vtable pointer for B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-39" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-39" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-39"></a>    - non-static data members of B
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-40" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-40" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-40"></a>  - non-static data members of D
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-41" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-41" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-41"></a>- non-static data members of E
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-42" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-42" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-42"></a>- A:
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-43" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-43" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-43"></a>  - vtable pointer for A
+<a id="rest_code_ef676299c6984c1e9ac629d665bc29a6-44" name="rest_code_ef676299c6984c1e9ac629d665bc29a6-44" href="#rest_code_ef676299c6984c1e9ac629d665bc29a6-44"></a>  - non-static data members of A
 </pre></div>
 </section><section id="extra-example-mixed-inheritance"><h3>Extra example - mixed inheritance</h3>
 <ul class="simple">
@@ -497,84 +497,84 @@
 <li><p><code class="code custom-cpp"><span class="type">C</span></code> is virtually inherited by <code class="code custom-cpp"><span class="type">E</span></code> and <code class="code custom-cpp"><span class="type">F</span></code></p></li>
 </ul>
 <p>If the same base is inherited virtually and non-virtually, the final object contains 1 base of this type (from <code class="code custom-cpp"><span class="keyword">virtual</span></code> inheritance) + 1 non-virtual base for each non-virtual inheritance. That is, only <code class="code custom-cpp"><span class="keyword">virtual</span></code> bases are deduplicated.</p>
-<div class="code"><pre class="code text"><a id="rest_code_150350f3eb23407dba9c6f77b3952c97-1" name="rest_code_150350f3eb23407dba9c6f77b3952c97-1" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-1"></a>  A     A
-<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-2" name="rest_code_150350f3eb23407dba9c6f77b3952c97-2" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-2"></a> / \    |
-<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-3" name="rest_code_150350f3eb23407dba9c6f77b3952c97-3" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-3"></a>B   C   D
-<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-4" name="rest_code_150350f3eb23407dba9c6f77b3952c97-4" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-4"></a> \ / \ /
-<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-5" name="rest_code_150350f3eb23407dba9c6f77b3952c97-5" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-5"></a>  E   F
-<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-6" name="rest_code_150350f3eb23407dba9c6f77b3952c97-6" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-6"></a>   \ /
-<a id="rest_code_150350f3eb23407dba9c6f77b3952c97-7" name="rest_code_150350f3eb23407dba9c6f77b3952c97-7" href="#rest_code_150350f3eb23407dba9c6f77b3952c97-7"></a>    G
+<div class="code"><pre class="code text"><a id="rest_code_5a0bd8a80c91411088317b552524dacb-1" name="rest_code_5a0bd8a80c91411088317b552524dacb-1" href="#rest_code_5a0bd8a80c91411088317b552524dacb-1"></a>  A     A
+<a id="rest_code_5a0bd8a80c91411088317b552524dacb-2" name="rest_code_5a0bd8a80c91411088317b552524dacb-2" href="#rest_code_5a0bd8a80c91411088317b552524dacb-2"></a> / \    |
+<a id="rest_code_5a0bd8a80c91411088317b552524dacb-3" name="rest_code_5a0bd8a80c91411088317b552524dacb-3" href="#rest_code_5a0bd8a80c91411088317b552524dacb-3"></a>B   C   D
+<a id="rest_code_5a0bd8a80c91411088317b552524dacb-4" name="rest_code_5a0bd8a80c91411088317b552524dacb-4" href="#rest_code_5a0bd8a80c91411088317b552524dacb-4"></a> \ / \ /
+<a id="rest_code_5a0bd8a80c91411088317b552524dacb-5" name="rest_code_5a0bd8a80c91411088317b552524dacb-5" href="#rest_code_5a0bd8a80c91411088317b552524dacb-5"></a>  E   F
+<a id="rest_code_5a0bd8a80c91411088317b552524dacb-6" name="rest_code_5a0bd8a80c91411088317b552524dacb-6" href="#rest_code_5a0bd8a80c91411088317b552524dacb-6"></a>   \ /
+<a id="rest_code_5a0bd8a80c91411088317b552524dacb-7" name="rest_code_5a0bd8a80c91411088317b552524dacb-7" href="#rest_code_5a0bd8a80c91411088317b552524dacb-7"></a>    G
 </pre></div>
-<div class="code"><pre class="code text"><a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-1" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-1" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-1"></a>A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-2" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-2" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-2"></a>- vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-3" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-3" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-3"></a>- non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-4" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-4" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-4"></a>
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-5" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-5" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-5"></a>B:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-6" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-6" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-6"></a>- vtable pointer for B
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-7" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-7" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-7"></a>- non-static data members of B
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-8" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-8" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-8"></a>- A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-9" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-9" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-9"></a>  - vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-10" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-10" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-10"></a>  - non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-11" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-11" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-11"></a>
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-12" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-12" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-12"></a>C:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-13" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-13" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-13"></a>- vtable pointer for C
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-14" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-14" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-14"></a>- non-static data members of C
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-15" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-15" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-15"></a>- A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-16" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-16" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-16"></a>  - vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-17" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-17" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-17"></a>  - non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-18" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-18" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-18"></a>
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-19" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-19" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-19"></a>D:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-20" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-20" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-20"></a>- A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-21" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-21" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-21"></a>  - vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-22" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-22" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-22"></a>  - non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-23" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-23" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-23"></a>- non-static data members of D
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-24" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-24" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-24"></a>
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-25" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-25" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-25"></a>E:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-26" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-26" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-26"></a>- B:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-27" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-27" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-27"></a>  - vtable pointer for B
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-28" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-28" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-28"></a>  - non-static data members of B
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-29" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-29" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-29"></a>- non-static data members of E
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-30" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-30" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-30"></a>- A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-31" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-31" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-31"></a>  - vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-32" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-32" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-32"></a>  - non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-33" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-33" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-33"></a>- C:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-34" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-34" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-34"></a>  - vtable pointer for C
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-35" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-35" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-35"></a>  - non-static data members of C
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-36" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-36" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-36"></a>
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-37" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-37" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-37"></a>F:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-38" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-38" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-38"></a>- D:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-39" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-39" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-39"></a>  - A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-40" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-40" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-40"></a>    - vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-41" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-41" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-41"></a>    - non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-42" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-42" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-42"></a>  - non-static data members of D
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-43" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-43" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-43"></a>- non-static data members of F
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-44" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-44" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-44"></a>- A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-45" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-45" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-45"></a>  - vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-46" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-46" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-46"></a>  - non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-47" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-47" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-47"></a>- C:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-48" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-48" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-48"></a>  - vtable pointer for C
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-49" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-49" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-49"></a>  - non-static data members of C
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-50" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-50" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-50"></a>
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-51" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-51" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-51"></a>G:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-52" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-52" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-52"></a>- E:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-53" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-53" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-53"></a>  - B:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-54" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-54" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-54"></a>    - vtable pointer for B
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-55" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-55" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-55"></a>    - non-static data members of B
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-56" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-56" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-56"></a>  - non-static data members of E
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-57" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-57" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-57"></a>- F:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-58" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-58" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-58"></a>  - D:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-59" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-59" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-59"></a>    - A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-60" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-60" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-60"></a>      - vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-61" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-61" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-61"></a>      - non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-62" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-62" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-62"></a>    - non-static data members of D
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-63" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-63" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-63"></a>  - non-static data members of F
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-64" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-64" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-64"></a>- non-static data members of G
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-65" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-65" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-65"></a>- A:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-66" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-66" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-66"></a>  - vtable pointer for A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-67" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-67" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-67"></a>  - non-static data members of A
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-68" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-68" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-68"></a>- C:
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-69" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-69" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-69"></a>  - vtable pointer for C
-<a id="rest_code_9793ce0afe65453ea078b4ba0d76f663-70" name="rest_code_9793ce0afe65453ea078b4ba0d76f663-70" href="#rest_code_9793ce0afe65453ea078b4ba0d76f663-70"></a>  - non-static data members of C
+<div class="code"><pre class="code text"><a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-1" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-1" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-1"></a>A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-2" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-2" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-2"></a>- vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-3" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-3" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-3"></a>- non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-4" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-4" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-4"></a>
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-5" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-5" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-5"></a>B:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-6" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-6" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-6"></a>- vtable pointer for B
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-7" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-7" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-7"></a>- non-static data members of B
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-8" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-8" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-8"></a>- A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-9" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-9" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-9"></a>  - vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-10" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-10" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-10"></a>  - non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-11" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-11" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-11"></a>
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-12" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-12" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-12"></a>C:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-13" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-13" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-13"></a>- vtable pointer for C
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-14" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-14" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-14"></a>- non-static data members of C
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-15" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-15" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-15"></a>- A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-16" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-16" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-16"></a>  - vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-17" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-17" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-17"></a>  - non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-18" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-18" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-18"></a>
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-19" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-19" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-19"></a>D:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-20" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-20" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-20"></a>- A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-21" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-21" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-21"></a>  - vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-22" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-22" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-22"></a>  - non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-23" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-23" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-23"></a>- non-static data members of D
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-24" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-24" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-24"></a>
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-25" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-25" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-25"></a>E:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-26" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-26" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-26"></a>- B:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-27" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-27" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-27"></a>  - vtable pointer for B
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-28" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-28" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-28"></a>  - non-static data members of B
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-29" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-29" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-29"></a>- non-static data members of E
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-30" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-30" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-30"></a>- A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-31" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-31" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-31"></a>  - vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-32" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-32" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-32"></a>  - non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-33" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-33" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-33"></a>- C:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-34" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-34" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-34"></a>  - vtable pointer for C
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-35" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-35" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-35"></a>  - non-static data members of C
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-36" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-36" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-36"></a>
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-37" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-37" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-37"></a>F:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-38" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-38" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-38"></a>- D:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-39" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-39" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-39"></a>  - A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-40" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-40" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-40"></a>    - vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-41" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-41" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-41"></a>    - non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-42" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-42" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-42"></a>  - non-static data members of D
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-43" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-43" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-43"></a>- non-static data members of F
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-44" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-44" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-44"></a>- A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-45" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-45" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-45"></a>  - vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-46" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-46" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-46"></a>  - non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-47" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-47" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-47"></a>- C:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-48" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-48" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-48"></a>  - vtable pointer for C
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-49" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-49" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-49"></a>  - non-static data members of C
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-50" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-50" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-50"></a>
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-51" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-51" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-51"></a>G:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-52" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-52" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-52"></a>- E:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-53" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-53" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-53"></a>  - B:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-54" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-54" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-54"></a>    - vtable pointer for B
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-55" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-55" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-55"></a>    - non-static data members of B
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-56" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-56" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-56"></a>  - non-static data members of E
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-57" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-57" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-57"></a>- F:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-58" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-58" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-58"></a>  - D:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-59" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-59" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-59"></a>    - A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-60" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-60" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-60"></a>      - vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-61" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-61" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-61"></a>      - non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-62" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-62" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-62"></a>    - non-static data members of D
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-63" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-63" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-63"></a>  - non-static data members of F
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-64" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-64" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-64"></a>- non-static data members of G
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-65" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-65" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-65"></a>- A:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-66" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-66" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-66"></a>  - vtable pointer for A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-67" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-67" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-67"></a>  - non-static data members of A
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-68" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-68" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-68"></a>- C:
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-69" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-69" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-69"></a>  - vtable pointer for C
+<a id="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-70" name="rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-70" href="#rest_code_dceee0ac13ea4ff6ad707c0c16fc697f-70"></a>  - non-static data members of C
 </pre></div>
 <hr class="docutils">
 <p>Additional resources:</p>

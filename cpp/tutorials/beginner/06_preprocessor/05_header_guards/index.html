@@ -177,9 +177,9 @@
 <span class="com-multi">*/</span>
 </pre></td>
 </tr></tbody></table>
-<div class="code"><pre class="code text"><a id="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-1" name="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-1" href="#rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-1"></a>/tmp/ccQJjzeS.o: In function `main':
-<a id="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-2" name="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-2" href="#rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-2"></a>main.cpp:(.text+0x5): undefined reference to `write_hello()'
-<a id="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-3" name="rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-3" href="#rest_code_485ddc6ea5e44ee7858a97a6f65ebbf7-3"></a>collect2: error: ld returned 1 exit status
+<div class="code"><pre class="code text"><a id="rest_code_047b269a97f942fb97798c39d0152ace-1" name="rest_code_047b269a97f942fb97798c39d0152ace-1" href="#rest_code_047b269a97f942fb97798c39d0152ace-1"></a>/tmp/ccQJjzeS.o: In function `main':
+<a id="rest_code_047b269a97f942fb97798c39d0152ace-2" name="rest_code_047b269a97f942fb97798c39d0152ace-2" href="#rest_code_047b269a97f942fb97798c39d0152ace-2"></a>main.cpp:(.text+0x5): undefined reference to `write_hello()'
+<a id="rest_code_047b269a97f942fb97798c39d0152ace-3" name="rest_code_047b269a97f942fb97798c39d0152ace-3" href="#rest_code_047b269a97f942fb97798c39d0152ace-3"></a>collect2: error: ld returned 1 exit status
 </pre></div>
 <p>The error appears because some entity (a function in this case) was ODR-used (used in a way which requires definition) but the definition was not provided. The same error can appear if you try to use an external library and do not link to library's compiled code in the build process.</p>
 <aside class="admonition note"><p class="admonition-title">note</p>
@@ -248,10 +248,10 @@
 }
 </pre></td>
 </tr></tbody></table>
-<div class="code"><pre class="code text"><a id="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-1" name="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-1" href="#rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-1"></a>/tmp/ccb9JA6l.o: In function `write_hello()':
-<a id="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-2" name="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-2" href="#rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-2"></a>hello.cpp:(.text+0x0): multiple definition of `write_hello()'
-<a id="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-3" name="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-3" href="#rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-3"></a>/tmp/ccfsecFJ.o:main.cpp:(.text+0x0): first defined here
-<a id="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-4" name="rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-4" href="#rest_code_3d1588a69e3b41d9a34b9fc05ecd0100-4"></a>collect2: error: ld returned 1 exit status
+<div class="code"><pre class="code text"><a id="rest_code_0587e8b22ed341c0842bc3489f4bc45a-1" name="rest_code_0587e8b22ed341c0842bc3489f4bc45a-1" href="#rest_code_0587e8b22ed341c0842bc3489f4bc45a-1"></a>/tmp/ccb9JA6l.o: In function `write_hello()':
+<a id="rest_code_0587e8b22ed341c0842bc3489f4bc45a-2" name="rest_code_0587e8b22ed341c0842bc3489f4bc45a-2" href="#rest_code_0587e8b22ed341c0842bc3489f4bc45a-2"></a>hello.cpp:(.text+0x0): multiple definition of `write_hello()'
+<a id="rest_code_0587e8b22ed341c0842bc3489f4bc45a-3" name="rest_code_0587e8b22ed341c0842bc3489f4bc45a-3" href="#rest_code_0587e8b22ed341c0842bc3489f4bc45a-3"></a>/tmp/ccfsecFJ.o:main.cpp:(.text+0x0): first defined here
+<a id="rest_code_0587e8b22ed341c0842bc3489f4bc45a-4" name="rest_code_0587e8b22ed341c0842bc3489f4bc45a-4" href="#rest_code_0587e8b22ed341c0842bc3489f4bc45a-4"></a>collect2: error: ld returned 1 exit status
 </pre></div>
 <p>Even in the case where both definitions are identical, it's not a good thing just to discard one definition and go further. While there is everything needed to form an executable, such situation indicates there is a configuration or code problem. For safety, build tools consider such situation as an error.</p>
 <p>In such situation the programmer must figure out what's causing multiple definitions as it will affect the solution:</p>

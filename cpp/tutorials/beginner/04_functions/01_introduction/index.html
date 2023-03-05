@@ -451,15 +451,15 @@
 </tr></tbody></table>
 <div class="docutils container">
 <details><summary>output</summary><div class="docutils container">
-<div class="code"><pre class="code text"><a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-1" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-1" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-1"></a>1
-<a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-2" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-2" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-2"></a>bar start
-<a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-3" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-3" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-3"></a>foo
-<a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-4" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-4" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-4"></a>bar finish
-<a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-5" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-5" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-5"></a>2
-<a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-6" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-6" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-6"></a>baz start
-<a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-7" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-7" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-7"></a>foo
-<a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-8" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-8" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-8"></a>baz finish
-<a id="rest_code_96fa68cde1e14cc5b3e218b082d2b238-9" name="rest_code_96fa68cde1e14cc5b3e218b082d2b238-9" href="#rest_code_96fa68cde1e14cc5b3e218b082d2b238-9"></a>3
+<div class="code"><pre class="code text"><a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-1" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-1" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-1"></a>1
+<a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-2" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-2" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-2"></a>bar start
+<a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-3" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-3" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-3"></a>foo
+<a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-4" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-4" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-4"></a>bar finish
+<a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-5" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-5" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-5"></a>2
+<a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-6" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-6" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-6"></a>baz start
+<a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-7" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-7" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-7"></a>foo
+<a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-8" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-8" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-8"></a>baz finish
+<a id="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-9" name="rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-9" href="#rest_code_bf127ccab95147c4a3a6aeb01f8cfda1-9"></a>3
 </pre></div>
 </div>
 </details>
@@ -476,13 +476,13 @@
 <p>It could be, but that's how some (if not most) systems implement the stack. The stack memory moves downward from the end and the <em>heap memory</em> moves upward from the beginning. The memory in the middle can become whatever is needed. RAM has no predefined structure, it's up to the operating system to decide how it's used.</p>
 <section id="call-stack-in-tools"><h3>Call stack in tools</h3>
 <p>Various programming tools (especially debuggers) work in terms of inspecting <em>function call stack</em>. Below is an example of a possible call stack printed by <a class="reference external" href="https://en.wikipedia.org/wiki/AddressSanitizer">AddressSanitizer/LeakSanitizer</a> when it detects a <em>memory leak</em> bug:</p>
-<div class="code"><pre class="code text"><a id="rest_code_0dff70908f174f7898d1c81e68a4b081-1" name="rest_code_0dff70908f174f7898d1c81e68a4b081-1" href="#rest_code_0dff70908f174f7898d1c81e68a4b081-1"></a>==26475==ERROR: LeakSanitizer: detected memory leaks
-<a id="rest_code_0dff70908f174f7898d1c81e68a4b081-2" name="rest_code_0dff70908f174f7898d1c81e68a4b081-2" href="#rest_code_0dff70908f174f7898d1c81e68a4b081-2"></a>
-<a id="rest_code_0dff70908f174f7898d1c81e68a4b081-3" name="rest_code_0dff70908f174f7898d1c81e68a4b081-3" href="#rest_code_0dff70908f174f7898d1c81e68a4b081-3"></a>Direct leak of 5 byte(s) in 1 object(s) allocated from:
-<a id="rest_code_0dff70908f174f7898d1c81e68a4b081-4" name="rest_code_0dff70908f174f7898d1c81e68a4b081-4" href="#rest_code_0dff70908f174f7898d1c81e68a4b081-4"></a>    #0 0x44f2de in malloc /usr/home/hacker/llvm/projects/compiler-rt/lib/asan/asan_malloc_linux.cc:74
-<a id="rest_code_0dff70908f174f7898d1c81e68a4b081-5" name="rest_code_0dff70908f174f7898d1c81e68a4b081-5" href="#rest_code_0dff70908f174f7898d1c81e68a4b081-5"></a>    #1 0x464e86 in baz (/usr/home/hacker/a.out+0x464e86)
-<a id="rest_code_0dff70908f174f7898d1c81e68a4b081-6" name="rest_code_0dff70908f174f7898d1c81e68a4b081-6" href="#rest_code_0dff70908f174f7898d1c81e68a4b081-6"></a>    #2 0x464fb4 in main (/usr/home/hacker/a.out+0x464fb4)
-<a id="rest_code_0dff70908f174f7898d1c81e68a4b081-7" name="rest_code_0dff70908f174f7898d1c81e68a4b081-7" href="#rest_code_0dff70908f174f7898d1c81e68a4b081-7"></a>    #3 0x7f7e760b476c in __libc_start_main /build/buildd/eglibc-2.15/csu/libc-start.c:226
+<div class="code"><pre class="code text"><a id="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-1" name="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-1" href="#rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-1"></a>==26475==ERROR: LeakSanitizer: detected memory leaks
+<a id="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-2" name="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-2" href="#rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-2"></a>
+<a id="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-3" name="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-3" href="#rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-3"></a>Direct leak of 5 byte(s) in 1 object(s) allocated from:
+<a id="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-4" name="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-4" href="#rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-4"></a>    #0 0x44f2de in malloc /usr/home/hacker/llvm/projects/compiler-rt/lib/asan/asan_malloc_linux.cc:74
+<a id="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-5" name="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-5" href="#rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-5"></a>    #1 0x464e86 in baz (/usr/home/hacker/a.out+0x464e86)
+<a id="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-6" name="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-6" href="#rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-6"></a>    #2 0x464fb4 in main (/usr/home/hacker/a.out+0x464fb4)
+<a id="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-7" name="rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-7" href="#rest_code_97ec91fbf1bc45f0ab0775a7ed05cb78-7"></a>    #3 0x7f7e760b476c in __libc_start_main /build/buildd/eglibc-2.15/csu/libc-start.c:226
 </pre></div>
 <aside class="admonition note"><p class="admonition-title">note</p>
 <p>Main function may not be actually first due to implementation-specific reasons. Many platforms require extra work to be done before actual code can run. In most situations (without sanitizers) on GNU/Linux systems the first function is named <code class="docutils literal">_start</code> but other magic names (starting with <code class="docutils literal">_</code>) can appear too.</p>
@@ -491,23 +491,23 @@
 <aside class="admonition definition"><p class="admonition-title">definition</p>
 <p>A situation when stack memory is exhausted and an attempt is made to occupy even more is <strong>stack overflow</strong>. This has undefined behavior.</p>
 </aside><p>On GNU/Linux systems, Bash shell has a built-in command that can be used to check various resource limits, including stack memory. Example done on a 64-bit PC:</p>
-<div class="code"><pre class="code text"><a id="rest_code_429947c437554a818fe24927f8c1afb4-1" name="rest_code_429947c437554a818fe24927f8c1afb4-1" href="#rest_code_429947c437554a818fe24927f8c1afb4-1"></a>$ ulimit -a
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-2" name="rest_code_429947c437554a818fe24927f8c1afb4-2" href="#rest_code_429947c437554a818fe24927f8c1afb4-2"></a>core file size          (blocks, -c) 0
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-3" name="rest_code_429947c437554a818fe24927f8c1afb4-3" href="#rest_code_429947c437554a818fe24927f8c1afb4-3"></a>data seg size           (kbytes, -d) unlimited
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-4" name="rest_code_429947c437554a818fe24927f8c1afb4-4" href="#rest_code_429947c437554a818fe24927f8c1afb4-4"></a>scheduling priority             (-e) 0
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-5" name="rest_code_429947c437554a818fe24927f8c1afb4-5" href="#rest_code_429947c437554a818fe24927f8c1afb4-5"></a>file size               (blocks, -f) unlimited
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-6" name="rest_code_429947c437554a818fe24927f8c1afb4-6" href="#rest_code_429947c437554a818fe24927f8c1afb4-6"></a>pending signals                 (-i) 15450
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-7" name="rest_code_429947c437554a818fe24927f8c1afb4-7" href="#rest_code_429947c437554a818fe24927f8c1afb4-7"></a>max locked memory       (kbytes, -l) 65536
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-8" name="rest_code_429947c437554a818fe24927f8c1afb4-8" href="#rest_code_429947c437554a818fe24927f8c1afb4-8"></a>max memory size         (kbytes, -m) unlimited
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-9" name="rest_code_429947c437554a818fe24927f8c1afb4-9" href="#rest_code_429947c437554a818fe24927f8c1afb4-9"></a>open files                      (-n) 1024
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-10" name="rest_code_429947c437554a818fe24927f8c1afb4-10" href="#rest_code_429947c437554a818fe24927f8c1afb4-10"></a>pipe size            (512 bytes, -p) 8
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-11" name="rest_code_429947c437554a818fe24927f8c1afb4-11" href="#rest_code_429947c437554a818fe24927f8c1afb4-11"></a>POSIX message queues     (bytes, -q) 819200
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-12" name="rest_code_429947c437554a818fe24927f8c1afb4-12" href="#rest_code_429947c437554a818fe24927f8c1afb4-12"></a>real-time priority              (-r) 0
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-13" name="rest_code_429947c437554a818fe24927f8c1afb4-13" href="#rest_code_429947c437554a818fe24927f8c1afb4-13"></a>stack size              (kbytes, -s) 8192
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-14" name="rest_code_429947c437554a818fe24927f8c1afb4-14" href="#rest_code_429947c437554a818fe24927f8c1afb4-14"></a>cpu time               (seconds, -t) unlimited
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-15" name="rest_code_429947c437554a818fe24927f8c1afb4-15" href="#rest_code_429947c437554a818fe24927f8c1afb4-15"></a>max user processes              (-u) 15450
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-16" name="rest_code_429947c437554a818fe24927f8c1afb4-16" href="#rest_code_429947c437554a818fe24927f8c1afb4-16"></a>virtual memory          (kbytes, -v) unlimited
-<a id="rest_code_429947c437554a818fe24927f8c1afb4-17" name="rest_code_429947c437554a818fe24927f8c1afb4-17" href="#rest_code_429947c437554a818fe24927f8c1afb4-17"></a>file locks                      (-x) unlimited
+<div class="code"><pre class="code text"><a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-1" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-1" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-1"></a>$ ulimit -a
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-2" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-2" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-2"></a>core file size          (blocks, -c) 0
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-3" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-3" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-3"></a>data seg size           (kbytes, -d) unlimited
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-4" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-4" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-4"></a>scheduling priority             (-e) 0
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-5" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-5" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-5"></a>file size               (blocks, -f) unlimited
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-6" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-6" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-6"></a>pending signals                 (-i) 15450
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-7" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-7" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-7"></a>max locked memory       (kbytes, -l) 65536
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-8" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-8" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-8"></a>max memory size         (kbytes, -m) unlimited
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-9" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-9" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-9"></a>open files                      (-n) 1024
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-10" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-10" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-10"></a>pipe size            (512 bytes, -p) 8
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-11" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-11" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-11"></a>POSIX message queues     (bytes, -q) 819200
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-12" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-12" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-12"></a>real-time priority              (-r) 0
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-13" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-13" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-13"></a>stack size              (kbytes, -s) 8192
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-14" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-14" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-14"></a>cpu time               (seconds, -t) unlimited
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-15" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-15" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-15"></a>max user processes              (-u) 15450
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-16" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-16" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-16"></a>virtual memory          (kbytes, -v) unlimited
+<a id="rest_code_6a568f16ef4f4c77b39c50c5e901587f-17" name="rest_code_6a568f16ef4f4c77b39c50c5e901587f-17" href="#rest_code_6a568f16ef4f4c77b39c50c5e901587f-17"></a>file locks                      (-x) unlimited
 </pre></div>
 <p>8 MiB doesn't seem to be much but in reality, unless forced on purpose, stack overflow is hard to achieve. Most complex programs I have seen nest few hundred function calls. Stack pointer is the same size as the architecture (8 bytes on 64-bit CPU), adding this to other control data and average few function parameters and average few local variables we get a guesstimate of 64-128 bytes of stack data per function. Assuming few hundred nested function calls, we get at most few hundred kilobytes. That's far less than 8 MiB.</p>
 <blockquote>

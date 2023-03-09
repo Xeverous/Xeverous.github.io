@@ -33,7 +33,7 @@
 <li class="sidebar-section">
 			<ul>
 <li><a href="../../../../../">HOME</a></li>
-				<li><a href="../../../../../index">INDEX</a></li>
+				<li><a href="../../../../../index/">INDEX</a></li>
 			</ul>
 </li>
 
@@ -80,9 +80,9 @@
 </li>
 	</ul></nav><nav class="topbar"><ul class="menu">
 <li class="button"><a href="../../../../../">HOME</a></li>
-				<li class="button"><a href="../../../../../index">INDEX</a></li>
-				<li class="button"><a href="../../../../../faq">FAQ</a></li>
-				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button"><a href="../../../../../index/">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq/">FAQ</a></li>
+				<li class="button"><a href="../../../../../about/">ABOUT</a></li>
 				<li class="button menu-button">
 					<div class="menu-icon">
 						<div class="bar1"></div>
@@ -92,7 +92,7 @@
 				</li>
 			</ul></nav><div class="main container">
 				<nav class="breadcrumb"><ol>
-<li><a href="../../../../../index">index</a></li>
+<li><a href="../../../../../index/">index</a></li>
 						<span>/</span>
 							<li><a href="../../../../">C++</a></li>
 							<span>/</span>
@@ -174,7 +174,7 @@
 </ul>
 <p>Why weird NDEBUG ("not debug") name? Just history. NDEBUG is never defined within standard library but high-level build tools (e.g. CMake, Meson) and IDEs have the concept of relase and debug build configurations. Pretty much all such tools will add <code class="docutils literal"><span class="pre">-DNDEBUG</span></code> (or equivalent) to compiler flags in release configuration to disable the macro in release builds (C++ does not define this macro by default). Many libraries offer similar macro, sometimes implemented as a wrapper around the standard one.</p>
 <p>A quick test with the program above can result in something like this:</p>
-<div class="code"><pre class="code text"><a id="rest_code_208ce58b066c4c57ade2e2494f3ddcee-1" name="rest_code_208ce58b066c4c57ade2e2494f3ddcee-1" href="#rest_code_208ce58b066c4c57ade2e2494f3ddcee-1"></a>main.cpp:6: int divide(int, int): Assertion 'y != 0' failed.
+<div class="code"><pre class="code text"><a id="rest_code_20f367c7495241729c15fec4f7332fa1-1" name="rest_code_20f367c7495241729c15fec4f7332fa1-1" href="#rest_code_20f367c7495241729c15fec4f7332fa1-1"></a>main.cpp:6: int divide(int, int): Assertion 'y != 0' failed.
 </pre></div>
 <aside class="admonition note"><p class="admonition-title">note</p>
 <p>As of writing this, MSVC implementation does not conform to C++11 requirements - the diagnostic message does not contain <code class="code custom-cpp"><span class="ext">__func__</span></code>.</p>

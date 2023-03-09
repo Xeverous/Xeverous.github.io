@@ -33,7 +33,7 @@
 <li class="sidebar-section">
 			<ul>
 <li><a href="../../../../../">HOME</a></li>
-				<li><a href="../../../../../index">INDEX</a></li>
+				<li><a href="../../../../../index/">INDEX</a></li>
 			</ul>
 </li>
 
@@ -80,9 +80,9 @@
 </li>
 	</ul></nav><nav class="topbar"><ul class="menu">
 <li class="button"><a href="../../../../../">HOME</a></li>
-				<li class="button"><a href="../../../../../index">INDEX</a></li>
-				<li class="button"><a href="../../../../../faq">FAQ</a></li>
-				<li class="button"><a href="../../../../../about">ABOUT</a></li>
+				<li class="button"><a href="../../../../../index/">INDEX</a></li>
+				<li class="button"><a href="../../../../../faq/">FAQ</a></li>
+				<li class="button"><a href="../../../../../about/">ABOUT</a></li>
 				<li class="button menu-button">
 					<div class="menu-icon">
 						<div class="bar1"></div>
@@ -92,7 +92,7 @@
 				</li>
 			</ul></nav><div class="main container">
 				<nav class="breadcrumb"><ol>
-<li><a href="../../../../../index">index</a></li>
+<li><a href="../../../../../index/">index</a></li>
 						<span>/</span>
 							<li><a href="../../../../">C++</a></li>
 							<span>/</span>
@@ -178,8 +178,8 @@
 </pre></td>
 </tr></tbody></table>
 <p>output:</p>
-<div class="code"><pre class="code text"><a id="rest_code_c59ee7dc988e40c8954bc60bc8ad7a58-1" name="rest_code_c59ee7dc988e40c8954bc60bc8ad7a58-1" href="#rest_code_c59ee7dc988e40c8954bc60bc8ad7a58-1"></a>meow
-<a id="rest_code_c59ee7dc988e40c8954bc60bc8ad7a58-2" name="rest_code_c59ee7dc988e40c8954bc60bc8ad7a58-2" href="#rest_code_c59ee7dc988e40c8954bc60bc8ad7a58-2"></a>whoof
+<div class="code"><pre class="code text"><a id="rest_code_c84a1f44b0104124bc3dc2ce1e415a17-1" name="rest_code_c84a1f44b0104124bc3dc2ce1e415a17-1" href="#rest_code_c84a1f44b0104124bc3dc2ce1e415a17-1"></a>meow
+<a id="rest_code_c84a1f44b0104124bc3dc2ce1e415a17-2" name="rest_code_c84a1f44b0104124bc3dc2ce1e415a17-2" href="#rest_code_c84a1f44b0104124bc3dc2ce1e415a17-2"></a>whoof
 </pre></div>
 <p>Unlike examples in the lesson about shadowing, <strong>virtual functions are always resolved based on the dynamic type</strong>. Even though <code class="code custom-cpp"><span class="func">print_sound</span></code> takes a reference to the base <code class="code custom-cpp"><span class="type">animal</span></code> class, it calls <code class="code custom-cpp"><span class="func">sound</span></code> function based on the actual type of the object, which is unknown to the <code class="code custom-cpp"><span class="func">print_sound</span></code> function.</p>
 <p>Virtual functions open up a world of dynamic behavior, where a code written against an <em>interface</em> (here: the base <code class="code custom-cpp"><span class="type">animal</span></code> class) can exhibit different behavior depending on the dynamic type of the object. Multiple types can satisfy one <em>interface</em>, promoting code reuse, allowing complex interactions and at the same time avoiding strong coupling - the only area where code "must match" is the base class. Each derived class can contain its own implementation, which modifications do not require changes in external code like the <code class="code custom-cpp"><span class="func">print_sound</span></code> function.</p>
@@ -216,8 +216,8 @@
 <p>Modify the example to have <code class="code custom-cpp"><span class="keyword">void</span> <span class="func">print_sound</span>(<span class="type">animal</span> <span class="param">a</span>)</code> and observe the result.</p>
 <div class="docutils container">
 <details><summary>result</summary><div class="docutils container">
-<div class="code"><pre class="code text"><a id="rest_code_7c1ec1653db3468c8311f624865cdbb6-1" name="rest_code_7c1ec1653db3468c8311f624865cdbb6-1" href="#rest_code_7c1ec1653db3468c8311f624865cdbb6-1"></a>???
-<a id="rest_code_7c1ec1653db3468c8311f624865cdbb6-2" name="rest_code_7c1ec1653db3468c8311f624865cdbb6-2" href="#rest_code_7c1ec1653db3468c8311f624865cdbb6-2"></a>???
+<div class="code"><pre class="code text"><a id="rest_code_7bc9dff7408b40e7b85282dc6f448fdb-1" name="rest_code_7bc9dff7408b40e7b85282dc6f448fdb-1" href="#rest_code_7bc9dff7408b40e7b85282dc6f448fdb-1"></a>???
+<a id="rest_code_7bc9dff7408b40e7b85282dc6f448fdb-2" name="rest_code_7bc9dff7408b40e7b85282dc6f448fdb-2" href="#rest_code_7bc9dff7408b40e7b85282dc6f448fdb-2"></a>???
 </pre></div>
 </div>
 </details>
@@ -322,9 +322,9 @@
 }
 </pre></td>
 </tr></tbody></table>
-<div class="code"><pre class="code text"><a id="rest_code_c34103891d3e43edb6ee37d50a4e1ce9-1" name="rest_code_c34103891d3e43edb6ee37d50a4e1ce9-1" href="#rest_code_c34103891d3e43edb6ee37d50a4e1ce9-1"></a>base::f
-<a id="rest_code_c34103891d3e43edb6ee37d50a4e1ce9-2" name="rest_code_c34103891d3e43edb6ee37d50a4e1ce9-2" href="#rest_code_c34103891d3e43edb6ee37d50a4e1ce9-2"></a>base::f
-<a id="rest_code_c34103891d3e43edb6ee37d50a4e1ce9-3" name="rest_code_c34103891d3e43edb6ee37d50a4e1ce9-3" href="#rest_code_c34103891d3e43edb6ee37d50a4e1ce9-3"></a>more_derived::f
+<div class="code"><pre class="code text"><a id="rest_code_1be4ff653b6d45879b6958383af881f2-1" name="rest_code_1be4ff653b6d45879b6958383af881f2-1" href="#rest_code_1be4ff653b6d45879b6958383af881f2-1"></a>base::f
+<a id="rest_code_1be4ff653b6d45879b6958383af881f2-2" name="rest_code_1be4ff653b6d45879b6958383af881f2-2" href="#rest_code_1be4ff653b6d45879b6958383af881f2-2"></a>base::f
+<a id="rest_code_1be4ff653b6d45879b6958383af881f2-3" name="rest_code_1be4ff653b6d45879b6958383af881f2-3" href="#rest_code_1be4ff653b6d45879b6958383af881f2-3"></a>more_derived::f
 </pre></div>
 <p>In the example above there are actually 2 virtual function chains:</p>
 <ul class="simple">
@@ -399,8 +399,8 @@
 </div>
 <div class="docutils container">
 <details><summary>answer</summary><div class="docutils container">
-<div class="code"><pre class="code text"><a id="rest_code_1836ebc8e2c44c1a942f29c682ed9865-1" name="rest_code_1836ebc8e2c44c1a942f29c682ed9865-1" href="#rest_code_1836ebc8e2c44c1a942f29c682ed9865-1"></a>d1.b: x
-<a id="rest_code_1836ebc8e2c44c1a942f29c682ed9865-2" name="rest_code_1836ebc8e2c44c1a942f29c682ed9865-2" href="#rest_code_1836ebc8e2c44c1a942f29c682ed9865-2"></a>d1.d: b
+<div class="code"><pre class="code text"><a id="rest_code_97e3ec2025834d8cb47503f13e606d71-1" name="rest_code_97e3ec2025834d8cb47503f13e606d71-1" href="#rest_code_97e3ec2025834d8cb47503f13e606d71-1"></a>d1.b: x
+<a id="rest_code_97e3ec2025834d8cb47503f13e606d71-2" name="rest_code_97e3ec2025834d8cb47503f13e606d71-2" href="#rest_code_97e3ec2025834d8cb47503f13e606d71-2"></a>d1.d: b
 </pre></div>
 </div>
 </details>
